@@ -20,6 +20,9 @@
 				This is the path you took. If you could try again, what would you do differently?
 			</div>
 			<div id="container">
+				<div id="leftbutton" class="flipbuttons"></div>
+				<div id="rightbutton" class="flipbuttons"></div>
+				
 				<div id="card">
 					<div class="front">
 						<video id="video1" src="mp4/spotters.mp4" autoplay="off" width="960" height="540"></video>
@@ -32,8 +35,6 @@
 			<div id="controls">
 				<span id="playElement" style="cursor: pointer;"></span>
 				<div id="scrubber"><div id="progress"></div>
-				<input type="button" value="flip" id="flip" onclick="$('#card').toggleClass('flipped');"/>
-
 			</div>
 		</div>
 					
@@ -64,6 +65,9 @@
 		var instructionsin = false;
 
 		$(document).ready(function(){		
+			$(".flipbuttons").click(function () {
+				$('#card').toggleClass('flipped');
+			});
 		
 			document.getElementById("video1").addEventListener("canplay",function(){vid1Loaded = true; playDecide();},true);
 			document.getElementById("video2").addEventListener("canplay",function(){vid2Loaded = true; playDecide();},true);

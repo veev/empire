@@ -50,6 +50,27 @@ position: absolute;
    -webkit-transform-origin: right center;
 }
 
+#outerinner #container #leftbutton {
+	z-index: 40;
+	display: block; position: absolute; left: -40; top: 280; height: 40px; width: 40px; background: url(art/left.png);
+}
+
+#outerinner #container #rightbutton {
+	z-index: 40;
+	display: block; position: absolute; left: 960; top: 280; height: 40px; width: 40px; background: url(art/right.png);
+}
+
+#outerinner #container div.flipbuttons {
+	opacity: .4;
+}
+
+#outerinner #container div.flipbuttons:hover {
+	opacity: .9;
+}
+
+
+
+
 #outerinner #container #card div {
   display: block;
   position: absolute;
