@@ -3,10 +3,8 @@
 <meta http-equiv="Contexnt Type" content="text/html; charset=iso-8899-1" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
 	<title>Cradle flip version</title>
-
-
 </head>
 <body>
 
@@ -17,18 +15,17 @@
 		</div>
 		<div id="outerinner">
 			<div id="instructions1" style="display: none;">
-				This is the path you took. If you could try again, what would you do differently?
 			</div>
 			<div id="container">
-				<div id="leftbutton" class="flipbuttons"></div>
-				<div id="rightbutton" class="flipbuttons"></div>
-				
+				<div id="leftbutton" class="flipbuttons buttonoff"></div>
+				<div id="rightbutton" class="flipbuttons buttonon"></div>
+				<div id="cardover"></div>
 				<div id="card">
 					<div class="front">
-						<video id="video1" src="mp4/spotters.mp4" autoplay="off" width="960" height="540"></video>
+						<video id="video1" src="mp4/schipol.mp4" autoplay="off" width="960" height="540"></video>
 					</div>
 					<div class="back">
-						<video id="video2" src="mp4/schipol.mp4" autoplay="off" width="960" height="540"></video>
+						<video id="video2" src="mp4/spotters.mp4" autoplay="off" width="960" height="540"></video>
 					</div>
 				</div>
 			</div>
@@ -43,15 +40,13 @@
 			<div id="essays" onclick="location.href='essays.html'"></div>
 			<div id="about" onclick="location.href='about.html'"></div>
 			</div>
+		
 	</div>
 			
     <script>
 
 		var x = 0;
 		var y = 0;
-		var refreshInterval = 0;
-		var millisInterval = 1000;
-		var xTrail = Array();
 
 		var xMargin = 10;
 		var yMargin = 480;
@@ -63,10 +58,15 @@
 		var vid2Loaded = false;
 		var playState = 0;
 		var instructionsin = false;
+		var flipside = false;
+		var flipangle = 0;
 
 		$(document).ready(function(){		
-			$(".flipbuttons").click(function () {
-				$('#card').toggleClass('flipped');
+			$("#leftbutton").click(function () {
+				flipper(false);
+			});
+			$("#rightbutton").click(function () {
+				flipper(true);
 			});
 		
 			document.getElementById("video1").addEventListener("canplay",function(){vid1Loaded = true; playDecide();},true);
@@ -75,8 +75,73 @@
 			document.getElementById("video1").addEventListener("ended",function(){ endVids();},true);
 			document.getElementById("video1").addEventListener("timeupdate",function(){scrubberUpdater();},true);
 			
+			$("#cardover").mouseover(function () {
+				trackon();
+			});
+
+			$("#cardover").mouseout(function () {
+				trackoff();
+			});
 			
-		})
+		});
+		
+					console.log($("#card").css('transform'));
+
+		function trackon () {
+			$(document).mousemove(function(e){
+				var x = e.pageX - $("#cardover").offset().left;
+				if(flipside){
+					if(x < 480){
+						if(x < 180){
+							 flipper(false);
+						} else {
+							deg = Math.floor(((x - 150) / 3));
+							flipangle = deg;
+							$("#card").css({ 'transform': 'rotateY( ' + deg + 'deg )', '-webkit-transform': 'rotateY( ' + deg + 'deg )' });
+						}
+					}
+				} else {
+					if(x > 480){
+						if(x > 780){
+							flipper(true);
+						} else {
+							deg = Math.floor(((x - 480) / 3));
+							flipangle = deg;
+							$("#card").css({ 'transform': 'rotateY( ' + deg + 'deg )', '-webkit-transform': 'rotateY( ' + deg + 'deg )' });
+						}
+					}
+				}
+				
+				});
+		}
+		
+		function trackoff () {
+			$(document).unbind('mousemove');
+		}
+		
+		function flipper (isright){
+			if(flipside){
+				if(!isright){
+					fullflip(0);
+					flipside = false;
+					flipangle = 0;
+					$("#leftbutton").removeClass('buttonon').addClass('buttonoff');
+					$("#rightbutton").removeClass('buttonoff').addClass('buttonon');
+				}
+			} else {
+				if(isright){
+					fullflip(180);
+					flipside = true;
+					flipangle = 180;
+					$("#rightbutton").removeClass('buttonon').addClass('buttonoff');
+					$("#leftbutton").removeClass('buttonoff').addClass('buttonon');
+				}
+			}
+		}
+		
+		function fullflip (deg) {
+			$("#card").css({ 'transform': 'rotateY( ' + deg + 'deg )', '-webkit-transform': 'rotateY( ' + deg + 'deg )' });
+		}
 		
 		function scrubberUpdater (intime){
 			var dur = Math.floor(document.getElementById("video1").currentTime);
@@ -142,7 +207,7 @@
 		}
 		
 		function endVids(){
-			$("#instructions1").fadeIn('slow');
+//			$("#instructions1").fadeIn('slow');
 			playState = 3;
 			pauseMouse();
 		}

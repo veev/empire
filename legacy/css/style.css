@@ -1,0 +1,28 @@
+*, html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, label, fieldset, input, p, th, td { margin:0; padding:0; font-family:  "Fjalla One","Helvetica Neue", sans-serif; }
+table { border-collapse:collapse; border-spacing:0 }
+iframe { border: 0; margin: 0; padding: 0; }
+fieldset, img { border:0 }
+address, caption, cite, code, dfn, em, strong, th, var { font-style:normal; font-weight:normal }
+ol, ul, li { list-style:none }
+caption, th { text-align:left }
+h1, h2, h3, h4, h5, h6 { font-size:100%; font-weight:normal }
+q:before, q:after { content:''}
+
+body {
+	background: #000;
+	color: #fff;
+}
+
+div#container { width: 100%; height: 100%; text-align: center; position: relative; }
+div#container div.videospace { width: 100%; height: 100%; text-align: center; position: absolute; }
+div#container div.videospace video { width: 100%; height: 100%; text-align: center; }
+div#container div.videospace #vid_0 { z-index: 1; }
+div#container div.videospace #vid_1 { z-index: 2; }
+div#container div.videospace #vid_2 { z-index: 3; }
+div#container div.videospace #vid_3 { z-index: 4; }
+div#container div.scrubber { z-index: 8; height: 18px; background-color: #888; display: block; position: absolute; }
+div#container div#scr_0 { width: 100%; height: 18px; top: 0; }
+div#container div#scr_1 { height: 100%; width: 18px; right: 0; }
+div#container div#scr_3 { height: 100%; width: 18px; left: 0; }
+div#container div#scr_2 { width: 100%; height: 18px; bottom: 0; }
+div#container div.videospace video.squares { width: 24%; height: 24%; }

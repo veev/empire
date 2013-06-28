@@ -44,27 +44,42 @@ div.outer {
 position: absolute;
   transform-style: preserve-3d;
   transition: all .5s linear;
-   transform-origin: right center;
+   transform-origin: center center;
   -webkit-transform-style: preserve-3d;
   -webkit-transition: all .5s linear;
-   -webkit-transform-origin: right center;
+   -webkit-transform-origin: center center;
+}
+
+#outerinner #container #cardover {
+	position: absolute;
+	z-index: 45;
+	top: 0;
+	left: 0;
+	opacity: .2;
+	width: 960px;
+	height: 540px;
 }
 
 #outerinner #container #leftbutton {
 	z-index: 40;
-	display: block; position: absolute; left: -40; top: 280; height: 40px; width: 40px; background: url(art/left.png);
+	display: block; position: absolute; left: -40; top: 280; height: 40px; width: 40px; background: url(../art/left.png);
 }
 
 #outerinner #container #rightbutton {
 	z-index: 40;
-	display: block; position: absolute; left: 960; top: 280; height: 40px; width: 40px; background: url(art/right.png);
+	display: block; position: absolute; left: 960; top: 280; height: 40px; width: 40px; background: url(../art/right.png);
 }
 
-#outerinner #container div.flipbuttons {
+#outerinner #container div.buttonoff {
+	opacity: .2;
+}
+
+#outerinner #container div.buttonon {
 	opacity: .4;
+	cursor: pointer;
 }
 
-#outerinner #container div.flipbuttons:hover {
+#outerinner #container div.buttonon:hover {
 	opacity: .9;
 }
 
@@ -89,6 +104,8 @@ position: absolute;
 	transform: translateX( -100% ) rotateY( -180deg );
 	-webkit-transform: translateX( -100% ) rotateY( -180deg );
 }
+
+
 
 
 #outerinner #controls #scrubber {
@@ -124,10 +141,10 @@ position: absolute;
 	cursor: pointer;
 	width: 27px;
 	height: 38px;
-	background-image: url(art/playGray.png);
+	background-image: url(../art/playGray.png);
 }
 #outerinner #controls #playElement:hover {
-	background-image: url(art/playWhite.png);
+	background-image: url(../art/playWhite.png);
 }
 #pauseElement{
 	display: block;
@@ -171,28 +188,28 @@ position: absolute;
 	cursor: pointer;
 	width: 69px;
 	height: 34px;
-	background-image: url(art/videoGray.jpg);
+	background-image: url(../art/videoGray.jpg);
 }
 #videos:hover{
-	background-image: url(art/videoWhite.jpg);
+	background-image: url(../art/videoWhite.jpg);
 }
 #essays{
 	float:left;
 	cursor: pointer;
 	width: 65px;
 	height: 34px;
-	background-image: url(art/essaysGray.jpg);
+	background-image: url(../art/essaysGray.jpg);
 }
 #essays:hover{
-	background-image: url(art/essaysWhite.jpg);
+	background-image: url(../art/essaysWhite.jpg);
 }
 #about{
 	float:left;
 	cursor: pointer;
 	width: 60px;
 	height: 34px;
-	background-image: url(art/aboutGray.jpg);
+	background-image: url(../art/aboutGray.jpg);
 }
 #about:hover{
-	background-image: url(art/aboutWhite.jpg);
+	background-image: url(../art/aboutWhite.jpg);
 }
