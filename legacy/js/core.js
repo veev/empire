@@ -112,7 +112,7 @@ $(document).ready(function () {
 						vert = true;
 						pxmultiplier = Math.floor(scr.height() / cl);
 					}
-					var clipstr = '<div class="hotpoint pt_' + clipdata[x].state + '" id="pt' + clipdata[x].clip + '_' + timetosecs(clipdata[x].start) + '" style="display: none; ';
+					var clipstr = '<div class="hotpoint pt_' + clipdata[x].state + '" id="pt' + clipdata[x].clip + '_' + timetosecs(clipdata[x].start) + '" data-clip="' + clipdata[x].clip + '" data-start="' + timetosecs(clipdata[x].start) + '" style="display: none; ';
 					var le = cl / (timetosecs(clipdata[x].end) - timetosecs(clipdata[x].start));
 					if(vert){
 						clipstr += 'height: ' + Math.floor(pxmultiplier * le) + 'px; margin-top: ' + Math.ceil(pxmultiplier * timetosecs(clipdata[x].start)) + ' px';
@@ -134,30 +134,49 @@ $(document).ready(function () {
 			clipends[1] = clipend_b;
 			clipends[2] = clipend_c;
 			clipends[3] = clipend_d;
-			console.log(clipends);
+			$(".hotpoint").click(function () {
+				if($(this).hasClass('hotpoint_on')){
+					loadvid($(this).attr('data-clip'),$(this).attr('data-start'));
+				}
+			});
 		}
 	},500);
 
 });
 
+function loadvid (clip,start){
+	$(".hotpoint_on").removeClass('hotpoint_on');
+	document.getElementById('video'+curvid).pause();
+	document.getElementById('video'+curvid).removeEventListener('timeupdate',progressrun);
+	$("#vid_" + curvid).css({ 'z-index': 3,  'display':'none' });
+	$("#vid_" + clip).css({ 'display':'block', 'z-index': 5, 'width': ($(window).width() - 20) + 'px', 'top': (($(window).height() - ((($(window).width() - 20) / 16) * 9)) / 2), 'left':10, 'height': (($(window).width() - 20) / 16) * 9 + 'px' });
+	curvid = clip;
+	document.getElementById('video'+curvid).currentTime = start;
+	document.getElementById('video'+curvid).play();
+	progress_start('video' + curvid);
+}
+
+
 function progress_start (vi) {
 	curel = document.getElementById(vi);
-	curel.addEventListener('timeupdate',function () {
-		// update the scrubber
-		var prg = (curel.currentTime / curel.duration) * 100;
-		if($("#scr_" + curvid + "_play").attr('data-vertical') == 1){
-			$("#scr_" + curvid + "_play").css({ 'height': prg + '%' });
-		} else {
-			$("#scr_" + curvid + "_play").css({ 'width': prg + '%' });
-		}
-		var thistime = Math.floor(curel.currentTime);
-		if(clipstarts[curvid][thistime]){
-			$(".pt_" + clipstarts[curvid][thistime]).addClass('hotpoint_on');
-		}
-		if(clipends[curvid][thistime]){
-			$(".hotpoint_on").removeClass('hotpoint_on');
-		}
-	});
+	curel.addEventListener('timeupdate', progressrun);
+}
+
+function progressrun () {
+// update the scrubber
+	var prg = (curel.currentTime / curel.duration) * 100;
+	if($("#scr_" + curvid + "_play").attr('data-vertical') == 1){
+		$("#scr_" + curvid + "_play").css({ 'height': prg + '%' });
+	} else {
+		$("#scr_" + curvid + "_play").css({ 'width': prg + '%' });
+	}
+	var thistime = Math.floor(curel.currentTime);
+	if(clipstarts[curvid][thistime]){
+		$(".pt_" + clipstarts[curvid][thistime]).addClass('hotpoint_on');
+	}
+	if(clipends[curvid][thistime]){
+		$(".hotpoint_on").removeClass('hotpoint_on');
+	}
 }
 
 function timetosecs (instring) {
