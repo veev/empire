@@ -85,7 +85,6 @@
 			
 		});
 		
-					console.log($("#card").css('transform'));
 
 		function trackon () {
 			$(document).mousemove(function(e){
@@ -95,9 +94,10 @@
 						if(x < 180){
 							 flipper(false);
 						} else {
-							deg = Math.floor(((x - 150) / 3));
+							deg = Math.floor(((x - 210) / 3));
 							flipangle = deg;
-							$("#card").css({ 'transform': 'rotateY( ' + deg + 'deg )', '-webkit-transform': 'rotateY( ' + deg + 'deg )' });
+							console.log(deg);
+							$("#card").css({ '-webkit-transform': 'rotateY( ' + deg + 'deg )', 'transform': 'rotateY( ' + deg + 'deg )' });
 						}
 					}
 				} else {
@@ -107,7 +107,8 @@
 						} else {
 							deg = Math.floor(((x - 480) / 3));
 							flipangle = deg;
-							$("#card").css({ 'transform': 'rotateY( ' + deg + 'deg )', '-webkit-transform': 'rotateY( ' + deg + 'deg )' });
+							console.log(deg);
+							$("#card").css({ '-webkit-transform': 'rotateY( ' + deg + 'deg )', 'transform': 'rotateY( ' + deg + 'deg )' });
 						}
 					}
 				}
@@ -209,7 +210,6 @@
 		function endVids(){
 //			$("#instructions1").fadeIn('slow');
 			playState = 3;
-			pauseMouse();
 		}
 
     </script>	

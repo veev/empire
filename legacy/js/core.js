@@ -10,11 +10,34 @@ var loadivl = new Number();
 
 $(document).ready(function () {
 
+	var matop = ($(".yellow:first").height() / 2) - 400;
+	if(matop < 70){
+		matop = 70;
+	}
+	
+	$("#mainarea").css({ "margin-top": matop });
+	$("#legplay").css({ "margin-left": ($(window).width() / 2) - 70 }).fadeIn(4000).click(function () {
+		$('html, body').animate({ scrollTop: ($('#container').offset().top - 20) }, 1000);
+	});
+
+	$("#legmore").css({ "margin-left": ($(window).width() / 2) - 70 }).fadeIn(4000).click(function () {
+		$('html, body').animate({ scrollTop: ($('.yellow_b').offset().top - 20) }, 1000);
+	});
+
 	// clickability for the initial 4
 
 	$(".videospace").click(function () {
 		curvid = parseInt($(this).attr('data-clip'));
-		$(this).animate({ 'z-index': 5, 'width': ($(window).width() - 20) + 'px', 'top': (($(window).height() - ((($(window).width() - 20) / 16) * 9)) / 2), 'left':10, 'height': (($(window).width() - 20) / 16) * 9 + 'px' });
+		var vh = ((($("#container").width() - 40) / 16) * 9);
+		var vtop = (($("#container").height() - vh) / 2);
+		$("#scr_0").css({ 'display': 'block', 'top': (vtop + (vh * .2)) });
+		$("#scr_2").css({ 'display': 'block', 'top': (vtop + (vh * .9))  });
+		var sideheight = (vtop + (vh * .9)) - (vtop + (vh * .2));
+		var starttop = (vtop + (vh * .2));
+		$("#scr_1").css({ 'display': 'block', 'top': starttop + 'px', 'height' : sideheight + 'px' });
+		$("#scr_3").css({ 'display': 'block', 'top': starttop + 'px', 'height' : sideheight + 'px' });
+		
+		$(this).animate({ 'z-index': 5, 'width': ($("#container").width() - 80) + 'px', 'top': vtop, 'left': 40, 'height': (($("#container").width() - 80) / 16) * 9 + 'px' });
 		$(".videospace").hide().unbind('click');
 		$(this).show();
 		var vi = $(this).find('video:first').attr('id');
@@ -125,6 +148,11 @@ $(document).ready(function () {
 				}
 			}
 			
+			$(".main:first").fadeIn();
+			var width = $(".main:first").width();
+			$("#scr_0").css({ 'width': width + 'px' });
+			$("#scr_2").css({ 'width': width + 'px' });
+			
 			$(".hotpoint").fadeIn();
 			clipstarts[0] = clipstart_a;
 			clipstarts[1] = clipstart_b;
@@ -149,7 +177,8 @@ function loadvid (clip,start){
 	document.getElementById('video'+curvid).pause();
 	document.getElementById('video'+curvid).removeEventListener('timeupdate',progressrun);
 	$("#vid_" + curvid).css({ 'z-index': 3,  'display':'none' });
-	$("#vid_" + clip).css({ 'display':'block', 'z-index': 5, 'width': ($(window).width() - 20) + 'px', 'top': (($(window).height() - ((($(window).width() - 20) / 16) * 9)) / 2), 'left':10, 'height': (($(window).width() - 20) / 16) * 9 + 'px' });
+	var topbits = $("#container").height() * .1;
+	$("#vid_" + clip).css({ 'display':'block', 'z-index': 5, 'width': ($("#container").width() - 20) + 'px', 'top': (($("#container").height() - ((($("#container").width() - 20) / 16) * 9)) / 2), 'left':10, 'height': (($("#container").width() - 20) / 16) * 9 + 'px' });
 	curvid = clip;
 	document.getElementById('video'+curvid).currentTime = start;
 	document.getElementById('video'+curvid).play();
