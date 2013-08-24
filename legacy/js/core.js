@@ -34,7 +34,7 @@ $(document).ready(function () {
 
 	$(".videospace").click(function () {
 		curvid = parseInt($(this).attr('data-clip'));
-		actualclip = parseInt($(this).attr('data-clipname'));
+		actualclip = $(this).attr('data-clipname');
 		$('.scrubber').css({'display': 'block'});
 		scrubresize();	
 		var vh = ((($("#container").width() - 40) / 16) * 9);
@@ -181,19 +181,26 @@ $(document).ready(function () {
 
 
 function drawvideo (videoclip) {
-		var coveoptions = { 'controlbar.position': 'over', 'controlbar.idlehide': true };
+		var vh = ((($("#container").width() - 80) / 16) * 9);
+		var vtop = (($("#container").height() - vh) / 2);
+		var w = ($("#container").width() - 80);
+		var h = (($("#container").width() - 80) / 16) * 9;
+		$("#videoplayer").css({ 'z-index': 5, 'width': w + 'px', 'padding-top': vtop, 'padding-left': 40, 'height': h + 'px' });
+
+
+		var coveoptions = { 'controls.visible': false, 'controlbar.visible': false, 'controlbar.hide': true, 'controlbar.position': 'over' };
 		coveoptions.endscreen = false;
-		coveoptions.allowFullScreen = true;
+		coveoptions.allowFullScreen = false;
 		coveoptions.allowscriptaccess = true;
 		coveoptions.autostart = true;
-		coveoptions.height = this.h;
-		coveoptions.embed = true;
+		coveoptions.height = h;
 		coveoptions.player = 'npaplayer';
-		coveoptions.width = this.w;
+		coveoptions.width = w;
+		coveoptions.controls = false;
 		coveoptions.streamer = _rtmpserver;
-		coveoptions.file = this.videoclip;
+		coveoptions.file = videoclip + '.mp4';
 		coveoptions.skin = 'art/bekle.zip';
-		swfobject.embedSWF('art/jwplayer.swf',this.coveinstance,this.w,this.h,"9.0.115", 'art/expressInstall.swf', coveoptions, { 'wmode':'opaque', 'scale':'noscale', 'salign':'tl', 'menu':false, 'allowFullScreen':true, 'allowScriptAccess':'always' }, { id:'legacyplay',name:'legacyplay', bgcolor:'#000000' });
+		swfobject.embedSWF('art/player.swf',"vidin",w,h,"9.0.115", 'art/expressInstall.swf', coveoptions, { 'wmode':'opaque', 'scale':'noscale', 'salign':'tl', 'menu':false, 'allowFullScreen':false, 'allowScriptAccess':'always' }, { id:'legacyplay',name:'legacyplay', bgcolor:'#000000' });
 		
 }
 
@@ -212,8 +219,8 @@ function loadvid (clip,start){
 
 
 function progress_start (vi) {
-	curel = document.getElementById(vi);
-	curel.addEventListener('timeupdate', progressrun);
+//	curel = document.getElementById(vi);
+//	curel.addEventListener('timeupdate', progressrun);
 }
 
 function scrubresize (){
