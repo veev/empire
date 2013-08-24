@@ -2,6 +2,8 @@
 <head>
 <meta http-equiv="Contexnt Type" content="text/html; charset=iso-8899-1" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+<script src="js/jwplayer.js"></script>
 <link href='http://fonts.googleapis.com/css?family=IM+Fell+English:400italic' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
 <script src="js/core.js"></script>
@@ -24,12 +26,35 @@
 <div class="main" style="display: none">
 <div class="scrubber" id="scr_0" style="display: none"><div class="scrubber_inner" data-vertical="0" id="scr_0_play"></div></div>
 <div class="scrubber vertical" id="scr_1" style="display: none"><div class="scrubber_inner" data-vertical="1" id="scr_1_play"></div></div>
-<div class="scrubber" id="scr_2" style="display: none"><div class="scrubber_inner" data-vertical="0" id="scr_2_play"></div></div>
-<div class="scrubber vertical" id="scr_3" style="display: none"><div class="scrubber_inner" data-vertical="1" id="scr_3_play"></div></div>
-<div class="videospace" id="vid_0" data-clip="0"><video id="video0" src="mp4/legacy_1.mp4" width="960" height="540"></video></div>
-<div class="videospace" id="vid_1" data-clip="1"><video id="video1" src="mp4/legacy_2.mp4" width="960" height="540"></video></div>
-<div class="videospace" id="vid_2" data-clip="2"><video id="video2" src="mp4/legacy_3.mp4" width="960" height="540"></video></div>
-<div class="videospace" id="vid_3" data-clip="3"><video id="video3" src="mp4/legacy_4.mp4" width="960" height="540"></video></div>
+<div class="scrubber odd" id="scr_2" style="display: none"><div class="scrubber_inner" data-vertical="0"  data-reverse="1" id="scr_2_play"></div></div>
+<div class="scrubber vertical odd" id="scr_3" style="display: none"><div class="scrubber_inner" data-vertical="1" data-reverse="1" id="scr_3_play"></div></div>
+<div class="videospace" id="vid_0" data-clip="0" data-clipname="indonesia">
+<div class="blurbback"></div><div class="blurb"><h2>Indonesia</h2>
+<p>On Sulawesi, a Dutch-Indonesian young man discovers a secret from his family's past.</p>
+
+<p>On Java, a war reenactment troupe bring a controversial history to life.</p>
+</div></div>
+<div class="videospace" id="vid_1" data-clip="1" data-clipname="india">
+<div class="blurbback"></div><div class="blurb"><h2>India</h2>
+<p>In Tamil Nadu, a factory grinds local granite into headstones for export to the European market.</p>
+
+<p>In Gujarat, the youth of a city stake their claim on a 17th century Dutch graveyard.</p>
+</div></div>
+<div class="videospace" id="vid_2" data-clip="2" data-clipname="southafrica">
+<div class="blurbback"></div><div class="blurb"><h2>South Africa</h2>
+<p>In Orania, a whites-only community keeps apartheid alive.</p>
+
+<p>In Cape Town, descendants of slaves sings love songs in a forgotten Dutch dialect.</p>
+</div></div>
+
+<div class="videospace" id="vid_3" data-clip="3" data-clipname="srilanka">
+<div class="blurbback"></div><div class="blurb"><h2>Sri Lanka</h2>
+<p>In Badalgama, a retired businessman builds a replica Dutch village in the rainforest.</p>
+
+<p>In Colombo, female descendants of Dutch colonialists sit out their final days in isolation. </p>
+</div></div>
+
+<div class="videoplayer" id="videoplayer"></div>
 </div>
 <div class="more" id="legmore" style="display: none"></div>
 
