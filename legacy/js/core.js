@@ -91,6 +91,14 @@ $(document).ready(function () {
 			var clipend_b = new Object();
 			var clipend_c = new Object();
 			var clipend_d = new Object();
+
+			var scwidth = $("#container").width() - 40;
+			var vh = ((($("#container").width() - 40) / 16) * 9);
+			var vtop = (($("#container").height() - vh) / 2);
+			var width = $(".main:first").width();
+			var scheight = Math.floor((vtop + (vh * .9)) - (vtop + (vh * .2)));
+
+
 			for(var x = 0; x < clipdata.length; x++){
 				var cl = Math.floor(cliplengths[parseInt(clipdata[x].clip)]);
 				if(clipdata[x].clip == "0"){
@@ -122,13 +130,18 @@ $(document).ready(function () {
 					var odd = false;
 					var scr = ($("#scr_" + clipdata[x].clip));
 					
+					
+
 					// only do things within the clips we have
 					
-					var pxmultiplier = Math.floor((scr.width() - 10) / cl);
+					var pxmultiplier = (scwidth - 10) / cl;
+										
 					if(scr.hasClass("vertical")){
 						vert = true;
-						pxmultiplier = Math.floor(scr.height() / cl);
+						pxmultiplier = scheight / cl;
 					}
+					
+					
 					if(scr.hasClass("odd")){
 						odd = true;
 					}
@@ -137,17 +150,15 @@ $(document).ready(function () {
 
 					if(vert){
 						if(odd){
-							le = 1 - le;
-							clipstr += 'height: ' + Math.floor(pxmultiplier * le) + 'px; margin-bottom: ' + Math.ceil(pxmultiplier * timetosecs(clipdata[x].start)) + ' px';
+							clipstr += 'height: ' + pxmultiplier * le + 'px; margin-bottom: ' + Math.ceil(pxmultiplier * timetosecs(clipdata[x].start)) + ' px';
 						} else {
-							clipstr += 'height: ' + Math.floor(pxmultiplier * le) + 'px; margin-top: ' + Math.ceil(pxmultiplier * timetosecs(clipdata[x].start)) + ' px';						
+							clipstr += 'height: ' + pxmultiplier * le + 'px; margin-top: ' + Math.ceil(pxmultiplier * timetosecs(clipdata[x].start)) + ' px';						
 						}
 					} else {
 						if(odd){
-							le = 1 - le;
-							clipstr += 'width: ' + Math.floor(pxmultiplier * le) + 'px; margin-left: ' + (Math.ceil(pxmultiplier * timetosecs(clipdata[x].end)) - Math.ceil(pxmultiplier * timetosecs(clipdata[x].start))) + ' px';
+							clipstr += 'width: ' + pxmultiplier * le + 'px; margin-right: ' + (Math.ceil(pxmultiplier * timetosecs(clipdata[x].end)) - Math.ceil(pxmultiplier * timetosecs(clipdata[x].start))) + ' px';
 						} else {
-							clipstr += 'width: ' + Math.floor(pxmultiplier * le) + 'px; margin-left: ' + Math.ceil(pxmultiplier * timetosecs(clipdata[x].start)) + ' px';
+							clipstr += 'width: ' + pxmultiplier * le + 'px; margin-left: ' + Math.ceil(pxmultiplier * timetosecs(clipdata[x].start)) + ' px';
 						}
 					}
 					clipstr += '"></div>';
@@ -232,10 +243,10 @@ function scrubresize (){
 	var vh = ((($("#container").width() - 40) / 16) * 9);
 	var vtop = (($("#container").height() - vh) / 2);
 	var width = $(".main:first").width();
-	$("#scr_0").css({ 'width': width + 'px', 'top': (vtop + (vh * .15)) });
-	$("#scr_2").css({ 'width': width + 'px', 'top': (vtop + (vh * .86))  });
 	var sideheight = (vtop + (vh * .9)) - (vtop + (vh * .2));
 	var starttop = (vtop + (vh * .16));
+	$("#scr_0").css({ 'width': width + 'px', 'top': (vtop + (vh * .15)) });
+	$("#scr_2").css({ 'width': width + 'px', 'top': (vtop + (vh * .86))  });
 	$("#scr_1").css({ 'top': starttop + 'px', 'height' : sideheight + 'px' });
 	$("#scr_3").css({ 'top': starttop + 'px', 'height' : sideheight + 'px' });
 	$("#legplay").css({ "margin-left": ($(window).width() / 2) - 70 });
