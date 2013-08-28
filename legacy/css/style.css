@@ -28,6 +28,8 @@ div.mystical p#e { top: 160px; left: 305px; width: 200px; text-align: center; }
 div.mystical p#f { top: 425px; width: 520px; left: 150px; text-align: center; }
 div.yellow div.play { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(../art/leg_play.png); }
 div#container div.more { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(../art/leg_more.png); }
+div#container div#containerinner { height: 100%; position: relative; }
+div#container div#containerinner div#blurredlines { position: absolute; z-index: 10; width: 100%; height: 100%; pointer-events: none; }
 div#container div.videospace { text-align: center; position: absolute; }
 div#container div.videospace div.blurb { display: none; }
 div#container div.videospace div.blurbback { display: none; }
@@ -39,14 +41,20 @@ div#container div#vid_0 { z-index: 1; width: 48%; height: 42%; left: 10px; backg
 div#container div#vid_1 { z-index: 2; width: 48%; height: 42%; right: 10px;  background: url(../art/india.jpg) no-repeat center center; }
 div#container div#vid_2 { z-index: 3; width: 48%; height: 42%; top: 44%; right: 10px; background: url(../art/southafrica.jpg) no-repeat center center; }
 div#container div#vid_3 { z-index: 4; width: 48%; height: 42%; top: 44%; left: 10px; background: url(../art/srilanka.jpg) no-repeat center center;}
-div#container div.scrubber { z-index: 8; height: 10px; background: url(../art/leg_unplay.png); display: block; position: absolute; }
-div#container div.scrubber div.hotpoint { position: absolute; z-index: 2; width: 0%; height: 100%; background: url(../art/leg_highlight.png); }
+div#container div.scrubber { z-index: 8; height: 7px; display: block; position: absolute; margin: 7px; }
+div#container div.scrubber div.hotpoint { position: absolute; z-index: 4; width: 0%; height: 100%; }
 div#container div.vertical div.hotpoint { width: 100%; height: 0%; }
-div#container div.scrubber div.hotpoint_on { background: url(../art/leg_highlight.png); cursor: pointer; }
+div#container div.scrubber div.hotpoint_on { position: absolute; z-index: 4; cursor: pointer; }
+div#container div.scrubber div.hotpoint_on { background: url(../art/leg_highlight.png) center center repeat-x; }
+div#container div.vertical div.hotpoint_on { background: url(../art/leg_highlight.png) center center repeat-y; }
 div#container div.scrubber div.hotpoint_on:hover { background-color: #f00; }
-div#container div.scrubber div.scrubber_inner {  z-index: 3; position: absolute; width: 0%; height: 0%; background: url(../art/leg_progress.png);  }
-div#container div#scr_0 { left: 20px; height: 5px; }
-div#container div#scr_1 { width: 5px; right: 18; }
-div#container div#scr_3 { width: 5px; left: 20; }
-div#container div#scr_2 { left: 20; height: 5px; text-align: right;}
+div#container div.scrubber div.scrubber_inner { position: absolute; width: 0%; height: 0%;   }
+div#container div#scr_0 div.scrubber_inner { z-index: 3; background: url(../art/leg_progress.png) center center repeat-x;  }
+div#container div#scr_1 div.scrubber_inner { z-index: 2; background: url(../art/leg_progress.png) center center repeat-y;  }
+div#container div#scr_2 div.scrubber_inner { z-index: 3; background: url(../art/leg_progress.png) center center repeat-x;  }
+div#container div#scr_3 div.scrubber_inner { z-index: 2; background: url(../art/leg_progress.png) center center repeat-y;  }
+div#container div#scr_0 { left: 20px; height: 21px; background: url(../art/leg_unplay.png) center center repeat-x; }
+div#container div#scr_1 { width: 21px; background: url(../art/leg_unplay.png) center center repeat-y; }
+div#container div#scr_3 { width: 21px; left: 7; background: url(../art/leg_unplay.png) center center repeat-y;  }
+div#container div#scr_2 { left: 20; height: 21px; text-align: right; background: url(../art/leg_unplay.png) center center repeat-x; }
 div#container div.videospace video.squares { width: 24%; height: 24%; }

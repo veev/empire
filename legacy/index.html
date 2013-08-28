@@ -4,6 +4,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
 <script src="js/jwplayer.js"></script>
+<script src="js/raphael.js"></script>
 <link href='http://fonts.googleapis.com/css?family=IM+Fell+English:400italic' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
 <script src="js/core.js"></script>
@@ -22,8 +23,7 @@
 <div class="play" id="legplay" style="display: none"></div>
 </div>
 <div id="container">
-
-<div class="main" style="display: none">
+<div class="main" id="containerinner" style="display: none"><div id="blurredlines"></div>
 <div class="scrubber" id="scr_0" style="display: none"><div class="scrubber_inner" data-vertical="0" id="scr_0_play"></div></div>
 <div class="scrubber vertical" id="scr_1" style="display: none"><div class="scrubber_inner" data-vertical="1" id="scr_1_play"></div></div>
 <div class="scrubber odd" id="scr_2" style="display: none"><div class="scrubber_inner" data-vertical="0"  data-reverse="1" id="scr_2_play"></div></div>
