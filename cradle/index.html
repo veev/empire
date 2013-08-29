@@ -22,10 +22,18 @@
 				<div id="cardover"></div>
 				<div id="card">
 					<div class="front">
-						<video id="video1" src="mp4/schipol.mp4" autoplay="off" width="960" height="540"></video>
+						<video id="video1" autoplay="off" width="960" height="540">
+							 <source src="mp4/schipol.m4v">
+							 <source src="mp4/schipol.webm" type="video/webm">
+							 <source src="mp4/schipol.mp4" type="video/mp4">
+						</video>
 					</div>
 					<div class="back">
-						<video id="video2" src="mp4/spotters.mp4" autoplay="off" width="960" height="540"></video>
+						<video id="video2" autoplay="off" width="960" height="540">
+							 <source src="mp4/spotters.m4v">
+							 <source src="mp4/spotters.webm" type="video/webm">
+							 <source src="mp4/spotters.mp4" type="video/mp4">
+						</video>
 					</div>
 				</div>
 			</div>
@@ -198,7 +206,7 @@
 		
 		function playVids(){
 			document.getElementById("video1").play();
-			document.getElementById("video2").play();
+   //			document.getElementById("video2").play();
 		}
 		
 		function pauseVids(){

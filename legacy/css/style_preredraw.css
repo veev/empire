@@ -1,0 +1,62 @@
+*, html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, label, fieldset, input, p, th, td { margin:0; padding:0; font-style: italic; font-family: "IM Fell English","Helvetica Neue", sans-serif; }
+table { border-collapse:collapse; border-spacing:0 }
+iframe { border: 0; margin: 0; padding: 0; }
+fieldset, img { border:0 }
+address, caption, cite, code, dfn, em, strong, th, var { font-style:normal; font-weight:normal }
+ol, ul, li { list-style:none }
+caption, th { text-align:left }
+h1, h2, h3, h4, h5, h6 { font-size:100%; font-weight:normal }
+q:before, q:after { content:''}
+
+body {
+	background: #000;
+	color: #fff;
+}
+
+div#container { height: 98%; text-align: center; position: relative; padding: 20px; }
+div.yellow { text-align: center; background: #fbb03b url(../art/leg_bg.jpg) no-repeat; width: 100%; height: 98%; position: relative }
+div.yellow_b { text-align: center; background: #fbb03b url(../art/leg_bg2.jpg) bottom left no-repeat; width: 100%; padding: 30px 0 30px 0; position: relative }
+h1 { padding-top: 84px; }
+div.yellow_b p { text-align: left; width: 700px; margin: 1em auto; color: #000 }
+div.mystical { text-align: left; background: url(../art/leg_overlay.png) no-repeat 220px 8px; position: relative; margin: auto; width: 790px; height: 500px; overflow: auto; }
+div.mystical p { position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
+div.mystical p#a { top: 0px; left: 305px; z-index: 1; }
+div.mystical p#b { top: 170px; left: 575px; width: 200px; z-index: 2; }
+div.mystical p#c { top: 355px; left: 240px; }
+div.mystical p#d { top: 170px; left: 55px; z-index: 3; }
+div.mystical p#e { top: 160px; left: 305px; width: 200px; text-align: center; }
+div.mystical p#f { top: 425px; width: 520px; left: 150px; text-align: center; }
+div.yellow div.play { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(../art/leg_play.png); }
+div#container div.more { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(../art/leg_more.png); }
+div#container div#containerinner { height: 100%; position: relative; }
+div#container div#containerinner div.videoplayer { z-index: 24 }
+div#container div#containerinner div#blurredlines { position: absolute; z-index: -1; width: 100%; height: 100%; pointer-events: none; }
+div#container div#containerinner div#blurredlines_all { position: absolute; z-index: 11; width: 100%; height: 100%; pointer-events: none; }
+div#container div.videospace { text-align: center; position: absolute; }
+div#container div.videospace div.blurb { display: none; }
+div#container div.videospace div.blurbback { display: none; }
+div#container div.videospace:hover div.blurbback { cursor: pointer; width: 100%; height: 100%; opacity: .8; background-color: #faaf3b; display: block; position: absolute; z-index: 1; }
+div#container div.videospace:hover div.blurb { cursor: pointer; width: 80%; height: 40%; padding: 20% 10% 20% 10%; color: #fff; text-align: center; position: absolute; display: block; z-index: 2; }
+div#container div.videospace:hover div.blurb h2 { font-size: 3em; }
+div#container div.videospace:hover div.blurb p { margin-top: 1em; }
+div#container div#vid_0 { z-index: 1; width: 48%; height: 42%; left: 10px; background: url(../art/indonesia.jpg) no-repeat center center; }
+div#container div#vid_1 { z-index: 2; width: 48%; height: 42%; right: 10px;  background: url(../art/india.jpg) no-repeat center center; }
+div#container div#vid_2 { z-index: 3; width: 48%; height: 42%; top: 44%; right: 10px; background: url(../art/southafrica.jpg) no-repeat center center; }
+div#container div#vid_3 { z-index: 4; width: 48%; height: 42%; top: 44%; left: 10px; background: url(../art/srilanka.jpg) no-repeat center center;}
+div#container div.scrubber { z-index: 8; height: 7px; display: block; position: absolute; margin: 7px; }
+div#container div.scrubber div.hotpoint { position: absolute; z-index: 6; width: 0%; height: 100%; }
+div#container div.vertical div.hotpoint { width: 100%; height: 0%; }
+div#container div.scrubber div.hotpoint_on { position: absolute; z-index: 6; cursor: pointer; }
+div#container div.scrubber div.hotpoint_on { background: url(../art/leg_highlight.png) center center repeat-x; }
+div#container div.vertical div.hotpoint_on { background: url(../art/leg_highlight.png) center center repeat-y; }
+div#container div.scrubber div.hotpoint_on:hover { background-color: #f00; }
+div#container div.scrubber div.scrubber_inner { position: absolute; width: 0%; height: 0%;   }
+div#container div#scr_0 div.scrubber_inner { z-index: 4; background: url(../art/leg_progress.png) center center repeat-x;  }
+div#container div#scr_1 div.scrubber_inner { z-index: 2; background: url(../art/leg_progress.png) center center repeat-y;  }
+div#container div#scr_2 div.scrubber_inner { z-index: 3; background: url(../art/leg_progress.png) center center repeat-x;  }
+div#container div#scr_3 div.scrubber_inner { z-index: 2; background: url(../art/leg_progress.png) center center repeat-y;  }
+div#container div#scr_0 { left: 20px; height: 21px; background: url(../art/leg_unplay.png) center center repeat-x; }
+div#container div#scr_1 { width: 21px; background: url(../art/leg_unplay.png) center center repeat-y; }
+div#container div#scr_3 { width: 21px; left: 7; background: url(../art/leg_unplay.png) center center repeat-y;  }
+div#container div#scr_2 { left: 20; height: 21px; text-align: right; background: url(../art/leg_unplay.png) center center repeat-x; }
+div#container div.videospace video.squares { width: 24%; height: 24%; }
