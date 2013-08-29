@@ -5,6 +5,7 @@ var clipstarts = new Object();
 var clipends = new Object();
 var cliplinks = new Object();
 var cliplengths = new Object();
+var clipstartoffset = new Object();
 var connsloaded = false;
 var loadivl = new Number();
 var _rtmpserver = 'rtmp://s17pilyt3yyjgf.cloudfront.net/cfx/st';
@@ -12,7 +13,12 @@ var _increment = 5;
 var _defaultlength = 21;
 var _scrubwidth = 0;
 var _scrubheight = 0;
-
+var _highlight_curvid = 0;
+var _highlight_curpt = 0;
+var paper;
+var _cliprect = new String();
+var preventdoublejumpIvl = new Number();
+var preventdoublejump = false;
 
 $(window).resize(function () {
 	scrubresize();
@@ -82,12 +88,22 @@ $(document).ready(function () {
 			clipdata = data;
 		}});
 
+	// create a raphael object on the div I made for lines
 
+	paper = Raphael(document.getElementById("blurredlines"), $("#blurredlines").width(), $("#blurredlines").height());
+	paper_all = Raphael(document.getElementById("blurredlines_all"), $("#blurredlines").width(), $("#blurredlines").height());
+	
+
+	// hide the full version of the drawn lines
+	
+	$("#blurredlines_all").hide();
+	
 	// once stuff has arrived render the spaces
 	
 	loadivl = setInterval(function () {
 		if(connsloaded){
 			clearInterval(loadivl);
+			
 			// now that we have our data we can do our thing
 			var clipstart_a = new Object();
 			var clipstart_b = new Object();
@@ -101,8 +117,8 @@ $(document).ready(function () {
 			var scwidth = $("#container").width() - 40;
 			var vh = ((($("#container").width() - 40) / 16) * 9);
 			var vtop = (($("#container").height() - vh) / 2);
-			var width = $("#containerinner").width();
-			var scheight = Math.floor((vtop + (vh * .9)) - (vtop + (vh * .2)));
+			var width = round_up(($("#containerinner").width() - 60),7);
+			var scheight = round_up((vtop + (vh * .50)),7);
 
 
 			for(var x = 0; x < clipdata.length; x++){
@@ -136,10 +152,6 @@ $(document).ready(function () {
 					var odd = false;
 					var scr = ($("#scr_" + clipdata[x].clip));
 					
-					
-
-					// only do things within the clips we have
-					
 					var pxmultiplier = (scwidth - 10) / cl;
 										
 					if(scr.hasClass("vertical")){
@@ -147,6 +159,8 @@ $(document).ready(function () {
 						pxmultiplier = scheight / cl;
 					}
 					
+					
+					// draw the points
 					
 					if(scr.hasClass("odd")){
 						odd = true;
@@ -156,7 +170,7 @@ $(document).ready(function () {
 
 					if(vert){
 						if(odd){
-							clipstr += 'height: ' + _defaultlength + 'px; margin-top: ' + round_up((scheight - Math.ceil(pxmultiplier * timetosecs(clipdata[x].start))),7) + ' px';
+							clipstr += 'height: ' + _defaultlength + 'px; margin-top: ' + (round_up((scheight - Math.ceil(pxmultiplier * timetosecs(clipdata[x].start))),7) - _defaultlength) + ' px';
 						} else {
 							clipstr += 'height: ' + _defaultlength + 'px; margin-top: ' + round_up(Math.ceil(pxmultiplier * timetosecs(clipdata[x].start)),7) + ' px';						
 						}
@@ -175,6 +189,7 @@ $(document).ready(function () {
 			
 
 			$(".hotpoint").fadeIn();
+			
 			clipstarts[0] = clipstart_a;
 			clipstarts[1] = clipstart_b;
 			clipstarts[2] = clipstart_c;
@@ -183,12 +198,34 @@ $(document).ready(function () {
 			clipends[1] = clipend_b;
 			clipends[2] = clipend_c;
 			clipends[3] = clipend_d;
+			
+			
 			$(".hotpoint").click(function () {
+			
+				// the core clicking bits
+			
 				if($(this).hasClass('hotpoint_on')){
-					console.log($(this).offset());
-					dumphistory(curvid, $(this).attr('data-start'));
+				
+				
+					$("#scr_" + _highlight_curvid).find('.hotpoint').show();
+				
+					linedo($("#pt" + _highlight_curvid + "_" + _highlight_curpt).offset(), $(this).offset(), _highlight_curvid, _highlight_curpt);
+
+					dumphistory(_highlight_curvid, _highlight_curpt);
+
 					loadvid($(this).attr('data-clip'),$(this).attr('data-start'));
-					$(".hotpoint_on").removeClass('hotpoint_on');
+					clipstartoffset[curvid] = parseInt($(this).attr('data-start'));
+
+					// remove hotpoints
+					$(".hotpoint_on").removeClass('hotpoint_on').hide();
+
+					// disable new hotpoints for ten seconds
+					preventdoublejump = true;
+					
+					preventdoublejumpIvl = setTimeout(function () {
+						preventdoublejump = false;
+					},(_increment * 2000));
+
 				}
 			});
 		}
@@ -197,29 +234,84 @@ $(document).ready(function () {
 });
 
 
+function linedo (frompt, topt, thisvid, thispt){
+
+	// draw lines between the start and end
+	
+	var offsetter = $("#blurredlines").offset().top - 11;
+	
+	var froms = frompt.top;
+	
+	if(thisvid == 3){
+		froms -= 50;
+	}
+	
+	var sideoffset = 11;
+	
+	var drawstring = "M" + (frompt.left - sideoffset) + ',' + (froms - offsetter) + ' L' + (topt.left - 11) + ',' + (topt.top - offsetter);
+
+	console.log(drawstring);
+
+	var newpath = paper.path( drawstring );
+	newpath.attr({ 'stroke' : '#fbb03b', 'stroke-width' : 3, 'stroke-dasharray': '. ', 'stroke-linecap': 'round' });
+
+	var newpath_all = paper_all.path( drawstring );
+	newpath_all.attr({ 'stroke' : '#fbb03b', 'stroke-width' : 3, 'stroke-dasharray': '. ', 'stroke-linecap': 'round' });
+
+	
+}
+
 function dumphistory(vidtarget,startpoint){
-		
+	// routine that kills off the rest of the scrubber line when the user clicks something
+	
+	// first remove hotpoints that are later than this point
+	$("#scr_"+vidtarget).find(".hotpoint").each(function () { if(parseInt($(this).attr('data-start')) > startpoint){ $(this).remove() }});
+	
+	
+	// rescale the scrubbers
+	
+	console.log('here ' + vidtarget);
+	
+	switch(vidtarget){
+		case 0:
+			$("#scr_0").css({ 'width': $("#scr_0_play").width() + 11 });
+			$("#scr_0_play").css({ 'width': $("#scr_0").width() });
+			break;
+		case 1:
+			$("#scr_1").css({ 'height': $("#scr_1_play").height() });
+			break;
+		case 2:
+			$("#scr_2").css({ 'width': $("#scr_2_play").width(), 'margin-left': $("#scr_2_play").css("margin-left") });
+			$("#scr_2_play").css({ "margin-left": 0 });
+			break;
+		case 3:
+			$("#scr_3").css({ 'height': $("#scr_3_play").height(), 'margin-top': $("#scr_3_play").css("margin-top") });
+			$("#scr_3_play").css({ "margin-top": 0 });
+			break;
+	}		
 }
 
 
 function drawvideo (videoclip) {
+
+	// initial video draw, triggered by users clicking on one of the large images
+
 	var vh = ((($("#container").width() - 80) / 16) * 9);
 	var vtop = (($("#container").height() - vh) / 2) - 50;
 	var w = ($("#container").width() - 80);
 	var h = (($("#container").width() - 80) / 16) * 9;
 	$("#videoplayer").css({ 'z-index': 5, 'width': w + 'px', 'padding-top': vtop, 'padding-left': 40, 'height': h + 'px' });
-	var coveoptions = {  };
-	coveoptions.endscreen = false;
-	coveoptions.allowFullScreen = false;
-	coveoptions.allowscriptaccess = true;
-	coveoptions.autostart = true;
-	coveoptions.height = h;
-	coveoptions.width = w;
-	coveoptions.controlbar = 'none';
-	coveoptions.streamer = _rtmpserver;
-	coveoptions.file = videoclip + '.mp4';
-	coveoptions.skin = 'art/bekle.zip';
-	swfobject.embedSWF('art/player.swf',"vidin",w,h,"9.0.115", 'art/expressInstall.swf', coveoptions, { 'wmode':'opaque', 'scale':'noscale', 'salign':'tl', 'menu':false, 'allowFullScreen':false, 'allowScriptAccess':'always' }, { id:'vidin',name:'vidin', bgcolor:'#000000' });
+	var playeroptions = {  };
+	playeroptions.allowFullScreen = false;
+	playeroptions.allowscriptaccess = true;
+	playeroptions.autostart = true;
+	playeroptions.height = h;
+	playeroptions.width = w;
+	playeroptions.controlbar = 'none';
+	playeroptions.streamer = _rtmpserver;
+	playeroptions.file = videoclip + '.mp4';
+	playeroptions.skin = 'art/bekle.zip';
+	swfobject.embedSWF('art/player.swf',"vidin",w,h,"9.0.115", 'art/expressInstall.swf', playeroptions, { 'wmode':'opaque', 'scale':'noscale', 'salign':'tl', 'menu':false, 'allowFullScreen':false, 'allowScriptAccess':'always' }, { id:'vidin',name:'vidin', bgcolor:'#000000' });
 	subthis = this;
 	jwplayer("vidin").onTime(function (timobj) {
 		subthis.progressrun(timobj.position);
@@ -227,22 +319,33 @@ function drawvideo (videoclip) {
 	jwplayer("vidin").onComplete(function () {
 		subthis._ended();
 	});	
+
+
+	_cliprect = '40 ' + (vtop + (h * .22)) + ' ' + w + ' ' + (h * .5);
+	
+
+}
+
+function _ended () {
+	$("#vidin").hide();
+	$("#blurredlines").hide()
+	$("#blurredlines_all").fadeIn();
 }
 
 function loadvid (clip,starttime) {
+
+	// set the video player to move to another moment
+
 	curvid = clip;
 	videoclipname = $("#vid_" + clip).attr('data-clipname');
 	jwplayer('vidin').load({ 'streamer': _rtmpserver, 'file': videoclipname + '.mp4', 'start': starttime, 'autostart': true });
 }
 
 
-
-function progress_start (vi) {
-//	curel = document.getElementById(vi);
-//	curel.addEventListener('timeupdate', progressrun);
-}
-
 function scrubresize (){
+
+	// move the scrubbers around
+	
 	var vh = ((($("#container").width() - 40) / 16) * 9);
 	var vtop = Math.floor((($("#containerinner").height() - vh) / 2) - 50);
 	var width = round_up(($("#containerinner").width() - 60),7);
@@ -257,11 +360,18 @@ function scrubresize (){
 	$("#legplay").css({ "margin-left": ($(window).width() / 2) - 70 });
 	$("#legmore").css({ "margin-left": ($(window).width() / 2) - 70 });
 
+	// draw a mask because enough already with this
+	
+	var boxa = paper.rect(21,Math.floor(vtop + (vh * .15)) - 20,width + 21,35);
+	boxa.attr({ 'fill': '#000000', 'stroke':0 });
+
 }
 
 
 function progressrun (inf) {
-// update the scrubber
+
+	// update the scrubbers during playback, also deal with the highlighting
+	
 	var prg = (inf / cliplengths[curvid]) * 100;
 	if($("#scr_" + curvid + "_play").attr('data-vertical') == 1){
 		var h = round_up((prg * (_scrubheight / 100)),7);
@@ -279,15 +389,35 @@ function progressrun (inf) {
 		}
 	}
 	var thistime = Math.floor(inf);
-	if(clipstarts[curvid][thistime]){
-		$(".pt_" + clipstarts[curvid][thistime]).addClass('hotpoint_on');
+	
+	// now look for times to light up other options
+	
+	if(clipstarts[curvid][thistime] && !preventdoublejump){
+	
+		// we have a point! light stuff up
+	
+		_highlight_curvid = curvid;
+		_highlight_curpt = thistime;
+		
+		// traverse the 4 to only light up points on the other clips, not the current one
+		for(var x = 0; x < 4; x++){
+			if(x != curvid){
+		 		$("#scr_" + x).find(".pt_" + clipstarts[curvid][thistime]).addClass('hotpoint_on').show();
+			}
+		}
 	}
 	if(clipends[curvid][thistime]){
-		$(".hotpoint_on").removeClass('hotpoint_on');
+	
+		// the hot time is over
+	
+		$(".hotpoint_on").removeClass('hotpoint_on').hide();
 	}
 }
 
 function timetosecs (instring) {
+	
+	// helper routine to let them do MM:SS in the data and make it work for me in seconds
+
 	var secs = new Number();
 	var bits = instring.split(':');
 	secs = parseInt(bits[0]) * 60;
@@ -295,4 +425,9 @@ function timetosecs (instring) {
 	return secs;
 }
 
-round_up = function(x,factor){ return x - (x%factor) + (x%factor>0 && factor);}
+function round_up (x,factor){ 
+	
+	// helper routine to round numbers to the nearest 7 - because of the offsets in the scrubbers
+	
+	return x - (x%factor) + (x%factor>0 && factor);
+}
