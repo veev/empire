@@ -17,6 +17,8 @@ var _highlight_curvid = 0;
 var _highlight_curpt = 0;
 var paper;
 var _cliprect = new String();
+var _clipstate = new Object();
+var _videoon = false;
 var preventdoublejumpIvl = new Number();
 var preventdoublejump = false;
 
@@ -47,9 +49,9 @@ $(document).ready(function () {
 		actualclip = $(this).attr('data-clipname');
 		$('.scrubber').css({'display': 'block'});
 		scrubresize();	
-		var vh = ((($("#container").width() - 40) / 16) * 9);
-		var vtop = (($("#container").height() - vh) / 2);
-		$(this).animate({ 'z-index': 5, 'width': ($("#container").width() - 80) + 'px', 'top': vtop, 'left': 40, 'height': (($("#container").width() - 80) / 16) * 9 + 'px' }).fadeOut(4000);
+		var vh = ($("#container").width() - 80) * .31;
+		var vtop = (($("#container").height() - vh) / 2) - 50;
+		$(this).animate({ 'z-index': 5, 'width': ($("#container").width() - 80) + 'px', 'top': vtop, 'left': 40, 'height': 330 }).fadeOut(4000);
 		$(".videospace").hide().unbind('click');
 		$(this).show();
 		$(".blurb").remove();
@@ -114,12 +116,12 @@ $(document).ready(function () {
 			var clipend_c = new Object();
 			var clipend_d = new Object();
 
-			var scwidth = $("#container").width() - 40;
-			var vh = ((($("#container").width() - 40) / 16) * 9);
-			var vtop = (($("#container").height() - vh) / 2);
-			var width = round_up(($("#containerinner").width() - 60),7);
-			var scheight = round_up((vtop + (vh * .50)),7);
+			var h = ($("#container").width() - 120) * .31
+			var scwidth = round_up(($("#containerinner").width() - 60),7);
+			var scheight = round_up((h + 120),7);
 
+
+			// handle the data - plot all the points
 
 			for(var x = 0; x < clipdata.length; x++){
 				var cl = Math.floor(cliplengths[parseInt(clipdata[x].clip)]);
@@ -170,15 +172,15 @@ $(document).ready(function () {
 
 					if(vert){
 						if(odd){
-							clipstr += 'height: ' + _defaultlength + 'px; margin-top: ' + (round_up((scheight - Math.ceil(pxmultiplier * timetosecs(clipdata[x].start))),7) - _defaultlength) + ' px';
+							clipstr += 'height: ' + _defaultlength + 'px; margin-top: ' + (round_up((scheight - Math.ceil(pxmultiplier * timetosecs(clipdata[x].start))),7) - _defaultlength) + 'px';
 						} else {
-							clipstr += 'height: ' + _defaultlength + 'px; margin-top: ' + round_up(Math.ceil(pxmultiplier * timetosecs(clipdata[x].start)),7) + ' px';						
+							clipstr += 'height: ' + _defaultlength + 'px; margin-top: ' + round_up(Math.ceil(pxmultiplier * timetosecs(clipdata[x].start)),7) + 'px';						
 						}
 					} else {
 						if(odd){
-							clipstr += 'width: ' + _defaultlength + 'px; margin-left: ' + round_up((scwidth - (Math.ceil(pxmultiplier * timetosecs(clipdata[x].end)))),7) + ' px';
+							clipstr += 'width: ' + _defaultlength + 'px; margin-left: ' + round_up((scwidth - (Math.ceil(pxmultiplier * timetosecs(clipdata[x].end)))),7) + 'px';
 						} else {
-							clipstr += 'width: ' + _defaultlength + 'px; margin-left: ' + round_up(Math.ceil(pxmultiplier * timetosecs(clipdata[x].start)),7) + ' px';
+							clipstr += 'width: ' + _defaultlength + 'px; margin-left: ' + round_up(Math.ceil(pxmultiplier * timetosecs(clipdata[x].start)),7) + 'px';
 						}
 					}
 					clipstr += '"></div>';
@@ -186,9 +188,8 @@ $(document).ready(function () {
 					
 				}
 			}
-			
 
-			$(".hotpoint").fadeIn();
+//			$(".hotpoint").fadeIn();
 			
 			clipstarts[0] = clipstart_a;
 			clipstarts[1] = clipstart_b;
@@ -199,6 +200,8 @@ $(document).ready(function () {
 			clipends[2] = clipend_c;
 			clipends[3] = clipend_d;
 			
+			render_lines(0);
+
 			
 			$(".hotpoint").click(function () {
 			
@@ -230,9 +233,26 @@ $(document).ready(function () {
 			});
 		}
 	},500);
+	
+	// let's capture the spacebar since someone's worried about that
+	
+	$(document).keydown(function (e) {
+    var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+    if (key == 32)
+       e.preventDefault();
+    	if(_videoon){
+    		jwplayer("vidin").pause();
+    	}
+ 	});
 
 });
 
+
+function render_lines (mode){
+	for(var y = 0; y < clipdata.length; y++){
+		console.log(clipdata[y]);
+	}
+}
 
 function linedo (frompt, topt, thisvid, thispt){
 
@@ -242,21 +262,15 @@ function linedo (frompt, topt, thisvid, thispt){
 	
 	var froms = frompt.top;
 	
-	if(thisvid == 3){
-		froms -= 50;
-	}
-	
 	var sideoffset = 11;
 	
 	var drawstring = "M" + (frompt.left - sideoffset) + ',' + (froms - offsetter) + ' L' + (topt.left - 11) + ',' + (topt.top - offsetter);
 
-	console.log(drawstring);
-
 	var newpath = paper.path( drawstring );
-	newpath.attr({ 'stroke' : '#fbb03b', 'stroke-width' : 3, 'stroke-dasharray': '. ', 'stroke-linecap': 'round' });
+	newpath.attr({ 'stroke' : '#fbb03b', 'stroke-width' : 1 });
 
 	var newpath_all = paper_all.path( drawstring );
-	newpath_all.attr({ 'stroke' : '#fbb03b', 'stroke-width' : 3, 'stroke-dasharray': '. ', 'stroke-linecap': 'round' });
+	newpath_all.attr({ 'stroke' : '#fbb03b' });
 
 	
 }
@@ -269,8 +283,6 @@ function dumphistory(vidtarget,startpoint){
 	
 	
 	// rescale the scrubbers
-	
-	console.log('here ' + vidtarget);
 	
 	switch(vidtarget){
 		case 0:
@@ -296,11 +308,11 @@ function drawvideo (videoclip) {
 
 	// initial video draw, triggered by users clicking on one of the large images
 
-	var vh = ((($("#container").width() - 80) / 16) * 9);
+	var vh = ($("#container").width() - 120) * .31;
 	var vtop = (($("#container").height() - vh) / 2) - 50;
-	var w = ($("#container").width() - 80);
-	var h = (($("#container").width() - 80) / 16) * 9;
-	$("#videoplayer").css({ 'z-index': 5, 'width': w + 'px', 'padding-top': vtop, 'padding-left': 40, 'height': h + 'px' });
+	var w = ($("#container").width() - 120);
+	var h = ($("#container").width() - 120) * .31
+	$("#videoplayer").css({ 'width': w + 'px', 'padding-top': vtop, 'padding-left': 60, 'height': h + 'px' });
 	var playeroptions = {  };
 	playeroptions.allowFullScreen = false;
 	playeroptions.allowscriptaccess = true;
@@ -309,9 +321,9 @@ function drawvideo (videoclip) {
 	playeroptions.width = w;
 	playeroptions.controlbar = 'none';
 	playeroptions.streamer = _rtmpserver;
-	playeroptions.file = videoclip + '.mp4';
+	playeroptions.file = 'legacy/' + videoclip + '_crop.mp4';
 	playeroptions.skin = 'art/bekle.zip';
-	swfobject.embedSWF('art/player.swf',"vidin",w,h,"9.0.115", 'art/expressInstall.swf', playeroptions, { 'wmode':'opaque', 'scale':'noscale', 'salign':'tl', 'menu':false, 'allowFullScreen':false, 'allowScriptAccess':'always' }, { id:'vidin',name:'vidin', bgcolor:'#000000' });
+	swfobject.embedSWF('art/player.swf',"vidin",w,h,"9.0.115", 'art/expressInstall.swf', playeroptions, { 'wmode':'direct', 'scale':'noscale', 'salign':'tl', 'menu':false, 'allowFullScreen':false, 'allowScriptAccess':'always' }, { id:'vidin',name:'vidin', bgcolor:'#000000' });
 	subthis = this;
 	jwplayer("vidin").onTime(function (timobj) {
 		subthis.progressrun(timobj.position);
@@ -320,7 +332,8 @@ function drawvideo (videoclip) {
 		subthis._ended();
 	});	
 
-
+	_videoon = true;
+	
 	_cliprect = '40 ' + (vtop + (h * .22)) + ' ' + w + ' ' + (h * .5);
 	
 
@@ -338,7 +351,7 @@ function loadvid (clip,starttime) {
 
 	curvid = clip;
 	videoclipname = $("#vid_" + clip).attr('data-clipname');
-	jwplayer('vidin').load({ 'streamer': _rtmpserver, 'file': videoclipname + '.mp4', 'start': starttime, 'autostart': true });
+	jwplayer('vidin').load({ 'streamer': _rtmpserver, 'file': 'legacy/' + videoclipname + '_crop.mp4', 'start': starttime, 'autostart': true });
 }
 
 
@@ -346,24 +359,32 @@ function scrubresize (){
 
 	// move the scrubbers around
 	
-	var vh = ((($("#container").width() - 40) / 16) * 9);
-	var vtop = Math.floor((($("#containerinner").height() - vh) / 2) - 50);
-	var width = round_up(($("#containerinner").width() - 60),7);
-	var sideheight = round_up((vtop + (vh * .50)),7);
+	var vh = ($("#container").width() - 120) * .31;
+	var vtop = (($("#container").height() - vh) / 2) - 50;
+	var w = ($("#container").width() - 120);
+	var h = ($("#container").width() - 120) * .31
+	var width = round_up(($("#containerinner").width() - 120),7);
+	var sideheight = round_up((h + 120),7);
 	_scrubwidth = width;
 	_scrubheight = sideheight;
-	var starttop = Math.floor((vtop + (vh * .15)));
-	$("#scr_0").css({ 'width': width + 'px', 'top': Math.floor(vtop + (vh * .15)) });
-	$("#scr_2").css({ 'width': width + 'px', 'top': round_up(Math.floor(vtop + (vh * .15) + sideheight),7) - 5 });
-	$("#scr_1").css({ 'top': (starttop + 7) + 'px', 'left': _scrubwidth + 13, 'height' : sideheight + 'px' });
-	$("#scr_3").css({ 'top': (starttop + 7) + 'px', 'height' : sideheight + 'px' });
+	var starttop = vtop - 80;
+	$("#scr_0").css({ 'width': (width + 60) + 'px', 'top': starttop });
+	$("#scr_2").css({ 'width': (width + 60) + 'px', 'top': round_up((starttop + sideheight),7) - 5 });
+	$("#scr_1").css({ 'top': (starttop + 10) + 'px', 'left': _scrubwidth + 65, 'height' : sideheight + 'px' });
+	$("#scr_3").css({ 'top': (starttop + 10) + 'px', 'height' : sideheight + 'px' });
 	$("#legplay").css({ "margin-left": ($(window).width() / 2) - 70 });
 	$("#legmore").css({ "margin-left": ($(window).width() / 2) - 70 });
-
-	// draw a mask because enough already with this
 	
-	var boxa = paper.rect(21,Math.floor(vtop + (vh * .15)) - 20,width + 21,35);
-	boxa.attr({ 'fill': '#000000', 'stroke':0 });
+	if(_videoon){
+		// resize the video object because why the hell not
+		var vh = ($("#container").width() - 120) * .31;
+		var vtop = (($("#container").height() - vh) / 2) - 50;
+		var w = ($("#container").width() - 120);
+		var h = ($("#container").width() - 120) * .31
+		$("#videoplayer").css({ 'width': w + 'px', 'padding-top': vtop, 'padding-left': 60, 'height': h + 'px' });
+		$("#vidin").css({ 'width': w + 'px', 'height': h + 'px' });
+	
+	}
 
 }
 
