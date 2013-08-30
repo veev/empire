@@ -139,16 +139,16 @@ $(document).ready(function () {
 					clipstart_d[timetosecs(clipdata[x].start)] = clipdata[x].state;
 				}
 				if(clipdata[x].clip == "0"){
-					clipend_a[timetosecs(clipdata[x].end)] = clipdata[x].state;
+					clipend_a[timetosecs(clipdata[x].start) + _increment] = clipdata[x].state;
 				}
 				if(clipdata[x].clip == "1"){
-					clipend_b[timetosecs(clipdata[x].end)] = clipdata[x].state;
+					clipend_b[timetosecs(clipdata[x].end) + _increment] = clipdata[x].state;
 				}
 				if(clipdata[x].clip == "2"){
-					clipend_c[timetosecs(clipdata[x].end)] = clipdata[x].state;
+					clipend_c[timetosecs(clipdata[x].end) + _increment] = clipdata[x].state;
 				}
 				if(clipdata[x].clip == "3"){
-					clipend_d[timetosecs(clipdata[x].end)] = clipdata[x].state;
+					clipend_d[timetosecs(clipdata[x].end) + _increment] = clipdata[x].state;
 				}
 				if(timetosecs(clipdata[x].end) < cl){
 					var vert = false;
@@ -190,8 +190,6 @@ $(document).ready(function () {
 				}
 			}
 
-//			$(".hotpoint").fadeIn();
-			
 			clipstarts[0] = clipstart_a;
 			clipstarts[1] = clipstart_b;
 			clipstarts[2] = clipstart_c;
@@ -201,7 +199,7 @@ $(document).ready(function () {
 			clipends[2] = clipend_c;
 			clipends[3] = clipend_d;
 			
-			render_lines(0);
+	//		render_lines(0);
 
 			
 			$(".hotpoint").click(function () {
@@ -251,7 +249,7 @@ $(document).ready(function () {
 
 function render_lines (mode){
 	for(var y = 0; y < clipdata.length; y++){
-		console.log(clipdata[y]);
+//		console.log(clipdata[y]);
 	}
 }
 
@@ -415,7 +413,7 @@ function progressrun (inf) {
 	if(clipstarts[curvid][thistime] && !preventdoublejump){
 	
 		// we have a point! light stuff up
-	
+
 		_highlight_curvid = curvid;
 		_highlight_curpt = thistime;
 		
