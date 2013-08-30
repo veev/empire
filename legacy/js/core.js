@@ -19,6 +19,7 @@ var paper;
 var _cliprect = new String();
 var _clipstate = new Object();
 var _videoon = false;
+var _svglevel = false;
 var preventdoublejumpIvl = new Number();
 var preventdoublejump = false;
 
@@ -93,7 +94,6 @@ $(document).ready(function () {
 	// create a raphael object on the div I made for lines
 
 	paper = Raphael(document.getElementById("blurredlines"), $("#blurredlines").width(), $("#blurredlines").height());
-	paper_all = Raphael(document.getElementById("blurredlines_all"), $("#blurredlines").width(), $("#blurredlines").height());
 	
 
 	// hide the full version of the drawn lines
@@ -269,9 +269,7 @@ function linedo (frompt, topt, thisvid, thispt){
 	var newpath = paper.path( drawstring );
 	newpath.attr({ 'stroke' : '#fbb03b', 'stroke-width' : 1 });
 
-	var newpath_all = paper_all.path( drawstring );
-	newpath_all.attr({ 'stroke' : '#fbb03b' });
-
+	svgreset();
 	
 }
 
@@ -434,6 +432,17 @@ function progressrun (inf) {
 		$(".hotpoint_on").removeClass('hotpoint_on').hide();
 	}
 }
+
+function svgreset () {
+
+	// reset the svg layer raphael is using
+	
+	if(!_svglevel){
+		$("svg:first").css({ "z-index":3 });	
+		_svglevel = true;
+	}
+}
+
 
 function timetosecs (instring) {
 	

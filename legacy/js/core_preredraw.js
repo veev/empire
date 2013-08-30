@@ -40,6 +40,7 @@ $(document).ready(function () {
 	});
 
 	$("#legmore").css({ "margin-left": ($(window).width() / 2) - 70 }).fadeTo(4000,.5).click(function () {
+		$('.yellow_b').show();
 		$('html, body').animate({ scrollTop: ($('.yellow_b').offset().top - 20) }, 1000);
 	});
 
