@@ -263,7 +263,7 @@ function render_lines (mode){
 	}
 }
 
-function linedo (frompt, thisvidleft, thisvidtop, thispt){
+function linedo (frompt, thisvidtop, thisvidleft, thisvid, thispt){
 
 	// draw lines between the start and end
 	
@@ -274,8 +274,6 @@ function linedo (frompt, thisvidleft, thisvidtop, thispt){
 	var sideoffset = 11;
 	
 	var drawstring = "M" + (frompt.left - sideoffset) + ',' + (froms - offsetter) + ' L' + (thisvidleft - 11) + ',' + (thisvidtop - offsetter);
-
-	console.log(drawstring);
 
 	var newpath = paper.path( drawstring );
 	newpath.attr({ 'stroke' : '#fbb03b', 'stroke-width' : 1 });
