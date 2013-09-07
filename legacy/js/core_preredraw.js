@@ -123,6 +123,9 @@ $(document).ready(function () {
 			// handle the data - plot all the points
 
 			for(var x = 0; x < clipdata.length; x++){
+				clipdata[x].fired = false;
+				clipdata[x].headsup = false;
+				clipdata[x].clicked = false;
 				var cl = Math.floor(cliplengths[parseInt(clipdata[x].clip)]);
 				if(clipdata[x].clip == "0"){
 					clipstart_a[timetosecs(clipdata[x].start)] = x;
@@ -210,7 +213,7 @@ $(document).ready(function () {
 					var timeleft = timetosecs(clipdata[_highlight_currentx].segend) - _curplayback;
 				
 					var subthis = this;
-					console.log('delay ' + timeleft);
+					debugmsg('delay of ' + timeleft + 's before execution');
 				
 					var thistop = $(this).offset().top;
 					var thisleft = $(this).offset().left;
@@ -253,9 +256,17 @@ $(document).ready(function () {
     		jwplayer("vidin").pause();
     	}
  	});
+ 
 
 });
 
+function debugmsg (text) {
+	$("#debugmsg").html(text);
+	$("#debugmsg").fadeIn();
+	setTimeout(function () {
+		$("#debugmsg").fadeOut('slow');
+	}, 5000);
+}
 
 function render_lines (mode){
 	for(var y = 0; y < clipdata.length; y++){
@@ -422,13 +433,22 @@ function progressrun (inf) {
 	
 	// now look for times to light up other options
 	
-	if(clipstarts[curvid][thistime] && !preventdoublejump){
+	if(clipstarts[curvid][(thistime + 30)] && !clipdata[clipstarts[curvid][(thistime + 30)]].headsup){
+		clipdata[clipstarts[curvid][(thistime + 30)]].headsup = true;
+		debugmsg('30s heads up');
+	}
+	
+	if(clipstarts[curvid][thistime] && !clipdata[clipstarts[curvid][thistime]].fired && !preventdoublejump){
 	
 		// we have a point! light stuff up
 
 		_highlight_curvid = curvid;
 		_highlight_curpt = thistime;
 		_highlight_currentx = clipstarts[curvid][thistime];
+		
+		clipdata[clipstarts[curvid][thistime]].fired = true;
+		
+		console.log('firing ' + clipstarts[curvid][thistime]);
 		
 		// traverse the 4 to only light up points on the other clips, not the current one
 		for(var x = 0; x < 4; x++){
@@ -440,6 +460,9 @@ function progressrun (inf) {
 	if(clipends[curvid][thistime] == _highlight_currentx){
 	
 		// the hot time is over
+	
+		console.log('unfiring ' + clipends[curvid][thistime]);
+		
 	
 		$(".hotpoint_on").removeClass('hotpoint_on').hide();
 		
