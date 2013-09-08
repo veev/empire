@@ -4,6 +4,7 @@ var clipdata = new Array();
 var clipstarts = new Object();
 var clipends = new Object();
 var cliplinks = new Object();
+var clipmoves = new Object();
 var cliplengths = new Object();
 var clipstartoffset = new Object();
 var connsloaded = false;
@@ -24,7 +25,10 @@ var _svglevel = false;
 var _fson = false;
 var preventdoublejumpIvl = new Number();
 var preventdoublejump = false;
-var _curplayback = 0;
+var curplayback = 0;
+var curstart = 0;
+var videotimes = new Array();
+var vidjumpcnt = 0;
 
 $(window).resize(function () {
 	scrubresize();
@@ -214,7 +218,7 @@ $(document).ready(function () {
 				if($(this).hasClass('hotpoint_on')){
 				
 										
-					var timeleft = timetosecs(clipdata[_highlight_currentx].segend) - _curplayback;
+					var timeleft = timetosecs(clipdata[_highlight_currentx].segend) - curplayback;
 				
 					var subthis = this;
 					debugmsg('delay of ' + timeleft + 's before execution');
@@ -222,6 +226,9 @@ $(document).ready(function () {
 					var thistop = $(this).offset().top;
 					var thisleft = $(this).offset().left;
 				
+					// remove hotpoints
+					$(".hotpoint_on").removeClass('hotpoint_on').hide();
+
 					setTimeout(function () {
 				
 						$("#scr_" + _highlight_curvid).find('.hotpoint').show();
@@ -230,11 +237,25 @@ $(document).ready(function () {
 
 						dumphistory(_highlight_curvid, _highlight_curpt);
 
-						loadvid($(subthis).attr('data-clip'),$(subthis).attr('data-start'));
-						clipstartoffset[curvid] = parseInt($(subthis).attr('data-start'));
 
-						// remove hotpoints
-						$(".hotpoint_on").removeClass('hotpoint_on').hide();
+						// keep track of clip times watched
+						var vidtime = new Object();
+						vidtime.clip = curvid;
+						vidtime.start = curstart;
+						vidtime.end = curplayback;
+						vidtime.count = vidjumpcnt;
+						
+						curstart = parseInt($(subthis).attr('data-start'));			
+						
+						videotimes.push(vidtime);
+						vidjumpcnt++;
+
+
+
+						loadvid($(subthis).attr('data-clip'),$(subthis).attr('data-start'));
+						
+												
+						clipstartoffset[curvid] = parseInt($(subthis).attr('data-start'));
 
 						// disable new hotpoints for ten seconds
 						preventdoublejump = true;
@@ -292,12 +313,14 @@ function fullscreen_off() {
 	_fson = false;
 }
 
-function debugmsg (text) {
+function debugmsg (text,fader) {
 	$("#debugmsg").html(text);
 	$("#debugmsg").fadeIn();
-	setTimeout(function () {
-		$("#debugmsg").fadeOut('slow');
-	}, 5000);
+	if(!fader){
+		setTimeout(function () {
+			$("#debugmsg").fadeOut('slow');
+		}, 5000);
+	}
 }
 
 function render_lines (mode){
@@ -369,7 +392,7 @@ function drawvideo (videoclip) {
 	playeroptions.autostart = true;
 	playeroptions.height = h;
 	playeroptions.width = w;
-	playeroptions.controlbar = 'none';
+//	playeroptions.controlbar = 'none';
 	playeroptions.streamer = _rtmpserver;
 	playeroptions.file = 'legacy/' + videoclip + '_crop.mp4';
 	playeroptions.skin = 'art/bekle.zip';
@@ -390,6 +413,22 @@ function drawvideo (videoclip) {
 }
 
 function _ended () {
+
+	var vidtime = new Object();
+	vidtime.clip = curvid;
+	vidtime.start = curstart;
+	vidtime.end = curplayback;
+	vidtime.count = vidjumpcnt;
+	videotimes.push(vidtime);
+
+	var readout = new String();
+	
+	for(var x = 0; x < videotimes.length; x++){
+		readout += 'clip ' + videotimes[x].clip + ' start second ' + videotimes[x].start + ' / end second ' + videotimes[x].end + "\r";
+	}
+	
+	debugmsg(readout,true);
+
 	$("#vidin").hide();
 	$("#blurredlines").hide()
 	$("#blurredlines_all").fadeIn();
@@ -443,7 +482,7 @@ function progressrun (inf) {
 
 	// update the scrubbers during playback, also deal with the highlighting
 	
-	_curplayback = inf;
+	curplayback = inf;
 	
 	var prg = (inf / cliplengths[curvid]) * 100;
 	if($("#scr_" + curvid + "_play").attr('data-vertical') == 1){
