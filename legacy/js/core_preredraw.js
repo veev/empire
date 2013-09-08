@@ -21,6 +21,7 @@ var _cliprect = new String();
 var _clipstate = new Object();
 var _videoon = false;
 var _svglevel = false;
+var _fson = false;
 var preventdoublejumpIvl = new Number();
 var preventdoublejump = false;
 var _curplayback = 0;
@@ -42,6 +43,9 @@ $(document).ready(function () {
 	});
 
 	$("#legmore").css({ "margin-left": ($(window).width() / 2) - 70 }).fadeTo(4000,.5).click(function () {
+		if(_fson){
+			fullscreen_off();
+		}
 		$('.yellow_b').show();
 		$('html, body').animate({ scrollTop: ($('.yellow_b').offset().top - 20) }, 1000);
 	});
@@ -140,7 +144,7 @@ $(document).ready(function () {
 					clipstart_d[timetosecs(clipdata[x].start)] = x;
 				}
 				if(clipdata[x].clip == "0"){
-					clipend_a[timetosecs(clipdata[x].start)] = x;
+					clipend_a[timetosecs(clipdata[x].end)] = x;
 				}
 				if(clipdata[x].clip == "1"){
 					clipend_b[timetosecs(clipdata[x].end)] = x;
@@ -257,8 +261,36 @@ $(document).ready(function () {
     	}
  	});
  
+ 
+ 	$("#lg_fs").click(function () {
+		var docElm = document.getElementById("container");
+		if (docElm.requestFullscreen) {
+			docElm.requestFullscreen();
+		}
+		else if (docElm.mozRequestFullScreen) {
+			docElm.mozRequestFullScreen();
+		}
+		else if (docElm.webkitRequestFullScreen) {
+			docElm.webkitRequestFullScreen();
+		}
+		_fson = true;
+ 	});
+ 
 
 });
+
+function fullscreen_off() {
+	if (document.cancelFullScreen) {
+		document.cancelFullScreen();
+	}
+	else if (document.mozCancelFullScreen) {
+		document.mozCancelFullScreen();
+	}
+	else if (document.webkitCancelFullScreen) {
+		document.webkitCancelFullScreen();
+	}
+	_fson = false;
+}
 
 function debugmsg (text) {
 	$("#debugmsg").html(text);
