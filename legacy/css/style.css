@@ -28,7 +28,14 @@ div.mystical p#e { top: 160px; left: 305px; width: 200px; text-align: center; }
 div.mystical p#f { top: 425px; width: 520px; left: 150px; text-align: center; }
 div.yellow div.play { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(../art/leg_play.png); }
 div#container div.more { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(../art/leg_more.png); }
+div#container:-webkit-full-screen { background-color: #000; width: 100%; height: 100%; }
+div#container:-moz-full-screen { background-color: #000; width: 100%; height: 100%; }
+div#container:-o-full-screen { background-color: #000; width: 100%; height: 100%; }
+div#container:full-screen { background-color: #000; width: 100%; height: 100%; }
+div#container div#debugmsg { background-color: #f00; display: block; position: absolute; top: 0; z-index: 900; font-size: 2em; width: 100%; padding: 5px; color: #fff; }
 div#container div#containerinner { height: 100%; position: relative; }
+div#container div#lg_fs { position: absolute; z-index: 35; bottom: 0; right: 0; padding: 10px; cursor: pointer; }
+div#container div#lg_fs:hover { color: #f00; }
 div#container div#containerinner div.videoplayer { z-index: 24 }
 div#container div#containerinner div#linegroup { position: absolute; z-index: -1; width: 100%; height: 100%; pointer-events: none; }
 div#container div#containerinner div#playback { position: absolute; z-index: 1; width: 100%; height: 100%; pointer-events: none; }
