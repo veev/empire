@@ -51,6 +51,7 @@ $(document).ready(function () {
 		if(_fson){
 			fullscreen_off();
 		}
+		jwplayer("vidin").pause();
 		$('.yellow_b').show();
 		$('html, body').animate({ scrollTop: ($('.yellow_b').offset().top - 20) }, 1000);
 	});
@@ -281,6 +282,7 @@ $(document).ready(function () {
     	if(_videoon){
     		jwplayer("vidin").pause();
     	}
+    }
  	});
  
  
