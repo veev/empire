@@ -5,6 +5,7 @@ var clipstarts = new Object();
 var clipends = new Object();
 var cliplinks = new Object();
 var clipmoves = new Object();
+var clipedges = new Object();
 var cliplengths = new Object();
 var clipstartoffset = new Object();
 var connsloaded = false;
@@ -84,12 +85,12 @@ $(document).ready(function () {
 	$("#containerinner").fadeIn();
 	
 	
-	// get the lengths of the clips as they arrive
+	// hardcoded clip lengths
 	
-	cliplengths[0] = 605;
-	cliplengths[1] = 669;
-	cliplengths[2] = 755;
-	cliplengths[3] = 564;
+	cliplengths[0] = 599;
+	cliplengths[1] = 662;
+	cliplengths[2] = 742;
+	cliplengths[3] = 558;
 	
 
 	// load the connections json
@@ -101,12 +102,6 @@ $(document).ready(function () {
 			connsloaded = true;
 			clipdata = data;
 		}});
-
-	// create a raphael object on the div I made for lines
-
-	paper = Raphael(document.getElementById("linegroup"), $("#linegroup").width(), $("#linegroup").height());
-	paper_playback = Raphael(document.getElementById("playback"), $("#playback").width(), $("#playback").height());
-	
 
 	// once stuff has arrived render the spaces
 	
@@ -123,6 +118,10 @@ $(document).ready(function () {
 			var clipend_b = new Object();
 			var clipend_c = new Object();
 			var clipend_d = new Object();
+			var clipfinal_a = new Object();
+			var clipfinal_b = new Object();
+			var clipfinal_c = new Object();
+			var clipfinal_d = new Object();
 
 			var h = ($("#container").width() - 120) * .31
 			var scwidth = round_up(($("#containerinner").width() - 60),7);
@@ -138,27 +137,23 @@ $(document).ready(function () {
 				var cl = Math.floor(cliplengths[parseInt(clipdata[x].clip)]);
 				if(clipdata[x].clip == "0"){
 					clipstart_a[timetosecs(clipdata[x].start)] = x;
+					clipend_a[timetosecs(clipdata[x].end)] = x;
+					clipfinal_a[timetosecs(clipdata[x].segend)] = x;
 				}
 				if(clipdata[x].clip == "1"){
 					clipstart_b[timetosecs(clipdata[x].start)] = x;
+					clipend_b[timetosecs(clipdata[x].end)] = x;
+					clipfinal_b[timetosecs(clipdata[x].segend)] = x;
 				}
 				if(clipdata[x].clip == "2"){
 					clipstart_c[timetosecs(clipdata[x].start)] = x;
+					clipend_c[timetosecs(clipdata[x].end)] = x;
+					clipfinal_c[timetosecs(clipdata[x].segend)] = x;
 				}
 				if(clipdata[x].clip == "3"){
 					clipstart_d[timetosecs(clipdata[x].start)] = x;
-				}
-				if(clipdata[x].clip == "0"){
-					clipend_a[timetosecs(clipdata[x].end)] = x;
-				}
-				if(clipdata[x].clip == "1"){
-					clipend_b[timetosecs(clipdata[x].end)] = x;
-				}
-				if(clipdata[x].clip == "2"){
-					clipend_c[timetosecs(clipdata[x].end)] = x;
-				}
-				if(clipdata[x].clip == "3"){
 					clipend_d[timetosecs(clipdata[x].end)] = x;
+					clipfinal_d[timetosecs(clipdata[x].segend)] = x;
 				}
 				if(1 == 2){
 					var vert = false;
@@ -208,6 +203,11 @@ $(document).ready(function () {
 			clipends[1] = clipend_b;
 			clipends[2] = clipend_c;
 			clipends[3] = clipend_d;
+			clipedges[0] = clipfinal_a;
+			clipedges[1] = clipfinal_b;
+			clipedges[2] = clipfinal_c;
+			clipedges[3] = clipfinal_d;
+			
 			
 			render_lines(0);
 
@@ -276,7 +276,7 @@ $(document).ready(function () {
 	
 	$(document).keydown(function (e) {
     var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-    if (key == 32)
+    if (key == 32){
        e.preventDefault();
     	if(_videoon){
     		jwplayer("vidin").pause();
@@ -324,58 +324,118 @@ function render_lines (mode){
 	
 	$(".videospace").hide();
 
-//	$("#scr_0").css({ 'width': (width + 60) + 'px', 'top': starttop });
-//	$("#scr_2").css({ 'width': (width + 60) + 'px', 'top': round_up((starttop + sideheight),7) - 5 });
-//	$("#scr_1").css({ 'top': (starttop + 10) + 'px', 'left': _scrubwidth + 65, 'height' : sideheight + 'px' });
-//	$("#scr_3").css({ 'top': (starttop + 10) + 'px', 'height' : sideheight + 'px' });
+	// create a raphael object on the div I made for lines
+
+//	paper.remove();
+
+	$("#linegroup").css({ 'margin-top': _scrubtop + 'px', 'margin-left': '30px' });
+	paper = Raphael(document.getElementById("linegroup"), _scrubwidth + 2, _scrubheight + 2);
+	paper_playback = Raphael(document.getElementById("playback"), $("#playback").width(), $("#playback").height());
 	
+	var curx = 1;
+	var cury = 1; // lines start at the top, so yeah
 
-//	for(var y = 0; y < 4; y++){ // loop through each clip now
-	for(var y = 0; y < 1; y++){ // loop through each clip now
+	for(var y = 0; y < 4; y++){ // loop through each clip now to draw the box lines
 		
-		var curx = 0;
-		var cury = 0;
-		var vertical = false;
-		
+		var vertical = false;		
 		var secpx = _scrubwidth / cliplengths[y]; // multiplier of seconds to pixels
-
 		if(y == 1 || y == 3){
 			vertical = true;
 			secpx = _scrubheight / cliplengths[y]; // multiplier of seconds to pixels if it's vertical
 		}
 		
-		
 		// traverse the starts to put them in order
 		
 		var startar = new Array();
+
+		for(clip in clipedges[y]){
+			startar.push(parseInt(clip));
+		}
+		startar = startar.sort(function(a,b){return a-b});
+
+		// traverse those starts and build the scrubber line segments
 		
-		startar.push(0);
+		for(var x = 0; x < startar.length; x++){
+
+			var drawstring = "M" + curx + ',' + cury + ' L';
+			
+			if(vertical){ // vertical
+				if(x == (startar.length - 1)){
+					if(y == 1){
+						cury = _scrubheight;
+					} else {
+						cury = 1;
+					}
+				} else {
+					if(y == 1){
+						cury = cury + ((startar[(x+1)] - startar[x]) * secpx);
+					} else {
+						cury = cury - ((startar[(x+1)] - startar[x]) * secpx);
+					}
+				}
+			} else { // horizontal
+				if(x == (startar.length - 1)){
+					if(y == 0){
+						curx = _scrubwidth;
+					} else {
+						curx = 1;
+					}
+				} else {
+					if(y == 0){
+						curx = curx + ((startar[(x+1)] - startar[x]) * secpx);
+					} else {
+						curx = curx - ((startar[(x+1)] - startar[x]) * secpx);
+					}
+				}
+			}
+			
+
+			drawstring += curx + ',' + cury;
+			
+			var newpath = paper.path( drawstring );
+			var thisid = 'l' + y + '_' + startar[x];
+			$(newpath.node).attr("id",thisid);
+			$(newpath.node).attr("class","scrubber");
+
+		}
+	}
+
+		// ok, now draw the ends of each line to the corresponding start point of a linked space
+
+	curx = 1;
+	cury = 1; // lines start at the top, so yeah
+
+	for(var y = 0; y < 4; y++){ // loop through each clip now to draw the box lines
+
+		// clip starts
+		
+		var linkar = new Array();
+
+		linkar.push(0);
 		
 		for(clip in clipstarts[y]){
-			startar.push(parseInt(clip));
-		}		
-
-		startar = startar.sort(function(a,b){return a-b});
+			linkar.push(parseInt(clip));
+		}
+		linkar = linkar.sort(function(a,b){return a-b});
 		
-		startar.push(cliplengths[y]);
-		
-		// traverse the points and start with the line segments
-		
+		// clip ends (duplicated from above)
 		
 
-		for(var x = 0; x < startar.length; x++){
-			
+		// manage the line distances again
+		
+		var vertical = false;		
+		var secpx = _scrubwidth / cliplengths[y]; // multiplier of seconds to pixels
+		if(y == 1 || y == 3){
+			vertical = true;
+			secpx = _scrubheight / cliplengths[y]; // multiplier of seconds to pixels if it's vertical
 		}
 		
-		console.log(startar);
+		for(var x = 0; x < clipstarts[y].length; x++){
+			console.log(clipstarts[y][x]);
+		}
 
-//		var drawstring = "M" + curx;
-//		var newpath = paper.path( drawstring );
-//		newpath.attr({ 'stroke' : '#ffffff', 'stroke-width' : 1 });
-		
-//		console.log(y + ' ' + cliplengths[y] + ' ' + secpx);
-//		console.log(clipstarts[y]);
 	}
+
 }
 
 function linedo (frompt, thisvidtop, thisvidleft, thisvid, thispt){
@@ -553,7 +613,7 @@ function progressrun (inf) {
 	
 	// now look for times to light up other options
 	
-	if(clipstarts[curvid][thistime] && !clipdata[clipstarts[curvid][thistime]].fired && !preventdoublejump){
+	if(clipends[curvid][thistime] && !clipdata[clipends[curvid][thistime]].fired && !preventdoublejump){
 	
 		// we have a point! light stuff up
 
@@ -561,24 +621,23 @@ function progressrun (inf) {
 		_highlight_curpt = thistime;
 		_highlight_currentx = clipstarts[curvid][thistime];
 		
-		clipdata[clipstarts[curvid][thistime]].fired = true;
+		clipdata[clipends[curvid][thistime]].fired = true;
 		
 		console.log('firing ' + clipstarts[curvid][thistime]);
 		
 		// traverse the 4 to only light up points on the other clips, not the current one
 		for(var x = 0; x < 4; x++){
 			if(x != curvid){
-		 		$("#scr_" + x).find(".g" + clipdata[clipstarts[curvid][thistime]].state + clipdata[clipstarts[curvid][thistime]].substate).addClass('hotpoint_on').show();
+		 		$("#scr_" + x).find(".g" + clipdata[clipends[curvid][thistime]].state + clipdata[clipends[curvid][thistime]].substate).addClass('hotpoint_on').show();
 			}
 		}
 	}
-	if(clipends[curvid][thistime] == _highlight_currentx){
+	if(clipedges[curvid][thistime] == _highlight_currentx){
 	
 		// the hot time is over
 	
-		console.log('unfiring ' + clipends[curvid][thistime]);
+		console.log('unfiring ' + clipedges[curvid][thistime]);
 		
-	
 		$(".hotpoint_on").removeClass('hotpoint_on').hide();
 		
 		_highlight_currentx = 0;
