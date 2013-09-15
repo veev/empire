@@ -157,6 +157,9 @@ $(document).ready(function () {
 			clipedges[3] = clipfinal_d;
 			
 			
+			console.log(clipends);
+			console.log(clipedges);
+			
 			render_lines(0);
 
 			
@@ -314,7 +317,7 @@ function render_lines (mode){
 
 			var drawstring = "M" + curx + ',' + cury + ' L';
 			
-			$("#icongroup").append('<span class="icon g' + clipdata[clipedges[y][startar[x]]].state + '" id="' + idcode + '_ia" style="display: none; left: ' + curx + '; top: ' + cury + '"></span>');
+			$("#icongroup").append('<span class="icon gsoff g' + clipdata[clipedges[y][startar[x]]].state + ' gsa' + clipdata[clipedges[y][startar[x]]].state + clipdata[clipedges[y][startar[x]]].substate + '" id="' + idcode + '_ia" style="display: none; left: ' + curx + '; top: ' + cury + '"></span>');
 			
 			
 			if(vertical){ // vertical
@@ -350,7 +353,7 @@ function render_lines (mode){
 
 			drawstring += curx + ',' + cury;
 			
-			$("#icongroup").append('<span class="icon g' + clipdata[clipedges[y][startar[x]]].state + '" id="' + idcode + '_ib" style="display: none; left: ' + curx + '; top: ' + cury + '"></span>');
+			$("#icongroup").append('<span class="icon gsoff g' + clipdata[clipedges[y][startar[x]]].state + ' gs' + clipdata[clipedges[y][startar[x]]].state + clipdata[clipedges[y][startar[x]]].substate + '" id="' + idcode + '_ib" style="display: none; left: ' + curx + '; top: ' + cury + '"></span>');
 
 			var newpath = paper.path( drawstring );
 						
@@ -589,23 +592,9 @@ function progressrun (inf) {
 	// update the scrubbers during playback, also deal with the highlighting
 	
 	curplayback = inf;
-	
-	var prg = (inf / cliplengths[curvid]) * 100;
-	if($("#scr_" + curvid + "_play").attr('data-vertical') == 1){
-		var h = round_up((prg * (_scrubheight / 100)),7);
-		if($("#scr_" + curvid + "_play").attr('data-reverse') == 1){
-			$("#scr_" + curvid + "_play").css({ 'height': h + 'px', 'margin-top': (_scrubheight - h) + 'px' });			
-		} else {
-			$("#scr_" + curvid + "_play").css({ 'height': h + 'px' });
-		}
-	} else {
-		var w = round_up((prg * (_scrubwidth / 100)),7);
-		if($("#scr_" + curvid + "_play").attr('data-reverse') == 1){
-			$("#scr_" + curvid + "_play").css({ 'width': w + 'px', 'margin-left': (_scrubwidth - w) + 'px' });
-		} else {
-			$("#scr_" + curvid + "_play").css({ 'width': w + 'px' });
-		}
-	}
+
+
+
 	var thistime = Math.floor(inf);
 	
 	// now look for times to light up other options
@@ -616,11 +605,27 @@ function progressrun (inf) {
 
 		_highlight_curvid = curvid;
 		_highlight_curpt = thistime;
-		_highlight_currentx = clipstarts[curvid][thistime];
+		_highlight_currentx = clipends[curvid][thistime];
 		
 		clipdata[clipends[curvid][thistime]].fired = true;
 		
-		console.log('firing ' + clipstarts[curvid][thistime]);
+		console.log('firing ' + clipends[curvid][thistime]);
+		$("#l" + clipends[curvid][thistime] + "_ib").fadeIn();
+
+		$(".gsa" + clipdata[clipends[curvid][thistime]].state + clipdata[clipends[curvid][thistime]].substate).each(function () {
+			if($(this).attr('id') != "l" + clipends[curvid][thistime] + '_ia'){
+				$(this).fadeIn();
+			}
+		});
+
+		$(".tl" + clipdata[clipends[curvid][thistime]].state + clipdata[clipends[curvid][thistime]].substate).each(function () {
+			var thiscl = $(this).attr('class');
+			if(thiscl.indexOf('transition_unused') != -1){
+				thiscl = thiscl.replace('transition_unused','transition_hot');
+				$(this).attr('class',thiscl);
+			}
+		});
+
 		
 		// traverse the 4 to only light up points on the other clips, not the current one
 		for(var x = 0; x < 4; x++){
@@ -629,15 +634,34 @@ function progressrun (inf) {
 			}
 		}
 	}
-	if(clipedges[curvid][thistime] == _highlight_currentx){
+	if(clipedges[curvid][thistime]){
 	
-		// the hot time is over
+		
 	
-		console.log('unfiring ' + clipedges[curvid][thistime]);
+		if(clipedges[curvid][thistime] == _highlight_currentx){
+	
+			// the hot time is over
+	
+			console.log('unfiring ' + clipedges[curvid][thistime]);
+			$("#l" + clipedges[curvid][thistime] + "_ib").fadeOut();
+			$(".gsa" + clipdata[clipedges[curvid][thistime]].state + clipdata[clipedges[curvid][thistime]].substate).each(function () {
+				if(($(this).attr('id') != "l" + clipedges[curvid][thistime] + '_ia') && $(this).hasClass('gsoff')){
+					$(this).fadeOut();
+				}
+				$(".tl" + clipdata[clipedges[curvid][thistime]].state + clipdata[clipedges[curvid][thistime]].substate).each(function () {
+					var thiscl = $(this).attr('class');
+					if(thiscl.indexOf('transition_hot') != -1){
+						thiscl = thiscl.replace('transition_hot','transition_unused');
+						$(this).attr('class',thiscl);
+					}
+				});
+
+			});
 		
-		$(".hotpoint_on").removeClass('hotpoint_on').hide();
 		
-		_highlight_currentx = 0;
+			_highlight_currentx = 0;
+		
+		}
 		
 	}
 }

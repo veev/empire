@@ -54,6 +54,8 @@ div#container div#containerinner div#linegroup { position: absolute; z-index: 28
 div#container div#containerinner div#icongroup { position: absolute; z-index: 22; pointer-events: none; }
 div#container div#containerinner div#linegroup path.scrubber { stroke: #fff; stroke-width: 1px; }
 div#container div#containerinner div#linegroup path.transition_unused { stroke: #777; stroke-width: 1px; }
+div#container div#containerinner div#linegroup path.transition_hot { stroke: #fff; stroke-width: 1px; }
+div#container div#containerinner div#linegroup path.transition_used { stroke: #fbb03b; stroke-width: 1px; }
 div#container div#containerinner div#playback { position: absolute; z-index: 1; pointer-events: none; }
 div#container div.videospace { text-align: center; position: absolute; }
 div#container div.videospace div.blurb { display: none; }
