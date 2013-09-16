@@ -7,6 +7,7 @@ var cliprect = new Object();
 var connsloaded = false;
 var loadivl = new Number();
 var paper;
+var drawpath;
 
 var _rtmpserver = 'rtmp://s17pilyt3yyjgf.cloudfront.net/cfx/st';
 var _increment = 5;
@@ -19,6 +20,9 @@ var _videoon = false;
 var _svglevel = false;
 var _fson = false;
 var _curw = new Number();
+var _playbackx = new Number();
+var _playbacky = new Number();
+var _clipoffsetfromstart = 0;
 
 var preventdoublejumpIvl = new Number();
 var preventdoublejump = false;
@@ -29,6 +33,7 @@ var curstart = 0;
 
 var videotimes = new Array();
 var vidjumpcnt = 0;
+var segmentsseen = new Array();
 
 var usage = new Object();
 
@@ -62,15 +67,38 @@ $(document).ready(function () {
 	$(".videospace").click(function () {
 		curvid = parseInt($(this).attr('data-clip'));
 		actualclip = $(this).attr('data-clipname');
-		$('.scrubber').css({'display': 'block'});
-		var vh = ($("#container").width() - 80) * .31;
-		var vtop = (($("#container").height() - vh) / 2) - 50;
-		$(this).animate({ 'z-index': 5, 'width': ($("#container").width() - 80) + 'px', 'top': vtop, 'left': 40, 'height': 330 }).fadeOut(4000);
+
+		var w = ($("#container").width() - 100);
+		var h = ($("#container").width() - 100) * .31
+		var vtop = (($("#container").height() - h) / 2) - 20;
+
+		$(this).animate({ 'z-index': 5, 'width': ($("#container").width() - 80) + 'px', 'top': vtop, 'left': 40, 'height': 330 }).fadeOut(8000);
 		$(".videospace").hide().unbind('click');
 		$(this).show();
 		$(".blurb").remove();
 		$(".blurbback").remove();
 		drawvideo(actualclip);
+		
+		// set the playback x and y
+				
+		switch(curvid){
+			case 0:
+				_playbackx = 4;
+				_playbacky = 4;
+				break;
+			case 1:
+				_playbackx = w + 54;
+				_playbacky = 4;
+				break;
+			case 2:
+				_playbackx = w + 54;
+				_playbacky = (h+110);
+				break;
+			case 3:
+				_playbackx = 4;
+				_playbacky = (h+110);
+				break;
+		}
 	});
 	
 	$("#containerinner").fadeIn();
@@ -157,9 +185,6 @@ $(document).ready(function () {
 			clipedges[3] = clipfinal_d;
 			
 			
-			console.log(clipends);
-			console.log(clipedges);
-			
 			render_lines(0);
 
 			
@@ -184,8 +209,6 @@ $(document).ready(function () {
 					setTimeout(function () {
 				
 						$("#scr_" + _highlight_curvid).find('.hotpoint').show();
-				
-						linedo($("#pt" + _highlight_curvid + "_" + _highlight_curpt).offset(), thistop, thisleft, _highlight_curvid, _highlight_curpt);
 
 						dumphistory(_highlight_curvid, _highlight_curpt);
 
@@ -262,19 +285,20 @@ function fullscreen_off() {
 }
 
 function render_lines (mode){
-	var h = ($("#container").width() - 80) * .31;  // video height
+
+	var h = ($("#container").width() - 100) * .31;  // video height
 	var vtop = (($("#container").height() - h) / 2) - 60; // top of video space
-	var w = ($("#container").width() - 80); // video width;
-	_scrubwidth = w + 40;
+	var w = ($("#container").width() - 100); // video width;
+	_scrubwidth = w + 54;
 	_scrubheight = h + 110;
 	_scrubtop = vtop - 40;
 	
 	_curw = w;
 
-	cliprect[0] = '2 2 ' + (w + 38) + ' 49';
-	cliprect[1] = '2 41 22 ' + (_scrubheight - 41);
-	cliprect[2] = (w + 21) + ' 41 ' + (_scrubheight - 41) + ' ' + (w + 38);
-	cliprect[3] = '21 ' + (h + 10) + ' ' + w + ' 107';
+	cliprect[0] = '5 5 ' + (w + 38) + ' 46';
+	cliprect[1] = '5 41 22 ' + (_scrubheight - 41);
+	cliprect[2] = (w + 24) + ' 41 ' + (_scrubheight - 41) + ' ' + (w + 38);
+	cliprect[3] = '21 ' + (h + 10) + ' ' + w + ' 99';
 	
 	// create a raphael object on the div I made for lines
 
@@ -285,19 +309,20 @@ function render_lines (mode){
 	$("#linegroup").css({ 'margin-top': _scrubtop + 'px', 'margin-left': '15px' });
 	$("#icongroup").css({ 'margin-top': (_scrubtop - 15) + 'px', 'width': (_scrubwidth + 30), 'height': (_scrubheight + 32) });
 
-	paper = Raphael(document.getElementById("linegroup"), _scrubwidth + 2, _scrubheight + 2);
+	paper = Raphael(document.getElementById("linegroup"), _scrubwidth + 8, _scrubheight + 8);
 	paper_playback = Raphael(document.getElementById("playback"), $("#playback").width(), $("#playback").height());
 	
-	var curx = 1;
-	var cury = 1; // lines start at the top, so yeah
+	var curx = 4;
+	var cury = 4; // lines start at the top, so yeah
 
 	for(var y = 0; y < 4; y++){ // loop through each clip now to draw the box lines
 		
 		var vertical = false;		
 		var secpx = _scrubwidth / cliplengths[y]; // multiplier of seconds to pixels
+		
 		if(y == 1 || y == 3){
 			vertical = true;
-			secpx = _scrubheight / cliplengths[y]; // multiplier of seconds to pixels if it's vertical
+			secpx = (_scrubheight - 8) / cliplengths[y]; // multiplier of seconds to pixels if it's vertical
 		}
 		
 		// traverse the starts to put them in order
@@ -317,21 +342,27 @@ function render_lines (mode){
 
 			var drawstring = "M" + curx + ',' + cury + ' L';
 			
-			$("#icongroup").append('<span class="icon gsoff g' + clipdata[clipedges[y][startar[x]]].state + ' gsa' + clipdata[clipedges[y][startar[x]]].state + clipdata[clipedges[y][startar[x]]].substate + '" id="' + idcode + '_ia" style="display: none; left: ' + curx + '; top: ' + cury + '"></span>');
+			$("#icongroup").append('<span class="icon gsoff g' + clipdata[clipedges[y][startar[x]]].state + ' gsa' + clipdata[clipedges[y][startar[x]]].state + clipdata[clipedges[y][startar[x]]].substate + '" id="' + idcode + '_ia" data-clipdata="' + clipedges[y][startar[x]] + '" style="display: none; left: ' + curx + '; top: ' + cury + '"></span>');
 			
+			var change = 0;
+			if(x == 0){
+				change = startar[x] - 0;
+			} else {
+				change = startar[x] - startar[x-1];
+			}
 			
 			if(vertical){ // vertical
 				if(x == (startar.length - 1)){
 					if(y == 1){
 						cury = _scrubheight;
 					} else {
-						cury = 1;
+						cury = 4;
 					}
 				} else {
 					if(y == 1){
-						cury = cury + ((startar[(x+1)] - startar[x]) * secpx);
+						cury = cury + (change * secpx);
 					} else {
-						cury = cury - ((startar[(x+1)] - startar[x]) * secpx);
+						cury = cury - (change * secpx);
 					}
 				}
 			} else { // horizontal
@@ -339,13 +370,13 @@ function render_lines (mode){
 					if(y == 0){
 						curx = _scrubwidth;
 					} else {
-						curx = 1;
+						curx = 4;
 					}
 				} else {
 					if(y == 0){
-						curx = curx + ((startar[(x+1)] - startar[x]) * secpx);
+						curx = curx + (change * secpx);
 					} else {
-						curx = curx - ((startar[(x+1)] - startar[x]) * secpx);
+						curx = curx - (change * secpx);
 					}
 				}
 			}
@@ -353,25 +384,25 @@ function render_lines (mode){
 
 			drawstring += curx + ',' + cury;
 			
-			$("#icongroup").append('<span class="icon gsoff g' + clipdata[clipedges[y][startar[x]]].state + ' gs' + clipdata[clipedges[y][startar[x]]].state + clipdata[clipedges[y][startar[x]]].substate + '" id="' + idcode + '_ib" style="display: none; left: ' + curx + '; top: ' + cury + '"></span>');
+			$("#icongroup").append('<span class="icon gsoff g' + clipdata[clipedges[y][startar[x]]].state + ' gs' + clipdata[clipedges[y][startar[x]]].state + clipdata[clipedges[y][startar[x]]].substate + '" id="' + idcode + '_ib" data-clipdata="' + clipedges[y][startar[x]] + '"  style="display: none; left: ' + curx + '; top: ' + cury + '"></span>');
 
 			var newpath = paper.path( drawstring );
-						
+									
 			var lineclass = "scrubber ";
-			lineclass += "g" + clipdata[clipedges[y][startar[x]]].state + ' og' + clipdata[clipedges[y][startar[x]]].state + clipdata[clipedges[y][startar[x]]].substate;
-			
+			lineclass += "g" + clipdata[clipedges[y][startar[x]]].state + ' og' + clipdata[clipedges[y][startar[x]]].state + clipdata[clipedges[y][startar[x]]].substate + ' pl' + y + startar[x];
 			
 			$(newpath.node).attr("id",idcode);
 			$(newpath.node).attr("class",lineclass);
 			
 
 		}
+		
 	}
 
 		// ok, now draw the ends of each line to the corresponding start point of a linked space
 
-		curx = 1;
-		cury = 1; // lines start at the top, so yeah
+		curx = 8;
+		cury = 4; // lines start at the top, so yeah
 
 		for(var y = 0; y < 4; y++){ // loop through each clip now to draw the box lines
 
@@ -418,6 +449,11 @@ function render_lines (mode){
 						$(newpath_c.node).attr("id",trans_c);
 						$(newpath_d.node).attr("id",trans_d);
 
+						$(newpath_a.node).attr("data-outbound",clipedges[y][clip]);
+						$(newpath_b.node).attr("data-outbound",clipedges[y][clip]);
+						$(newpath_c.node).attr("data-outbound",clipedges[y][clip]);
+						$(newpath_d.node).attr("data-outbound",clipedges[y][clip]);
+
 						$(newpath_a.node).attr("class",lineclass);
 						$(newpath_b.node).attr("class",lineclass);
 						$(newpath_c.node).attr("class",lineclass);
@@ -431,55 +467,19 @@ function render_lines (mode){
 
 		}
 		
-	$("#linegroup").hide();
-
-}
-
-function linedo (frompt, thisvidtop, thisvidleft, thisvid, thispt){
-
-	// draw lines between the start and end
-	
-	var offsetter = $("#blurredlines").offset().top - 11;
-	
-	var froms = frompt.top;
-	
-	var sideoffset = 11;
-	
-	var drawstring = "M" + (frompt.left - sideoffset) + ',' + (froms - offsetter) + ' L' + (thisvidleft - 11) + ',' + (thisvidtop - offsetter);
-
-	var newpath = paper.path( drawstring );
-	newpath.attr({ 'stroke' : '#fbb03b', 'stroke-width' : 1 });
-
 	svgreset();
-	
+	$("#linegroup").hide();
+	$("#icongroup").hide();
+
 }
 
 function dumphistory(vidtarget,startpoint){
 	// routine that kills off the rest of the scrubber line when the user clicks something
 	
 	// first remove hotpoints that are later than this point
-	$("#scr_"+vidtarget).find(".hotpoint").each(function () { if(parseInt($(this).attr('data-start')) > startpoint){ $(this).remove() }});
+//	$("#scr_"+vidtarget).find(".hotpoint").each(function () { if(parseInt($(this).attr('data-start')) > startpoint){ $(this).remove() }});
 	
-	
-	// rescale the scrubbers
-	
-	switch(vidtarget){
-		case 0:
-			$("#scr_0").css({ 'width': $("#scr_0_play").width() + 11 });
-			$("#scr_0_play").css({ 'width': $("#scr_0").width() });
-			break;
-		case 1:
-			$("#scr_1").css({ 'height': $("#scr_1_play").height() });
-			break;
-		case 2:
-			$("#scr_2").css({ 'width': $("#scr_2_play").width(), 'margin-left': $("#scr_2_play").css("margin-left") });
-			$("#scr_2_play").css({ "margin-left": 0 });
-			break;
-		case 3:
-			$("#scr_3").css({ 'height': $("#scr_3_play").height(), 'margin-top': $("#scr_3_play").css("margin-top") });
-			$("#scr_3_play").css({ "margin-top": 0 });
-			break;
-	}		
+
 }
 
 
@@ -487,18 +487,18 @@ function drawvideo (videoclip) {
 
 	// initial video draw, triggered by users clicking on one of the large images
 
-	var vh = ($("#container").width() - 80) * .31;
-	var vtop = (($("#container").height() - vh) / 2) - 50;
-	var w = ($("#container").width() - 80);
-	var h = ($("#container").width() - 80) * .31
+	$("#icongroup").show();
+	var w = ($("#container").width() - 100);
+	var h = ($("#container").width() - 100) * .31
+	var vtop = (($("#container").height() - h) / 2) - 50;
 	$("#videoplayer").css({ 'width': w + 'px', 'padding-top': vtop, 'padding-left': 40, 'height': h + 'px' });
-	var playeroptions = {  };
+	var playeroptions = { 'controlbar.position': 'over', 'controlbar.idlehide': true };
 	playeroptions.allowFullScreen = false;
 	playeroptions.allowscriptaccess = true;
 	playeroptions.autostart = true;
 	playeroptions.height = h;
 	playeroptions.width = w;
-	playeroptions.controlbar = 'none';
+//	playeroptions.controlbar = 'none';
 	playeroptions.streamer = _rtmpserver;
 	playeroptions.file = 'legacy/' + videoclip + '_crop.mp4';
 	playeroptions.skin = 'art/bekle.zip';
@@ -593,7 +593,51 @@ function progressrun (inf) {
 	
 	curplayback = inf;
 
+	var reverse = false;
+	var vertical = false;
+	var playstring = new String();
+	
+	playstring = 'M' + _playbackx + ',' + _playbacky + 'L';
+	
+	var secpx = _scrubwidth / cliplengths[curvid];
+	if(curvid == 1 || curvid == 3){
+		secpx = (_scrubheight - 8) / cliplengths[curvid];
+		vertical = true;
+	}
+	if(curvid == 2 || curvid == 3){
+		reverse = true;
+	}
 
+	// draw a line from the current x/y to this point in time
+	
+
+	var desiredlength = (curplayback - _clipoffsetfromstart) * secpx;
+	
+	if(vertical){
+		if(reverse){
+			playstring += _playbackx + ',' + (_playbacky - desiredlength);
+		} else {
+			playstring += _playbackx + ',' + (_playbacky + desiredlength);
+		}
+	} else {
+		if(reverse){
+			playstring += (_playbackx - desiredlength) + ',' + _playbacky;
+		} else {
+			playstring += (_playbackx + desiredlength) + ',' + _playbacky;
+		}
+	}
+	
+	if(drawpath){
+		drawpath.remove();
+	}
+	
+	
+	console.log(playstring);
+	
+	drawpath = paper.path( playstring );
+	drawpath.attr({ 'arrow-end': 'classic-wide-long', 'stroke': '#fbb03b' });
+	$(drawpath.node).attr("class","playback");
+	
 
 	var thistime = Math.floor(inf);
 	
@@ -620,9 +664,11 @@ function progressrun (inf) {
 
 		$(".tl" + clipdata[clipends[curvid][thistime]].state + clipdata[clipends[curvid][thistime]].substate).each(function () {
 			var thiscl = $(this).attr('class');
-			if(thiscl.indexOf('transition_unused') != -1){
-				thiscl = thiscl.replace('transition_unused','transition_hot');
-				$(this).attr('class',thiscl);
+			if($(this).attr('data-outbound') == clipends[curvid][thistime]){
+				if(thiscl.indexOf('transition_unused') != -1){
+					thiscl = thiscl.replace('transition_unused','transition_hot');
+					$(this).attr('class',thiscl);
+				}
 			}
 		});
 
@@ -636,27 +682,44 @@ function progressrun (inf) {
 	}
 	if(clipedges[curvid][thistime]){
 	
+		// change this segment to viewed
 		
+		_clipoffsetfromstart = thistime;
+		
+		console.log(_clipoffsetfromstart + ' is offset now');
+		
+		markseen(timetosecs(clipdata[clipedges[curvid][thistime]].segend), curvid);
 	
 		if(clipedges[curvid][thistime] == _highlight_currentx){
 	
 			// the hot time is over
 	
 			console.log('unfiring ' + clipedges[curvid][thistime]);
-			$("#l" + clipedges[curvid][thistime] + "_ib").fadeOut();
+	
+			// fade this icon if it's not selected
+			if($("#l" + clipedges[curvid][thistime] + "_ib").hasClass('gsoff')){
+				$("#l" + clipedges[curvid][thistime] + "_ib").fadeOut();
+			}		
+			
+			
+			// fade other icons
+			
 			$(".gsa" + clipdata[clipedges[curvid][thistime]].state + clipdata[clipedges[curvid][thistime]].substate).each(function () {
 				if(($(this).attr('id') != "l" + clipedges[curvid][thistime] + '_ia') && $(this).hasClass('gsoff')){
 					$(this).fadeOut();
 				}
-				$(".tl" + clipdata[clipedges[curvid][thistime]].state + clipdata[clipedges[curvid][thistime]].substate).each(function () {
-					var thiscl = $(this).attr('class');
-					if(thiscl.indexOf('transition_hot') != -1){
-						thiscl = thiscl.replace('transition_hot','transition_unused');
-						$(this).attr('class',thiscl);
-					}
-				});
-
 			});
+			
+			// fade connecting lines
+
+			$(".tl" + clipdata[clipedges[curvid][thistime]].state + clipdata[clipedges[curvid][thistime]].substate).each(function () {
+				var thiscl = $(this).attr('class');
+				if(thiscl.indexOf('transition_hot') != -1){
+					thiscl = thiscl.replace('transition_hot','transition_unused');
+					$(this).attr('class',thiscl);
+				}
+			});
+
 		
 		
 			_highlight_currentx = 0;
@@ -664,6 +727,22 @@ function progressrun (inf) {
 		}
 		
 	}
+}
+
+
+function markseen (endpoint, cv){
+	var posdenus = parsed($(".pl" + cv + endpoint + ":first").attr('d'));
+	
+	_playbackx = parseInt(posdenus.endx);
+	_playbacky = parseInt(posdenus.endy);
+	
+	console.log(posdenus);
+	
+	var thiscl = $(".pl" + cv + endpoint + ":first").attr("class");
+	var thisid = $(".pl" + cv + endpoint + ":first").attr("id");
+	thiscl = thiscl.replace("scrubber ","scrubber_seen ");
+	$("#" + thisid).attr("class",thiscl);
+	segmentsseen.push({ 'video': cv, 'endpoint': endpoint, 'id': thisid });
 }
 
 function svgreset () {
