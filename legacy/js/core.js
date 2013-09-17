@@ -24,6 +24,7 @@ var _fson = false;
 var _curw = new Number();
 var _playbackx = new Number();
 var _playbacky = new Number();
+
 var _clipoffsetfromstart = 0;
 
 var preventdoublejumpIvl = new Number();
@@ -259,9 +260,9 @@ function render_lines (mode){
 	
 	_curw = w;
 
-	cliprect[0] = '5 5 ' + (w + 38) + ' 46';
+	cliprect[0] = '5 6 ' + (w + 44) + ' 42';
 	cliprect[1] = '5 41 22 ' + (_scrubheight - 41);
-	cliprect[2] = (w + 24) + ' 41 ' + (_scrubheight - 41) + ' ' + (w + 38);
+	cliprect[2] = (w + 26) + ' 41 ' + (_scrubheight - 41) + ' ' + (w + 36);
 	cliprect[3] = '21 ' + (h + 10) + ' ' + w + ' 99';
 	
 	// create a raphael object on the div I made for lines
@@ -465,31 +466,108 @@ function iconclick () {
 	var data = clipdata[parseInt($(this).attr('data-clipdata'))];
 	
 	var thisclass = 'g' + data.state;
+	var lastx = _highlight_currentx;
 	
 	// icon changes
 	
 	$(this).removeClass('gsoff').removeClass('gsactive').removeClass(thisclass).addClass(thisclass+"_on");
-	$('#l' + _highlight_currentx +'ib').removeClass('gsoff').removeClass('gsactive').removeClass(thisclass).addClass(thisclass+"_on");
+	$('#l' + _highlight_currentx +'_ib').removeClass('gsoff').removeClass('gsactive').removeClass(thisclass).addClass(thisclass+"_on");
 	
 	
 	// get the delay
 	
-	var timeleft = (clipdata[_highlight_currentx].segend_secs - curplayback);
+	var timeleft = (clipdata[lastx].segend_secs - curplayback);
 	
 	console.log('delay of ' + timeleft + 's before execution');
+
+
+	// go to the next segment from the outbound clip and dump it
+
+	var jump_clipseq = parseInt($("#l" + lastx).attr('data-lineseq'));
+
+	if(jump_clipseq > 0){
+		// go a segment back and black it out if it's not viewed
+		var thiscl = $(".pc" + clipdata[lastx].clip + '' + (jump_clipseq +1) + ':first').attr('class');
+		thiscl = thiscl.replace('scrubber ','scrubber_gone ');
+		$(".pc" + clipdata[lastx].clip + '' + (jump_clipseq + 1) + ':first').attr('class',thiscl);
+	}
+
+
 
 	setTimeout(function () {
 
 		//color the lines
 
+		var cambio = 0;
+
+		var w = ($("#container").width() - 100);
+		var h = ($("#container").width() - 100) * .31
+
+		switch(data.clip){
+			case 0:
+				_playbackx = 4;
+				_playbacky = 4;
+				break;
+			case 1:
+				_playbackx = w + 54;
+				_playbacky = 4;
+				break;
+			case 2:
+				_playbackx = w + 54;
+				_playbacky = (h+110);
+				break;
+			case 3:
+				_playbackx = 4;
+				_playbacky = (h+110);
+				break;
+		}
+
+
 		$(".transition_hot").each(function () {
 			if($(this).attr('data-inbound') == data.dataid){
+				cambio++;
 				var thiscl = $(this).attr('class');
 				thiscl = thiscl.replace('transition_hot ','transition_used ');
 				$(this).attr('class',thiscl);
 			}
 		});
+		
+		if(cambio < 3){
+			
+			// indicates the line got killed before we had a chance to make it hot
+			
+			$(".transition_unused").each(function () {
+				if($(this).attr('data-inbound') == data.dataid && $(this).attr('data-outbound') == lastx){
+					cambio++;
+					var thiscl = $(this).attr('class');
+					thiscl = thiscl.replace('transition_unused ','transition_used ');
+					$(this).attr('class',thiscl);
+				}
+			});
+		}
 
+		// get the target segment
+
+		var finalid = data.clip + '' + data.end_secs;
+		var posdenus = parsed($(".pl" + finalid + ":first").attr('d'));
+
+		_playbackx = parseInt(posdenus.endx);
+		_playbacky = parseInt(posdenus.endy);
+		
+		var clipseq = parseInt($(".pl" + finalid + ":first").attr('data-lineseq'));
+
+		if(clipseq > 0){
+			// go a segment back and black it out if it's not viewed
+			var thiscl = $(".pc" + data.clip + '' + (clipseq - 1) + ':first').attr('class');
+			thiscl = thiscl.replace('scrubber ','scrubber_gone ');
+			$(".pc" + data.clip + '' + (clipseq - 1) + ':first').attr('class',thiscl);
+		}
+		
+		// set the new clip offset
+		
+		_clipoffsetfromstart = data.start_secs;
+		
+		
 		// actually load the video
 
 		loadvid(data.clip,data.start_secs);
@@ -579,6 +657,9 @@ function loadvid (clip,starttime) {
 	curvid = clip;
 	videoclipname = $("#vid_" + clip).attr('data-clipname');
 	jwplayer('vidin').load({ 'streamer': _rtmpserver, 'file': 'legacy/' + videoclipname + '_crop.mp4', 'start': starttime, 'autostart': true });
+	jwplayer('vidin').onPlay(function () {
+		console.log('videoready');
+	});
 	
 }
 
@@ -646,7 +727,7 @@ function progressrun (inf) {
 	
 
 	var desiredlength = (curplayback - _clipoffsetfromstart) * secpx;
-	
+		
 	if(vertical){
 		if(reverse){
 			playstring += _playbackx + ',' + (_playbacky - desiredlength);
@@ -665,9 +746,8 @@ function progressrun (inf) {
 		drawpath.remove();
 	}
 	
-	
 	drawpath = paper.path( playstring );
-	drawpath.attr({ 'arrow-end': 'classic-wide-long', 'stroke': '#fbb03b' });
+	drawpath.attr({'arrow-end': 'classic-wide-long', 'stroke': '#fbb03b' });
 	$(drawpath.node).attr("class","playback");
 	
 
