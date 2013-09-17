@@ -43,6 +43,13 @@ $(window).resize(function () {
 	scrubresize();
 });
 
+$(document).scrollsnap({
+	snaps: '.snap',
+	proximity: 200
+});
+
+
+
 $(document).ready(function () {
 
 	var matop = ($(".yellow:first").height() / 2) - 400;
@@ -60,7 +67,6 @@ $(document).ready(function () {
 			fullscreen_off();
 		}
 		jwplayer("vidin").pause();
-		$('.yellow_b').show();
 		$('html, body').animate({ scrollTop: ($('.yellow_b').offset().top - 20) }, 1000);
 	});
 

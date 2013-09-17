@@ -4,14 +4,17 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
 <script src="js/jwplayer.js"></script>
-<script src="js/raphael.js"></script>
+<script src="../js/raphael.js"></script>
+<script src="../js/jquery.easing.min.js"></script>
+<script src="../js/jquery.event.special.js"></script>
+<script src="../js/jquery.scrollsnap.js"></script>
 <link href='http://fonts.googleapis.com/css?family=IM+Fell+English:400italic' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
 <script src="js/core.js"></script>
 	<title>Legacy</title>
 </head>
 <body>
-<div class="yellow"><h1><img src="art/leg_title.png" width="284" height="91" title="Empire: Legacy" /></h1>
+<div class="yellow snap"><h1><img src="art/leg_title.png" width="284" height="91" title="Empire: Legacy" /></h1>
 <div class="mystical" id="mainarea">
 <p id="a">A Nazi reenactment group in Indonesia.</p>
 <p id="b">A tombstone factory in India.</p>
@@ -22,7 +25,7 @@
 </div>
 <div class="play" id="legplay" style="display: none"></div>
 </div>
-<div id="container"><div id="debugmsg" style="display: none"></div>
+<div id="container" class="snap"><div id="debugmsg" style="display: none"></div>
 <div class="main" id="containerinner" style="display: none"><div id="lg_fs">Full screen</div>
 <div id="icongroup"></div><div id="linegroup"></div><div id="playback"></div>
 <div class="videospace" id="vid_0" data-clip="0" data-clipname="indonesia">
@@ -56,7 +59,7 @@
 <div class="more" id="legmore" style="display: none"></div>
 
 </div>
-<div class="yellow_b" style="display: none">
+<div class="yellow_b snap">
 <p>Between 1602 and 1795, nearly one million European colonists employed by The Dutch East India Company-known in Dutch as the Vereenigde Oost-Indische Compagnie or VOC-sailed from The Netherlands to ports in Africa and Asia. Some returned to Europe with spices and textiles, while others perished abroad. Still others settled in unfamiliar territory and built plantations, forts and factories.</p>
 
 <p>Exploration and exploitation of these regions was not new, as the English and Portuguese claimed their stake in the East long before the Dutch arrived. There was, however, one key difference to the Dutch endeavor: while other European colonials sailed under the protection of their royal houses, the Dutch sailed under a corporate logo. The VOC was just that: a privately held company operating independently from the Dutch government. It was the first company to issue public stock, and the first to control a private military. Through financial cunning and sheer force, the company pressured territories the world over into exclusive trading contracts.</p>
