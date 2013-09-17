@@ -4,8 +4,10 @@ var clipends = new Object();
 var clipedges = new Object();
 var cliplengths = new Object();
 var cliprect = new Object();
+var clipfirst = new Object();
 var connsloaded = false;
 var loadivl = new Number();
+var clipmap = new Array('indonesia','india','southafrica','srilanka');
 var paper;
 var drawpath;
 
@@ -72,7 +74,7 @@ $(document).ready(function () {
 		var h = ($("#container").width() - 100) * .31
 		var vtop = (($("#container").height() - h) / 2) - 20;
 
-		$(this).animate({ 'z-index': 5, 'width': ($("#container").width() - 80) + 'px', 'top': vtop, 'left': 40, 'height': 330 }).fadeOut(8000);
+		$(this).animate({ 'z-index': 68, 'width': ($("#container").width() - 80) + 'px', 'top': vtop, 'left': 40, 'height': 330 }).fadeOut(8000);
 		$(".videospace").hide().unbind('click');
 		$(this).show();
 		$(".blurb").remove();
@@ -148,26 +150,32 @@ $(document).ready(function () {
 				clipdata[x].fired = false;
 				clipdata[x].headsup = false;
 				clipdata[x].clicked = false;
+				
+				clipdata[x].start_secs = timetosecs(clipdata[x].start);
+				clipdata[x].end_secs = timetosecs(clipdata[x].end);
+				clipdata[x].segend_secs = timetosecs(clipdata[x].segend);
+				clipdata[x].seen = false;
+				
 				var cl = Math.floor(cliplengths[parseInt(clipdata[x].clip)]);
 				if(clipdata[x].clip == "0"){
-					clipstart_a[timetosecs(clipdata[x].start)] = x;
-					clipend_a[timetosecs(clipdata[x].end)] = x;
-					clipfinal_a[timetosecs(clipdata[x].segend)] = x;
+					clipstart_a[clipdata[x].start_secs] = x;
+					clipend_a[clipdata[x].end_secs] = x;
+					clipfinal_a[clipdata[x].segend_secs] = x;
 				}
 				if(clipdata[x].clip == "1"){
-					clipstart_b[timetosecs(clipdata[x].start)] = x;
-					clipend_b[timetosecs(clipdata[x].end)] = x;
-					clipfinal_b[timetosecs(clipdata[x].segend)] = x;
+					clipstart_b[clipdata[x].start_secs] = x;
+					clipend_b[clipdata[x].end_secs] = x;
+					clipfinal_b[clipdata[x].segend_secs] = x;
 				}
 				if(clipdata[x].clip == "2"){
-					clipstart_c[timetosecs(clipdata[x].start)] = x;
-					clipend_c[timetosecs(clipdata[x].end)] = x;
-					clipfinal_c[timetosecs(clipdata[x].segend)] = x;
+					clipstart_c[clipdata[x].start_secs] = x;
+					clipend_c[clipdata[x].end_secs] = x;
+					clipfinal_c[clipdata[x].segend_secs] = x;
 				}
 				if(clipdata[x].clip == "3"){
-					clipstart_d[timetosecs(clipdata[x].start)] = x;
-					clipend_d[timetosecs(clipdata[x].end)] = x;
-					clipfinal_d[timetosecs(clipdata[x].segend)] = x;
+					clipstart_d[clipdata[x].start_secs] = x;
+					clipend_d[clipdata[x].end_secs] = x;
+					clipfinal_d[clipdata[x].segend_secs] = x;
 				}
 			}
 
@@ -186,58 +194,6 @@ $(document).ready(function () {
 			
 			
 			render_lines(0);
-
-			
-			$(".hotpoint").click(function () {
-			
-				// the core clicking bits
-			
-				if($(this).hasClass('hotpoint_on')){
-				
-										
-					var timeleft = timetosecs(clipdata[_highlight_currentx].segend) - curplayback;
-				
-					var subthis = this;
-					debugmsg('delay of ' + timeleft + 's before execution');
-				
-					var thistop = $(this).offset().top;
-					var thisleft = $(this).offset().left;
-				
-					// remove hotpoints
-					$(".hotpoint_on").removeClass('hotpoint_on').hide();
-
-					setTimeout(function () {
-				
-						$("#scr_" + _highlight_curvid).find('.hotpoint').show();
-
-						dumphistory(_highlight_curvid, _highlight_curpt);
-
-
-						// keep track of clip times watched
-						var vidtime = new Object();
-						vidtime.clip = curvid;
-						vidtime.start = curstart;
-						vidtime.end = curplayback;
-						vidtime.count = vidjumpcnt;
-						
-						curstart = parseInt($(subthis).attr('data-start'));			
-						
-						videotimes.push(vidtime);
-						vidjumpcnt++;
-
-						loadvid($(subthis).attr('data-clip'),$(subthis).attr('data-start'));
-
-						// disable new hotpoints for ten seconds
-						preventdoublejump = true;
-					
-						preventdoublejumpIvl = setTimeout(function () {
-							preventdoublejump = false;
-						},(_increment * 2000));
-
-					}, (timeleft * 1000));
-
-				}
-			});
 		}
 	},500);
 	
@@ -310,7 +266,6 @@ function render_lines (mode){
 	$("#icongroup").css({ 'margin-top': (_scrubtop - 15) + 'px', 'width': (_scrubwidth + 30), 'height': (_scrubheight + 32) });
 
 	paper = Raphael(document.getElementById("linegroup"), _scrubwidth + 8, _scrubheight + 8);
-	paper_playback = Raphael(document.getElementById("playback"), $("#playback").width(), $("#playback").height());
 	
 	var curx = 4;
 	var cury = 4; // lines start at the top, so yeah
@@ -329,7 +284,9 @@ function render_lines (mode){
 		
 		var startar = new Array();
 
-		for(clip in clipedges[y]){
+		startar.push(0);
+
+		for(clip in clipstarts[y]){
 			startar.push(parseInt(clip));
 		}
 		startar = startar.sort(function(a,b){return a-b});
@@ -338,17 +295,28 @@ function render_lines (mode){
 		
 		for(var x = 0; x < startar.length; x++){
 		
-			var idcode = 'l' + clipedges[y][startar[x]];
+			var idcode = 'l' + y + 'start';
+			
+			if(x > 0){
+				idcode = 'l' + clipstarts[y][startar[x]];
+			}
 
 			var drawstring = "M" + curx + ',' + cury + ' L';
-			
-			$("#icongroup").append('<span class="icon gsoff g' + clipdata[clipedges[y][startar[x]]].state + ' gsa' + clipdata[clipedges[y][startar[x]]].state + clipdata[clipedges[y][startar[x]]].substate + '" id="' + idcode + '_ia" data-clipdata="' + clipedges[y][startar[x]] + '" style="display: none; left: ' + curx + '; top: ' + cury + '"></span>');
-			
+						
+			if(x > 0){
+				$("#icongroup").append('<div class="icon gsoff gsactive g' + clipdata[clipstarts[y][startar[x]]].state + ' gsa' + clipdata[clipstarts[y][startar[x]]].state + clipdata[clipstarts[y][startar[x]]].substate + '" id="' + idcode + '_ia" data-clipdata="' + clipstarts[y][startar[x]] + '" style="pointer-events: auto; display: none; left: ' + curx + '; top: ' + cury + '"></div>');
+			}
+
 			var change = 0;
 			if(x == 0){
-				change = startar[x] - 0;
+				change = clipdata[clipstarts[y][startar[1]]].start_secs;
+				clipfirst[y] = clipdata[clipstarts[y][startar[1]]].start_secs;
 			} else {
-				change = startar[x] - startar[x-1];
+				if(x == 1){
+					change = clipdata[clipstarts[y][startar[1]]].segend_secs - clipdata[clipstarts[y][startar[1]]].start_secs;
+				} else {
+					change = startar[x] - clipdata[clipstarts[y][startar[(x-1)]]].segend_secs;
+				}
 			}
 			
 			if(vertical){ // vertical
@@ -380,18 +348,24 @@ function render_lines (mode){
 					}
 				}
 			}
-			
-
+						
 			drawstring += curx + ',' + cury;
 			
-			$("#icongroup").append('<span class="icon gsoff g' + clipdata[clipedges[y][startar[x]]].state + ' gs' + clipdata[clipedges[y][startar[x]]].state + clipdata[clipedges[y][startar[x]]].substate + '" id="' + idcode + '_ib" data-clipdata="' + clipedges[y][startar[x]] + '"  style="display: none; left: ' + curx + '; top: ' + cury + '"></span>');
-
+			if(x > 0){
+				$("#icongroup").append('<div class="icon gsoff g' + clipdata[clipstarts[y][startar[x]]].state + ' gs' + clipdata[clipstarts[y][startar[x]]].state + clipdata[clipstarts[y][startar[x]]].substate + '" id="' + idcode + '_ib" data-clipdata="' + clipstarts[y][startar[x]] + '"  style="pointer-events: auto; display: none; left: ' + curx + '; top: ' + cury + '"></div>');
+			}	
+			
 			var newpath = paper.path( drawstring );
 									
 			var lineclass = "scrubber ";
-			lineclass += "g" + clipdata[clipedges[y][startar[x]]].state + ' og' + clipdata[clipedges[y][startar[x]]].state + clipdata[clipedges[y][startar[x]]].substate + ' pl' + y + startar[x];
+			if(x > 0){
+				lineclass += "g" + clipdata[clipstarts[y][startar[x]]].state + ' og' + clipdata[clipstarts[y][startar[x]]].state + clipdata[clipstarts[y][startar[x]]].substate + ' pc' + y + x + ' pl' + y + clipdata[clipstarts[y][startar[x]]].end_secs;
+			} else {
+				lineclass += 'pl' + y + ' pc' + y + '0';
+			}
 			
 			$(newpath.node).attr("id",idcode);
+			$(newpath.node).attr("data-lineseq",x);
 			$(newpath.node).attr("class",lineclass);
 			
 
@@ -453,6 +427,10 @@ function render_lines (mode){
 						$(newpath_b.node).attr("data-outbound",clipedges[y][clip]);
 						$(newpath_c.node).attr("data-outbound",clipedges[y][clip]);
 						$(newpath_d.node).attr("data-outbound",clipedges[y][clip]);
+						$(newpath_a.node).attr("data-inbound",clipedges[y][clip]);
+						$(newpath_b.node).attr("data-inbound",clipedges[y][clip]);
+						$(newpath_c.node).attr("data-inbound",clipedges[y][clip]);
+						$(newpath_d.node).attr("data-inbound",clipedges[y][clip]);
 
 						$(newpath_a.node).attr("class",lineclass);
 						$(newpath_b.node).attr("class",lineclass);
@@ -469,8 +447,36 @@ function render_lines (mode){
 		
 	svgreset();
 	$("#linegroup").hide();
+	$(".gsactive").click(iconclick);
 	$("#icongroup").hide();
 
+}
+
+function iconclick () {
+	var data = clipdata[parseInt($(this).attr('data-clipdata'))];
+	
+	
+	var timeleft = (clipdata[_highlight_currentx].segend_secs - curplayback);
+	
+	console.log('delay of ' + timeleft + 's before execution');
+
+	var thistop = $(this).offset().top;
+	var thisleft = $(this).offset().left;
+	setTimeout(function () {
+
+
+		loadvid(data.clip,data.start_secs);
+
+
+		// disable new hotpoints for ten seconds
+		preventdoublejump = true;
+
+		preventdoublejumpIvl = setTimeout(function () {
+			preventdoublejump = false;
+		},(_increment * 2000));
+
+	}, (timeleft * 1000));
+	
 }
 
 function dumphistory(vidtarget,startpoint){
@@ -632,8 +638,6 @@ function progressrun (inf) {
 	}
 	
 	
-	console.log(playstring);
-	
 	drawpath = paper.path( playstring );
 	drawpath.attr({ 'arrow-end': 'classic-wide-long', 'stroke': '#fbb03b' });
 	$(drawpath.node).attr("class","playback");
@@ -653,7 +657,6 @@ function progressrun (inf) {
 		
 		clipdata[clipends[curvid][thistime]].fired = true;
 		
-		console.log('firing ' + clipends[curvid][thistime]);
 		$("#l" + clipends[curvid][thistime] + "_ib").fadeIn();
 
 		$(".gsa" + clipdata[clipends[curvid][thistime]].state + clipdata[clipends[curvid][thistime]].substate).each(function () {
@@ -680,21 +683,26 @@ function progressrun (inf) {
 			}
 		}
 	}
+	
 	if(clipedges[curvid][thistime]){
 	
-		// change this segment to viewed
 		
-		_clipoffsetfromstart = thistime;
+		if(!clipdata[clipedges[curvid][thistime]].seen){
+				
+			// change this segment to viewed
+
+			_clipoffsetfromstart = thistime;
 		
-		console.log(_clipoffsetfromstart + ' is offset now');
-		
-		markseen(timetosecs(clipdata[clipedges[curvid][thistime]].segend), curvid);
+			markseen(curvid,clipdata[clipedges[curvid][thistime]].end_secs);
+
+			clipdata[clipedges[curvid][thistime]].seen = true;
+
+		}
 	
 		if(clipedges[curvid][thistime] == _highlight_currentx){
 	
 			// the hot time is over
 	
-			console.log('unfiring ' + clipedges[curvid][thistime]);
 	
 			// fade this icon if it's not selected
 			if($("#l" + clipedges[curvid][thistime] + "_ib").hasClass('gsoff')){
@@ -720,39 +728,65 @@ function progressrun (inf) {
 				}
 			});
 
-		
-		
 			_highlight_currentx = 0;
 		
 		}
 		
+	} else {
+		if(thistime == clipfirst[curvid]){
+
+			// this only shows up on the first playback but fucking hell is it annoying to me.
+			_clipoffsetfromstart = thistime;	
+			
+			markseen(curvid);
+		}
 	}
 }
 
 
-function markseen (endpoint, cv){
-	var posdenus = parsed($(".pl" + cv + endpoint + ":first").attr('d'));
+function markseen (cv,endpoint){
+	var finalid = new String();
+	
+	finalid = cv;
+		
+	if(endpoint){
+		finalid = cv + '' + endpoint;
+	}
+	
+	var posdenus = parsed($(".pl" + finalid + ":first").attr('d'));
 	
 	_playbackx = parseInt(posdenus.endx);
 	_playbacky = parseInt(posdenus.endy);
-	
-	console.log(posdenus);
-	
-	var thiscl = $(".pl" + cv + endpoint + ":first").attr("class");
-	var thisid = $(".pl" + cv + endpoint + ":first").attr("id");
+		
+	var thiscl = $(".pl" + finalid + ":first").attr("class");
+	var thisid = $(".pl" + finalid + ":first").attr("id");
 	thiscl = thiscl.replace("scrubber ","scrubber_seen ");
 	$("#" + thisid).attr("class",thiscl);
+
+	var seq = parseInt($(".pl" + finalid + ":first").attr('data-lineseq'));
+	if(seq > 0){
+		for(var n = 0; n < seq; n++){
+			var nthiscl = $(".pc" + cv + '' + n + ":first").attr("class");
+			nthiscl = nthiscl.replace("scrubber ","scrubber_seen ");
+			var nthisid = $(".pc" + cv + '' + n + ":first").attr("id");
+			$("#" + nthisid).attr("class",nthiscl);
+		}
+	}
+		
+	
+	
 	segmentsseen.push({ 'video': cv, 'endpoint': endpoint, 'id': thisid });
 }
 
 function svgreset () {
 
 	// reset the svg layer raphael is using
-	
+		
 	if(!_svglevel){
 		$("svg:first").css({ "z-index":3 });	
 		_svglevel = true;
 	}
+	
 }
 
 
