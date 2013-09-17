@@ -157,6 +157,8 @@ $(document).ready(function () {
 				clipdata[x].headsup = false;
 				clipdata[x].clicked = false;
 				
+				clipdata[x].dataid = x;
+				
 				clipdata[x].start_secs = timetosecs(clipdata[x].start);
 				clipdata[x].end_secs = timetosecs(clipdata[x].end);
 				clipdata[x].segend_secs = timetosecs(clipdata[x].segend);
@@ -401,6 +403,7 @@ function render_lines (mode){
 				
 				$(".og" + clipclass).each(function () {
 					var id = $(this).attr('id');
+					var clipid = parseInt(id.replace('l',''));
 					if(id != ("l" + clipedges[y][clip])){
 						var thisclip = parsed($(this).attr('d'));
 						var newline = "M" + coords.endx + ',' + coords.endy + 'L' + thisclip.startx + ',' + thisclip.starty;
@@ -433,10 +436,10 @@ function render_lines (mode){
 						$(newpath_b.node).attr("data-outbound",clipedges[y][clip]);
 						$(newpath_c.node).attr("data-outbound",clipedges[y][clip]);
 						$(newpath_d.node).attr("data-outbound",clipedges[y][clip]);
-						$(newpath_a.node).attr("data-inbound",clipedges[y][clip]);
-						$(newpath_b.node).attr("data-inbound",clipedges[y][clip]);
-						$(newpath_c.node).attr("data-inbound",clipedges[y][clip]);
-						$(newpath_d.node).attr("data-inbound",clipedges[y][clip]);
+						$(newpath_a.node).attr("data-inbound",clipid);
+						$(newpath_b.node).attr("data-inbound",clipid);
+						$(newpath_c.node).attr("data-inbound",clipid);
+						$(newpath_d.node).attr("data-inbound",clipid);
 
 						$(newpath_a.node).attr("class",lineclass);
 						$(newpath_b.node).attr("class",lineclass);
@@ -461,15 +464,33 @@ function render_lines (mode){
 function iconclick () {
 	var data = clipdata[parseInt($(this).attr('data-clipdata'))];
 	
+	var thisclass = 'g' + data.state;
+	
+	// icon changes
+	
+	$(this).removeClass('gsoff').removeClass('gsactive').removeClass(thisclass).addClass(thisclass+"_on");
+	$('#l' + _highlight_currentx +'ib').removeClass('gsoff').removeClass('gsactive').removeClass(thisclass).addClass(thisclass+"_on");
+	
+	
+	// get the delay
 	
 	var timeleft = (clipdata[_highlight_currentx].segend_secs - curplayback);
 	
 	console.log('delay of ' + timeleft + 's before execution');
 
-	var thistop = $(this).offset().top;
-	var thisleft = $(this).offset().left;
 	setTimeout(function () {
 
+		//color the lines
+
+		$(".transition_hot").each(function () {
+			if($(this).attr('data-inbound') == data.dataid){
+				var thiscl = $(this).attr('class');
+				thiscl = thiscl.replace('transition_hot ','transition_used ');
+				$(this).attr('class',thiscl);
+			}
+		});
+
+		// actually load the video
 
 		loadvid(data.clip,data.start_secs);
 
@@ -479,7 +500,7 @@ function iconclick () {
 
 		preventdoublejumpIvl = setTimeout(function () {
 			preventdoublejump = false;
-		},(_increment * 2000));
+		},(_increment * 5000));
 
 	}, (timeleft * 1000));
 	
@@ -558,6 +579,7 @@ function loadvid (clip,starttime) {
 	curvid = clip;
 	videoclipname = $("#vid_" + clip).attr('data-clipname');
 	jwplayer('vidin').load({ 'streamer': _rtmpserver, 'file': 'legacy/' + videoclipname + '_crop.mp4', 'start': starttime, 'autostart': true });
+	
 }
 
 
