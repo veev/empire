@@ -259,8 +259,8 @@ function endscreen (theme,focus) {
 	// endscreen
 
 	var w = ($("#container").width() - 100);
-	var h = ($("#container").width() - 100) * .28; // different from all other video height constructs because of the subtitle
-	var vtop = (($("#container").height() - h) / 2) - 80;
+	var h = ($("#container").width() - 100) * .31; // different from all other video height constructs because of the subtitle
+	var vtop = (($("#container").height() - h) / 2) - 50;
 	$("#endscreen").css({ 'width': w + 'px', 'padding-top': vtop, 'padding-left': 40, 'height': h + 'px' });
 
 	endpaper = Raphael(document.getElementById("endscreen"), _scrubwidth + 8, _scrubheight + 8);
