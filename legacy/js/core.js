@@ -9,7 +9,7 @@ var connsloaded = false;
 var loadivl = new Number();
 var clipmap = new Array('indonesia','india','southafrica','srilanka');
 var paper;
-var drawpath;
+var endpaper;
 
 var _rtmpserver = 'rtmp://s17pilyt3yyjgf.cloudfront.net/cfx/st';
 var _increment = 5;
@@ -37,6 +37,7 @@ var curstart = 0;
 var videotimes = new Array();
 var vidjumpcnt = 0;
 var segmentsseen = new Array();
+var themetrack = new Array();
 
 var usage = new Object();
 
@@ -203,6 +204,10 @@ $(document).ready(function () {
 			
 			
 			render_lines(0);
+			
+			$(".videospace").hide();
+			endscreen('a',2);
+			
 		}
 	},500);
 	
@@ -249,7 +254,37 @@ function fullscreen_off() {
 	_fson = false;
 }
 
+function endscreen (theme,focus) {
+
+	// endscreen
+
+	var w = ($("#container").width() - 100);
+	var h = ($("#container").width() - 100) * .28; // different from all other video height constructs because of the subtitle
+	var vtop = (($("#container").height() - h) / 2) - 80;
+	$("#endscreen").css({ 'width': w + 'px', 'padding-top': vtop, 'padding-left': 40, 'height': h + 'px' });
+
+	endpaper = Raphael(document.getElementById("endscreen"), _scrubwidth + 8, _scrubheight + 8);
+	
+	var group0 = endpaper.path('M 0 0 L ' + (w / 2) + ' ' +(h / 2) + ' L ' + w + ' 0 Z').attr({'fill':'url(art/ends/' + theme + '_0.jpg)'});
+	$(group0.node).attr("id","end0");
+	$(group0.node).attr("class","endbox");
+	var group1 = endpaper.path('M ' + w + ' 0 L ' + (w / 2) + ' ' +(h / 2) + ' L ' + w + ' ' + h + ' Z').attr({'fill':'url(art/ends/' + theme + '_1.jpg)'});
+	$(group1.node).attr("id","end1");
+	$(group1.node).attr("class","endbox");
+	var group2 = endpaper.path('M 0 ' + h + ' L ' + (w / 2) + ' ' +(h / 2) + ' L ' + w + ' ' + h + ' Z').attr({'fill':'url(art/ends/' + theme + '_2.jpg)'});
+	$(group2.node).attr("id","end2");
+	$(group2.node).attr("class","endbox");
+	var group3 = endpaper.path('M 0 0 L ' + (w / 2) + ' ' +(h / 2) + ' L 0 ' + h + ' Z').attr({'fill':'url(art/ends/' + theme + '_3.jpg)'});
+	$(group3.node).attr("id","end3");
+	$(group3.node).attr("class","endbox");
+	
+
+}
+
+
 function render_lines (mode){
+
+	// build the matrix of playback and connecting lines
 
 	var h = ($("#container").width() - 100) * .31;  // video height
 	var vtop = (($("#container").height() - h) / 2) - 60; // top of video space
@@ -291,45 +326,45 @@ function render_lines (mode){
 		
 		// traverse the starts to put them in order
 		
-		var startar = new Array();
+		var segendar = new Array();
 
-		startar.push(0);
+		segendar.push(0);
 
 		for(clip in clipstarts[y]){
-			startar.push(parseInt(clip));
+			segendar.push(parseInt(clip));
 		}
-		startar = startar.sort(function(a,b){return a-b});
+		segendar = segendar.sort(function(a,b){return a-b});
 
 		// traverse those starts and build the scrubber line segments
 		
-		for(var x = 0; x < startar.length; x++){
+		for(var x = 0; x < segendar.length; x++){
 		
 			var idcode = 'l' + y + 'start';
 			
 			if(x > 0){
-				idcode = 'l' + clipstarts[y][startar[x]];
+				idcode = 'l' + clipstarts[y][segendar[x]];
 			}
 
 			var drawstring = "M" + curx + ',' + cury + ' L';
 						
 			if(x > 0){
-				$("#icongroup").append('<div class="icon gsoff gsactive g' + clipdata[clipstarts[y][startar[x]]].state + ' gsa' + clipdata[clipstarts[y][startar[x]]].state + clipdata[clipstarts[y][startar[x]]].substate + '" id="' + idcode + '_ia" data-clipdata="' + clipstarts[y][startar[x]] + '" style="pointer-events: auto; display: none; left: ' + curx + '; top: ' + cury + '"></div>');
+				$("#icongroup").append('<div class="icon gsoff gsactive g' + clipdata[clipstarts[y][segendar[x]]].state + ' gsa' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ia" data-clipdata="' + clipstarts[y][segendar[x]] + '" style="pointer-events: auto; display: none; left: ' + curx + '; top: ' + cury + '"></div>');
 			}
 
 			var change = 0;
 			if(x == 0){
-				change = clipdata[clipstarts[y][startar[1]]].start_secs;
-				clipfirst[y] = clipdata[clipstarts[y][startar[1]]].start_secs;
+				change = clipdata[clipstarts[y][segendar[1]]].start_secs;
+				clipfirst[y] = clipdata[clipstarts[y][segendar[1]]].start_secs;
 			} else {
 				if(x == 1){
-					change = clipdata[clipstarts[y][startar[1]]].segend_secs - clipdata[clipstarts[y][startar[1]]].start_secs;
+					change = clipdata[clipstarts[y][segendar[1]]].segend_secs - clipdata[clipstarts[y][segendar[1]]].start_secs;
 				} else {
-					change = startar[x] - clipdata[clipstarts[y][startar[(x-1)]]].segend_secs;
+					change = segendar[x] - clipdata[clipstarts[y][segendar[(x-1)]]].segend_secs;
 				}
 			}
 			
 			if(vertical){ // vertical
-				if(x == (startar.length - 1)){
+				if(x == (segendar.length - 1)){
 					if(y == 1){
 						cury = _scrubheight;
 					} else {
@@ -343,7 +378,7 @@ function render_lines (mode){
 					}
 				}
 			} else { // horizontal
-				if(x == (startar.length - 1)){
+				if(x == (segendar.length - 1)){
 					if(y == 0){
 						curx = _scrubwidth;
 					} else {
@@ -361,14 +396,14 @@ function render_lines (mode){
 			drawstring += curx + ',' + cury;
 			
 			if(x > 0){
-				$("#icongroup").append('<div class="icon gsoff g' + clipdata[clipstarts[y][startar[x]]].state + ' gs' + clipdata[clipstarts[y][startar[x]]].state + clipdata[clipstarts[y][startar[x]]].substate + '" id="' + idcode + '_ib" data-clipdata="' + clipstarts[y][startar[x]] + '"  style="pointer-events: auto; display: none; left: ' + curx + '; top: ' + cury + '"></div>');
+				$("#icongroup").append('<div class="icon gsoff g' + clipdata[clipstarts[y][segendar[x]]].state + ' gs' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ib" data-clipdata="' + clipstarts[y][segendar[x]] + '"  style="pointer-events: auto; display: none; left: ' + curx + '; top: ' + cury + '"></div>');
 			}	
 			
 			var newpath = paper.path( drawstring );
 									
 			var lineclass = "scrubber ";
 			if(x > 0){
-				lineclass += "g" + clipdata[clipstarts[y][startar[x]]].state + ' og' + clipdata[clipstarts[y][startar[x]]].state + clipdata[clipstarts[y][startar[x]]].substate + ' pc' + y + x + ' pl' + y + clipdata[clipstarts[y][startar[x]]].end_secs;
+				lineclass += "g" + clipdata[clipstarts[y][segendar[x]]].state + ' og' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + ' pc' + y + x + ' pl' + y + clipdata[clipstarts[y][segendar[x]]].end_secs;
 			} else {
 				lineclass += 'pl' + y + ' pc' + y + '0';
 			}
@@ -456,7 +491,7 @@ function render_lines (mode){
 		}
 		
 	svgreset();
-	$("#linegroup").hide();
+//	$("#linegroup").hide();
 	$(".gsactive").click(iconclick);
 	$("#icongroup").hide();
 
@@ -464,6 +499,7 @@ function render_lines (mode){
 
 function iconclick () {
 	var data = clipdata[parseInt($(this).attr('data-clipdata'))];
+	themetrack.push(data.state);
 	
 	var thisclass = 'g' + data.state;
 	var lastx = _highlight_currentx;
