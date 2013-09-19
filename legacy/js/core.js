@@ -8,8 +8,7 @@ var clipfirst = new Object();
 var connsloaded = false;
 var loadivl = new Number();
 var clipmap = new Array('indonesia','india','southafrica','srilanka');
-var paper;
-var endpaper;
+var paper,paper_connections,endpaper;
 
 var _rtmpserver = 'rtmp://s17pilyt3yyjgf.cloudfront.net/cfx/st';
 var _increment = 5;
@@ -38,6 +37,11 @@ var videotimes = new Array();
 var vidjumpcnt = 0;
 var segmentsseen = new Array();
 var themetrack = new Array();
+var litlines = new Array();
+var litscrubbers = new Array();
+var liticons = new Array();
+var gonescrubbers = new Array();
+var gonelines = new Array();
 
 var usage = new Object();
 
@@ -271,21 +275,36 @@ function endscreen (theme,focus) {
 	$("#endscreen").append('<div id="group2a" class="color" style="background: url(art/ends/' + theme + '_2.jpg) center center; background-size: 1280px 720px; width: 1280px' + '; height: 407px; display: none;"></div>');
 	$("#endscreen").append('<div id="group3a" class="color" style="background: url(art/ends/' + theme + '_3.jpg) center center; background-size: 1280px 720px; width: 1280px' + '; height: 407px; display: none;"></div>');
 	
-	$("#group" + focus + "a").fadeTo(5000,.8);
+	$("#group" + focus + "a").fadeTo(9500,.8);
+
+	render_lines(1, { 'w':w,'h':h,'vtop':vtop,'ml':ml });
 
 }
 
 
-function render_lines (mode){
+function render_lines (mode,spatial){
 
 	// build the matrix of playback and connecting lines
 
-	var h = ($("#container").width() - 100) * .31;  // video height
-	var vtop = (($("#container").height() - h) / 2) - 60; // top of video space
-	var w = ($("#container").width() - 100); // video width;
+
+	var h, vtop, w;
+
+	h = ($("#container").width() - 100) * .31;  // video height
+	vtop = (($("#container").height() - h) / 2) - 60; // top of video space
+	w = ($("#container").width() - 100); // video width;
+	ml = 15;
 	_scrubwidth = w + 54;
 	_scrubheight = h + 110;
 	_scrubtop = vtop - 40;
+
+
+	if(mode == 1){
+		h = spatial.h;
+		vtop = spatial.vtop;
+		w = spatial.w;
+		ml = spatial.ml;
+	}
+	
 	
 	_curw = w;
 
@@ -300,10 +319,17 @@ function render_lines (mode){
 		paper.remove();
 	}
 
-	$("#linegroup").css({ 'margin-top': _scrubtop + 'px', 'margin-left': '15px' });
-	$("#icongroup").css({ 'margin-top': (_scrubtop - 15) + 'px', 'width': (_scrubwidth + 30), 'height': (_scrubheight + 32) });
+	if(paper_connections){
+		paper_connections.remove();
+	}
 
+	$("#linegroup").css({ 'margin-top': _scrubtop + 'px', 'margin-left': ml});
+	$("#linegroup_connections").css({ 'margin-top': _scrubtop + 'px', 'margin-left': ml});
+
+	$("#icongroup").css({ 'margin-top': (_scrubtop - 15) + 'px', 'width': (_scrubwidth + 30), 'height': (_scrubheight + 32), 'margin-left': (ml - 15) });
+		
 	paper = Raphael(document.getElementById("linegroup"), _scrubwidth + 8, _scrubheight + 8);
+	paper_connections = Raphael(document.getElementById("linegroup_connections"), _scrubwidth, _scrubheight + 8);
 	
 	var curx = 4;
 	var cury = 4; // lines start at the top, so yeah
@@ -404,6 +430,7 @@ function render_lines (mode){
 			
 			$(newpath.node).attr("id",idcode);
 			$(newpath.node).attr("data-lineseq",x);
+			$(newpath.node).attr("data-lineclip",y);
 			$(newpath.node).attr("class",lineclass);
 			
 
@@ -436,19 +463,26 @@ function render_lines (mode){
 					var clipid = parseInt(id.replace('l',''));
 					if(id != ("l" + clipedges[y][clip])){
 						var thisclip = parsed($(this).attr('d'));
+						
 						var newline = "M" + coords.endx + ',' + coords.endy + 'L' + thisclip.startx + ',' + thisclip.starty;
 						
-						var newpath_a = paper.path( newline );
-						newpath_a.attr({'clip-rect':cliprect[0]});
+						var newpath_a, newpath_b, newpath_c, newpath_d;
 
-						var newpath_b = paper.path( newline );
-						newpath_b.attr({'clip-rect':cliprect[1]});
+						if(mode == 0){
+							newpath_a = paper_connections.path( newline );
+							newpath_a.attr({'clip-rect':cliprect[0]});
 
-						var newpath_c = paper.path( newline );
-						newpath_c.attr({'clip-rect':cliprect[2]});
+							newpath_b = paper_connections.path( newline );
+							newpath_b.attr({'clip-rect':cliprect[1]});
 
-						var newpath_d = paper.path( newline );
-						newpath_d.attr({'clip-rect':cliprect[3]});
+							newpath_c = paper_connections.path( newline );
+							newpath_c.attr({'clip-rect':cliprect[2]});
+
+							newpath_d = paper_connections.path( newline );
+							newpath_d.attr({'clip-rect':cliprect[3]});
+						} else {
+							newpath_a = paper_connections.path( newline );
+						}
 
 						var lineclass = "transition_unused tl" + clipclass;
 			
@@ -458,24 +492,32 @@ function render_lines (mode){
 						var trans_d = idcode + '_4';
 			
 						$(newpath_a.node).attr("id",trans_a);
-						$(newpath_b.node).attr("id",trans_b);
-						$(newpath_c.node).attr("id",trans_c);
-						$(newpath_d.node).attr("id",trans_d);
+						if(mode == 0){
+							$(newpath_b.node).attr("id",trans_b);
+							$(newpath_c.node).attr("id",trans_c);
+							$(newpath_d.node).attr("id",trans_d);
+						}
 
 						$(newpath_a.node).attr("data-outbound",clipedges[y][clip]);
-						$(newpath_b.node).attr("data-outbound",clipedges[y][clip]);
-						$(newpath_c.node).attr("data-outbound",clipedges[y][clip]);
-						$(newpath_d.node).attr("data-outbound",clipedges[y][clip]);
+						if(mode == 0){
+							$(newpath_b.node).attr("data-outbound",clipedges[y][clip]);
+							$(newpath_c.node).attr("data-outbound",clipedges[y][clip]);
+							$(newpath_d.node).attr("data-outbound",clipedges[y][clip]);
+						}
+
 						$(newpath_a.node).attr("data-inbound",clipid);
-						$(newpath_b.node).attr("data-inbound",clipid);
-						$(newpath_c.node).attr("data-inbound",clipid);
-						$(newpath_d.node).attr("data-inbound",clipid);
-
+						if(mode == 0){
+							$(newpath_b.node).attr("data-inbound",clipid);
+							$(newpath_c.node).attr("data-inbound",clipid);
+							$(newpath_d.node).attr("data-inbound",clipid);
+						}
+						
 						$(newpath_a.node).attr("class",lineclass);
-						$(newpath_b.node).attr("class",lineclass);
-						$(newpath_c.node).attr("class",lineclass);
-						$(newpath_d.node).attr("class",lineclass);
-
+						if(mode == 0){
+							$(newpath_b.node).attr("class",lineclass);
+							$(newpath_c.node).attr("class",lineclass);
+							$(newpath_d.node).attr("class",lineclass);
+						}
 
 					}
 				});
