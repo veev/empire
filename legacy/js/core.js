@@ -206,7 +206,7 @@ $(document).ready(function () {
 			render_lines(0);
 			
 			$(".videospace").hide();
-			endscreen('a',2);
+			endscreen('b',2);
 			
 		}
 	},500);
@@ -261,23 +261,28 @@ function endscreen (theme,focus) {
 	var w = ($("#container").width() - 100);
 	var h = ($("#container").width() - 100) * .31; // different from all other video height constructs because of the subtitle
 	var vtop = (($("#container").height() - h) / 2) - 50;
-	$("#endscreen").css({ 'width': w + 'px', 'padding-top': vtop, 'padding-left': 40, 'height': h + 'px' });
+	$("#endscreen").css({ 'width': w + 'px', 'margin-top': vtop, 'margin-left': (($("#containerinner").width() / 2) - 640) + 'px', 'height': h + 'px' });
+	$("#endscreen").append('<div id="group0" style="background: url(art/ends/' + theme + '_0.jpg) center center; -webkit-filter: grayscale(100%); background-size: 1280px 720px; width: 1280px' + '; height: 407px"></div>');
+	$("#endscreen").append('<div id="group1" style="background: url(art/ends/' + theme + '_1.jpg) center center; -webkit-filter: grayscale(100%);  background-size: 1280px 720px; width: 1280px' + '; height: 407px"></div>');
+	$("#endscreen").append('<div id="group2" style="background: url(art/ends/' + theme + '_2.jpg) center center; background-size: 1280px 720px; width: 1280px' + '; height: 407px"></div>');
+	$("#endscreen").append('<div id="group3" style="background: url(art/ends/' + theme + '_3.jpg) center center; background-size: 1280px 720px; width: 1280px' + '; height: 407px"></div>');
+	
 
-	endpaper = Raphael(document.getElementById("endscreen"), _scrubwidth + 8, _scrubheight + 8);
-	
-	var group0 = endpaper.path('M 0 0 L ' + (w / 2) + ' ' +(h / 2) + ' L ' + w + ' 0 Z').attr({'fill':'url(art/ends/' + theme + '_0.jpg)'});
-	$(group0.node).attr("id","end0");
-	$(group0.node).attr("class","endbox");
-	var group1 = endpaper.path('M ' + w + ' 0 L ' + (w / 2) + ' ' +(h / 2) + ' L ' + w + ' ' + h + ' Z').attr({'fill':'url(art/ends/' + theme + '_1.jpg)'});
-	$(group1.node).attr("id","end1");
-	$(group1.node).attr("class","endbox");
-	var group2 = endpaper.path('M 0 ' + h + ' L ' + (w / 2) + ' ' +(h / 2) + ' L ' + w + ' ' + h + ' Z').attr({'fill':'url(art/ends/' + theme + '_2.jpg)'});
-	$(group2.node).attr("id","end2");
-	$(group2.node).attr("class","endbox");
-	var group3 = endpaper.path('M 0 0 L ' + (w / 2) + ' ' +(h / 2) + ' L 0 ' + h + ' Z').attr({'fill':'url(art/ends/' + theme + '_3.jpg)'});
-	$(group3.node).attr("id","end3");
-	$(group3.node).attr("class","endbox");
-	
+//	endpaper = Raphael(document.getElementById("endscreen"), _scrubwidth + 8, _scrubheight + 8);
+//	
+//	var group0 = endpaper.path('M 0 0 L ' + (w / 2) + ' ' +(h / 2) + ' L ' + w + ' 0 Z').attr({'fill':'url(art/ends/' + theme + '_0.jpg)'});
+//	$(group0.node).attr("id","end0");
+//	$(group0.node).attr("class","endbox");
+//	var group1 = endpaper.path('M ' + w + ' 0 L ' + (w / 2) + ' ' +(h / 2) + ' L ' + w + ' ' + h + ' Z').attr({'fill':'url(art/ends/' + theme + '_1.jpg)'});
+//	$(group1.node).attr("id","end1");
+//	$(group1.node).attr("class","endbox");
+//	var group2 = endpaper.path('M 0 ' + h + ' L ' + (w / 2) + ' ' +(h / 2) + ' L ' + w + ' ' + h + ' Z').attr({'fill':'url(art/ends/' + theme + '_2.jpg)'});
+//	$(group2.node).attr("id","end2");
+//	$(group2.node).attr("class","endbox");
+//	var group3 = endpaper.path('M 0 0 L ' + (w / 2) + ' ' +(h / 2) + ' L 0 ' + h + ' Z').attr({'fill':'url(art/ends/' + theme + '_3.jpg)'});
+//	$(group3.node).attr("id","end3");
+//	$(group3.node).attr("class","endbox");
+//	
 
 }
 
