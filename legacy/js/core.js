@@ -263,21 +263,33 @@ function endscreen (theme,focus) {
 	// endscreen
 
 	var w = ($("#container").width() - 100);
-	var h = ($("#container").width() - 100) * .31; // different from all other video height constructs because of the subtitle
+	var h = ($("#container").width() - 100) * .31;
 	var vtop = (($("#container").height() - h) / 2) - 50;
-	$("#endscreen").css({ 'width': w + 'px', 'margin-top': vtop, 'margin-left': (($("#containerinner").width() / 2) - 640) + 'px', 'height': h + 'px' });
-	$("#endscreen").append('<div id="group0" class="grey" style="background: url(art/ends/' + theme + '_0.jpg) center center; background-size: 1280px 720px; width: 1280px' + '; height: 407px"></div>');
-	$("#endscreen").append('<div id="group1" class="grey" style="background: url(art/ends/' + theme + '_1.jpg) center center; background-size: 1280px 720px; width: 1280px' + '; height: 407px"></div>');
-	$("#endscreen").append('<div id="group2" class="grey" style="background: url(art/ends/' + theme + '_2.jpg) center center; background-size: 1280px 720px; width: 1280px' + '; height: 407px"></div>');
-	$("#endscreen").append('<div id="group3" class="grey" style="background: url(art/ends/' + theme + '_3.jpg) center center; background-size: 1280px 720px; width: 1280px' + '; height: 407px"></div>');
-	$("#endscreen").append('<div id="group0a" class="color" style="background: url(art/ends/' + theme + '_0.jpg) center center; background-size: 1280px 720px; width: 1280px' + '; height: 407px; display: none;"></div>');
-	$("#endscreen").append('<div id="group1a" class="color" style="background: url(art/ends/' + theme + '_1.jpg) center center; background-size: 1280px 720px; width: 1280px' + '; height: 407px; display: none;"></div>');
-	$("#endscreen").append('<div id="group2a" class="color" style="background: url(art/ends/' + theme + '_2.jpg) center center; background-size: 1280px 720px; width: 1280px' + '; height: 407px; display: none;"></div>');
-	$("#endscreen").append('<div id="group3a" class="color" style="background: url(art/ends/' + theme + '_3.jpg) center center; background-size: 1280px 720px; width: 1280px' + '; height: 407px; display: none;"></div>');
+	w += 54;
+	vtop -= 47;
+	h += 110;
 	
-	$("#group" + focus + "a").fadeTo(9500,.8);
+	$("#endscreen_outer").css({ 'width': w + 'px', 'margin-top': vtop, 'margin-left': '18px', 'height': h + 'px' });
 
-	render_lines(1, { 'w':w,'h':h,'vtop':vtop,'ml':ml });
+	$("#endscreen").append('<div id="group0" class="grey" style="background: url(art/ends/' + theme + '_0.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px;"></div>');
+	$("#endscreen").append('<div id="group1" class="grey" style="background: url(art/ends/' + theme + '_1.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px;"></div>');
+	$("#endscreen").append('<div id="group2" class="grey" style="background: url(art/ends/' + theme + '_2.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px;"></div>');
+	$("#endscreen").append('<div id="group3" class="grey" style="background: url(art/ends/' + theme + '_3.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px;"></div>');
+	$("#endscreen").append('<div id="group0a" class="color" style="background: url(art/ends/' + theme + '_0.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; display: none;"></div>');
+	$("#endscreen").append('<div id="group1a" class="color" style="background: url(art/ends/' + theme + '_1.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; display: none;"></div>');
+	$("#endscreen").append('<div id="group2a" class="color" style="background: url(art/ends/' + theme + '_2.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; display: none;"></div>');
+	$("#endscreen").append('<div id="group3a" class="color" style="background: url(art/ends/' + theme + '_3.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; display: none;"></div>');
+	
+	var denom = (w - 2) / 1280;
+	var denomh = (h - 2) / 407;
+	
+	$("#endscreen").css({ 'transform-origin': '0 0', '-webkit-transform-origin': '0 0',  'transform': 'scale(' + denom + ',' + denomh + ');', '-ms-transform': 'scale(' + denom + ',' + denomh + ')', '-webkit-transform': 'scale(' + denom + ',' + denomh + ')' });
+	
+	$("#endscreen").fadeIn(4000, function () {
+		$("#group" + focus + "a").fadeTo(9500,.8);
+	});
+		
+	render_lines(1, { 'w':$("#endscreen").width() ,'h':$("#endscreen").height(),'vtop':vtop,'ml':ml });
 
 }
 

@@ -77,18 +77,18 @@ div#container div#containerinner div#linegroup path.scrubber_gone { z-index: 4; 
 div#container div#containerinner div#linegroup_connections path.transition_unused { z-index: 3; stroke: #333; stroke-width: 1px; }
 div#container div#containerinner div#linegroup_connections path.transition_hot {  z-index: 3; stroke: #fff; stroke-width: 1px; }
 div#container div#containerinner div#linegroup_connections path.transition_used { z-index: 3; stroke: #fbb03b; stroke-width: 1px; }
-div#container div#containerinner div#endscreen { position: absolute; z-index: 22; pointer-events: none; }
-div#container div#containerinner div#endscreen div#group0 { position: absolute; top: 0; left: 0; z-index: 4; -webkit-mask-image: url(../art/ends/mask1280_0.png); -moz-mask-image: url(../art/ends/mask1280_0.png); }
-div#container div#containerinner div#endscreen div#group1 { position: absolute; top: 0; left: 0; z-index: 5; -webkit-mask-image: url(../art/ends/mask1280_1.png); -moz-mask-image: url(../art/ends/mask1280_1.png); }
-div#container div#containerinner div#endscreen div#group2 { position: absolute; top: 0; left: 0; z-index: 6; -webkit-mask-image: url(../art/ends/mask1280_2.png); -moz-mask-image: url(../art/ends/mask1280_2.png); }
-div#container div#containerinner div#endscreen div#group3 { position: absolute; top: 0; left: 0; z-index: 7; -webkit-mask-image: url(../art/ends/mask1280_3.png); -moz-mask-image: url(../art/ends/mask1280_3.png); }
-div#container div#containerinner div#endscreen div#group0a { position: absolute; top: 0; left: 0; z-index: 8; -webkit-mask-image: url(../art/ends/mask1280_0.png); -moz-mask-image: url(../art/ends/mask1280_0.png); }
-div#container div#containerinner div#endscreen div#group1a { position: absolute; top: 0; left: 0; z-index: 9; -webkit-mask-image: url(../art/ends/mask1280_1.png); -moz-mask-image: url(../art/ends/mask1280_1.png); }
-div#container div#containerinner div#endscreen div#group2a { position: absolute; top: 0; left: 0; z-index: 10; -webkit-mask-image: url(../art/ends/mask1280_2.png); -moz-mask-image: url(../art/ends/mask1280_2.png); }
-div#container div#containerinner div#endscreen div#group3a { position: absolute; top: 0; left: 0; z-index: 11; -webkit-mask-image: url(../art/ends/mask1280_3.png); -moz-mask-image: url(../art/ends/mask1280_3.png); }
-div#container div#containerinner div#endscreen div.grey { -webkit-filter: grayscale(100%); -moz-filter: grayscale(100%); }
-div#container div#containerinner div#endscreen div.color { -webkit-filter: grayscale(0%); -webkit-transition: -webkit-filter 500ms linear; }
-
+div#container div#containerinner div#endscreen_outer { position: absolute; z-index: 22; pointer-events: none; }
+div#container div#containerinner div#endscreen_outer div#endscreen { position: absolute; width: 1280px; height: 720px; }
+div#container div#containerinner div#endscreen_outer div#group0 { position: absolute; top: 0; left: 0; z-index: 4; -webkit-mask-image: url(../art/ends/mask1280_0.png); -moz-mask-image: url(../art/ends/mask1280_0.png); }
+div#container div#containerinner div#endscreen_outer div#group1 { position: absolute; top: 0; left: 0; z-index: 5; -webkit-mask-image: url(../art/ends/mask1280_1.png); -moz-mask-image: url(../art/ends/mask1280_1.png); }
+div#container div#containerinner div#endscreen_outer div#group2 { position: absolute; top: 0; left: 0; z-index: 6; -webkit-mask-image: url(../art/ends/mask1280_2.png); -moz-mask-image: url(../art/ends/mask1280_2.png); }
+div#container div#containerinner div#endscreen_outer div#group3 { position: absolute; top: 0; left: 0; z-index: 7; -webkit-mask-image: url(../art/ends/mask1280_3.png); -moz-mask-image: url(../art/ends/mask1280_3.png); }
+div#container div#containerinner div#endscreen_outer div#group0a { position: absolute; top: 0; left: 0; z-index: 8; -webkit-mask-image: url(../art/ends/mask1280_0.png); -moz-mask-image: url(../art/ends/mask1280_0.png); }
+div#container div#containerinner div#endscreen_outer div#group1a { position: absolute; top: 0; left: 0; z-index: 9; -webkit-mask-image: url(../art/ends/mask1280_1.png); -moz-mask-image: url(../art/ends/mask1280_1.png); }
+div#container div#containerinner div#endscreen_outer div#group2a { position: absolute; top: 0; left: 0; z-index: 10; -webkit-mask-image: url(../art/ends/mask1280_2.png); -moz-mask-image: url(../art/ends/mask1280_2.png); }
+div#container div#containerinner div#endscreen_outer div#endscreen div#group3a { position: absolute; top: 0; left: 0; z-index: 11; -webkit-mask-image: url(../art/ends/mask1280_3.png); -moz-mask-image: url(../art/ends/mask1280_3.png); }
+div#container div#containerinner div#endscreen_outer div#endscreen div.grey { -webkit-filter: grayscale(100%); -moz-filter: grayscale(100%); }
+div#container div#containerinner div#endscreen_outer div#endscreen div.color { -webkit-filter: grayscale(0%); -webkit-transition: -webkit-filter 500ms linear; }
 div#container div#containerinner div#playback { position: absolute; z-index: 1; pointer-events: none; }
 div#container div#containerinner div.videospace { z-index: 68; text-align: center; position: absolute; }
 div#container div#containerinner div.videospace div.blurb { display: none; }
