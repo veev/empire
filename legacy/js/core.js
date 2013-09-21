@@ -18,6 +18,7 @@ var _highlight_curvid = 0;
 var _highlight_curpt = 0;
 var _highlight_currentx = 0;
 var _videoon = false;
+var _endscreenon = false;
 var _svglevel = false;
 var _fson = false;
 var _curw = new Number();
@@ -291,7 +292,8 @@ function endscreen (theme,focus) {
 //	$("#endscreen").fadeIn(4000, function () {
 		$("#group" + focus + "a").fadeTo(9500,.8);
 //	});
-		
+	_endscreenon = true;
+	
 	render_lines(1, { 'w':$("#endscreen").width() ,'h':$("#endscreen").height(),'vtop':vtop,'ml':ml });
 
 }
@@ -790,6 +792,10 @@ function scrubresize (){
 		newleft = 40;
 	}
 
+	if(_endscreenon){
+		$("#endscreen_outer").css({ 'margin-top': (vtop - 36) + 'px', 'margin-left': (newleft - 22) });
+	
+	}
 
 	if(_videoon){
 		// resize the video object because why the hell not
