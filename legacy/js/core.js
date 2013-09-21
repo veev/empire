@@ -37,11 +37,11 @@ var videotimes = new Array();
 var vidjumpcnt = 0;
 var segmentsseen = new Array();
 var themetrack = new Array();
-var litlines = new Array();
-var litscrubbers = new Array();
-var liticons = new Array();
-var gonescrubbers = new Array();
-var gonelines = new Array();
+var litlines = new Object();
+var litscrubbers = new Object();
+var liticons = new Object();
+var gonescrubbers = new Object();
+var gonelines = new Object();
 
 var usage = new Object();
 
@@ -79,6 +79,9 @@ $(document).ready(function () {
 	// clickability for the initial 4
 
 	$(".videospace").click(function () {
+		if(audioactive){
+			audiostop();
+		}
 		curvid = parseInt($(this).attr('data-clip'));
 		actualclip = $(this).attr('data-clipname');
 
@@ -285,9 +288,9 @@ function endscreen (theme,focus) {
 	
 	$("#endscreen").css({ 'transform-origin': '0 0', '-webkit-transform-origin': '0 0',  'transform': 'scale(' + denom + ',' + denomh + ');', '-ms-transform': 'scale(' + denom + ',' + denomh + ')', '-webkit-transform': 'scale(' + denom + ',' + denomh + ')' });
 	
-	$("#endscreen").fadeIn(4000, function () {
+//	$("#endscreen").fadeIn(4000, function () {
 		$("#group" + focus + "a").fadeTo(9500,.8);
-	});
+//	});
 		
 	render_lines(1, { 'w':$("#endscreen").width() ,'h':$("#endscreen").height(),'vtop':vtop,'ml':ml });
 
@@ -380,7 +383,13 @@ function render_lines (mode,spatial){
 			var drawstring = "M" + curx + ',' + cury + ' L';
 						
 			if(x > 0){
-				$("#icongroup").append('<div class="icon gsoff gsactive g' + clipdata[clipstarts[y][segendar[x]]].state + ' gsa' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ia" data-clipdata="' + clipstarts[y][segendar[x]] + '" style="pointer-events: auto; display: none; left: ' + curx + '; top: ' + cury + '"></div>');
+				if(mode == 0 || liticons[idcode + '_ia']){
+					var ic_classa = '<div class="icon gsoff gsactive g' + clipdata[clipstarts[y][segendar[x]]].state + ' gsa' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ia" data-clipdata="' + clipstarts[y][segendar[x]] + '" style="pointer-events: auto; display: none; left: ' + curx + '; top: ' + cury + '"></div>';
+					if(liticons[idcode]){
+						ic_classa = '<div class="icon gsoff gsactive g' + clipdata[clipstarts[y][segendar[x]]].state + ' gsa' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ia" data-clipdata="' + clipstarts[y][segendar[x]] + '" style="pointer-events: auto; left: ' + curx + '; top: ' + cury + '"></div>';
+					}
+					$("#icongroup").append(ic_classa);
+				}
 			}
 
 			var change = 0;
@@ -428,7 +437,13 @@ function render_lines (mode,spatial){
 			drawstring += curx + ',' + cury;
 			
 			if(x > 0){
-				$("#icongroup").append('<div class="icon gsoff g' + clipdata[clipstarts[y][segendar[x]]].state + ' gs' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ib" data-clipdata="' + clipstarts[y][segendar[x]] + '"  style="pointer-events: auto; display: none; left: ' + curx + '; top: ' + cury + '"></div>');
+				if(mode == 0 || liticons[idcode + '_ib']){
+					var ic_classb = '<div class="icon gsoff g' + clipdata[clipstarts[y][segendar[x]]].state + ' gs' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ib" data-clipdata="' + clipstarts[y][segendar[x]] + '"  style="pointer-events: auto; display: none; left: ' + curx + '; top: ' + cury + '"></div>';
+					if(liticons[idcode]){
+						ic_classb = '<div class="icon gsoff g' + clipdata[clipstarts[y][segendar[x]]].state + ' gs' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ib" data-clipdata="' + clipstarts[y][segendar[x]] + '"  style="pointer-events: auto; left: ' + curx + '; top: ' + cury + '"></div>';
+					}
+					$("#icongroup").append(ic_classb);
+				}
 			}	
 			
 			var newpath = paper.path( drawstring );
@@ -553,6 +568,9 @@ function iconclick () {
 	var lastx = _highlight_currentx;
 	
 	// icon changes
+	
+	liticons[$(this).attr('id')] = 1;
+	liticons['#l' + _highlight_currentx +'_ib'] = 1;
 	
 	$(this).removeClass('gsoff').removeClass('gsactive').removeClass(thisclass).addClass(thisclass+"_on");
 	$('#l' + _highlight_currentx +'_ib').removeClass('gsoff').removeClass('gsactive').removeClass(thisclass).addClass(thisclass+"_on");
