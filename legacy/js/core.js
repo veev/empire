@@ -50,32 +50,36 @@ $(window).resize(function () {
 	scrubresize();
 });
 
-$(document).scrollsnap({
-	snaps: '.snap',
-	proximity: 200
-});
-
-
 
 $(document).ready(function () {
 
-	var matop = ($(".yellow:first").height() / 2) - 400;
-	if(matop < 70){
-		matop = 70;
+	var matop = ($(".yellow:first").height() / 2) - 400; // top of the matrix
+	var padtop = 84; // top of the main title
+	var legbottom = 60; //offset of the bottom play button on the open screen
+	
+	if($(".yellow:first").height() < 780){ // if this a wee screen
+		padtop = 10;
+		matop = 20;
+		legbottom = 20;
 	}
+	
+	$(".yellow_b").css("height",$(".yellow:first").height());
+	
+	$("h1:first").css({ 'padding-top': padtop });
 
 	$("#mainarea").css({ "margin-top": matop });
-	$("#legplay").css({ "margin-left": ($("#container").width() / 2) - 70 }).fadeIn(4000).click(function () {
-		$('html, body').animate({ scrollTop: ($('#container').offset().top - 20) }, 1000);
+	$("#legplay").css({ "bottom": legbottom, "margin-left": ($("#legacy_container").width() / 2) - 70 }).fadeIn(4000).click(function () {
+		$('html, body').animate({ scrollTop: ($('#legacy_container').offset().top - 20) }, 1000);
 	});
 
-	$("#legmore").css({ "margin-left": ($("#container").width() / 2) - 70 }).fadeTo(4000,.5).click(function () {
+	$("#legmore").css({ "margin-left": ($("#legacy_container").width() / 2) - 70 }).fadeTo(4000,.5).click(function () {
 		if(_fson){
 			fullscreen_off();
 		}
 		jwplayer("vidin").pause();
 		$('html, body').animate({ scrollTop: ($('.yellow_b').offset().top - 20) }, 1000);
 	});
+	
 
 	// clickability for the initial 4
 
@@ -86,11 +90,11 @@ $(document).ready(function () {
 		curvid = parseInt($(this).attr('data-clip'));
 		actualclip = $(this).attr('data-clipname');
 
-		var w = ($("#container").width() - 100);
-		var h = ($("#container").width() - 100) * .31
-		var vtop = (($("#container").height() - h) / 2) - 20;
+		var w = ($("#legacy_container").width() - 100);
+		var h = ($("#legacy_container").width() - 100) * .31
+		var vtop = (($("#legacy_container").height() - h) / 2) - 20;
 
-		$(this).animate({ 'z-index': 68, 'width': ($("#container").width() - 80) + 'px', 'top': vtop, 'left': 40, 'height': 330 }).fadeOut(8000);
+		$(this).animate({ 'z-index': 68, 'width': ($("#legacy_container").width() - 80) + 'px', 'top': vtop, 'left': 40, 'height': 330 }).fadeOut(8000);
 		$(".videospace").hide().unbind('click');
 		$(this).show();
 		$(".blurb").remove();
@@ -119,7 +123,7 @@ $(document).ready(function () {
 		}
 	});
 	
-	$("#containerinner").fadeIn();
+	$("#legacy_containerinner").fadeIn();
 	
 	
 	// hardcoded clip lengths
@@ -233,7 +237,7 @@ $(document).ready(function () {
  
  
  	$("#lg_fs").click(function () {
-		var docElm = document.getElementById("container");
+		var docElm = document.getElementById("legacy_container");
 		if (docElm.requestFullscreen) {
 			docElm.requestFullscreen();
 		}
@@ -266,9 +270,9 @@ function endscreen (theme,focus) {
 
 	// endscreen
 
-	var w = ($("#container").width() - 100);
-	var h = ($("#container").width() - 100) * .31;
-	var vtop = (($("#container").height() - h) / 2) - 50;
+	var w = ($("#legacy_container").width() - 100);
+	var h = ($("#legacy_container").width() - 100) * .31;
+	var vtop = (($("#legacy_container").height() - h) / 2) - 50;
 	w += 54;
 	vtop -= 47;
 	h += 110;
@@ -306,9 +310,9 @@ function render_lines (mode,spatial){
 
 	var h, vtop, w;
 
-	h = ($("#container").width() - 100) * .31;  // video height
-	vtop = (($("#container").height() - h) / 2) - 60; // top of video space
-	w = ($("#container").width() - 100); // video width;
+	h = ($("#legacy_container").width() - 100) * .31;  // video height
+	vtop = (($("#legacy_container").height() - h) / 2) - 60; // top of video space
+	w = ($("#legacy_container").width() - 100); // video width;
 	ml = 15;
 	_scrubwidth = w + 54;
 	_scrubheight = h + 110;
@@ -604,8 +608,8 @@ function iconclick () {
 
 		var cambio = 0;
 
-		var w = ($("#container").width() - 100);
-		var h = ($("#container").width() - 100) * .31
+		var w = ($("#legacy_container").width() - 100);
+		var h = ($("#legacy_container").width() - 100) * .31
 
 		switch(data.clip){
 			case 0:
@@ -703,9 +707,9 @@ function drawvideo (videoclip) {
 	// initial video draw, triggered by users clicking on one of the large images
 
 	$("#icongroup").show();
-	var w = ($("#container").width() - 100);
-	var h = ($("#container").width() - 100) * .31
-	var vtop = (($("#container").height() - h) / 2) - 50;
+	var w = ($("#legacy_container").width() - 100);
+	var h = ($("#legacy_container").width() - 100) * .31
+	var vtop = (($("#legacy_container").height() - h) / 2) - 50;
 	$("#videoplayer").css({ 'width': w + 'px', 'padding-top': vtop, 'padding-left': 40, 'height': h + 'px' });
 	var playeroptions = { 'controlbar.position': 'over', 'controlbar.idlehide': true };
 	playeroptions.allowFullScreen = false;
@@ -772,14 +776,14 @@ function scrubresize (){
 
 	// move the scrubbers around
 	
-	var w = ($("#container").width() - 80);
-	var h = ($("#container").width() - 80) * .31
-	var vtop = (($("#container").height() - h) / 2) - 50;
+	var w = ($("#legacy_container").width() - 80);
+	var h = ($("#legacy_container").width() - 80) * .31
+	var vtop = (($("#legacy_container").height() - h) / 2) - 50;
 	_scrubwidth = w;
 	_scrubheight = (h + 100);
 	var starttop = vtop - 80;
-	$("#legplay").css({ "margin-left": ($("#container").width() / 2) - 70 });
-	$("#legmore").css({ "margin-left": ($("#container").width() / 2) - 70 });
+	$("#legplay").css({ "margin-left": ($("#legacy_container").width() / 2) - 70 });
+	$("#legmore").css({ "margin-left": ($("#legacy_container").width() / 2) - 70 });
 
 
 	var newleft = 40;
@@ -805,6 +809,7 @@ function scrubresize (){
 	}
 	
 	$("#linegroup").css({ 'margin-top': (vtop - 40) + 'px', 'margin-left': (newleft - 25) });
+	$("#linegroup_connections").css({ 'margin-top': (vtop - 40) + 'px', 'margin-left': (newleft - 25) });
 	$("#icongroup").css({ 'margin-top': (vtop - 55) + 'px', 'margin-left': (newleft - 40) });
 
 }

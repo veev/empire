@@ -9,6 +9,7 @@
             'offset' : 0,
             'duration' : 200,
             'easing' : 'swing',
+            'handler' : null
         }, options);
 
         var leftOrTop = settings.direction === 'x' ? 'Left' : 'Top';
@@ -42,6 +43,9 @@
                         if ($(scrollingEl)['scroll'+leftOrTop]() != endScroll) {
                             $(scrollingEl).animate(animateProp, settings.duration, settings.easing);
                         }
+                    	if(settings.handler != null){
+                    		settings.handler.apply(matchingEl);
+                    	}
                     }
 
                 });
@@ -69,6 +73,9 @@
                         if ($(scrollingEl)['scroll'+leftOrTop]() != endScroll) {
                             $('html, body').animate(animateProp, settings.duration, settings.easing);
                         }
+                    	if(settings.handler != null){
+                    		settings.handler.apply(matchingEl);
+                    	}
                     }
 
                 });

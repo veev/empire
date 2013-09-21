@@ -10,7 +10,21 @@ $(document).ready(function () {
 	// load ambient audio
 	$('body:first').append('<div id="audiodiv" style="display: none"><audio src="../audio/ambiance.mp3" type="audio/mpeg" loop id="ambientaudio"></audio></div>');
 	document.getElementById('ambientaudio').addEventListener('canplaythrough',audioready);
+	
+	$(document).scrollsnap({
+		snaps: '.snap',
+		proximity: 180,
+		handler: scrollsnaphandle
+	});
+
+
+
 });
+
+function scrollsnaphandle (){
+	console.log('scrollsnap');
+	console.log($(this).attr('id'));
+}
 
 function audioready () {
 	
