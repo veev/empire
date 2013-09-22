@@ -5,11 +5,15 @@ var audioactive = false;
 var audiovolume = 30;
 var _currentaudiovolume = 0;
 var vIvl = new Number();
+var dontannoysam = true;
 
 $(document).ready(function () {
 	// load ambient audio
-	$('body:first').append('<div id="audiodiv" style="display: none"><audio src="../audio/ambiance.mp3" type="audio/mpeg" loop id="ambientaudio"></audio></div>');
-	document.getElementById('ambientaudio').addEventListener('canplaythrough',audioready);
+	
+	if(!dontannoysam){
+		$('body:first').append('<div id="audiodiv" style="display: none"><audio src="../audio/ambiance.mp3" type="audio/mpeg" loop id="ambientaudio"></audio></div>');
+		document.getElementById('ambientaudio').addEventListener('canplaythrough',audioready);
+	}
 	
 	$(document).scrollsnap({
 		snaps: '.snap',

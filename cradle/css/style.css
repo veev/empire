@@ -1,20 +1,32 @@
-html, body{
-	margin: 0px;
-	background: black;
-	color: white;
-	font-size: 14px;
-	font-family: "Fjalla One","Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-#header{
-	font-size: 20px;
-	font-style: normal;
-	color: white;
-	margin-bottom: 35px;
-}
-
+*, html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, label, fieldset, input, p, th, td { margin:0; padding:0; font-style: italic; font-family: "IM Fell English","Helvetica Neue", sans-serif; }
+table { border-collapse:collapse; border-spacing:0 }
+iframe { border: 0; margin: 0; padding: 0; }
+fieldset, img { border:0 }
+address, caption, cite, code, dfn, em, strong, th, var { font-style:normal; font-weight:normal }
+ol, ul, li { list-style:none }
+caption, th { text-align:left }
+h1, h2, h3, h4, h5, h6 { font-size:100%; font-weight:normal }
+q:before, q:after { content:''}
+body { background: #000; color: #fff; }
+div#legacy_container { height: 98%; text-align: center; position: relative; padding: 20px; width: 98%; }
+div.cradle_top { text-align: center; background: #ecda50 url(../../art/c_bg.jpg) repeat-x; width: 100%; height: 98%; position: relative }
+div.cradle_b { text-align: center; background: #ecda50 url(../../art/c_bg_b.jpg) bottom left  repeat-x; width: 100%; position: relative }
+div.cradle_b div.yellowinner { padding: 30px 0 30px 0; }
+div#cradle_top h1 { color: #000; padding-top: 8px; font-size: 2.1em; }
+div.cradle_top div.cradleplay { position: absolute; width: 127px; height: 45px; cursor: pointer; z-index: 5; background: url(../../art/f_playbutton.png); }
+div.cradle_top div#cradle_line { background: url(../art/b_line.png) repeat-y; width: 3px; position: absolute; }
+div.cradle_top div#cradle_structure { width: 731px; height: 392px; padding-top: 80px; text-align: left; position: absolute; top: 0; left: 0; z-index: 3; color: #ecda50; background: url(../art/structurebg.png); }
+div.cradle_top div#cradle_structure div { width: 306px; height: 89px; padding: 20px 30px 20px 30px; position: absolute; }
+div.cradle_top div#cradle_structure div#c_c { left: 366; top: 235; } 
+div.cradle_top div#cradle_structure div#c_d { top: 355; }
+div.cradle_top div#cradle_structure div#c_b { left: 366; color: #000; }
+div.cradle_top div#cradle_structure div#c_a {  }
 div.outer {
 	text-align: center;
+}
+
+#outerouter {
+	
 }
 
 #outerinner {

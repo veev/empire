@@ -65,7 +65,7 @@ $(document).ready(function () {
 	
 	$(".yellow_b").css("height",$(".yellow:first").height());
 	
-	$("h1:first").css({ 'padding-top': padtop });
+	$("#legacy_top").css({ 'padding-top': padtop });
 
 	$("#mainarea").css({ "margin-top": matop });
 	$("#legplay").css({ "bottom": legbottom, "margin-left": ($("#legacy_container").width() / 2) - 70 }).fadeIn(4000).click(function () {

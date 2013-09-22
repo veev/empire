@@ -9,9 +9,10 @@ h1, h2, h3, h4, h5, h6 { font-size:100%; font-weight:normal }
 q:before, q:after { content:''}
 body { background: #000; color: #fff; }
 div#legacy_container { height: 98%; text-align: center; position: relative; padding: 20px; width: 98%; }
-div.yellow { text-align: center; background: #fbb03b url(../art/leg_bg.jpg) no-repeat; width: 100%; height: 98%; position: relative }
-div.yellow_b { text-align: center; background: #fbb03b url(../art/leg_bg2.jpg) bottom left no-repeat; width: 100%; position: relative }
+div.yellow { text-align: center; background: #fbb03b url(../../art/l_bg.jpg) repeat-x; width: 100%; height: 98%; position: relative }
+div.yellow_b { text-align: center; background: #fbb03b url(../../art/l_bg_b.jpg) bottom left  repeat-x; width: 100%; position: relative }
 div.yellow_b div.yellowinner { padding: 30px 0 30px 0; }
+div#legacy_top h1 { color: #000; padding-top: 8px; font-size: 2.1em; }
 div.yellow_b p { text-align: left; width: 700px; margin: 1em auto; color: #000 }
 div.mystical { text-align: left; background: url(../art/leg_overlay.png) no-repeat 220px 8px; position: relative; margin: auto; width: 790px; height: 500px; overflow: auto; }
 div.mystical p { position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
@@ -21,7 +22,7 @@ div.mystical p#c { top: 355px; left: 240px; }
 div.mystical p#d { top: 170px; left: 55px; z-index: 3; }
 div.mystical p#e { top: 160px; left: 305px; width: 200px; text-align: center; }
 div.mystical p#f { top: 425px; width: 520px; left: 150px; text-align: center; }
-div.yellow div.play { position: absolute; width: 127px; height: 45px; cursor: pointer; background: url(../art/leg_play.png); }
+div.yellow div.play { position: absolute; width: 127px; height: 45px; cursor: pointer; background: url(.../../art/f_playbutton.png); }
 div#legacy_container div.more { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(../art/leg_more.png); }
 div#legacy_container:-webkit-full-screen { background-color: #000; width: 100%; height: 100%; }
 div#legacy_container:-moz-full-screen { background-color: #000; width: 100%; height: 100%; }
