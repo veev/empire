@@ -8,7 +8,7 @@ var clipfirst = new Object();
 var connsloaded = false;
 var loadivl = new Number();
 var clipmap = new Array('indonesia','india','southafrica','srilanka');
-var paper,paper_connections,endpaper;
+var paper,paper_connections,endpaper,drawpath;
 
 var _rtmpserver = 'rtmp://s17pilyt3yyjgf.cloudfront.net/cfx/st';
 var _increment = 5;
@@ -72,7 +72,7 @@ $(document).ready(function () {
 		$('html, body').animate({ scrollTop: ($('#legacy_container').offset().top - 20) }, 1000);
 	});
 
-	$("#legmore").css({ "margin-left": ($("#legacy_container").width() / 2) - 70 }).fadeTo(4000,.5).click(function () {
+	$("#legmore").css({ "margin-left": ($("#legacy_container").width() / 2) - 70 }).click(function () {
 		if(_fson){
 			fullscreen_off();
 		}
@@ -216,9 +216,11 @@ $(document).ready(function () {
 			
 			
 			render_lines(0);
+			$("#linegroup").hide();
+			$("#linegroup_connections").hide();
 			
-			$(".videospace").hide();
-			endscreen('b',2);
+			
+//			$(".videospace").hide();
 			
 		}
 	},500);
@@ -293,12 +295,15 @@ function endscreen (theme,focus) {
 	
 	$("#endscreen").css({ 'transform-origin': '0 0', '-webkit-transform-origin': '0 0',  'transform': 'scale(' + denom + ',' + denomh + ');', '-ms-transform': 'scale(' + denom + ',' + denomh + ')', '-webkit-transform': 'scale(' + denom + ',' + denomh + ')' });
 	
+	
 //	$("#endscreen").fadeIn(4000, function () {
 		$("#group" + focus + "a").fadeTo(9500,.8);
 //	});
 	_endscreenon = true;
 	
+	
 	render_lines(1, { 'w':$("#endscreen").width() ,'h':$("#endscreen").height(),'vtop':vtop,'ml':ml });
+
 
 }
 
@@ -330,7 +335,7 @@ function render_lines (mode,spatial){
 	_curw = w;
 
 	cliprect[0] = '5 6 ' + (w + 44) + ' 42';
-	cliprect[1] = '5 41 22 ' + (_scrubheight - 41);
+	cliprect[1] = '5 41 20 ' + (_scrubheight - 41);
 	cliprect[2] = (w + 26) + ' 41 ' + (_scrubheight - 41) + ' ' + (w + 36);
 	cliprect[3] = '21 ' + (h + 10) + ' ' + w + ' 99';
 	
@@ -390,10 +395,15 @@ function render_lines (mode,spatial){
 						
 			if(x > 0){
 				if(mode == 0 || liticons[idcode + '_ia']){
-					var ic_classa = '<div class="icon gsoff gsactive g' + clipdata[clipstarts[y][segendar[x]]].state + ' gsa' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ia" data-clipdata="' + clipstarts[y][segendar[x]] + '" style="pointer-events: auto; display: none; left: ' + curx + '; top: ' + cury + '"></div>';
+					var ic_classa = '<div class="icon gsoff gsactive g' + clipdata[clipstarts[y][segendar[x]]].state;
 					if(liticons[idcode]){
-						ic_classa = '<div class="icon gsoff gsactive g' + clipdata[clipstarts[y][segendar[x]]].state + ' gsa' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ia" data-clipdata="' + clipstarts[y][segendar[x]] + '" style="pointer-events: auto; left: ' + curx + '; top: ' + cury + '"></div>';
+						ic_classa += '_on';
 					}
+					ic_classa += ' gsa' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ia" data-clipdata="' + clipstarts[y][segendar[x]] + '" style="pointer-events: auto; ';
+					if(!liticons[idcode]){
+						ic_classa += 'display: none; ';
+					}
+					ic_classa += ' left: ' + curx + '; top: ' + cury + '"></div>';
 					$("#icongroup").append(ic_classa);
 				}
 			}
@@ -444,10 +454,15 @@ function render_lines (mode,spatial){
 			
 			if(x > 0){
 				if(mode == 0 || liticons[idcode + '_ib']){
-					var ic_classb = '<div class="icon gsoff g' + clipdata[clipstarts[y][segendar[x]]].state + ' gs' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ib" data-clipdata="' + clipstarts[y][segendar[x]] + '"  style="pointer-events: auto; display: none; left: ' + curx + '; top: ' + cury + '"></div>';
+					var ic_classb = '<div class="icon gsoff g' + clipdata[clipstarts[y][segendar[x]]].state;
 					if(liticons[idcode]){
-						ic_classb = '<div class="icon gsoff g' + clipdata[clipstarts[y][segendar[x]]].state + ' gs' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ib" data-clipdata="' + clipstarts[y][segendar[x]] + '"  style="pointer-events: auto; left: ' + curx + '; top: ' + cury + '"></div>';
+						ic_classb += '_on';
 					}
+					ic_classb += ' gsa' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ib" data-clipdata="' + clipstarts[y][segendar[x]] + '" style="pointer-events: auto; ';
+					if(!liticons[idcode]){
+						ic_classb += 'display: none; ';
+					}
+					ic_classb += ' left: ' + curx + '; top: ' + cury + '"></div>';
 					$("#icongroup").append(ic_classb);
 				}
 			}	
@@ -513,8 +528,11 @@ function render_lines (mode,spatial){
 
 							newpath_d = paper_connections.path( newline );
 							newpath_d.attr({'clip-rect':cliprect[3]});
+	
 						} else {
+	
 							newpath_a = paper_connections.path( newline );
+	
 						}
 
 						var lineclass = "transition_unused tl" + clipclass;
@@ -525,6 +543,7 @@ function render_lines (mode,spatial){
 						var trans_d = idcode + '_4';
 			
 						$(newpath_a.node).attr("id",trans_a);
+						
 						if(mode == 0){
 							$(newpath_b.node).attr("id",trans_b);
 							$(newpath_c.node).attr("id",trans_c);
@@ -560,9 +579,8 @@ function render_lines (mode,spatial){
 		}
 		
 	svgreset();
-//	$("#linegroup").hide();
 	$(".gsactive").click(iconclick);
-	$("#icongroup").hide();
+//	$("#icongroup").hide();
 
 }
 
@@ -730,6 +748,7 @@ function drawvideo (videoclip) {
 		subthis._ended();
 	});	
 	$("#linegroup").fadeIn();
+	$("#linegroup_connections").fadeIn();
 
 	_videoon = true;
 			
@@ -738,25 +757,47 @@ function drawvideo (videoclip) {
 
 function _ended () {
 
+
 	var vidtime = new Object();
+	
 	vidtime.clip = curvid;
 	vidtime.start = curstart;
 	vidtime.end = curplayback;
 	vidtime.count = vidjumpcnt;
 	videotimes.push(vidtime);
+	
+	
+	// find the clip with the most viewing so that it can be blessed with color
 
-	var readout = new String();
+	var accumulator = new Object([0,0,0,0]);
+	var accumulator_max = 0;
+	var accumulator_highkey = 0;
 	
 	for(var x = 0; x < videotimes.length; x++){
-		readout += 'clip ' + videotimes[x].clip + ' start second ' + videotimes[x].start + ' / end second ' + videotimes[x].end + "\r";
+		accumulator[videotimes[x].clip] = accumulator[videotimes[x].clip] + (videotimes[x].end - videotimes[x].start);
 	}
 	
-	debugmsg(readout,true);
+	for(var y = 0; y < 4; y++){
+		if(accumulator[y] > accumulator_max){
+			accumulator_max = accumulator[y];
+			accumulator_highkey = y;
+		}
+	}
+
+	// call the endscreen
+	
+	endscreen('b',accumulator_highkey);
+
+	// throw that more button up
+
+	$("#legmore").fadeIn();
+	
+	// hide the video
 
 	$("#vidin").hide();
-	$("#blurredlines").hide()
-	$("#blurredlines_all").fadeIn();
+
 }
+
 
 function loadvid (clip,starttime) {
 
@@ -837,6 +878,7 @@ function progressrun (inf) {
 	}
 
 	// draw a line from the current x/y to this point in time
+	
 	
 
 	var desiredlength = (curplayback - _clipoffsetfromstart) * secpx;
@@ -1040,11 +1082,4 @@ function timetosecs (instring) {
 	secs = parseInt(bits[0]) * 60;
 	secs += parseInt(bits[1]);
 	return secs;
-}
-
-function round_up (x,factor){ 
-	
-	// helper routine to round numbers to the nearest 7 - because of the offsets in the scrubbers
-	
-	return x - (x%factor) + (x%factor>0 && factor);
 }

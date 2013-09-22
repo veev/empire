@@ -55,15 +55,15 @@ function _volfadeout () {
 	// internal function to fade out
 
 	document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;
-	_currentaudiovolume -= 5;
+	_currentaudiovolume -= 1;
 	if(_currentaudiovolume == 0){
 		clearInterval(vIvl);
-		document.getElementById('ambientaudio').stop();
+		document.getElementById('ambientaudio').pause();
 	}
 }
 
 function audiostop () {
+	clearInterval(vIvl);
 	vIvl = setInterval(_volfadeout,100);
-	audioactive = false;
-	
+	audioactive = false;	
 }
