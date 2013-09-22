@@ -15,20 +15,9 @@ $(document).ready(function () {
 		document.getElementById('ambientaudio').addEventListener('canplaythrough',audioready);
 	}
 	
-	$(document).scrollsnap({
-		snaps: '.snap',
-		proximity: 180,
-		handler: scrollsnaphandle
-	});
-
 
 
 });
-
-function scrollsnaphandle (){
-	console.log('scrollsnap');
-	console.log($(this).attr('id'));
-}
 
 function audioready () {
 	
