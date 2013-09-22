@@ -44,11 +44,11 @@ $(document).ready(function(){
 	document.getElementById("video1").addEventListener("ended",function(){ endVids();},true);
 	document.getElementById("video1").addEventListener("timeupdate",function(){scrubberUpdater();},true);
 	
-	$("#outerouter").mouseenter(function () {
+	$("#outerinner").mouseenter(function () {
 		trackon();
 	});
 
-	$("#outerouter").mouseleave(function () {
+	$("#outerinner").mouseleave(function () {
 		trackoff();
 	});
 	
@@ -211,6 +211,9 @@ function playButton(){
 }
 
 function playVids(){
+	if(audioactive){
+		audiostop();
+	}
 	document.getElementById("video1").play();
 	document.getElementById("video2").play();
 	document.getElementById("video2").volume = 0;
