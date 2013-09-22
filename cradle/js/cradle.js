@@ -28,7 +28,10 @@ $(document).ready(function(){
 		legbottom = 20;
 	}
 	
+	$("#outerouter").css({ 'padding-top': (($("#cradle_top").height() / 2) - ($("#outerinner").height() / 2)) });
+	
 	$('#cradle_line').css({ 'top': matop, 'height': ($("#cradle_top").height() - matop), 'left': (($("#cradle_top").width() / 2) - 7) });
+	$("#cradle_linewhite").css({ 'height': $("#cradle_main").height(), 'left': (($("#cradle_top").width() / 2) - 7) });
 	
 	$("#cradle_bottom").css("height",$("#cradle_top").height());
 	
@@ -40,18 +43,19 @@ $(document).ready(function(){
 //	$("#mainarea").css({ "margin-top": matop });
 	$("#cradleplay").css({ "bottom": legbottom, "margin-left": ($("#cradle_top").width() / 2) - 70 }).fadeIn(4000).click(function () {
 		$('html, body').animate({ scrollTop: ($('#cradle_main').offset().top - 20) }, 1000);
+		playDecide();
 	});
 
 
 
 	$("#leftbutton").click(function () {
 		if(flipside){
-			flipper(false);
+			flipper();
 		}
 	});
 	$("#rightbutton").click(function () {
 		if(!flipside){
-			flipper(true);
+			flipper();
 		}
 	});
 
@@ -139,7 +143,7 @@ function trackoff () {
 
 function flipper (isright){
 	console.log('flipper ' + isright + ' ' + flipside);
-	if(isright){		
+	if(flipside){		
 		flipside = false;
 		flipangle = 0;
 		$("#leftbutton").removeClass('buttonon').addClass('buttonoff');
@@ -188,7 +192,8 @@ function playButton(){
 
 function playVids(){
 	document.getElementById("video1").play();
-//			document.getElementById("video2").play();
+	document.getElementById("video2").play();
+	document.getElementById("video2").volume = 0;
 }
 
 function pauseVids(){
