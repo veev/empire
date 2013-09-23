@@ -531,10 +531,10 @@ function render_lines (mode,spatial){
 
 						var lineclass = "transition_unused tl" + clipclass;
 			
-						var trans_a = idcode + '_1';
-						var trans_b = idcode + '_2';
-						var trans_c = idcode + '_3';
-						var trans_d = idcode + '_4';
+						var trans_a = 'l' + clipedges[y][clip] + '_1';
+						var trans_b = 'l' + clipedges[y][clip] + '_2';
+						var trans_c = 'l' + clipedges[y][clip] + '_3';
+						var trans_d = 'l' + clipedges[y][clip] + '_4';
 			
 						$(newpath_a.node).attr("id",trans_a);
 						
@@ -677,14 +677,13 @@ function iconclick () {
 		var clipseq = parseInt($(".pl" + finalid + ":first").attr('data-lineseq'));
 
 		if(clipseq > 0){
-			// go a segment back and black it out if it's not viewed
+			// go a segment forward and black it out if it's not viewed
 			var thiscl = $(".pc" + data.clip + '' + (clipseq - 1) + ':first').attr('class');
 			thiscl = thiscl.replace('scrubber ','scrubber_gone ');
 			if(thiscl){
 				$(".pc" + data.clip + '' + (clipseq - 1) + ':first').attr('class',thiscl);
 				var getstr = $(".pc" + data.clip + '' + (clipseq - 1) + ':first').attr('id');
 				outboundclipid = parseInt(getstr.replace('l',''));
-
 			}
 		}
 
@@ -692,11 +691,11 @@ function iconclick () {
 		var lclipseq = parseInt($("#l" + lastx).attr('data-lineseq'));
 
 		if(lclipseq > 0){
-			// go a segment forward and black it out if it's not viewed
-			var thiscl = $(".pc" + clipdata[lastx].clip + '' + (lclipseq - 1) + ':first').attr('class');
+			// go a segment back and black it out if it's not viewed
+			var thiscl = $(".pc" + clipdata[lastx].clip + '' + (lclipseq + 1) + ':first').attr('class');
 			thiscl = thiscl.replace('scrubber ','scrubber_gone ');
-			if(thiscl){
-				$(".pc" + clipdata[lastx].clip + '' + (lclipseq - 1) + ':first').attr('class',thiscl);
+			if(thiscl && lclipseq ){
+				$(".pc" + clipdata[lastx].clip + '' + (lclipseq + 1) + ':first').attr('class',thiscl);
 				var getstr = $(".pc" + clipdata[lastx].clip + '' + (lclipseq - 1) + ':first').attr('id');
 				nextclipid = parseInt(getstr.replace('l',''));
 			}
@@ -718,7 +717,7 @@ function iconclick () {
 				// kill anything linking to this start or end directly
 
 				if($(this).attr('data-inbound') == data.dataid || $(this).attr('data-outbound') == lastx){
-//					console.log('found line ' + $(this).attr('id'));
+					console.log('found line ' + $(this).attr('id'));
 					gonelines[$(this).attr('id')] = 1;
 					$(this).remove();
 				}
@@ -737,7 +736,7 @@ function iconclick () {
 					
 					// kill anything linking from or to the next segment from the outbound clip
 					var thisid = parseInt(nextclipid);
-					console.log('nextclipid ' + thisid);
+//					console.log('nextclipid ' + thisid);
 					if($(this).attr('data-inbound') == thisid || $(this).attr('data-outbound') == thisid){
 //						console.log('found line ' + $(this).attr('id'));
 						gonelines[$(this).attr('id')] = 1;
