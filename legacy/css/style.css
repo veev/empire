@@ -54,6 +54,7 @@ div#legacy_container div#legacy_containerinner div#linegroup path.scrubber { z-i
 div#legacy_container div#legacy_containerinner div#linegroup path.scrubber_seen { z-index: 4; stroke: #fbb03b; stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner div#linegroup path.scrubber_gone { z-index: 4; stroke: #111111; stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_unused { z-index: 3; stroke: #333; stroke-width: 1px; }
+div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_hidden { z-index: 3; stroke: #000; opacity: 1l stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_hot {  z-index: 3; stroke: #fff; stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_used { z-index: 3; stroke: #fbb03b; stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner div#endscreen_outer { position: absolute; z-index: 22; pointer-events: none; }

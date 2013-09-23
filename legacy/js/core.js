@@ -726,10 +726,13 @@ function iconclick () {
 					// kill anything linking from or to the next segment from the outbound clip
 					var thisid = parseInt(outboundclipid);
 					console.log('lastclipid ' + thisid);
-					if($(this).attr('data-inbound') == thisid || $(this).attr('data-outbound') == thisid){
+					if($("#l" + thisid + '_1').attr('data-inbound') == thisid || $(this).attr('data-outbound') == thisid){
 //						console.log('found line ' + $(this).attr('id'));
-						gonelines[$(this).attr('id')] = 1;
-						$(this).remove();
+						gonelines["l" + thisid + '_1'] = 1;
+						$("#l" + thisid + '_1').remove();
+						$("#l" + thisid + '_2').remove();
+						$("#l" + thisid + '_3').remove();
+						$("#l" + thisid + '_4').remove();
 					}
 				}
 				if(nextclipid != ''){
@@ -737,10 +740,13 @@ function iconclick () {
 					// kill anything linking from or to the next segment from the outbound clip
 					var thisid = parseInt(nextclipid);
 //					console.log('nextclipid ' + thisid);
-					if($(this).attr('data-inbound') == thisid || $(this).attr('data-outbound') == thisid){
+					if($("#l" + nextclipid + '_1').attr('data-inbound') == thisid || $(this).attr('data-outbound') == thisid){
 //						console.log('found line ' + $(this).attr('id'));
-						gonelines[$(this).attr('id')] = 1;
-						$(this).remove();
+						gonelines["l" + nextclipid + '_1'] = 1;
+						$("#l" + nextclipid + '_1').remove();
+						$("#l" + nextclipid + '_2').remove();
+						$("#l" + nextclipid + '_3').remove();
+						$("#l" + nextclipid + '_4').remove();
 					}
 				}
 			}
