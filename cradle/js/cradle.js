@@ -100,14 +100,16 @@ function cradle_sizer () {
 	
 	$("#outerouter").css({ 'padding-top': (($("#cradle_top").height() / 2) - ($("#outerinner").height() / 2)) });
 	
+	$("#cradle_bottom").css("height",$("#cradle_top").height());
+
 	$('#cradle_line').css({ 'top': matop, 'height': ($("#cradle_top").height() - matop), 'left': (($("#cradle_top").width() / 2) - 7) });
 	$("#cradle_linewhite").css({ 'height': $("#cradle_main").height(), 'left': (($("#cradle_top").width() / 2) - 7) });
-	
-	$("#cradle_bottom").css("height",$("#cradle_top").height());
+	$('#cradle_bottomline').css({ 'top': 0, 'height': ($("#cradle_bottom").height() - 160), 'left': (($("#cradle_top").width() / 2) - 7) });
 	
 	$("#cradle_title").css({ 'padding-top': padtop });
 
 	$("#cradle_structure").css({ 'margin-top': matop, 'left': (($("#cradle_top").width() / 2) - 370) });
+	$("#cbottom_structure").css({ 'margin-top': ((($("#cradle_bottom").height() - 160) / 2) - 235), 'left': (($("#cradle_top").width() / 2) - 465) - 5 });
 
 
 //	$("#mainarea").css({ "margin-top": matop });

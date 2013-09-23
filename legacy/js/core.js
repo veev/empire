@@ -5,6 +5,7 @@ var clipedges = new Object();
 var cliplengths = new Object();
 var cliprect = new Object();
 var clipfirst = new Object();
+
 var connsloaded = false;
 var loadivl = new Number();
 var clipmap = new Array('indonesia','india','southafrica','srilanka');
@@ -25,7 +26,6 @@ var _fson = false;
 var _curw = new Number();
 var _playbackx = new Number();
 var _playbacky = new Number();
-
 var _clipoffsetfromstart = 0;
 
 var preventdoublejumpIvl = new Number();
@@ -461,20 +461,23 @@ function render_lines (mode,spatial){
 				}
 			}	
 			
-			var newpath = paper.path( drawstring );
+			if(mode == 0 || (mode == 1 && !gonescrubbers[idcode])){
+			
+				var newpath = paper.path( drawstring );
 									
-			var lineclass = "scrubber ";
-			if(x > 0){
-				lineclass += "g" + clipdata[clipstarts[y][segendar[x]]].state + ' og' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + ' pc' + y + x + ' pl' + y + clipdata[clipstarts[y][segendar[x]]].end_secs;
-			} else {
-				lineclass += 'pl' + y + ' pc' + y + '0';
-			}
+				var lineclass = "scrubber ";
+				if(x > 0){
+					lineclass += "g" + clipdata[clipstarts[y][segendar[x]]].state + ' og' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + ' pc' + y + x + ' pl' + y + clipdata[clipstarts[y][segendar[x]]].end_secs;
+				} else {
+					lineclass += 'pl' + y + ' pc' + y + '0';
+				}
 			
-			$(newpath.node).attr("id",idcode);
-			$(newpath.node).attr("data-lineseq",x);
-			$(newpath.node).attr("data-lineclip",y);
-			$(newpath.node).attr("class",lineclass);
-			
+				$(newpath.node).attr("id",idcode);
+				$(newpath.node).attr("data-lineseq",x);
+				$(newpath.node).attr("data-lineclip",y);
+				$(newpath.node).attr("class",lineclass);
+
+			}			
 
 		}
 		
@@ -510,6 +513,15 @@ function render_lines (mode,spatial){
 						
 						var newpath_a, newpath_b, newpath_c, newpath_d;
 
+						var lineclass = "transition_unused tl" + clipclass;
+			
+						var lineyes = true;
+			
+						var trans_a = 'l' + clipedges[y][clip] + '_1';
+						var trans_b = 'l' + clipedges[y][clip] + '_2';
+						var trans_c = 'l' + clipedges[y][clip] + '_3';
+						var trans_d = 'l' + clipedges[y][clip] + '_4';
+
 						if(mode == 0){
 							newpath_a = paper_connections.path( newline );
 							newpath_a.attr({'clip-rect':cliprect[0]});
@@ -525,46 +537,46 @@ function render_lines (mode,spatial){
 	
 						} else {
 	
-							newpath_a = paper_connections.path( newline );
+							if(gonelines[trans_a]){ // checking to see if this has been wiped out
+								lineyes = false;
+							} else {
+								newpath_a = paper_connections.path( newline );
+							}						
 	
 						}
 
-						var lineclass = "transition_unused tl" + clipclass;
-			
-						var trans_a = 'l' + clipedges[y][clip] + '_1';
-						var trans_b = 'l' + clipedges[y][clip] + '_2';
-						var trans_c = 'l' + clipedges[y][clip] + '_3';
-						var trans_d = 'l' + clipedges[y][clip] + '_4';
-			
-						$(newpath_a.node).attr("id",trans_a);
+						if(lineyes){
 						
-						if(mode == 0){
-							$(newpath_b.node).attr("id",trans_b);
-							$(newpath_c.node).attr("id",trans_c);
-							$(newpath_d.node).attr("id",trans_d);
-						}
+							$(newpath_a.node).attr("id",trans_a);
+						
+							if(mode == 0){
+								$(newpath_b.node).attr("id",trans_b);
+								$(newpath_c.node).attr("id",trans_c);
+								$(newpath_d.node).attr("id",trans_d);
+							}
 
-						$(newpath_a.node).attr("data-outbound",clipedges[y][clip]);
-						if(mode == 0){
-							$(newpath_b.node).attr("data-outbound",clipedges[y][clip]);
-							$(newpath_c.node).attr("data-outbound",clipedges[y][clip]);
-							$(newpath_d.node).attr("data-outbound",clipedges[y][clip]);
-						}
+							$(newpath_a.node).attr("data-outbound",clipedges[y][clip]);
+							if(mode == 0){
+								$(newpath_b.node).attr("data-outbound",clipedges[y][clip]);
+								$(newpath_c.node).attr("data-outbound",clipedges[y][clip]);
+								$(newpath_d.node).attr("data-outbound",clipedges[y][clip]);
+							}
 
-						$(newpath_a.node).attr("data-inbound",clipid);
-						if(mode == 0){
-							$(newpath_b.node).attr("data-inbound",clipid);
-							$(newpath_c.node).attr("data-inbound",clipid);
-							$(newpath_d.node).attr("data-inbound",clipid);
+							$(newpath_a.node).attr("data-inbound",clipid);
+							if(mode == 0){
+								$(newpath_b.node).attr("data-inbound",clipid);
+								$(newpath_c.node).attr("data-inbound",clipid);
+								$(newpath_d.node).attr("data-inbound",clipid);
+							}
+						
+							$(newpath_a.node).attr("class",lineclass);
+							if(mode == 0){
+								$(newpath_b.node).attr("class",lineclass);
+								$(newpath_c.node).attr("class",lineclass);
+								$(newpath_d.node).attr("class",lineclass);
+							}
 						}
 						
-						$(newpath_a.node).attr("class",lineclass);
-						if(mode == 0){
-							$(newpath_b.node).attr("class",lineclass);
-							$(newpath_c.node).attr("class",lineclass);
-							$(newpath_d.node).attr("class",lineclass);
-						}
-
 					}
 				});
 				
@@ -683,6 +695,7 @@ function iconclick () {
 			if(thiscl){
 				$(".pc" + data.clip + '' + (clipseq - 1) + ':first').attr('class',thiscl);
 				var getstr = $(".pc" + data.clip + '' + (clipseq - 1) + ':first').attr('id');
+				gonescrubbers[getstr] = 1;
 				outboundclipid = parseInt(getstr.replace('l',''));
 			}
 		}
@@ -697,6 +710,7 @@ function iconclick () {
 			if(thiscl && lclipseq ){
 				$(".pc" + clipdata[lastx].clip + '' + (lclipseq + 1) + ':first').attr('class',thiscl);
 				var getstr = $(".pc" + clipdata[lastx].clip + '' + (lclipseq - 1) + ':first').attr('id');
+				gonescrubbers[getstr] = 1;
 				nextclipid = parseInt(getstr.replace('l',''));
 			}
 		}
@@ -838,6 +852,7 @@ function _ended () {
 	var accumulator = new Object([0,0,0,0]);
 	var accumulator_max = 0;
 	var accumulator_highkey = 0;
+	var winningtheme = 'a';
 	
 	for(var x = 0; x < videotimes.length; x++){
 		accumulator[videotimes[x].clip] = accumulator[videotimes[x].clip] + (videotimes[x].end - videotimes[x].start);
@@ -848,6 +863,10 @@ function _ended () {
 			accumulator_max = accumulator[y];
 			accumulator_highkey = y;
 		}
+	}
+
+	for(var z = 0; z < themetrack.length; z++){
+		
 	}
 
 	// call the endscreen
