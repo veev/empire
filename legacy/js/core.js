@@ -38,7 +38,7 @@ var curstart = 0;
 var videotimes = new Array();
 var vidjumpcnt = 0;
 var segmentsseen = new Array();
-var themetrack = new Array();
+var themetrack = { 'a':0, 'b':0, 'c':0, 'd':0, 'e':0 };
 var litlines = new Object();
 var litscrubbers = new Object();
 var liticons = new Object();
@@ -592,7 +592,7 @@ function render_lines (mode,spatial){
 
 function iconclick () {
 	var data = clipdata[parseInt($(this).attr('data-clipdata'))];
-	themetrack.push(data.state);
+	themetrack[data.state] = themetrack[data.state] + 1;
 	
 	var thisclass = 'g' + data.state;
 	var lastx = _highlight_currentx;
@@ -853,6 +853,7 @@ function _ended () {
 	var accumulator_max = 0;
 	var accumulator_highkey = 0;
 	var winningtheme = 'a';
+	var winningtheme_max = 0;
 	
 	for(var x = 0; x < videotimes.length; x++){
 		accumulator[videotimes[x].clip] = accumulator[videotimes[x].clip] + (videotimes[x].end - videotimes[x].start);
@@ -865,13 +866,16 @@ function _ended () {
 		}
 	}
 
-	for(var z = 0; z < themetrack.length; z++){
-		
+	for(theme in themetrack){
+		if(themetrack[theme] > winningtheme_max){
+			winningtheme_max = themetrack[theme];
+			winningtheme = theme;
+		}
 	}
 
 	// call the endscreen
 	
-	endscreen('b',accumulator_highkey);
+	endscreen(winningtheme,accumulator_highkey);
 
 	// throw that more button up
 
