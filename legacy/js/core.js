@@ -9,6 +9,7 @@ var connsloaded = false;
 var loadivl = new Number();
 var clipmap = new Array('indonesia','india','southafrica','srilanka');
 var paper,paper_connections,endpaper,drawpath;
+var legacy_debug = true;
 
 var _rtmpserver = 'rtmp://s17pilyt3yyjgf.cloudfront.net/cfx/st';
 var _increment = 5;
@@ -53,26 +54,13 @@ $(window).resize(function () {
 
 $(document).ready(function () {
 
-	var matop = ($(".yellow:first").height() / 2) - 400; // top of the matrix
-	var padtop = 84; // top of the main title
-	var legbottom = 60; //offset of the bottom play button on the open screen
+	legacy_draw();
 	
-	if($(".yellow:first").height() < 780){ // if this a wee screen
-		padtop = 10;
-		matop = 20;
-		legbottom = 20;
-	}
-	
-	$(".yellow_b").css("height",$(".yellow:first").height());
-	
-	$("#legacy_top").css({ 'padding-top': padtop });
-
-	$("#mainarea").css({ "margin-top": matop });
-	$("#legplay").css({ "bottom": legbottom, "margin-left": ($("#legacy_container").width() / 2) - 70 }).fadeIn(4000).click(function () {
+	$("#legplay").click(function () {
 		$('html, body').animate({ scrollTop: ($('#legacy_container').offset().top - 20) }, 1000);
 	});
 
-	$("#legmore").css({ "margin-left": ($("#legacy_container").width() / 2) - 70 }).click(function () {
+	$("#legmore").click(function () {
 		if(_fson){
 			fullscreen_off();
 		}
@@ -100,6 +88,12 @@ $(document).ready(function () {
 		$(".blurb").remove();
 		$(".blurbback").remove();
 		drawvideo(actualclip);
+		
+		
+		if(legacy_debug){
+			debug_listvideo();
+		}
+		
 		
 		// set the playback x and y
 				
@@ -458,7 +452,7 @@ function render_lines (mode,spatial){
 					if(liticons[idcode]){
 						ic_classb += '_on';
 					}
-					ic_classb += ' gsa' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ib" data-clipdata="' + clipstarts[y][segendar[x]] + '" style="pointer-events: auto; ';
+					ic_classb += '" id="' + idcode + '_ib" data-clipdata="' + clipstarts[y][segendar[x]] + '" style="pointer-events: auto; ';
 					if(!liticons[idcode]){
 						ic_classb += 'display: none; ';
 					}
@@ -591,21 +585,31 @@ function iconclick () {
 	var thisclass = 'g' + data.state;
 	var lastx = _highlight_currentx;
 	
-	// icon changes
+	// log these for later
 	
 	liticons[$(this).attr('id')] = 1;
 	liticons['#l' + _highlight_currentx +'_ib'] = 1;
+
 	
+	// icon changes - turn this one on, take the last one and toggle that on
+		
 	$(this).removeClass('gsoff').removeClass('gsactive').removeClass(thisclass).addClass(thisclass+"_on");
 	$('#l' + _highlight_currentx +'_ib').removeClass('gsoff').removeClass('gsactive').removeClass(thisclass).addClass(thisclass+"_on");
 	
+	// get the class of these to disable them from future lighting
+	
+	var newclass = "gsa" + data.state;
+	newclass += (data.substate)? data.substate:'';
+	$(this).removeClass(newclass);
+	$('#l' + _highlight_currentx +'_ia').removeClass(newclass);
+	$('#l' + _highlight_currentx +'_ib').removeClass(newclass);
+	
 	
 	// get the delay
-	
 	var timeleft = (clipdata[lastx].segend_secs - curplayback);
-	
-	console.log('delay of ' + timeleft + 's before execution');
-
+	if(legacy_debug){
+		console.log('delay of ' + timeleft + 's before execution');
+	}
 
 	// go to the next segment from the outbound clip and dump it
 
@@ -614,8 +618,10 @@ function iconclick () {
 	if(jump_clipseq > 0){
 		// go a segment back and black it out if it's not viewed
 		var thiscl = $(".pc" + clipdata[lastx].clip + '' + (jump_clipseq +1) + ':first').attr('class');
-		thiscl = thiscl.replace('scrubber ','scrubber_gone ');
-		$(".pc" + clipdata[lastx].clip + '' + (jump_clipseq + 1) + ':first').attr('class',thiscl);
+		if(thiscl){
+			thiscl = thiscl.replace('scrubber ','scrubber_gone ');
+			$(".pc" + clipdata[lastx].clip + '' + (jump_clipseq + 1) + ':first').attr('class',thiscl);
+		}
 	}
 
 
@@ -624,10 +630,8 @@ function iconclick () {
 
 		//color the lines
 
-		var cambio = 0;
-
 		var w = ($("#legacy_container").width() - 100);
-		var h = ($("#legacy_container").width() - 100) * .31
+		var h = ($("#legacy_container").width() - 100) * .31;
 
 		switch(data.clip){
 			case 0:
@@ -649,29 +653,17 @@ function iconclick () {
 		}
 
 
+		// low hanging fruit - stuff that's already hot
+
 		$(".transition_hot").each(function () {
 			if($(this).attr('data-inbound') == data.dataid){
-				cambio++;
 				var thiscl = $(this).attr('class');
 				thiscl = thiscl.replace('transition_hot ','transition_used ');
 				$(this).attr('class',thiscl);
+				litlines[$(this).attr('id')] = 1;
 			}
 		});
 		
-		if(cambio < 3){
-			
-			// indicates the line got killed before we had a chance to make it hot
-			
-			$(".transition_unused").each(function () {
-				if($(this).attr('data-inbound') == data.dataid && $(this).attr('data-outbound') == lastx){
-					cambio++;
-					var thiscl = $(this).attr('class');
-					thiscl = thiscl.replace('transition_unused ','transition_used ');
-					$(this).attr('class',thiscl);
-				}
-			});
-		}
-
 		// get the target segment
 
 		var finalid = data.clip + '' + data.end_secs;
@@ -679,16 +671,85 @@ function iconclick () {
 
 		_playbackx = parseInt(posdenus.endx);
 		_playbacky = parseInt(posdenus.endy);
-		
+		var outboundclipid = '';
+		var nextclipid = '';
+
 		var clipseq = parseInt($(".pl" + finalid + ":first").attr('data-lineseq'));
 
 		if(clipseq > 0){
 			// go a segment back and black it out if it's not viewed
 			var thiscl = $(".pc" + data.clip + '' + (clipseq - 1) + ':first').attr('class');
 			thiscl = thiscl.replace('scrubber ','scrubber_gone ');
-			$(".pc" + data.clip + '' + (clipseq - 1) + ':first').attr('class',thiscl);
+			if(thiscl){
+				$(".pc" + data.clip + '' + (clipseq - 1) + ':first').attr('class',thiscl);
+				var getstr = $(".pc" + data.clip + '' + (clipseq - 1) + ':first').attr('id');
+				outboundclipid = parseInt(getstr.replace('l',''));
+
+			}
+		}
+
+
+		var lclipseq = parseInt($("#l" + lastx).attr('data-lineseq'));
+
+		if(lclipseq > 0){
+			// go a segment forward and black it out if it's not viewed
+			var thiscl = $(".pc" + clipdata[lastx].clip + '' + (lclipseq - 1) + ':first').attr('class');
+			thiscl = thiscl.replace('scrubber ','scrubber_gone ');
+			if(thiscl){
+				$(".pc" + clipdata[lastx].clip + '' + (lclipseq - 1) + ':first').attr('class',thiscl);
+				var getstr = $(".pc" + clipdata[lastx].clip + '' + (lclipseq - 1) + ':first').attr('id');
+				nextclipid = parseInt(getstr.replace('l',''));
+			}
 		}
 		
+		
+		// connector lines
+		// high hanging fruit - anything with inbound/outbound matches
+			
+		$(".transition_unused").each(function () {
+		
+			// this is a direct match, it should be hot
+			if($(this).attr('data-inbound') == data.dataid && $(this).attr('data-outbound') == lastx){
+				var thiscl = $(this).attr('class');
+				thiscl = thiscl.replace('transition_unused ','transition_used ');
+				$(this).attr('class',thiscl);
+			} else {
+			
+				// kill anything linking to this start or end directly
+
+				if($(this).attr('data-inbound') == data.dataid || $(this).attr('data-outbound') == lastx){
+//					console.log('found line ' + $(this).attr('id'));
+					gonelines[$(this).attr('id')] = 1;
+					$(this).remove();
+				}
+
+				if(outboundclipid != ''){
+					// kill anything linking from or to the next segment from the outbound clip
+					var thisid = parseInt(outboundclipid);
+					console.log('lastclipid ' + thisid);
+					if($(this).attr('data-inbound') == thisid || $(this).attr('data-outbound') == thisid){
+//						console.log('found line ' + $(this).attr('id'));
+						gonelines[$(this).attr('id')] = 1;
+						$(this).remove();
+					}
+				}
+				if(nextclipid != ''){
+					
+					// kill anything linking from or to the next segment from the outbound clip
+					var thisid = parseInt(nextclipid);
+					console.log('nextclipid ' + thisid);
+					if($(this).attr('data-inbound') == thisid || $(this).attr('data-outbound') == thisid){
+//						console.log('found line ' + $(this).attr('id'));
+						gonelines[$(this).attr('id')] = 1;
+						$(this).remove();
+					}
+				}
+			}
+		});
+		
+		console.log(gonelines);
+
+
 		// set the new clip offset
 		
 		_clipoffsetfromstart = data.start_secs;
@@ -800,6 +861,7 @@ function _ended () {
 
 
 function loadvid (clip,starttime) {
+	
 
 	// set the video player to move to another moment
 
@@ -809,9 +871,22 @@ function loadvid (clip,starttime) {
 	jwplayer('vidin').onPlay(function () {
 		console.log('videoready');
 	});
+
+	if(legacy_debug){
+		debug_listvideo();
+	}
+
 	
 }
 
+
+function debug_listvideo () {
+	for(var x = 0; x < clipdata.length; x++){
+		if(clipdata[x].clip == curvid){
+			console.log('clip ' + curvid + '; data id ' + x + '; start: ' + clipdata[x].start_secs + '; warn_start: ' + clipdata[x].end_secs + '; warn_end: ' + clipdata[x].segend_secs);		
+		}
+	}
+}
 
 function scrubresize (){
 
@@ -823,9 +898,6 @@ function scrubresize (){
 	_scrubwidth = w;
 	_scrubheight = (h + 100);
 	var starttop = vtop - 80;
-	$("#legplay").css({ "margin-left": ($("#legacy_container").width() / 2) - 70 });
-	$("#legmore").css({ "margin-left": ($("#legacy_container").width() / 2) - 70 });
-
 
 	var newleft = 40;
 	
@@ -852,6 +924,29 @@ function scrubresize (){
 	$("#linegroup").css({ 'margin-top': (vtop - 40) + 'px', 'margin-left': (newleft - 25) });
 	$("#linegroup_connections").css({ 'margin-top': (vtop - 40) + 'px', 'margin-left': (newleft - 25) });
 	$("#icongroup").css({ 'margin-top': (vtop - 55) + 'px', 'margin-left': (newleft - 40) });
+
+}
+
+function legacy_draw() {
+
+	var matop = ($(".yellow:first").height() / 2) - 400; // top of the matrix
+	var padtop = 84; // top of the main title
+	var legbottom = 60; //offset of the bottom play button on the open screen
+	
+	if($(".yellow:first").height() < 780){ // if this a wee screen
+		padtop = 10;
+		matop = 20;
+		legbottom = 20;
+	}
+	
+	$(".yellow_b").css("height",$(".yellow:first").height());
+	
+	$("#legacy_title").css({ 'padding-top': padtop });
+
+	$("#mainarea").css({ "margin-top": matop });
+	
+	$("#legplay").css({ "bottom": legbottom, "margin-left": ($("#legacy_container").width() / 2) - 50 }).fadeIn(4000);
+	$("#legmore").css({ "margin-left": ($("#legacy_container").width() / 2) - 90 });
 
 }
 
@@ -939,25 +1034,15 @@ function progressrun (inf) {
 		});
 
 		
-		// traverse the 4 to only light up points on the other clips, not the current one
-		for(var x = 0; x < 4; x++){
-			if(x != curvid){
-		 		$("#scr_" + x).find(".g" + clipdata[clipends[curvid][thistime]].state + clipdata[clipends[curvid][thistime]].substate).addClass('hotpoint_on').show();
-			}
-		}
 	}
 	
 	if(clipedges[curvid][thistime]){
 	
-		
 		if(!clipdata[clipedges[curvid][thistime]].seen){
 				
 			// change this segment to viewed
-
-			_clipoffsetfromstart = thistime;
-		
+			_clipoffsetfromstart = thistime;		
 			markseen(curvid,clipdata[clipedges[curvid][thistime]].end_secs);
-
 			clipdata[clipedges[curvid][thistime]].seen = true;
 
 		}
@@ -1036,9 +1121,10 @@ function markseen (cv,endpoint){
 		}
 	}
 		
-	
+	litlines[$(".pl" + finalid + ":first").attr('id')] = 1;
 	
 	segmentsseen.push({ 'video': cv, 'endpoint': endpoint, 'id': thisid });
+
 }
 
 function svgreset () {
