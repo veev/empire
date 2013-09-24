@@ -71,6 +71,12 @@ $(document).ready(function () {
 		$('html, body').animate({ scrollTop: ($('.yellow_b').offset().top - 20) }, 1000);
 	});
 	
+	$(document).scrollsnap({
+		snaps: '.snap',
+		proximity: 180,
+//		handler: cradle_scrollsnaphandle
+	});
+
 
 	// clickability for the initial 4
 
@@ -283,14 +289,14 @@ function endscreen (theme,focus) {
 	
 	$("#endscreen_outer").css({ 'width': w + 'px', 'margin-top': vtop, 'margin-left': '18px', 'height': h + 'px' });
 
-	$("#endscreen").append('<div id="group0" class="grey" style="background: url(art/ends/' + theme + '_0.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px;"></div>');
-	$("#endscreen").append('<div id="group1" class="grey" style="background: url(art/ends/' + theme + '_1.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px;"></div>');
-	$("#endscreen").append('<div id="group2" class="grey" style="background: url(art/ends/' + theme + '_2.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px;"></div>');
-	$("#endscreen").append('<div id="group3" class="grey" style="background: url(art/ends/' + theme + '_3.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px;"></div>');
-	$("#endscreen").append('<div id="group0a" class="color" style="background: url(art/ends/' + theme + '_0.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; display: none;"></div>');
-	$("#endscreen").append('<div id="group1a" class="color" style="background: url(art/ends/' + theme + '_1.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; display: none;"></div>');
-	$("#endscreen").append('<div id="group2a" class="color" style="background: url(art/ends/' + theme + '_2.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; display: none;"></div>');
-	$("#endscreen").append('<div id="group3a" class="color" style="background: url(art/ends/' + theme + '_3.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; display: none;"></div>');
+	$("#endscreen").append('<div id="group0" class="grey endscreen' + theme + '0" ></div>');
+	$("#endscreen").append('<div id="group1" class="grey endscreen' + theme + '1" ></div>');
+	$("#endscreen").append('<div id="group2" class="grey endscreen' + theme + '2" ></div>');
+	$("#endscreen").append('<div id="group3" class="grey endscreen' + theme + '3" ></div>');
+	$("#endscreen").append('<div id="group0a" class="color endscreen' + theme + '0" style="display: none;"></div>');
+	$("#endscreen").append('<div id="group1a" class="color endscreen' + theme + '1" style="display: none;"></div>');
+	$("#endscreen").append('<div id="group2a" class="color endscreen' + theme + '2" style="display: none;"></div>');
+	$("#endscreen").append('<div id="group3a" class="color endscreen' + theme + '3" style="display: none;"></div>');
 	
 	var denom = (w - 2) / 1280;
 	var denomh = (h - 2) / 407;
@@ -903,7 +909,7 @@ function drawvideo (videoclip) {
 		subthis.progressrun(timobj.position);
 	});
 	jwplayer("vidin").onComplete(function () {
-	//	subthis._ended();
+		subthis._ended();
 	});	
 	$("#linegroup").fadeIn();
 	$("#linegroup_connections").fadeIn();
@@ -1243,8 +1249,8 @@ function progressrun (inf) {
 		_clipoffsetfromstart = thistime;	
 
 		var posdenus = parsed($("#l" + clipstarts[curvid][thistime]).attr('d'));	
-		_playbackx = parseInt(posdenus.endx);
-		_playbacky = parseInt(posdenus.endy);
+		_playbackx = parseInt(posdenus.startx);
+		_playbacky = parseInt(posdenus.starty);
 
 	}
 

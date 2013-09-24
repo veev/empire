@@ -52,10 +52,11 @@ div#legacy_container div#legacy_containerinner div#linegroup { position: absolut
 div#legacy_container div#legacy_containerinner div#linegroup_connections { position: absolute; z-index: 24; pointer-events: none; }
 div#legacy_container div#legacy_containerinner div#icongroup { position: absolute; z-index: 26; pointer-events: none; }
 div#legacy_container div#legacy_containerinner div#linegroup path.playback {  z-index: 5; stroke: #fbb03b; stroke-width: 2px; }
-div#legacy_container div#legacy_containerinner div#linegroup path.scrubber { z-index: 4; stroke: #fff; stroke-width: 1px; }
+div#legacy_container div#legacy_containerinner div#linegroup path.scrubber { z-index: 4; stroke: #fff; stroke-width: 2px; }
+div#legacy_container div#legacy_containerinner div#linegroup path.scrubber_inert { z-index: 4; stroke: #ccc; stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner div#linegroup path.scrubber_seen { z-index: 4; stroke: #fbb03b; stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner div#linegroup path.scrubber_gone { z-index: 4; stroke: #111111; stroke-width: 1px; }
-div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_unused { z-index: 3; stroke: #333; stroke-width: 1px; }
+div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_unused { z-index: 3; stroke: #555; stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_hidden { z-index: 3; stroke: #000; opacity: 1; stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_hot {  z-index: 3; stroke: #fff; stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_used { z-index: 3; stroke: #fbb03b; stroke-width: 1px; }
@@ -69,7 +70,24 @@ div#legacy_container div#legacy_containerinner div#endscreen_outer div#group3 { 
 div#legacy_container div#legacy_containerinner div#endscreen_outer div#group0a { position: absolute; top: 0; left: 0; z-index: 8; -webkit-mask-image: url(../art/ends/mask1280_0.png); -moz-mask-image: url(../art/ends/mask1280_0.png); }
 div#legacy_container div#legacy_containerinner div#endscreen_outer div#group1a { position: absolute; top: 0; left: 0; z-index: 9; -webkit-mask-image: url(../art/ends/mask1280_1.png); -moz-mask-image: url(../art/ends/mask1280_1.png); }
 div#legacy_container div#legacy_containerinner div#endscreen_outer div#group2a { position: absolute; top: 0; left: 0; z-index: 10; -webkit-mask-image: url(../art/ends/mask1280_2.png); -moz-mask-image: url(../art/ends/mask1280_2.png); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div#group3a { position: absolute; top: 0; left: 0; z-index: 11; -webkit-mask-image: url(../art/ends/mask1280_3.png); -moz-mask-image: url(../art/ends/mask1280_3.png); }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#group3a { position: absolute; top: 0; left: 0; z-index: 11; -webkit-mask-image: url(../art/ends/mask1280_3.png); -moz-mask-image: url(../art/ends/mask1280_3.png); }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreena0 { background: url(../art/ends/a_0.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenb0 { background: url(../art/ends/b_0.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenc0 { background: url(../art/ends/c_0.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreend0 { background: url(../art/ends/d_0.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreena1 { background: url(../art/ends/a_1.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenb1 { background: url(../art/ends/b_1.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenc1 { background: url(../art/ends/c_1.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreend1 { background: url(../art/ends/d_1.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreena2 { background: url(../art/ends/a_2.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenb2 { background: url(../art/ends/b_2.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenc2 { background: url(../art/ends/c_2.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreend2 { background: url(../art/ends/d_2.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreena3 { background: url(../art/ends/a_3.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenb3 { background: url(../art/ends/b_3.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenc3 { background: url(../art/ends/c_3.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreend3 { background: url(../art/ends/d_3.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+
 div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.grey { -webkit-filter: grayscale(100%); -moz-filter: grayscale(100%); }
 div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.color { -webkit-filter: grayscale(0%); -webkit-transition: -webkit-filter 500ms linear; }
 div#legacy_container div#legacy_containerinner div#playback { position: absolute; z-index: 1; pointer-events: none; }
