@@ -154,6 +154,9 @@ function trackon () {
 					deg = Math.floor(((x - 210) / 3));
 					flipangle = deg;
 //						console.log(deg);
+						if(deg < 0){
+							deg = 0;
+						}
 					$("#card").css({ '-webkit-transform': 'rotateY( ' + deg + 'deg )', 'transform': 'rotateY( ' + deg + 'deg )' });
 				}
 			}
@@ -166,6 +169,9 @@ function trackon () {
 				} else {
 					deg = Math.floor(((x - 480) / 3));
 					flipangle = deg;
+						if(deg > 180){
+							deg = 180;
+						}
 //						console.log(deg);
 					$("#card").css({ '-webkit-transform': 'rotateY( ' + deg + 'deg )', 'transform': 'rotateY( ' + deg + 'deg )' });
 				}
