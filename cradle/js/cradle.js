@@ -90,11 +90,11 @@ $(window).resize(function () {
 
 function cradle_openscreen () {
 	$("#instructions").fadeIn(2000, function () {
-		$("#crad_1").fadeIn(3000, function () {
-			$("#crad_2").fadeIn(3000, function() {
-				$("#crad_3").fadeIn(3000);
-			});
-		});
+		// $("#crad_1").fadeIn(3000, function () {
+		// 	$("#crad_2").fadeIn(3000, function() {
+		// 		$("#crad_3").fadeIn(3000);
+		// 	});
+		// });
 	});
 	$("#instructions").click(function () {cradle_closescreen() });
 	openIvl = setTimeout("cradle_closescreen()",15000);
