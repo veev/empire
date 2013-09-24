@@ -27,6 +27,10 @@ var _curw = new Number();
 var _playbackx = new Number();
 var _playbacky = new Number();
 var _clipoffsetfromstart = 0;
+var _clipstartsincemove = 0;
+var _playbackctr = 40;
+var _intransition = false;
+var _hasended = false;
 
 var preventdoublejumpIvl = new Number();
 var preventdoublejump = false;
@@ -40,7 +44,6 @@ var vidjumpcnt = 0;
 var segmentsseen = new Array();
 var themetrack = { 'a':0, 'b':0, 'c':0, 'd':0, 'e':0 };
 var litlines = new Object();
-var litscrubbers = new Object();
 var liticons = new Object();
 var gonescrubbers = new Object();
 var gonelines = new Object();
@@ -91,7 +94,7 @@ $(document).ready(function () {
 		
 		
 		if(legacy_debug){
-			debug_listvideo();
+			// debug_listvideo();
 		}
 		
 		
@@ -273,6 +276,11 @@ function endscreen (theme,focus) {
 	vtop -= 47;
 	h += 110;
 	
+	$("#videotransition").remove();
+	
+	console.log('litlines');
+	console.log(litlines);
+	
 	$("#endscreen_outer").css({ 'width': w + 'px', 'margin-top': vtop, 'margin-left': '18px', 'height': h + 'px' });
 
 	$("#endscreen").append('<div id="group0" class="grey" style="background: url(art/ends/' + theme + '_0.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px;"></div>');
@@ -305,6 +313,7 @@ function endscreen (theme,focus) {
 function render_lines (mode,spatial){
 
 	// build the matrix of playback and connecting lines
+
 
 
 	var h, vtop, w;
@@ -377,17 +386,25 @@ function render_lines (mode,spatial){
 
 		// traverse those starts and build the scrubber line segments
 		
-		for(var x = 0; x < segendar.length; x++){
+		
+		for(var x = 0; x < (segendar.length + 1); x++){
 		
 			var idcode = 'l' + y + 'start';
+			var donothing = true;
 			
 			if(x > 0){
 				idcode = 'l' + clipstarts[y][segendar[x]];
+				donothing = false;
+			}
+			
+			if(x == segendar.length){
+				idcode = 'l' + y + 'end';
+				donothing = true;
 			}
 
 			var drawstring = "M" + curx + ',' + cury + ' L';
 						
-			if(x > 0){
+			if(!donothing){
 				if(mode == 0 || liticons[idcode + '_ia']){
 					var ic_classa = '<div class="icon gsoff gsactive g' + clipdata[clipstarts[y][segendar[x]]].state;
 					if(liticons[idcode]){
@@ -415,7 +432,7 @@ function render_lines (mode,spatial){
 			}
 			
 			if(vertical){ // vertical
-				if(x == (segendar.length - 1)){
+				if(x == segendar.length){
 					if(y == 1){
 						cury = _scrubheight;
 					} else {
@@ -429,7 +446,7 @@ function render_lines (mode,spatial){
 					}
 				}
 			} else { // horizontal
-				if(x == (segendar.length - 1)){
+				if(x == segendar.length){
 					if(y == 0){
 						curx = _scrubwidth;
 					} else {
@@ -446,7 +463,7 @@ function render_lines (mode,spatial){
 						
 			drawstring += curx + ',' + cury;
 			
-			if(x > 0){
+			if(!donothing){
 				if(mode == 0 || liticons[idcode + '_ib']){
 					var ic_classb = '<div class="icon gsoff g' + clipdata[clipstarts[y][segendar[x]]].state;
 					if(liticons[idcode]){
@@ -466,7 +483,10 @@ function render_lines (mode,spatial){
 				var newpath = paper.path( drawstring );
 									
 				var lineclass = "scrubber ";
-				if(x > 0){
+				if(litlines[idcode]){
+					lineclass = "scrubber_seen ";
+				}
+				if(!donothing){
 					lineclass += "g" + clipdata[clipstarts[y][segendar[x]]].state + ' og' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + ' pc' + y + x + ' pl' + y + clipdata[clipstarts[y][segendar[x]]].end_secs;
 				} else {
 					lineclass += 'pl' + y + ' pc' + y + '0';
@@ -475,6 +495,7 @@ function render_lines (mode,spatial){
 				$(newpath.node).attr("id",idcode);
 				$(newpath.node).attr("data-lineseq",x);
 				$(newpath.node).attr("data-lineclip",y);
+				$(newpath.node).attr("data-pt",clipstarts[y][segendar[x]]);
 				$(newpath.node).attr("class",lineclass);
 
 			}			
@@ -512,7 +533,7 @@ function render_lines (mode,spatial){
 						var newline = "M" + coords.endx + ',' + coords.endy + 'L' + thisclip.startx + ',' + thisclip.starty;
 						
 						var newpath_a, newpath_b, newpath_c, newpath_d;
-
+					
 						var lineclass = "transition_unused tl" + clipclass;
 			
 						var lineyes = true;
@@ -540,6 +561,9 @@ function render_lines (mode,spatial){
 							if(gonelines[trans_a]){ // checking to see if this has been wiped out
 								lineyes = false;
 							} else {
+								if(litlines[trans_a]){
+									lineclass = "transition_used tl" + clipclass;
+								}
 								newpath_a = paper_connections.path( newline );
 							}						
 	
@@ -555,15 +579,15 @@ function render_lines (mode,spatial){
 								$(newpath_d.node).attr("id",trans_d);
 							}
 
-							$(newpath_a.node).attr("data-outbound",clipedges[y][clip]);
 							if(mode == 0){
+								$(newpath_a.node).attr("data-outbound",clipedges[y][clip]);
 								$(newpath_b.node).attr("data-outbound",clipedges[y][clip]);
 								$(newpath_c.node).attr("data-outbound",clipedges[y][clip]);
 								$(newpath_d.node).attr("data-outbound",clipedges[y][clip]);
 							}
 
-							$(newpath_a.node).attr("data-inbound",clipid);
 							if(mode == 0){
+								$(newpath_a.node).attr("data-inbound",clipid);
 								$(newpath_b.node).attr("data-inbound",clipid);
 								$(newpath_c.node).attr("data-inbound",clipid);
 								$(newpath_d.node).attr("data-inbound",clipid);
@@ -596,6 +620,8 @@ function iconclick () {
 	
 	var thisclass = 'g' + data.state;
 	var lastx = _highlight_currentx;
+	var windsofchange = new Array();
+	windsofchange.push(lastx);
 	
 	// log these for later
 	
@@ -631,14 +657,30 @@ function iconclick () {
 		// go a segment back and black it out if it's not viewed
 		var thiscl = $(".pc" + clipdata[lastx].clip + '' + (jump_clipseq +1) + ':first').attr('class');
 		if(thiscl){
-			thiscl = thiscl.replace('scrubber ','scrubber_gone ');
-			$(".pc" + clipdata[lastx].clip + '' + (jump_clipseq + 1) + ':first').attr('class',thiscl);
+			var thisid = $(".pc" + clipdata[lastx].clip + '' + (jump_clipseq +1) + ':first').attr('id');
+			if(thisid.indexOf('end') == -1){
+				gonescrubbers[thisid] = 1;
+				windsofchange.push(parseInt($("#" + thisid).attr('data-pt')));
+				thiscl = thiscl.replace('scrubber ','scrubber_gone ');
+				$("#" + thisid + '_ia').remove();
+				$("#" + thisid).attr('class',thiscl);
+			}
 		}
 	}
 
 
 
 	setTimeout(function () {
+
+		// mark the last segment as done
+		
+		markseen(curvid,clipdata[lastx]);
+
+
+		// start transition code
+		
+		transition_on(lastx);
+
 
 		//color the lines
 
@@ -676,17 +718,30 @@ function iconclick () {
 			}
 		});
 		
+		
+		
 		// get the target segment
 
 		var finalid = data.clip + '' + data.end_secs;
-		var posdenus = parsed($(".pl" + finalid + ":first").attr('d'));
+		
+		// get the position for playback reasons
+		
+		var posdenus = parsed($("#l" + data.dataid).attr('d'));
 
-		_playbackx = parseInt(posdenus.endx);
-		_playbacky = parseInt(posdenus.endy);
-		var outboundclipid = '';
-		var nextclipid = '';
+		_playbackx = parseInt(posdenus.startx);
+		_playbacky = parseInt(posdenus.starty);
 
-		var clipseq = parseInt($(".pl" + finalid + ":first").attr('data-lineseq'));
+		var clipseq = parseInt($("#l" + data.dataid).attr('data-lineseq'));
+		
+		
+		// traverse around to get adjacent clip ids and dump them, also grab idcodes for the next operation
+
+		// set the new clip offset
+				
+		_clipoffsetfromstart = data.start_secs;		
+		_clipstartsincemove = data.start_secs;
+		
+
 
 		if(clipseq > 0){
 			// go a segment forward and black it out if it's not viewed
@@ -695,85 +750,63 @@ function iconclick () {
 			if(thiscl){
 				$(".pc" + data.clip + '' + (clipseq - 1) + ':first').attr('class',thiscl);
 				var getstr = $(".pc" + data.clip + '' + (clipseq - 1) + ':first').attr('id');
+				if(getstr.indexOf('start') == -1){
+					windsofchange.push(parseInt($("#" + getstr).attr('data-pt')));
+					$("#" + getstr + '_ia').remove(); // remove inbound icons too
+				}
 				gonescrubbers[getstr] = 1;
-				outboundclipid = parseInt(getstr.replace('l',''));
 			}
 		}
 
 
-		var lclipseq = parseInt($("#l" + lastx).attr('data-lineseq'));
-
-		if(lclipseq > 0){
-			// go a segment back and black it out if it's not viewed
-			var thiscl = $(".pc" + clipdata[lastx].clip + '' + (lclipseq + 1) + ':first').attr('class');
-			thiscl = thiscl.replace('scrubber ','scrubber_gone ');
-			if(thiscl && lclipseq ){
-				$(".pc" + clipdata[lastx].clip + '' + (lclipseq + 1) + ':first').attr('class',thiscl);
-				var getstr = $(".pc" + clipdata[lastx].clip + '' + (lclipseq - 1) + ':first').attr('id');
-				gonescrubbers[getstr] = 1;
-				nextclipid = parseInt(getstr.replace('l',''));
-			}
-		}
-		
-		
 		// connector lines
 		// high hanging fruit - anything with inbound/outbound matches
-			
-		$(".transition_unused").each(function () {
+
+
+		for(var x = 0; x < windsofchange.length; x++){
+			$('path[data-inbound="' + windsofchange[x] + '"]').each(function () {
+				var lineid = $(this).attr('id');
+				if(!litlines[lineid] && !gonelines[lineid]){
+					if($(this).attr('data-inbound') == data.dataid && $(this).attr('data-outbound') == lastx){ // this line is a match, light it up
+						var thiscl = $(this).attr('class');
+						thiscl = thiscl.replace('transition_unused ','transition_used ');
+						$(this).attr('class',thiscl);
+						litlines[lineid] = 1;
+					} else {
+						if(!litlines[$(this).attr('id')]){ //dump this line
+							var thiscl = $(this).attr('class');
+							thiscl = thiscl.replace('transition_unused ','transition_gone ');
+							$(this).attr('class',thiscl);
+							gonelines[lineid] = 1;
+							$(this).remove();
+						}
+					}
+				}
+			});
+			$('path[data-outbound="' + windsofchange[x] + '"]').each(function () {
+				var lineid = $(this).attr('id');
+				if(!litlines[lineid] && !gonelines[lineid]){
+					if($(this).attr('data-inbound') == data.dataid && $(this).attr('data-outbound') == lastx){ // this line is a match, light it up
+						var thiscl = $(this).attr('class');
+						thiscl = thiscl.replace('transition_unused ','transition_used ');
+						$(this).attr('class',thiscl);
+						litlines[lineid] = 1;
+					} else {
+						var thiscl = $(this).attr('class');
+						thiscl = thiscl.replace('transition_unused ','transition_gone ');
+						$(this).attr('class',thiscl);
+						gonelines[lineid] = 1;
+						$(this).remove();
+					}
+				}
+			});
+		}
 		
-			// this is a direct match, it should be hot
-			if($(this).attr('data-inbound') == data.dataid && $(this).attr('data-outbound') == lastx){
-				var thiscl = $(this).attr('class');
-				thiscl = thiscl.replace('transition_unused ','transition_used ');
-				$(this).attr('class',thiscl);
-			} else {
-			
-				// kill anything linking to this start or end directly
-
-				if($(this).attr('data-inbound') == data.dataid || $(this).attr('data-outbound') == lastx){
-					console.log('found line ' + $(this).attr('id'));
-					gonelines[$(this).attr('id')] = 1;
-					$(this).remove();
-				}
-
-				if(outboundclipid != ''){
-					// kill anything linking from or to the next segment from the outbound clip
-					var thisid = parseInt(outboundclipid);
-					console.log('lastclipid ' + thisid);
-					if($("#l" + thisid + '_1').attr('data-inbound') == thisid || $(this).attr('data-outbound') == thisid){
-//						console.log('found line ' + $(this).attr('id'));
-						gonelines["l" + thisid + '_1'] = 1;
-						$("#l" + thisid + '_1').remove();
-						$("#l" + thisid + '_2').remove();
-						$("#l" + thisid + '_3').remove();
-						$("#l" + thisid + '_4').remove();
-					}
-				}
-				if(nextclipid != ''){
 					
-					// kill anything linking from or to the next segment from the outbound clip
-					var thisid = parseInt(nextclipid);
-//					console.log('nextclipid ' + thisid);
-					if($("#l" + nextclipid + '_1').attr('data-inbound') == thisid || $(this).attr('data-outbound') == thisid){
-//						console.log('found line ' + $(this).attr('id'));
-						gonelines["l" + nextclipid + '_1'] = 1;
-						$("#l" + nextclipid + '_1').remove();
-						$("#l" + nextclipid + '_2').remove();
-						$("#l" + nextclipid + '_3').remove();
-						$("#l" + nextclipid + '_4').remove();
-					}
-				}
-			}
-		});
 		
 		console.log(gonelines);
 
 
-		// set the new clip offset
-		
-		_clipoffsetfromstart = data.start_secs;
-		
-		
 		// actually load the video
 
 		loadvid(data.clip,data.start_secs);
@@ -835,9 +868,50 @@ function drawvideo (videoclip) {
 
 }
 
+function transition_on (target) {
+
+	// show blurred video
+	
+	if(legacy_debug){
+		console.log('transition on ' + target);
+	}
+	
+	_intransition = true;
+	
+	var w = ($("#legacy_container").width() - 100);
+	var h = ($("#legacy_container").width() - 100) * .31
+	var vtop = (($("#legacy_container").height() - h) / 2) - 50;
+	$("#videotransition").css({ 'width': w + 'px', 'padding-top': vtop, 'padding-left': 40, 'height': h + 'px' });
+	var data = clipdata[target];
+	
+	var imgcode = '<img src="mp4/thumbs/full-' + clipmap[data.clip] + '-' + (data.segend_secs - 1) + '.jpg" width="' + w + '" height="' + h + '" alt="" />';
+	$("#videoplayer").css({'opacity':.1});
+	
+	$("#videotransition").html(imgcode).show().fadeIn(2000).addClass('blurred');
+	
+	
+}
+
+function transition_off () {
+	console.log('transition off');
+	_intransition = false;
+	$("#videoplayer").css({'opacity':1});
+
+	$("#videotransition").fadeOut(2000).removeClass('blurred');
+}
+
+
 function _ended () {
 
-
+	// see if anything isn't marked right
+	
+	_hasended = true;
+	
+	garbagecollection();
+	
+	
+	// do the video times
+	
 	var vidtime = new Object();
 	
 	vidtime.clip = curvid;
@@ -875,6 +949,8 @@ function _ended () {
 
 	// call the endscreen
 	
+	$("#vidin").hide();
+
 	endscreen(winningtheme,accumulator_highkey);
 
 	// throw that more button up
@@ -883,7 +959,6 @@ function _ended () {
 	
 	// hide the video
 
-	$("#vidin").hide();
 
 }
 
@@ -897,7 +972,12 @@ function loadvid (clip,starttime) {
 	videoclipname = $("#vid_" + clip).attr('data-clipname');
 	jwplayer('vidin').load({ 'streamer': _rtmpserver, 'file': 'legacy/' + videoclipname + '_crop.mp4', 'start': starttime, 'autostart': true });
 	jwplayer('vidin').onPlay(function () {
-		console.log('videoready');
+		if(legacy_debug){
+			console.log('videoready');
+		}
+		if(_intransition){
+			transition_off();
+		}
 	});
 
 	if(legacy_debug){
@@ -981,10 +1061,13 @@ function legacy_draw() {
 
 function progressrun (inf) {
 
-	// update the scrubbers during playback, also deal with the highlighting
+	// update the play bar during playback, also deal with the highlighting
 	
 	curplayback = inf;
 
+
+	// play bar bit
+	
 	var reverse = false;
 	var vertical = false;
 	var playstring = new String();
@@ -1002,8 +1085,6 @@ function progressrun (inf) {
 
 	// draw a line from the current x/y to this point in time
 	
-	
-
 	var desiredlength = (curplayback - _clipoffsetfromstart) * secpx;
 		
 	if(vertical){
@@ -1063,15 +1144,22 @@ function progressrun (inf) {
 
 		
 	}
+	if(clipstarts[curvid][thistime]){
 	
+		_clipoffsetfromstart = thistime;	
+		var posdenus = parsed($("#l" + clipstarts[curvid][thistime]).attr('d'));
+		
+		_playbackx = parseInt(posdenus.startx);
+		_playbacky = parseInt(posdenus.starty);
+
+	}
+
 	if(clipedges[curvid][thistime]){
 	
 		if(!clipdata[clipedges[curvid][thistime]].seen){
 				
 			// change this segment to viewed
-			_clipoffsetfromstart = thistime;		
-			markseen(curvid,clipdata[clipedges[curvid][thistime]].end_secs);
-			clipdata[clipedges[curvid][thistime]].seen = true;
+			markseen(curvid,clipdata[clipedges[curvid][thistime]]);
 
 		}
 	
@@ -1112,45 +1200,74 @@ function progressrun (inf) {
 		if(thistime == clipfirst[curvid]){
 
 			// this only shows up on the first playback but fucking hell is it annoying to me.
-			_clipoffsetfromstart = thistime;	
-			
 			markseen(curvid);
+
 		}
+	}
+	
+	// run a garbage collector every 10 runs of this routine
+	_playbackctr--;
+	if(_playbackctr == 0){
+		garbagecollection();
+		_playbackctr = 40;
+	}	
+}
+
+
+function garbagecollection () {
+	for(clip in clipedges[curvid]){
+		var clipthis = clipdata[clipedges[curvid][clip]];
+		if(!clipthis.seen){
+			if(legacy_debug){
+				console.log('garbagecollection ' + clipthis.start_secs + ' ' + _clipstartsincemove + ' ' + curplayback + ' ' + clipthis.segend_secs);
+			}
+			if(clipthis.start_secs >= _clipstartsincemove && curplayback > clipthis.segend_secs){
+				if(legacy_debug){
+					console.log('segment ' + clipthis.dataid + '  unmarked');
+				}
+				clipthis.seen = true;
+				var thiscl = $("#l" + clipthis.dataid).attr("class");
+				thiscl = thiscl.replace("scrubber ","scrubber_seen ");
+				$("#l" + clipthis.dataid).attr("class",thiscl);
+				litlines["l" + clipthis.dataid] = 1;
+			}
+		}
+	}
+	if(_hasended){
+		$("#l" + curvid + 'end')
+		var thiscl = $("#l" + curvid + 'end').attr("class");
+		thiscl = thiscl.replace("scrubber ","scrubber_seen ");
+		$("#l" + curvid + 'end').attr("class",thiscl);
+		litlines["l" + curvid + 'end'] = 1;	
 	}
 }
 
 
-function markseen (cv,endpoint){
+function markseen (cv,enddata){
+
 	var finalid = new String();
 	
 	finalid = cv;
+	var endpoint = curplayback;
 		
-	if(endpoint){
-		finalid = cv + '' + endpoint;
+	if(enddata){
+		finalid = cv + '' + enddata.end_secs;
+		endpoint = enddata.end_secs;
+		enddata.seen = true;
 	}
 	
-	var posdenus = parsed($(".pl" + finalid + ":first").attr('d'));
+	if(legacy_debug){
+		console.log('markseen ' + cv);
+	}
 	
-	_playbackx = parseInt(posdenus.endx);
-	_playbacky = parseInt(posdenus.endy);
 		
 	var thiscl = $(".pl" + finalid + ":first").attr("class");
 	var thisid = $(".pl" + finalid + ":first").attr("id");
 	thiscl = thiscl.replace("scrubber ","scrubber_seen ");
 	$("#" + thisid).attr("class",thiscl);
-
-	var seq = parseInt($(".pl" + finalid + ":first").attr('data-lineseq'));
-	if(seq > 0){
-		for(var n = 0; n < seq; n++){
-			var nthiscl = $(".pc" + cv + '' + n + ":first").attr("class");
-			nthiscl = nthiscl.replace("scrubber ","scrubber_seen ");
-			var nthisid = $(".pc" + cv + '' + n + ":first").attr("id");
-			$("#" + nthisid).attr("class",nthiscl);
-		}
-	}
-		
-	litlines[$(".pl" + finalid + ":first").attr('id')] = 1;
+	litlines[thisid] = 1;
 	
+
 	segmentsseen.push({ 'video': cv, 'endpoint': endpoint, 'id': thisid });
 
 }
