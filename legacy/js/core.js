@@ -893,7 +893,7 @@ function drawvideo (videoclip) {
 	playeroptions.autostart = true;
 	playeroptions.height = h;
 	playeroptions.width = w;
-//	playeroptions.controlbar = 'none';
+	playeroptions.controlbar = 'none';
 	playeroptions.streamer = _rtmpserver;
 	playeroptions.file = 'legacy/' + videoclip + '_crop.mp4';
 	playeroptions.skin = 'art/bekle.zip';

@@ -184,8 +184,8 @@ function trackon () {
 			}
 //			if(flipside){
 //			}
-			flipblock = true;
-			flipblockIvl = setTimeout(function () { flipblock = false },150);
+//			flipblock = true;
+//			flipblockIvl = setTimeout(function () { flipblock = false },150);
 		}				
 	});
 }
