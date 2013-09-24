@@ -9,7 +9,7 @@ var clipfirst = new Object();
 var connsloaded = false;
 var loadivl = new Number();
 var clipmap = new Array('indonesia','india','southafrica','srilanka');
-var paper,paper_connections,endpaper,drawpath;
+var paper,paper_connections,endpaper,drawpath,drawpath_real;
 var legacy_debug = true;
 
 var _rtmpserver = 'rtmp://s17pilyt3yyjgf.cloudfront.net/cfx/st';
@@ -221,7 +221,7 @@ $(document).ready(function () {
 			
 		}
 	},500);
-	
+		
 	// let's capture the spacebar since someone's worried about that
 	
 	$(document).keydown(function (e) {
@@ -278,8 +278,8 @@ function endscreen (theme,focus) {
 	
 	$("#videotransition").remove();
 	
-	console.log('litlines');
-	console.log(litlines);
+//	console.log('litlines');
+//	console.log(litlines);
 	
 	$("#endscreen_outer").css({ 'width': w + 'px', 'margin-top': vtop, 'margin-left': '18px', 'height': h + 'px' });
 
@@ -373,16 +373,37 @@ function render_lines (mode,spatial){
 			secpx = (_scrubheight - 8) / cliplengths[y]; // multiplier of seconds to pixels if it's vertical
 		}
 		
+		
 		// traverse the starts to put them in order
 		
 		var segendar = new Array();
-
-		segendar.push(0);
+		var segendar_start = new Array();
 
 		for(clip in clipstarts[y]){
-			segendar.push(parseInt(clip));
+			segendar_start.push(parseInt(clip));
 		}
-		segendar = segendar.sort(function(a,b){return a-b});
+		segendar_start = segendar_start.sort(function(a,b){return a-b});
+
+		for(var n = 0; n < segendar_start.length; n++){
+			if(n == 0){
+				segendar.push(0); // push an extra segment on the front of this array for the start
+				segendar.push(segendar_start[n]);
+			} else {
+				segendar.push(segendar_start[n]);
+				if(clipdata[clipstarts[y][segendar_start[n]]]){
+					if(clipdata[clipstarts[y][segendar_start[(n+1)]]]){
+						if(clipdata[clipstarts[y][segendar_start[(n+1)]]].start_secs > clipdata[clipstarts[y][segendar_start[n]]].segend_secs){
+							segendar.push(clipdata[clipstarts[y][segendar_start[n]]].segend_secs);
+//							console.log('gap filled at ' + clipdata[clipstarts[y][segendar_start[n]]].segend_secs);
+						}
+					}
+				}
+			}	
+		}
+		
+//		console.log(clipstarts[y]);
+//		console.log(segendar_start);
+//		console.log(segendar);
 
 		// traverse those starts and build the scrubber line segments
 		
@@ -393,13 +414,16 @@ function render_lines (mode,spatial){
 			var donothing = true;
 			
 			if(x > 0){
-				idcode = 'l' + clipstarts[y][segendar[x]];
-				donothing = false;
-			}
-			
-			if(x == segendar.length){
-				idcode = 'l' + y + 'end';
-				donothing = true;
+				if(clipstarts[y][segendar[x]] != undefined){
+					idcode = 'l' + clipstarts[y][segendar[x]];
+					donothing = false;
+				} else {
+					if(x == segendar.length){
+						idcode = 'l' + y + 'end';
+					} else {
+						idcode = 'l' + y + 'inert' + x;
+					}
+				}
 			}
 
 			var drawstring = "M" + curx + ',' + cury + ' L';
@@ -420,15 +444,21 @@ function render_lines (mode,spatial){
 			}
 
 			var change = 0;
-			if(x == 0){
-				change = clipdata[clipstarts[y][segendar[1]]].start_secs;
-				clipfirst[y] = clipdata[clipstarts[y][segendar[1]]].start_secs;
-			} else {
-				if(x == 1){
-					change = clipdata[clipstarts[y][segendar[1]]].segend_secs - clipdata[clipstarts[y][segendar[1]]].start_secs;
+			if(donothing){
+				if(x == 0){
+					change = clipdata[clipstarts[y][segendar[1]]].start_secs;
+					clipfirst[y] = clipdata[clipstarts[y][segendar[1]]].start_secs;
 				} else {
-					change = segendar[x] - clipdata[clipstarts[y][segendar[(x-1)]]].segend_secs;
+					if(clipdata[clipstarts[y][segendar[(x+1)]]]){
+						if(x == 1){
+							change = clipdata[clipstarts[y][segendar[x]]].segend_secs - clipdata[clipstarts[y][segendar[x]]].start_secs;
+						} else {
+							change = clipdata[clipstarts[y][segendar[(x+1)]]].start_secs - clipdata[clipstarts[y][segendar[(x-1)]]].segend_secs;
+						}
+					}
 				}
+			} else {
+				change = clipdata[clipstarts[y][segendar[1]]].segend_secs - clipdata[clipstarts[y][segendar[1]]].start_secs;
 			}
 			
 			if(vertical){ // vertical
@@ -489,13 +519,19 @@ function render_lines (mode,spatial){
 				if(!donothing){
 					lineclass += "g" + clipdata[clipstarts[y][segendar[x]]].state + ' og' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + ' pc' + y + x + ' pl' + y + clipdata[clipstarts[y][segendar[x]]].end_secs;
 				} else {
-					lineclass += 'pl' + y + ' pc' + y + '0';
+					lineclass += 'pl' + y + ' pc' + y + x;
 				}
 			
 				$(newpath.node).attr("id",idcode);
 				$(newpath.node).attr("data-lineseq",x);
+				if(x < segendar.length){
+					$(newpath.node).attr("data-startsecs",segendar[x]);
+					$(newpath.node).attr("data-endsecs",(segendar[x] + change));
+				}
 				$(newpath.node).attr("data-lineclip",y);
-				$(newpath.node).attr("data-pt",clipstarts[y][segendar[x]]);
+				if(!donothing){
+					$(newpath.node).attr("data-pt",clipstarts[y][segendar[x]]);
+				}
 				$(newpath.node).attr("class",lineclass);
 
 			}			
@@ -513,6 +549,8 @@ function render_lines (mode,spatial){
 
 			// clip final bits - go there and then draw lines from them to other clips that have the same state + substate
 
+//			console.log(clipedges[y]);
+
 			for(clip in clipedges[y]){
 			
 				// determine the class for each clip in there
@@ -520,6 +558,8 @@ function render_lines (mode,spatial){
 				var clipclass = clipdata[clipedges[y][clip]].state + clipdata[clipedges[y][clip]].substate;
 				
 				// traverse everything else with this class and draw some lines;
+				
+//				console.log('calling parsed for ' + clip + ' ' + clipedges[y][clip]);
 				
 				var coords = parsed($("#l" + clipedges[y][clip]).attr('d'));
 				
@@ -627,6 +667,11 @@ function iconclick () {
 	
 	liticons[$(this).attr('id')] = 1;
 	liticons['#l' + _highlight_currentx +'_ib'] = 1;
+
+
+	// preload the transition image
+	
+	transition_load(lastx);
 
 	
 	// icon changes - turn this one on, take the last one and toggle that on
@@ -868,15 +913,12 @@ function drawvideo (videoclip) {
 
 }
 
-function transition_on (target) {
-
-	// show blurred video
-	
+function transition_load (target) {
 	if(legacy_debug){
-		console.log('transition on ' + target);
+		console.log('transition load ' + target);
 	}
 	
-	_intransition = true;
+	$("#videotransition").hide();
 	
 	var w = ($("#legacy_container").width() - 100);
 	var h = ($("#legacy_container").width() - 100) * .31
@@ -885,15 +927,30 @@ function transition_on (target) {
 	var data = clipdata[target];
 	
 	var imgcode = '<img src="mp4/thumbs/full-' + clipmap[data.clip] + '-' + (data.segend_secs - 1) + '.jpg" width="' + w + '" height="' + h + '" alt="" />';
+	$("#videotransition").html(imgcode);
+
+}
+
+function transition_on (target) {
+
+	// show blurred video
+	
+	if(legacy_debug){
+		console.log('transition on');
+	}
+	
+	_intransition = true;
 	$("#videoplayer").css({'opacity':.1});
 	
-	$("#videotransition").html(imgcode).show().fadeIn(2000).addClass('blurred');
+	$("#videotransition").show().fadeIn(2000).addClass('blurred');
 	
 	
 }
 
 function transition_off () {
-	console.log('transition off');
+	if(legacy_debug){
+		console.log('transition off');
+	}
 	_intransition = false;
 	$("#videoplayer").css({'opacity':1});
 
@@ -1083,6 +1140,8 @@ function progressrun (inf) {
 		reverse = true;
 	}
 
+
+
 	// draw a line from the current x/y to this point in time
 	
 	var desiredlength = (curplayback - _clipoffsetfromstart) * secpx;
@@ -1105,6 +1164,11 @@ function progressrun (inf) {
 		drawpath.remove();
 	}
 	
+	if(drawpath_real){
+		drawpath_real.remove();
+	}
+	
+
 	drawpath = paper.path( playstring );
 	drawpath.attr({'arrow-end': 'classic-wide-long', 'stroke': '#fbb03b' });
 	$(drawpath.node).attr("class","playback");
@@ -1146,11 +1210,12 @@ function progressrun (inf) {
 	}
 	if(clipstarts[curvid][thistime]){
 	
+		console.log('clipstart detect ' + clipstarts[curvid][thistime] + ' curtime ' + thistime + ' startpoint ' + _clipoffsetfromstart);
 		_clipoffsetfromstart = thistime;	
-		var posdenus = parsed($("#l" + clipstarts[curvid][thistime]).attr('d'));
-		
-		_playbackx = parseInt(posdenus.startx);
-		_playbacky = parseInt(posdenus.starty);
+
+		var posdenus = parsed($("#l" + clipstarts[curvid][thistime]).attr('d'));	
+		_playbackx = parseInt(posdenus.endx);
+		_playbacky = parseInt(posdenus.endy);
 
 	}
 
@@ -1215,24 +1280,16 @@ function progressrun (inf) {
 
 
 function garbagecollection () {
-	for(clip in clipedges[curvid]){
-		var clipthis = clipdata[clipedges[curvid][clip]];
-		if(!clipthis.seen){
-			if(legacy_debug){
-				console.log('garbagecollection ' + clipthis.start_secs + ' ' + _clipstartsincemove + ' ' + curplayback + ' ' + clipthis.segend_secs);
-			}
-			if(clipthis.start_secs >= _clipstartsincemove && curplayback > clipthis.segend_secs){
-				if(legacy_debug){
-					console.log('segment ' + clipthis.dataid + '  unmarked');
-				}
-				clipthis.seen = true;
-				var thiscl = $("#l" + clipthis.dataid).attr("class");
+	$('path[data-lineclip="' + curvid + '"]').each(function () {
+		var thiscl = $(this).attr("class");
+		if(thiscl.indexOf('scrubber ') != -1){
+			if(parseInt($(this).attr('data-startsecs')) >= _clipstartsincemove && curplayback > parseInt($(this).attr('data-endsecs'))){
 				thiscl = thiscl.replace("scrubber ","scrubber_seen ");
-				$("#l" + clipthis.dataid).attr("class",thiscl);
-				litlines["l" + clipthis.dataid] = 1;
+				$(this).attr("class",thiscl);
+				litlines[$(this).attr('id')] = 1;
 			}
 		}
-	}
+	});
 	if(_hasended){
 		$("#l" + curvid + 'end')
 		var thiscl = $("#l" + curvid + 'end').attr("class");
