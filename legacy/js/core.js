@@ -1130,7 +1130,9 @@ function progressrun (inf) {
 	var playstring = new String();
 	
 	playstring = 'M' + _playbackx + ',' + _playbacky + 'L';
-	
+
+	var realplaystring = new String();
+		
 	var secpx = _scrubwidth / cliplengths[curvid];
 	if(curvid == 1 || curvid == 3){
 		secpx = (_scrubheight - 8) / cliplengths[curvid];
@@ -1141,22 +1143,45 @@ function progressrun (inf) {
 	}
 
 
+		var w = ($("#legacy_container").width() - 100);
+		var h = ($("#legacy_container").width() - 100) * .31
+
+	switch(curvid){
+		case 0:
+			realplaystring = 'M4,4L';
+			break;
+		case 1:
+			realplaystring = 'M' + (w + 54) + ',4L';
+			break;
+		case 2:
+			realplaystring = 'M' + (w + 54) + ',' + (h+110) + 'L';
+			break;
+		case 3:
+			realplaystring = 'M4,' + (h+110) + 'L';
+			break;
+	}
+	
 
 	// draw a line from the current x/y to this point in time
 	
 	var desiredlength = (curplayback - _clipoffsetfromstart) * secpx;
-		
+	var reallength = curplayback * secpx;
+
 	if(vertical){
 		if(reverse){
 			playstring += _playbackx + ',' + (_playbacky - desiredlength);
+			realplaystring += _playbackx + ',' + (_playbacky - reallength);
 		} else {
 			playstring += _playbackx + ',' + (_playbacky + desiredlength);
+			realplaystring += _playbackx + ',' + (_playbacky + reallength);
 		}
 	} else {
 		if(reverse){
 			playstring += (_playbackx - desiredlength) + ',' + _playbacky;
+			realplaystring += (_playbacky - reallength) + ',' + _playback_y;
 		} else {
 			playstring += (_playbackx + desiredlength) + ',' + _playbacky;
+			realplaystring += (_playbacky + reallength) + ',' + _playbacky;
 		}
 	}
 	
@@ -1172,6 +1197,10 @@ function progressrun (inf) {
 	drawpath = paper.path( playstring );
 	drawpath.attr({'arrow-end': 'classic-wide-long', 'stroke': '#fbb03b' });
 	$(drawpath.node).attr("class","playback");
+
+
+	drawpath_real = paper.path( realplaystring );
+	drawpath_real.attr({'stroke': '#ff0000' });
 	
 
 	var thistime = Math.floor(inf);

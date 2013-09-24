@@ -13,6 +13,8 @@ div.cradle_top { text-align: center; background: #ecda50 url(../../art/c_bg.jpg)
 div#cradle_main { position: relative; width: 100%; height: 100%; 	text-align: center; }
 div.cradle_bottom { text-align: center; background: #ead84e url(../../art/c_bg_b.jpg) bottom left  repeat-x; width: 100%; position: relative ; clear: both;}
 div.cradle_bottom div.inner { padding: 30px 0 30px 0; }
+div#cradle_main div#instructions { position: absolute; z-index: 800; cursor: pointer; background: rgba(0,0,0,.6); width: 760px; padding: 200px 100px; height: 180px; text-align: center; }
+div#cradle_main div#instructions p { font-size: 1.4em; }
 div#cradle_top h1 { color: #000; padding-top: 8px; font-size: 2.1em; }
 div#cradle_bottom h2 { color: #000; padding-bottom: 8px; font-size: 1.6em; }
 div.cradle_top div.cradleplay { position: absolute; width: 127px; height: 45px; cursor: pointer; z-index: 5; background: url(../../art/f_playbutton.png); }
