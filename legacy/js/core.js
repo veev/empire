@@ -893,7 +893,7 @@ function drawvideo (videoclip) {
 	playeroptions.autostart = true;
 	playeroptions.height = h;
 	playeroptions.width = w;
-	playeroptions.controlbar = 'none';
+//	playeroptions.controlbar = 'none';
 	playeroptions.streamer = _rtmpserver;
 	playeroptions.file = 'legacy/' + videoclip + '_crop.mp4';
 	playeroptions.skin = 'art/bekle.zip';
@@ -903,7 +903,7 @@ function drawvideo (videoclip) {
 		subthis.progressrun(timobj.position);
 	});
 	jwplayer("vidin").onComplete(function () {
-		subthis._ended();
+	//	subthis._ended();
 	});	
 	$("#linegroup").fadeIn();
 	$("#linegroup_connections").fadeIn();
@@ -1189,9 +1189,9 @@ function progressrun (inf) {
 		drawpath.remove();
 	}
 	
-	if(drawpath_real){
-		drawpath_real.remove();
-	}
+//	if(drawpath_real){
+//		drawpath_real.remove();
+//	}
 	
 
 	drawpath = paper.path( playstring );
@@ -1199,8 +1199,8 @@ function progressrun (inf) {
 	$(drawpath.node).attr("class","playback");
 
 
-	drawpath_real = paper.path( realplaystring );
-	drawpath_real.attr({'stroke': '#ff0000' });
+//	drawpath_real = paper.path( realplaystring );
+//	drawpath_real.attr({'stroke': '#ff0000' });
 	
 
 	var thistime = Math.floor(inf);
