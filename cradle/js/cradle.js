@@ -46,6 +46,17 @@ $(document).ready(function(){
 			flipper();
 		}
 	});
+	
+	$(document).keydown(function (e) {
+    var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+    if (key == 32){
+       e.preventDefault();
+    	if(playState == 1 || playState == 2){
+    		playButton();
+    	}
+    }
+ 	});
+
 
 	document.getElementById("video1").addEventListener("canplay",function(){vid1Loaded = true; },true);
 	document.getElementById("video2").addEventListener("canplay",function(){vid2Loaded = true; },true);
@@ -55,11 +66,6 @@ $(document).ready(function(){
 	
 	$("#playElement").click(function () {
 	playButton();
-	if(playState == 1){
-		$("#playElement").css({'background':'url(art/playGray.png)'})
-	} else {				
-		$("#playElement").css({'background':'url(art/pauseGray.png)'})
-	}
 }).mouseover(function (){
 	if(playState == 1){
 		$("#playElement").css({'background':'url(art/playWhite.png)'})
@@ -227,15 +233,19 @@ function playButton(){
 //	console.log('playbutton');
 	if(playState == 1){
 		pauseVids();
+		playState = 2;
+		$("#playElement").css({'background':'url(art/pauseGray.png)'})
 	}
 	else if(playState == 2){
 		playVids();
 		playState = 1;
+		$("#playElement").css({'background':'url(art/playGray.png)'})
 	}
 	else{
 		document.getElementById("video1").currentTime = 0;
 		document.getElementById("video2").currentTime = 0;
 		playVids();
+		$("#playElement").css({'background':'url(art/playGray.png)'})
 		playState = 1;				
 	}
 }
