@@ -47,6 +47,7 @@ var litlines = new Object();
 var liticons = new Object();
 var gonescrubbers = new Object();
 var gonelines = new Object();
+var superfluouslinecheck = new Object();
 
 var usage = new Object();
 
@@ -391,29 +392,18 @@ function render_lines (mode,spatial){
 		
 		segendar_start = segendar_start.sort(function(a,b){return a-b});
 
-		console.log(segendar_start);
-
 		for(var n = 0; n < segendar_start.length; n++){
-			console.log('clip ' + y + '; ' + segendar_start[n]);
 			if(n == 0){
 				segendar.push(0); // push an extra segment on the front of this array for the start
 			}
 			segendar.push(segendar_start[n]);	
 			if(clipdata[clipstarts[y][segendar_start[n]]] && segendar_start[(n+1)]){
-				console.log(clipdata[clipstarts[y][segendar_start[n]]].segend_secs + ' ' + segendar_start[(n+1)]);
 				if(clipdata[clipstarts[y][segendar_start[n]]].segend_secs != segendar_start[(n+1)]){
 					segendar.push(clipdata[clipstarts[y][segendar_start[n]]].segend_secs);
-					console.log('clip ' + y + ' gap filled at ' + clipdata[clipstarts[y][segendar_start[n]]].segend_secs);
 				}
-			} else {
-				console.log('stranded here');
 			}
 		}
 		
-//		console.log(clipstarts[y]);
-//		console.log(segendar_start);
-		console.log(segendar);
-
 		// traverse those starts and build the scrubber line segments
 		
 		
@@ -568,8 +558,6 @@ function render_lines (mode,spatial){
 				
 				// traverse everything else with this class and draw some lines;
 				
-				console.log('calling parsed for ' + clip + ' ' + clipedges[y][clip]);
-				
 				var coords = parsed($("#l" + clipedges[y][clip]).attr('d'));
 				
 				
@@ -577,6 +565,7 @@ function render_lines (mode,spatial){
 					var id = $(this).attr('id');
 					var clipid = parseInt(id.replace('l',''));
 					if(id != ("l" + clipedges[y][clip])){
+						var superflous = false;
 						var thisclip = parsed($(this).attr('d'));
 						
 						var newline = "M" + coords.endx + ',' + coords.endy + 'L' + thisclip.startx + ',' + thisclip.starty;
@@ -584,6 +573,11 @@ function render_lines (mode,spatial){
 						var newpath_a, newpath_b, newpath_c, newpath_d;
 					
 						var lineclass = "transition_unused tl" + clipclass;
+
+						if(superfluouslinecheck[clipid] == clipedges[y][clip]){
+							lineclass = "transition_unused_superfluous tl" + clipclass;
+							superflous = true;
+						}
 			
 						var lineyes = true;
 			
@@ -628,6 +622,8 @@ function render_lines (mode,spatial){
 								$(newpath_d.node).attr("id",trans_d);
 							}
 
+							superfluouslinecheck[clipedges[y][clip]] = clipid;
+
 							if(mode == 0){
 								$(newpath_a.node).attr("data-outbound",clipedges[y][clip]);
 								$(newpath_b.node).attr("data-outbound",clipedges[y][clip]);
@@ -640,6 +636,12 @@ function render_lines (mode,spatial){
 								$(newpath_b.node).attr("data-inbound",clipid);
 								$(newpath_c.node).attr("data-inbound",clipid);
 								$(newpath_d.node).attr("data-inbound",clipid);
+								if(superflous){
+									$(newpath_a.node).attr("data-superflous",1);
+									$(newpath_b.node).attr("data-superflous",1);
+									$(newpath_c.node).attr("data-superflous",1);
+									$(newpath_d.node).attr("data-superflous",1);
+								}
 							}
 						
 							$(newpath_a.node).attr("class",lineclass);
@@ -658,6 +660,9 @@ function render_lines (mode,spatial){
 		}
 		
 	svgreset();
+	
+	console.log(superfluouslinecheck);
+	
 	$(".gsactive").click(iconclick);
 //	$("#icongroup").hide();
 
@@ -681,8 +686,8 @@ function iconclick () {
 	// preload the transition image
 	
 	transition_load(lastx);
-
 	
+
 	// icon changes - turn this one on, take the last one and toggle that on
 		
 	$(this).removeClass('gsoff').removeClass('gsactive').removeClass(thisclass).addClass(thisclass+"_on");
@@ -763,6 +768,8 @@ function iconclick () {
 		_playbackx = parseInt(posdenus.startx);
 		_playbacky = parseInt(posdenus.starty);
 
+		console.log('resetting x and y to ' + posdenus.startx + ' ' + posdenus.starty);
+
 		var clipseq = parseInt($("#l" + data.dataid).attr('data-lineseq'));
 		
 		
@@ -801,13 +808,15 @@ function iconclick () {
 				if(!litlines[lineid] && !gonelines[lineid]){
 					if($(this).attr('data-inbound') == data.dataid && $(this).attr('data-outbound') == lastx){ // this line is a match, light it up
 						var thiscl = $(this).attr('class');
-						thiscl = thiscl.replace('transition_unused ','transition_used ');
+						var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous ':'transition_unused ';
+						thiscl = thiscl.replace(replstring,'transition_used ');
 						$(this).attr('class',thiscl);
 						litlines[lineid] = 1;
 					} else {
 						if(!litlines[$(this).attr('id')]){ //dump this line
 							var thiscl = $(this).attr('class');
-							thiscl = thiscl.replace('transition_unused ','transition_gone ');
+							var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous ':'transition_unused ';
+							thiscl = thiscl.replace(replstring,'transition_gone ');
 							$(this).attr('class',thiscl);
 							gonelines[lineid] = 1;
 							$(this).remove();
@@ -820,12 +829,14 @@ function iconclick () {
 				if(!litlines[lineid] && !gonelines[lineid]){
 					if($(this).attr('data-inbound') == data.dataid && $(this).attr('data-outbound') == lastx){ // this line is a match, light it up
 						var thiscl = $(this).attr('class');
-						thiscl = thiscl.replace('transition_unused ','transition_used ');
+						var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous ':'transition_unused ';
+						thiscl = thiscl.replace(replstring,'transition_used ');
 						$(this).attr('class',thiscl);
 						litlines[lineid] = 1;
 					} else {
 						var thiscl = $(this).attr('class');
-						thiscl = thiscl.replace('transition_unused ','transition_gone ');
+						var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous ':'transition_unused ';
+						thiscl = thiscl.replace(replstring,'transition_gone ');
 						$(this).attr('class',thiscl);
 						gonelines[lineid] = 1;
 						$(this).remove();
@@ -836,7 +847,7 @@ function iconclick () {
 		
 					
 		
-		console.log(gonelines);
+//		console.log(gonelines);
 
 
 		// actually load the video
@@ -1118,8 +1129,6 @@ function progressrun (inf) {
 	
 	playstring = 'M' + _playbackx + ',' + _playbacky + 'L';
 
-	var realplaystring = new String();
-		
 	var secpx = _scrubwidth / cliplengths[curvid];
 	if(curvid == 1 || curvid == 3){
 		secpx = (_scrubheight - 8) / cliplengths[curvid];
@@ -1130,45 +1139,25 @@ function progressrun (inf) {
 	}
 
 
-		var w = ($("#legacy_container").width() - 100);
-		var h = ($("#legacy_container").width() - 100) * .31
+	var w = ($("#legacy_container").width() - 100);
+	var h = ($("#legacy_container").width() - 100) * .31
 
-	switch(curvid){
-		case 0:
-			realplaystring = 'M4,4L';
-			break;
-		case 1:
-			realplaystring = 'M' + (w + 54) + ',4L';
-			break;
-		case 2:
-			realplaystring = 'M' + (w + 54) + ',' + (h+110) + 'L';
-			break;
-		case 3:
-			realplaystring = 'M4,' + (h+110) + 'L';
-			break;
-	}
-	
 
 	// draw a line from the current x/y to this point in time
 	
 	var desiredlength = (curplayback - _clipoffsetfromstart) * secpx;
-	var reallength = curplayback * secpx;
 
 	if(vertical){
 		if(reverse){
 			playstring += _playbackx + ',' + (_playbacky - desiredlength);
-			realplaystring += _playbackx + ',' + (_playbacky - reallength);
 		} else {
 			playstring += _playbackx + ',' + (_playbacky + desiredlength);
-			realplaystring += _playbackx + ',' + (_playbacky + reallength);
 		}
 	} else {
 		if(reverse){
 			playstring += (_playbackx - desiredlength) + ',' + _playbacky;
-			realplaystring += (_playbacky - reallength) + ',' + _playback_y;
 		} else {
 			playstring += (_playbackx + desiredlength) + ',' + _playbacky;
-			realplaystring += (_playbacky + reallength) + ',' + _playbacky;
 		}
 	}
 	
@@ -1182,6 +1171,7 @@ function progressrun (inf) {
 	
 
 	drawpath = paper.path( playstring );
+		
 	drawpath.attr({'arrow-end': 'classic-wide-long', 'stroke': '#fbb03b' });
 	$(drawpath.node).attr("class","playback");
 
@@ -1216,7 +1206,9 @@ function progressrun (inf) {
 			var thiscl = $(this).attr('class');
 			if($(this).attr('data-outbound') == clipends[curvid][thistime]){
 				if(thiscl.indexOf('transition_unused') != -1){
-					thiscl = thiscl.replace('transition_unused','transition_hot');
+					var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous':'transition_unused';
+					thiscl = thiscl.replace(replstring,'transition_hot');
+					console.log(thiscl);
 					$(this).attr('class',thiscl);
 				}
 			}
@@ -1226,7 +1218,7 @@ function progressrun (inf) {
 	}
 	if(clipstarts[curvid][thistime]){
 	
-		console.log('clipstart detect ' + clipstarts[curvid][thistime] + ' curtime ' + thistime + ' startpoint ' + _clipoffsetfromstart);
+		// console.log('clipstart detect ' + clipstarts[curvid][thistime] + ' curtime ' + thistime + ' startpoint ' + _clipoffsetfromstart);
 		_clipoffsetfromstart = thistime;	
 
 		var posdenus = parsed($("#l" + clipstarts[curvid][thistime]).attr('d'));	
@@ -1268,7 +1260,8 @@ function progressrun (inf) {
 			$(".tl" + clipdata[clipedges[curvid][thistime]].state + clipdata[clipedges[curvid][thistime]].substate).each(function () {
 				var thiscl = $(this).attr('class');
 				if(thiscl.indexOf('transition_hot') != -1){
-					thiscl = thiscl.replace('transition_hot','transition_unused');
+					var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous':'transition_unused';
+					thiscl = thiscl.replace('transition_hot',replstring);
 					$(this).attr('class',thiscl);
 				}
 			});
