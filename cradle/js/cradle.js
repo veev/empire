@@ -15,11 +15,14 @@ var flipangle = 0;
 var flipblockIvl = new Number();
 var flipblock = false;
 var openIvl = new Number();
-
+var lazywidth = 0;
+var leftpoint = 0;
+var rightpoint = 0;
 
 $(document).ready(function(){		
 
-
+	lazywidth = $("#outerouter").width();
+	
 	cradle_sizer();
 
 	$(document).scrollsnap({
@@ -28,12 +31,11 @@ $(document).ready(function(){
 		handler: cradle_scrollsnaphandle
 	});
 
-
-	$("#outerinner").mouseenter(function () {
+	$("#outerouter").mouseenter(function () {
 		trackon();
 	});
 
-	$("#outerinner").mouseleave(function () {
+	$("#outerouter").mouseleave(function () {
 		trackoff();
 	});
 		$("#leftbutton").click(function () {
@@ -92,6 +94,10 @@ function cradle_scrollsnaphandle () {
 
 $(window).resize(function () {
 	cradle_sizer();
+	lazywidth = $("#outerouter").width();
+	var marginsize = (lazywidth - 960) / 2;
+	leftpoint = marginsize + 180;
+	rightpoint = (lazywidth - marginsize) - 180;
 });
 
 function cradle_openscreen () {
@@ -145,40 +151,65 @@ function cradle_sizer () {
 	});
 
 }
-
 function trackon () {
 	$(document).mousemove(function(e){
 		if(!flipblock){
-			var x = e.pageX - $("#cardover").offset().left;
+			var x = e.pageX;
+//			var x = e.pageX - $("#cardover").offset().left;
 //			console.log('mousemove ' + flipside + ' ' + x);
-			if(x < 480){
-				if(x < 180){
+			if(x < (lazywidth / 2)){
+				if(flipside){
+					flipper(false);
+				}
+			} else {
+				if(!flipside){
+					flipper(true);
+				}
+			}
+//			if(flipside){
+//			}
+//			flipblock = true;
+//			flipblockIvl = setTimeout(function () { flipblock = false },150);
+		}				
+	});
+}
+
+
+function trackon_other () {
+	$(document).mousemove(function(e){
+		if(!flipblock){
+			var x = e.pageX;
+//			var x = e.pageX - $("#cardover").offset().left;
+//			console.log('mousemove ' + flipside + ' ' + x);
+			if(x < (lazywidth / 2)){
+				if(x < leftpoint){
+				
+					console.log('in left point');
 					if(flipside){
 						flipper(false);
 					}
 				} else {
 					deg = Math.floor(((x - 210) / 3));
 					flipangle = deg;
-//						console.log(deg);
 						if(deg < 0){
 							deg = 0;
 						}
+						console.log(deg);
 					$("#card").css({ '-webkit-transform': 'rotateY( ' + deg + 'deg )', 'transform': 'rotateY( ' + deg + 'deg )' });
 				}
-			}
-//			} else {
-			if(x > 480){
-				if(x > 780){
+			} else {
+				if(x > rightpoint){
+					console.log('in right point');
 					if(!flipside){
 						flipper(true);
 					}
 				} else {
 					deg = Math.floor(((x - 480) / 3));
 					flipangle = deg;
-						if(deg > 180){
+						if(deg < 180){
 							deg = 180;
 						}
-//						console.log(deg);
+						console.log(deg);
 					$("#card").css({ '-webkit-transform': 'rotateY( ' + deg + 'deg )', 'transform': 'rotateY( ' + deg + 'deg )' });
 				}
 			}

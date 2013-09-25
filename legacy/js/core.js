@@ -388,28 +388,31 @@ function render_lines (mode,spatial){
 		for(clip in clipstarts[y]){
 			segendar_start.push(parseInt(clip));
 		}
+		
 		segendar_start = segendar_start.sort(function(a,b){return a-b});
 
+		console.log(segendar_start);
+
 		for(var n = 0; n < segendar_start.length; n++){
+			console.log('clip ' + y + '; ' + segendar_start[n]);
 			if(n == 0){
 				segendar.push(0); // push an extra segment on the front of this array for the start
-				segendar.push(segendar_start[n]);
-			} else {
-				segendar.push(segendar_start[n]);
-				if(clipdata[clipstarts[y][segendar_start[n]]]){
-					if(clipdata[clipstarts[y][segendar_start[(n+1)]]]){
-						if(clipdata[clipstarts[y][segendar_start[(n+1)]]].start_secs > clipdata[clipstarts[y][segendar_start[n]]].segend_secs){
-							segendar.push(clipdata[clipstarts[y][segendar_start[n]]].segend_secs);
-//							console.log('gap filled at ' + clipdata[clipstarts[y][segendar_start[n]]].segend_secs);
-						}
-					}
+			}
+			segendar.push(segendar_start[n]);	
+			if(clipdata[clipstarts[y][segendar_start[n]]] && segendar_start[(n+1)]){
+				console.log(clipdata[clipstarts[y][segendar_start[n]]].segend_secs + ' ' + segendar_start[(n+1)]);
+				if(clipdata[clipstarts[y][segendar_start[n]]].segend_secs != segendar_start[(n+1)]){
+					segendar.push(clipdata[clipstarts[y][segendar_start[n]]].segend_secs);
+					console.log('clip ' + y + ' gap filled at ' + clipdata[clipstarts[y][segendar_start[n]]].segend_secs);
 				}
-			}	
+			} else {
+				console.log('stranded here');
+			}
 		}
 		
 //		console.log(clipstarts[y]);
 //		console.log(segendar_start);
-//		console.log(segendar);
+		console.log(segendar);
 
 		// traverse those starts and build the scrubber line segments
 		
@@ -565,7 +568,7 @@ function render_lines (mode,spatial){
 				
 				// traverse everything else with this class and draw some lines;
 				
-//				console.log('calling parsed for ' + clip + ' ' + clipedges[y][clip]);
+				console.log('calling parsed for ' + clip + ' ' + clipedges[y][clip]);
 				
 				var coords = parsed($("#l" + clipedges[y][clip]).attr('d'));
 				
@@ -734,28 +737,6 @@ function iconclick () {
 
 
 		//color the lines
-
-		var w = ($("#legacy_container").width() - 100);
-		var h = ($("#legacy_container").width() - 100) * .31;
-
-		switch(data.clip){
-			case 0:
-				_playbackx = 4;
-				_playbacky = 4;
-				break;
-			case 1:
-				_playbackx = w + 54;
-				_playbacky = 4;
-				break;
-			case 2:
-				_playbackx = w + 54;
-				_playbacky = (h+110);
-				break;
-			case 3:
-				_playbackx = 4;
-				_playbacky = (h+110);
-				break;
-		}
 
 
 		// low hanging fruit - stuff that's already hot
