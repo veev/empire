@@ -28,9 +28,10 @@ var _playbackx = new Number();
 var _playbacky = new Number();
 var _clipoffsetfromstart = 0;
 var _clipstartsincemove = 0;
-var _playbackctr = 40;
+var _playbackctr = 90;
 var _intransition = false;
 var _hasended = false;
+var _intransitions = 0;
 
 var preventdoublejumpIvl = new Number();
 var preventdoublejump = false;
@@ -311,7 +312,7 @@ function endscreen (theme,focus) {
 	_endscreenon = true;
 	
 	
-	render_lines(1, { 'w':$("#endscreen").width() ,'h':$("#endscreen").height(),'vtop':vtop,'ml':ml });
+	render_lines(2, { 'w':$("#endscreen").width() ,'h':$("#endscreen").height(),'vtop':vtop,'ml':ml });
 
 
 }
@@ -321,7 +322,7 @@ function render_lines (mode,spatial){
 
 	// build the matrix of playback and connecting lines
 
-
+	superfluouslinecheck = {};
 
 	var h, vtop, w;
 
@@ -334,7 +335,7 @@ function render_lines (mode,spatial){
 	_scrubtop = vtop - 40;
 
 
-	if(mode == 1){
+	if(mode == 2){
 		h = spatial.h;
 		vtop = spatial.vtop;
 		w = spatial.w;
@@ -390,15 +391,19 @@ function render_lines (mode,spatial){
 			segendar_start.push(parseInt(clip));
 		}
 		
+		
 		segendar_start = segendar_start.sort(function(a,b){return a-b});
+
+		// run through the array to find gaps and close them
 
 		for(var n = 0; n < segendar_start.length; n++){
 			if(n == 0){
 				segendar.push(0); // push an extra segment on the front of this array for the start
 			}
-			segendar.push(segendar_start[n]);	
-			if(clipdata[clipstarts[y][segendar_start[n]]] && segendar_start[(n+1)]){
-				if(clipdata[clipstarts[y][segendar_start[n]]].segend_secs != segendar_start[(n+1)]){
+			segendar.push(segendar_start[n]);
+			if(clipdata[clipstarts[y][segendar_start[(n+1)]]] != undefined){
+				// there's a segment after this one
+				if(clipdata[clipstarts[y][segendar_start[(n+1)]]].start_secs > clipdata[clipstarts[y][segendar_start[n]]].segend_secs){
 					segendar.push(clipdata[clipstarts[y][segendar_start[n]]].segend_secs);
 				}
 			}
@@ -457,7 +462,7 @@ function render_lines (mode,spatial){
 					}
 				}
 			} else {
-				change = clipdata[clipstarts[y][segendar[1]]].segend_secs - clipdata[clipstarts[y][segendar[1]]].start_secs;
+				change = clipdata[clipstarts[y][segendar[x]]].segend_secs - clipdata[clipstarts[y][segendar[x]]].start_secs;
 			}
 			
 			if(vertical){ // vertical
@@ -507,7 +512,7 @@ function render_lines (mode,spatial){
 				}
 			}	
 			
-			if(mode == 0 || (mode == 1 && !gonescrubbers[idcode])){
+			if(mode == 0 || (mode == 2 && !gonescrubbers[idcode])){
 			
 				var newpath = paper.path( drawstring );
 									
@@ -574,7 +579,7 @@ function render_lines (mode,spatial){
 					
 						var lineclass = "transition_unused tl" + clipclass;
 
-						if(superfluouslinecheck[clipid] == clipedges[y][clip]){
+						if(superfluouslinecheck[clipid + '_' + clipedges[y][clip]] || superfluouslinecheck[clipedges[y][clip] + '_' + clipid]){
 							lineclass = "transition_unused_superfluous tl" + clipclass;
 							superflous = true;
 						}
@@ -614,6 +619,8 @@ function render_lines (mode,spatial){
 
 						if(lineyes){
 						
+							superfluouslinecheck[clipid + '_' + clipedges[y][clip]] = true;
+						
 							$(newpath_a.node).attr("id",trans_a);
 						
 							if(mode == 0){
@@ -622,7 +629,7 @@ function render_lines (mode,spatial){
 								$(newpath_d.node).attr("id",trans_d);
 							}
 
-							superfluouslinecheck[clipedges[y][clip]] = clipid;
+							$(newpath_a.node).attr("data-outbound",clipedges[y][clip]);
 
 							if(mode == 0){
 								$(newpath_a.node).attr("data-outbound",clipedges[y][clip]);
@@ -630,6 +637,8 @@ function render_lines (mode,spatial){
 								$(newpath_c.node).attr("data-outbound",clipedges[y][clip]);
 								$(newpath_d.node).attr("data-outbound",clipedges[y][clip]);
 							}
+
+							$(newpath_a.node).attr("data-inbound",clipid);
 
 							if(mode == 0){
 								$(newpath_a.node).attr("data-inbound",clipid);
@@ -661,7 +670,6 @@ function render_lines (mode,spatial){
 		
 	svgreset();
 	
-	console.log(superfluouslinecheck);
 	
 	$(".gsactive").click(iconclick);
 //	$("#icongroup").hide();
@@ -686,7 +694,7 @@ function iconclick () {
 	// preload the transition image
 	
 	transition_load(lastx);
-	
+	_intransitions = lastx;	
 
 	// icon changes - turn this one on, take the last one and toggle that on
 		
@@ -698,9 +706,13 @@ function iconclick () {
 	var newclass = "gsa" + data.state;
 	newclass += (data.substate)? data.substate:'';
 	$(this).removeClass(newclass);
+	
 	$('#l' + _highlight_currentx +'_ia').removeClass(newclass);
 	$('#l' + _highlight_currentx +'_ib').removeClass(newclass);
 	
+	$("." + newclass).each(function () {
+		$(this).fadeOut();
+	});
 	
 	// get the delay
 	var timeleft = (clipdata[lastx].segend_secs - curplayback);
@@ -752,6 +764,10 @@ function iconclick () {
 				thiscl = thiscl.replace('transition_hot ','transition_used ');
 				$(this).attr('class',thiscl);
 				litlines[$(this).attr('id')] = 1;
+			} else {
+				console.log('here ' + $(this).attr('id'));
+				gonelines[$(this).attr('id')] = 1;
+				$(this).remove();
 			}
 		});
 		
@@ -767,8 +783,6 @@ function iconclick () {
 
 		_playbackx = parseInt(posdenus.startx);
 		_playbacky = parseInt(posdenus.starty);
-
-		console.log('resetting x and y to ' + posdenus.startx + ' ' + posdenus.starty);
 
 		var clipseq = parseInt($("#l" + data.dataid).attr('data-lineseq'));
 		
@@ -1208,7 +1222,6 @@ function progressrun (inf) {
 				if(thiscl.indexOf('transition_unused') != -1){
 					var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous':'transition_unused';
 					thiscl = thiscl.replace(replstring,'transition_hot');
-					console.log(thiscl);
 					$(this).attr('class',thiscl);
 				}
 			}
@@ -1224,6 +1237,8 @@ function progressrun (inf) {
 		var posdenus = parsed($("#l" + clipstarts[curvid][thistime]).attr('d'));	
 		_playbackx = parseInt(posdenus.startx);
 		_playbacky = parseInt(posdenus.starty);
+//		console.log('that calling markseen');
+		markseen(curvid);
 
 	}
 
@@ -1232,6 +1247,7 @@ function progressrun (inf) {
 		if(!clipdata[clipedges[curvid][thistime]].seen){
 				
 			// change this segment to viewed
+//			console.log('this calling markseen');
 			markseen(curvid,clipdata[clipedges[curvid][thistime]]);
 
 		}
@@ -1262,6 +1278,7 @@ function progressrun (inf) {
 				if(thiscl.indexOf('transition_hot') != -1){
 					var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous':'transition_unused';
 					thiscl = thiscl.replace('transition_hot',replstring);
+					console.log('here now ' + thiscl);
 					$(this).attr('class',thiscl);
 				}
 			});
@@ -1283,12 +1300,13 @@ function progressrun (inf) {
 	_playbackctr--;
 	if(_playbackctr == 0){
 		garbagecollection();
-		_playbackctr = 40;
+		_playbackctr = 90;
 	}	
 }
 
 
 function garbagecollection () {
+
 	$('path[data-lineclip="' + curvid + '"]').each(function () {
 		var thiscl = $(this).attr("class");
 		if(thiscl.indexOf('scrubber ') != -1){
@@ -1315,20 +1333,42 @@ function markseen (cv,enddata){
 	
 	finalid = cv;
 	var endpoint = curplayback;
+	var nonclip = false;
+	var thiscl, thisid;
 		
 	if(enddata){
 		finalid = cv + '' + enddata.end_secs;
 		endpoint = enddata.end_secs;
 		enddata.seen = true;
+		thiscl = $(".pl" + finalid + ":first").attr("class");
+		thisid = $(".pl" + finalid + ":first").attr("id");
+		$('path[data-outbound="' + enddata.dataid + '"]').each(function () {
+			var linecl = $(this).attr('class');
+			if(linecl.indexOf('transition_hot') == -1 && (parseInt($(this).attr('data-outbound')) !=  _intransitions)){
+				console.log(linecl);
+				gonelines[$(this).attr('id')] = 1;
+				$(this).remove();
+			}
+		});
+		$('path[data-inbound="' + enddata.dataid + '"]').each(function () {
+			var linecl = $(this).attr('class');
+			if(linecl.indexOf('transition_hot') == -1){
+			console.log(linecl);
+				gonelines[$(this).attr('id')] = 1;
+				$(this).remove();
+			}
+		});
+	} else {
+		thisid = $('path[data-endsecs="' + parseInt(curplayback) + '"]:first').attr('id');
+		thiscl = $('path[data-endsecs="' + parseInt(curplayback) + '"]:first').attr('class');
+		nonclip = true;
 	}
 	
 	if(legacy_debug){
-		console.log('markseen ' + cv);
+//		console.log('markseen ' + cv + ' ' + nonclip + ' ' + thisid + ' ' + parseInt(curplayback));
 	}
 	
 		
-	var thiscl = $(".pl" + finalid + ":first").attr("class");
-	var thisid = $(".pl" + finalid + ":first").attr("id");
 	thiscl = thiscl.replace("scrubber ","scrubber_seen ");
 	$("#" + thisid).attr("class",thiscl);
 	litlines[thisid] = 1;
