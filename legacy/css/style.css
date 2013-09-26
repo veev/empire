@@ -31,7 +31,7 @@ div#legacy_container:-o-full-screen { background-color: #000; width: 100%; heigh
 div#legacy_container:full-screen { background-color: #000; width: 100%; height: 100%; }
 div#legacy_container div#debugmsg { background-color: #f00; display: block; position: absolute; top: 0; z-index: 900; font-size: 2em; width: 100%; padding: 5px; color: #fff; }
 div#legacy_container div#legacy_containerinner { height: 100%; position: relative; }
-div#legacy_container div#legacy_containerinner div#lg_fs { position: absolute; z-index: 35; bottom: 0; right: 0; padding: 10px; cursor: pointer; }
+div#legacy_container div#legacy_containerinner div#lg_fs { position: absolute; z-index: 35; bottom: 20; right: 10; padding: 10px; cursor: pointer; }
 div#legacy_container div#lg_fs:hover { color: #f00; }
 div#legacy_container div#legacy_containerinner div.videoplayer { position: absolute;  z-index: 23 }
 div#legacy_container div#legacy_containerinner div.videoplayer div#legacy_instructions { position: absolute; z-index: 50;  }

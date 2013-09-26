@@ -208,17 +208,21 @@ $(document).ready(function () {
  
  
  	$("#lg_fs").click(function () {
-		var docElm = document.getElementById("legacy_container");
-		if (docElm.requestFullscreen) {
-			docElm.requestFullscreen();
+ 		if(!_fson){
+			var docElm = document.getElementById("legacy_container");
+			if (docElm.requestFullscreen) {
+				docElm.requestFullscreen();
+			}
+			else if (docElm.mozRequestFullScreen) {
+				docElm.mozRequestFullScreen();
+			}
+			else if (docElm.webkitRequestFullScreen) {
+				docElm.webkitRequestFullScreen();
+			}
+			_fson = true;
+		} else {
+			fullscreen_off();
 		}
-		else if (docElm.mozRequestFullScreen) {
-			docElm.mozRequestFullScreen();
-		}
-		else if (docElm.webkitRequestFullScreen) {
-			docElm.webkitRequestFullScreen();
-		}
-		_fson = true;
  	});
  
 
@@ -337,7 +341,6 @@ function start_linehighlights (theme) {
 		var thiscl = $(this).attr('class');
 		var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous ':'transition_unused ';
 		thiscl = thiscl.replace(replstring,'transition_used ');
-		console.log(thiscl);
 		$(this).attr('class',thiscl);
 	});
 }
@@ -348,7 +351,6 @@ function start_linehighlightsoff (theme) {
 		var thiscl = $(this).attr('class');
 		var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous':'transition_unused';
 		thiscl = thiscl.replace('transition_used',replstring);
-//		console.log(thiscl);
 		$(this).attr('class',thiscl);
 	});
 }
