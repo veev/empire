@@ -32,6 +32,10 @@ var _playbackctr = 90;
 var _intransition = false;
 var _hasended = false;
 var _intransitions = 0;
+var _legacy_firstrun = true;
+var _starton = false;
+var _adjuster = 140;
+var _mladjust = 35;
 
 var preventdoublejumpIvl = new Number();
 var preventdoublejump = false;
@@ -53,13 +57,15 @@ var superfluouslinecheck = new Object();
 var usage = new Object();
 
 $(window).resize(function () {
-	scrubresize();
+	redrawing();
 });
 
 
 $(document).ready(function () {
 
+	$("#legacy_container").css({ 'width': ($(window).width() - 40) });
 	legacy_draw();
+	
 	
 	$("#legplay").click(function () {
 		$('html, body').animate({ scrollTop: ($('#legacy_container').offset().top - 20) }, 1000);
@@ -234,37 +240,64 @@ function fullscreen_off() {
 
 function startscreen () {
 
-	var w = ($("#legacy_container").width() - 100);
-	var h = ($("#legacy_container").width() - 100) * .31;
+	var w = ($("#legacy_container").width() - _adjuster);
+	var h = ($("#legacy_container").width() - _adjuster) * .31;
 	var vtop = (($("#legacy_container").height() - h) / 2) - 50;
 	w += 54;
 	vtop -= 47;
 	h += 110;
+	_starton = true;
 	
 	render_lines(1);
 	
-	$("#linegroup").hide();
-	$("#linegroup_connections").hide();
+//	$("#linegroup").hide();
+//	$("#linegroup_connections").hide();
 	
 	
-	$("#startspace").show();
+	$("#legacy_startspace").css({ 'width': w + 'px', 'margin-top': vtop, 'margin-left':  _mladjust + 'px', 'height': h + 'px' }).fadeIn();
+
+	var denom = (w - 2) / 1280;
+	var denomh = (h - 2) / 407;
+
+	$("#legstarter").css({ 'transform-origin': '0 0', '-webkit-transform-origin': '0 0',  'transform': 'scale(' + denom + ',' + denomh + ');', '-ms-transform': 'scale(' + denom + ',' + denomh + ')', '-webkit-transform': 'scale(' + denom + ',' + denomh + ')' });
+	$("#vid_2t").css({ 'width': (w - 500), 'top': 20, 'left': (w/2) - ((w - 500) / 2) }).fadeIn(2000);
+	$("#vid_3t").css({ 'width': 450, 'top': 30, 'left': (w - 510), 'top' : ((h/2) - 100) }).fadeIn(2000);
+	$("#vid_0t").css({ 'width': (w - 500), 'top': (h - 250) , 'left': (w/2) - ((w - 500) / 2) }).fadeIn(2000);
+	$("#vid_1t").css({ 'width': 450, 'left': 20, 'top' : ((h/2) - 100) }).fadeIn(2000);
 	
-	$(".videospace").click(function () {
+	$(".leg_text").mouseover(function () {
+		$("#vid_" + $(this).attr('data-clipid')).removeClass('grey');
+	});
+
+	$(".leg_text").mouseout(function () {
+		$("#vid_" + $(this).attr('data-clipid')).addClass('grey');
+	});
+	
+	$(".legstarttheme").mouseover(function () {
+		start_linehighlights($(this).attr('data-theme'));
+	});
+	
+	$(".legstarttheme").mouseout(function () {
+		start_linehighlightsoff();
+	});
+	
+	
+	$(".leg_text").click(function () {
 		if(audioactive){
 			audiostop();
 		}
-		curvid = parseInt($(this).attr('data-clip'));
-		actualclip = $(this).attr('data-clipname');
+		
+		_starton = false;
+		curvid = parseInt($("#vid_" + $(this).attr('data-clipid')).attr('data-clip'));
+		actualclip = $("#vid_" + $(this).attr('data-clipid')).attr('data-clipname');
 
-		var w = ($("#legacy_container").width() - 100);
-		var h = ($("#legacy_container").width() - 100) * .31
+		var w = ($("#legacy_container").width() - _adjuster);
+		var h = ($("#legacy_container").width() - _adjuster) * .31
 		var vtop = (($("#legacy_container").height() - h) / 2) - 20;
 
-		$(this).animate({ 'z-index': 68, 'width': ($("#legacy_container").width() - 80) + 'px', 'top': vtop, 'left': 40, 'height': 330 }).fadeOut(8000);
-		$(".videospace").hide().unbind('click');
-		$(this).show();
-		$(".blurb").remove();
-		$(".blurbback").remove();
+		$("#legacy_startspace").fadeOut(2000);
+		$(".leg_text").hide().unbind('click');
+
 		drawvideo(actualclip);
 		render_lines(0);
 		
@@ -295,29 +328,46 @@ function startscreen () {
 				break;
 		}
 	});
-	
+}
 
+function start_linehighlights (theme) {
+	// highlight everything in this theme
+	$(".leg_text").hide();
+	$(".tml" + theme).each(function () {
+		var thiscl = $(this).attr('class');
+		var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous ':'transition_unused ';
+		thiscl = thiscl.replace(replstring,'transition_used ');
+		console.log(thiscl);
+		$(this).attr('class',thiscl);
+	});
+}
 
+function start_linehighlightsoff (theme) {
+	$(".leg_text").show();
+	$(".transition_used").each(function () {
+		var thiscl = $(this).attr('class');
+		var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous':'transition_unused';
+		thiscl = thiscl.replace('transition_used',replstring);
+//		console.log(thiscl);
+		$(this).attr('class',thiscl);
+	});
 }
 
 function endscreen (theme,focus) {
 
 	// endscreen
 
-	var w = ($("#legacy_container").width() - 100);
-	var h = ($("#legacy_container").width() - 100) * .31;
+	var w = ($("#legacy_container").width() - _adjuster);
+	var h = ($("#legacy_container").width() - _adjuster) * .31;
 	var vtop = (($("#legacy_container").height() - h) / 2) - 50;
-	var ml = 15;
+	var ml = _mladjust - 3;
 	w += 54;
 	vtop -= 47;
 	h += 110;
 	
 	$("#videotransition").remove();
 	
-//	console.log('litlines');
-//	console.log(litlines);
-	
-	$("#endscreen_outer").css({ 'width': w + 'px', 'margin-top': vtop, 'margin-left': '18px', 'height': h + 'px' });
+	$("#endscreen_outer").css({ 'width': w + 'px', 'margin-top': vtop, 'margin-left': _mladjust + 'px', 'height': h + 'px' });
 
 	$("#endscreen").append('<div id="group0" class="grey endscreen' + theme + '0" ></div>');
 	$("#endscreen").append('<div id="group1" class="grey endscreen' + theme + '1" ></div>');
@@ -332,8 +382,7 @@ function endscreen (theme,focus) {
 	var denomh = (h - 2) / 407;
 	
 	$("#endscreen").css({ 'transform-origin': '0 0', '-webkit-transform-origin': '0 0',  'transform': 'scale(' + denom + ',' + denomh + ');', '-ms-transform': 'scale(' + denom + ',' + denomh + ')', '-webkit-transform': 'scale(' + denom + ',' + denomh + ')' });
-	
-	
+		
 //	$("#endscreen").fadeIn(4000, function () {
 	$("#group" + focus + "a").fadeTo(5000,.8);
 	$("#endtalk").fadeIn(2000, function () {
@@ -347,6 +396,7 @@ function endscreen (theme,focus) {
 	
 	render_lines(2, { 'w':$("#endscreen").width() ,'h':$("#endscreen").height(),'vtop':vtop,'ml':ml });
 
+	$("#endscreen_outer").show();
 
 } 
 
@@ -355,11 +405,8 @@ function restarter () {
 	// god help me, reset it all
 	
 	$("#endtalk").fadeOut(2000);
-	jwplayer("vidin").remove();
-	$("#videoplayer").html();
-	$("#icongroup").fadeOut(1000, function () {
-		$("#icongroup").html();
-	});
+	$("#videoplayer").hide();
+	$("#icongroup").fadeOut(1000);
 
 	_scrubwidth = 0;
 	_scrubheight = 0;
@@ -379,28 +426,28 @@ function restarter () {
 	_intransition = false;
 	_hasended = false;
 	_intransitions = 0;
-
+	litlines = {};
+	liticons = {};
+	gonelines = {};
+	gonescrubbers = {};
+	segmentsseen.length = 0;
+	
 	preventdoublejump = false;
 
 	curvid = 0;
 	curplayback = 0;
 	curstart = 0;
 
-videotimes.length = 0;
-vidjumpcnt = 0;
-segmentsseen.length = 0;
-themetrack = { 'a':0, 'b':0, 'c':0, 'd':0, 'e':0 };
-usage = {};
+	videotimes.length = 0;
+	vidjumpcnt = 0;
+	segmentsseen.length = 0;
+	themetrack = { 'a':0, 'b':0, 'c':0, 'd':0, 'e':0 };
+	usage = {};
 
 
 	$("#endscreen_outer").fadeOut(1000, function () {
 		$("#endscreen").html();
-		litlines = {};
-		liticons = {};
-		gonelines = {};
-		gonescrubbers = {};
 		startscreen();
-		$(".videospace").fadeIn();
 	});
 
 }
@@ -411,16 +458,17 @@ function render_lines (mode,spatial){
 	// build the matrix of playback and connecting lines
 
 	superfluouslinecheck = {};
-
+	$("#icongroup").html('');
+	
 	var h, vtop, w;
 
-	h = ($("#legacy_container").width() - 100) * .31;  // video height
-	vtop = (($("#legacy_container").height() - h) / 2) - 60; // top of video space
-	w = ($("#legacy_container").width() - 100); // video width;
-	ml = 15;
+	h = ($("#legacy_container").width() - _adjuster) * .31;  // video height
+	vtop = (($("#legacy_container").height() - h) / 2) - 50; // top of video space
+	w = ($("#legacy_container").width() - _adjuster); // video width;
+	ml = _mladjust - 3;
 	_scrubwidth = w + 54;
 	_scrubheight = h + 110;
-	_scrubtop = vtop - 40;
+	_scrubtop = vtop - 50;
 
 
 	if(mode == 2){
@@ -499,7 +547,7 @@ function render_lines (mode,spatial){
 		
 		// traverse those starts and build the scrubber line segments
 		
-		
+				
 		for(var x = 0; x < (segendar.length + 1); x++){
 		
 			var idcode = 'l' + y + 'start';
@@ -519,20 +567,22 @@ function render_lines (mode,spatial){
 			}
 
 			var drawstring = "M" + curx + ',' + cury + ' L';
-						
+	
+			if(gonelines[idcode]){
+				donothing = true;			
+			}
+			
 			if(!donothing){
-				if(mode == 0 || liticons[idcode + '_ia']){
-					var ic_classa = '<div class="icon gsoff gsactive g' + clipdata[clipstarts[y][segendar[x]]].state;
-					if(liticons[idcode]){
-						ic_classa += '_on';
-					}
-					ic_classa += ' gsa' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ia" data-clipdata="' + clipstarts[y][segendar[x]] + '" style="pointer-events: auto; ';
-					if(!liticons[idcode]){
-						ic_classa += 'display: none; ';
-					}
-					ic_classa += ' left: ' + curx + '; top: ' + cury + '"></div>';
-					$("#icongroup").append(ic_classa);
+				var ic_classa = '<div class="icon gsoff gsactive g' + clipdata[clipstarts[y][segendar[x]]].state;
+				if(liticons[idcode+'_ia']){
+					ic_classa += '_on';
 				}
+				ic_classa += ' gsa' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + '" id="' + idcode + '_ia" data-clipdata="' + clipstarts[y][segendar[x]] + '" style="pointer-events: auto; ';
+				if(!liticons[idcode+'_ia']){
+					ic_classa += 'display: none; ';
+				}
+				ic_classa += ' left: ' + curx + '; top: ' + cury + '"></div>';
+				$("#icongroup").append(ic_classa);
 			}
 
 			var change = 0;
@@ -552,7 +602,7 @@ function render_lines (mode,spatial){
 			} else {
 				change = clipdata[clipstarts[y][segendar[x]]].segend_secs - clipdata[clipstarts[y][segendar[x]]].start_secs;
 			}
-			
+		
 			if(vertical){ // vertical
 				if(x == segendar.length){
 					if(y == 1){
@@ -582,53 +632,53 @@ function render_lines (mode,spatial){
 					}
 				}
 			}
-						
+					
 			drawstring += curx + ',' + cury;
+		
+			if(!donothing){
+				var ic_classb = '<div class="icon gsoff g' + clipdata[clipstarts[y][segendar[x]]].state;
+				if(liticons[idcode+'_ib']){
+					ic_classb += '_on';
+				}
+				ic_classb += '" id="' + idcode + '_ib" data-clipdata="' + clipstarts[y][segendar[x]] + '" style="pointer-events: auto; ';
+				if(!liticons[idcode+'_ib']){
+					ic_classb += 'display: none; ';
+				}
+				ic_classb += ' left: ' + curx + '; top: ' + cury + '"></div>';
+				$("#icongroup").append(ic_classb);
+			}
+		
+			var newpath = paper.path( drawstring );
+							
+			var lineclass = "scrubber ";
+			if(litlines[idcode]){
+				lineclass = "scrubber_seen ";
+			}
+			if(gonelines[idcode]){
+				lineclass = "scrubber_gone ";
+			}
 			
 			if(!donothing){
-				if(mode == 0 || liticons[idcode + '_ib']){
-					var ic_classb = '<div class="icon gsoff g' + clipdata[clipstarts[y][segendar[x]]].state;
-					if(liticons[idcode]){
-						ic_classb += '_on';
-					}
-					ic_classb += '" id="' + idcode + '_ib" data-clipdata="' + clipstarts[y][segendar[x]] + '" style="pointer-events: auto; ';
-					if(!liticons[idcode]){
-						ic_classb += 'display: none; ';
-					}
-					ic_classb += ' left: ' + curx + '; top: ' + cury + '"></div>';
-					$("#icongroup").append(ic_classb);
-				}
-			}	
-			
-			if(mode == 0 || (mode > 0 && !gonescrubbers[idcode])){
-			
-				var newpath = paper.path( drawstring );
-									
-				var lineclass = "scrubber ";
-				if(litlines[idcode]){
-					lineclass = "scrubber_seen ";
-				}
-				if(!donothing){
-					lineclass += "g" + clipdata[clipstarts[y][segendar[x]]].state + ' og' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + ' pc' + y + x + ' pl' + y + clipdata[clipstarts[y][segendar[x]]].end_secs;
-				} else {
-					lineclass += 'pl' + y + ' pc' + y + x;
-				}
-			
-				$(newpath.node).attr("id",idcode);
-				$(newpath.node).attr("data-lineseq",x);
-				if(x < segendar.length){
-					$(newpath.node).attr("data-startsecs",segendar[x]);
-					$(newpath.node).attr("data-endsecs",(segendar[x] + change));
-				}
-				$(newpath.node).attr("data-lineclip",y);
-				if(!donothing){
-					$(newpath.node).attr("data-pt",clipstarts[y][segendar[x]]);
-				}
-				$(newpath.node).attr("class",lineclass);
+				lineclass += "g" + clipdata[clipstarts[y][segendar[x]]].state + ' og' + clipdata[clipstarts[y][segendar[x]]].state + clipdata[clipstarts[y][segendar[x]]].substate + ' pc' + y + x + ' pl' + y + clipdata[clipstarts[y][segendar[x]]].end_secs;
+			} else {
+				lineclass += 'pl' + y + ' pc' + y + x;
+			}
+	
+			$(newpath.node).attr("id",idcode);
+			$(newpath.node).attr("data-lineseq",x);
+			if(x < segendar.length){
+				$(newpath.node).attr("data-startsecs",segendar[x]);
+				$(newpath.node).attr("data-endsecs",(segendar[x] + change));
+			}
+			$(newpath.node).attr("data-lineclip",y);
+			if(!donothing){
+				$(newpath.node).attr("data-pt",clipstarts[y][segendar[x]]);
+			}
+			$(newpath.node).attr("class",lineclass);
 
-			}			
+		}			
 
-		}
+
 		
 	}
 	
@@ -638,11 +688,11 @@ function render_lines (mode,spatial){
 		curx = 8;
 		cury = 4; // lines start at the top, so yeah
 
+		var connlineid = 0;
+
 		for(var y = 0; y < 4; y++){ // loop through each clip now to draw the box lines
 
 			// clip final bits - go there and then draw lines from them to other clips that have the same state + substate
-
-//			console.log(clipedges[y]);
 
 			for(clip in clipedges[y]){
 			
@@ -666,19 +716,19 @@ function render_lines (mode,spatial){
 						
 						var newpath_a, newpath_b, newpath_c, newpath_d;
 					
-						var lineclass = "transition_unused tl" + clipclass;
+						var lineclass = "transition_unused tl" + clipclass + ' tml' + clipdata[clipedges[y][clip]].state;
 
 						if(superfluouslinecheck[clipid + '_' + clipedges[y][clip]] || superfluouslinecheck[clipedges[y][clip] + '_' + clipid]){
-							lineclass = "transition_unused_superfluous tl" + clipclass;
+							lineclass = "transition_unused_superfluous tl" + clipclass + ' tml' + clipdata[clipedges[y][clip]].state;
 							superflous = true;
 						}
 			
 						var lineyes = true;
 			
-						var trans_a = 'l' + clipedges[y][clip] + '_1';
-						var trans_b = 'l' + clipedges[y][clip] + '_2';
-						var trans_c = 'l' + clipedges[y][clip] + '_3';
-						var trans_d = 'l' + clipedges[y][clip] + '_4';
+						var trans_a = 'cl' + connlineid + '_1';
+						var trans_b = 'cl' + connlineid + '_2';
+						var trans_c = 'cl' + connlineid + '_3';
+						var trans_d = 'cl' + connlineid + '_4';
 
 						if(mode == 0){
 							newpath_a = paper_connections.path( newline );
@@ -694,17 +744,20 @@ function render_lines (mode,spatial){
 							newpath_d.attr({'clip-rect':cliprect[3]});
 	
 						} else {
-	
-							if(gonelines[trans_a]){ // checking to see if this has been wiped out
-								lineyes = false;
-							} else {
-								if(litlines[trans_a]){
-									lineclass = "transition_used tl" + clipclass;
-								}
-								newpath_a = paper_connections.path( newline );
-							}						
-	
+							newpath_a = paper_connections.path( newline );
 						}
+	
+						if(gonelines['cl' + connlineid]){ // checking to see if this has been wiped out
+							
+							lineyes = false;
+							
+						} else {
+							
+							if(litlines['cl' + connlineid]){
+								lineclass = "transition_used tl" + clipclass + + ' tml' + clipdata[clipedges[y][clip]].state;
+							}
+						}						
+
 
 						if(lineyes){
 						
@@ -740,6 +793,10 @@ function render_lines (mode,spatial){
 									$(newpath_c.node).attr("data-superflous",1);
 									$(newpath_d.node).attr("data-superflous",1);
 								}
+							} else {
+								if(superflous){
+									$(newpath_a.node).attr("data-superflous",1);
+								}
 							}
 						
 							$(newpath_a.node).attr("class",lineclass);
@@ -751,6 +808,9 @@ function render_lines (mode,spatial){
 						}
 						
 					}
+				
+					connlineid++;
+					
 				});
 				
 			}
@@ -777,7 +837,7 @@ function iconclick () {
 	// log these for later
 	
 	liticons[$(this).attr('id')] = 1;
-	liticons['#l' + _highlight_currentx +'_ib'] = 1;
+	liticons['l' + _highlight_currentx +'_ib'] = 1;
 
 
 	// preload the transition image
@@ -809,6 +869,23 @@ function iconclick () {
 		console.log('delay of ' + timeleft + 's before execution');
 	}
 
+	$(".transition_hot").each(function () {
+		if($(this).attr('data-inbound') == data.dataid && $(this).attr('data-outbound') == _highlight_currentx){
+			var thiscl = $(this).attr('class');
+			thiscl = thiscl.replace('transition_hot','transition_used');
+			$(this).attr('class',thiscl);
+			var parsers = $(this).attr('id').split('_');
+			litlines[parsers[0]] = 1;
+		} else {
+			var thiscl = $(this).attr('class');
+			thiscl = thiscl.replace('transition_hot','transition_gone');
+			$(this).attr('class',thiscl);
+			var parsers = $(this).attr('id').split('_');
+			gonelines[parsers[0]] = 1;
+			$(this).remove();
+		}
+	});
+
 	// go to the next segment from the outbound clip and dump it
 
 	var jump_clipseq = parseInt($("#l" + lastx).attr('data-lineseq'));
@@ -819,10 +896,10 @@ function iconclick () {
 		if(thiscl){
 			var thisid = $(".pc" + clipdata[lastx].clip + '' + (jump_clipseq +1) + ':first').attr('id');
 			if(thisid.indexOf('end') == -1){
-				gonescrubbers[thisid] = 1;
+				gonelines[thisid] = 1;
 				windsofchange.push(parseInt($("#" + thisid).attr('data-pt')));
 				thiscl = thiscl.replace('scrubber ','scrubber_gone ');
-				$("#" + thisid + '_ia').remove();
+//				$("#" + thisid + '_ia').remove();
 				$("#" + thisid).attr('class',thiscl);
 			}
 		}
@@ -843,21 +920,6 @@ function iconclick () {
 
 
 		//color the lines
-
-
-		// low hanging fruit - stuff that's already hot
-
-		$(".transition_hot").each(function () {
-			if($(this).attr('data-inbound') == data.dataid){
-				var thiscl = $(this).attr('class');
-				thiscl = thiscl.replace('transition_hot ','transition_used ');
-				$(this).attr('class',thiscl);
-				litlines[$(this).attr('id')] = 1;
-			} else {
-				gonelines[$(this).attr('id')] = 1;
-				$(this).remove();
-			}
-		});
 		
 		
 		
@@ -895,7 +957,7 @@ function iconclick () {
 					windsofchange.push(parseInt($("#" + getstr).attr('data-pt')));
 					$("#" + getstr + '_ia').remove(); // remove inbound icons too
 				}
-				gonescrubbers[getstr] = 1;
+				gonelines[getstr] = 1;
 			}
 		}
 
@@ -906,51 +968,25 @@ function iconclick () {
 
 		for(var x = 0; x < windsofchange.length; x++){
 			$('path[data-inbound="' + windsofchange[x] + '"]').each(function () {
-				var lineid = $(this).attr('id');
-				if(!litlines[lineid] && !gonelines[lineid]){
-					if($(this).attr('data-inbound') == data.dataid && $(this).attr('data-outbound') == lastx){ // this line is a match, light it up
-						var thiscl = $(this).attr('class');
-						var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous ':'transition_unused ';
-						thiscl = thiscl.replace(replstring,'transition_used ');
-						$(this).attr('class',thiscl);
-						litlines[lineid] = 1;
-					} else {
-						if(!litlines[$(this).attr('id')]){ //dump this line
-							var thiscl = $(this).attr('class');
-							var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous ':'transition_unused ';
-							thiscl = thiscl.replace(replstring,'transition_gone ');
-							$(this).attr('class',thiscl);
-							gonelines[lineid] = 1;
-							$(this).remove();
-						}
-					}
+				var thiscl = $(this).attr('class');
+				if(thiscl.indexOf('transition_used') == -1){
+					var parsers = $(this).attr('id').split('_');
+					gonelines[parsers[0]] = 1;
+					$(this).remove();
 				}
 			});
 			$('path[data-outbound="' + windsofchange[x] + '"]').each(function () {
-				var lineid = $(this).attr('id');
-				if(!litlines[lineid] && !gonelines[lineid]){
-					if($(this).attr('data-inbound') == data.dataid && $(this).attr('data-outbound') == lastx){ // this line is a match, light it up
-						var thiscl = $(this).attr('class');
-						var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous ':'transition_unused ';
-						thiscl = thiscl.replace(replstring,'transition_used ');
-						$(this).attr('class',thiscl);
-						litlines[lineid] = 1;
-					} else {
-						var thiscl = $(this).attr('class');
-						var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous ':'transition_unused ';
-						thiscl = thiscl.replace(replstring,'transition_gone ');
-						$(this).attr('class',thiscl);
-						gonelines[lineid] = 1;
-						$(this).remove();
-					}
+				var thiscl = $(this).attr('class');
+				if(thiscl.indexOf('transition_used') == -1){
+					var parsers = $(this).attr('id').split('_');
+					gonelines[parsers[0]] = 1;
+					$(this).remove();
 				}
 			});
 		}
 		
 					
 		
-//		console.log(gonelines);
-
 
 		// actually load the video
 
@@ -982,18 +1018,31 @@ function drawvideo (videoclip) {
 
 	// initial video draw, triggered by users clicking on one of the large images
 
-	$("#icongroup").show();
-	var w = ($("#legacy_container").width() - 100);
-	var h = ($("#legacy_container").width() - 100) * .31
+
+
+
+	var w = ($("#legacy_container").width() - _adjuster);
+	var h = ($("#legacy_container").width() - _adjuster) * .31
 	var vtop = (($("#legacy_container").height() - h) / 2) - 50;
-	$("#videoplayer").css({ 'width': w + 'px', 'padding-top': vtop, 'padding-left': 40, 'height': h + 'px' });
+	$("#videoplayer").css({ 'width': w + 'px', 'padding-top': vtop, 'padding-left': (_mladjust + 22), 'height': h + 'px' });
+	
+	$("#legacy_instructions").css({ 'width': w + 'px', 'height': h + 'px' });
+	$("#leg1").css({ 'padding-top': ((h / 2) - 20) + 'px' });
+	$("#leg2").css({ 'padding-top': ((h / 2) - 20) + 'px' });
+	
+	if(!_legacy_firstrun){
+		jwplayer('vidin').remove();
+		$("#videoplayer").show();
+		$("#vidin").show();
+	}
+
 	var playeroptions = { 'controlbar.position': 'over', 'controlbar.idlehide': true };
 	playeroptions.allowFullScreen = false;
 	playeroptions.allowscriptaccess = true;
 	playeroptions.autostart = true;
 	playeroptions.height = h;
 	playeroptions.width = w;
-//	playeroptions.controlbar = 'none';
+	playeroptions.controlbar = 'none';
 	playeroptions.streamer = _rtmpserver;
 	playeroptions.file = 'legacy/' + videoclip + '_crop.mp4';
 	playeroptions.skin = 'art/bekle.zip';
@@ -1004,9 +1053,37 @@ function drawvideo (videoclip) {
 	});
 	jwplayer("vidin").onComplete(function () {
 		subthis._ended();
-	});	
+	});
+	jwplayer('vidin').onPlay(function () {
+		if(legacy_debug){
+			console.log('videoready');
+		}
+		if(_intransition){
+			transition_off();
+		}
+	});
+	jwplayer('vidin').onError(function (msg) {
+		if(legacy_debug){
+			console.log('jwplayer error ' + msg);
+		}
+	});
+
+	_legacy_firstrun = false;
+	
+	$("#legacy_instructions").show();
+	$("#leg1").fadeIn(500, function () {
+		setTimeout(function () {
+			$("#leg1").fadeOut(1000, function () {
+				$("#leg2").fadeIn(1000, function () {
+					setTimeout(function () { $("#leg2").fadeOut(); $("#legacy_instructions").fadeOut(1000); },5000);
+				});
+			});
+		},4000);
+	});
+
 	$("#linegroup").fadeIn();
 	$("#linegroup_connections").fadeIn();
+	$("#icongroup").show();
 
 	_videoon = true;
 			
@@ -1014,16 +1091,13 @@ function drawvideo (videoclip) {
 }
 
 function transition_load (target) {
-	if(legacy_debug){
-		console.log('transition load ' + target);
-	}
 	
 	$("#videotransition").hide();
 	
-	var w = ($("#legacy_container").width() - 100);
-	var h = ($("#legacy_container").width() - 100) * .31
+	var w = ($("#legacy_container").width() - _adjuster);
+	var h = ($("#legacy_container").width() - _adjuster) * .31
 	var vtop = (($("#legacy_container").height() - h) / 2) - 50;
-	$("#videotransition").css({ 'width': w + 'px', 'padding-top': vtop, 'padding-left': 40, 'height': h + 'px' });
+	$("#videotransition").css({ 'width': w + 'px', 'padding-top': vtop, 'padding-left': (_mladjust + 22), 'height': h + 'px' });
 	var data = clipdata[target];
 	
 	var imgcode = '<img src="mp4/thumbs/full-' + clipmap[data.clip] + '-' + (data.segend_secs - 1) + '.jpg" width="' + w + '" height="' + h + '" alt="" />';
@@ -1128,18 +1202,6 @@ function loadvid (clip,starttime) {
 	curvid = clip;
 	videoclipname = $("#vid_" + clip).attr('data-clipname');
 	jwplayer('vidin').load({ 'streamer': _rtmpserver, 'file': 'legacy/' + videoclipname + '_crop.mp4', 'start': starttime, 'autostart': true });
-	jwplayer('vidin').onPlay(function () {
-		if(legacy_debug){
-			console.log('videoready');
-		}
-		if(_intransition){
-			transition_off();
-		}
-	});
-
-	if(legacy_debug){
-		debug_listvideo();
-	}
 
 	
 }
@@ -1153,44 +1215,65 @@ function debug_listvideo () {
 	}
 }
 
-function scrubresize (){
+function redrawing (){
 
-	// move the scrubbers around
+	// redraw stuff on resizing
+
+	$("#legacy_container").css({ 'width': ($(window).width() - 40) });
 	
-	var w = ($("#legacy_container").width() - 80);
-	var h = ($("#legacy_container").width() - 80) * .31
+	var w = ($("#legacy_container").width() - _adjuster);
+	var h = ($("#legacy_container").width() - _adjuster) * .31
 	var vtop = (($("#legacy_container").height() - h) / 2) - 50;
-	_scrubwidth = w;
-	_scrubheight = (h + 100);
-	var starttop = vtop - 80;
-
-	var newleft = 40;
-	
-	
-	if(w > _curw){
-		newleft += ((w - _curw) / 2);
-	}
-	if(w < _curw){
-		newleft = 40;
-	}
-
-	if(_endscreenon){
-		$("#endscreen_outer").css({ 'margin-top': (vtop - 36) + 'px', 'margin-left': (newleft - 22) });
-	
-	}
 
 	if(_videoon){
-		// resize the video object because why the hell not
-				
-		$("#videoplayer").css({ 'padding-top': vtop, 'padding-left': newleft });
+
+		$("#legacy_instructions").css({ 'width': w + 'px', 'height': h + 'px' });
+		$("#videoplayer").css({ 'width': w + 'px', 'padding-top': vtop, 'padding-left': (_mladjust + 22), 'height': h + 'px' });
+		$("#vidin").css({ 'width': w + 'px', 'height': h + 'px' });
+		
+		render_lines(0);
 	
+		// now go back through and see what's playing, reorient playback line to that
+		
+		$('path[data-startsecs="' + _clipoffsetfromstart + '"]').each(function () {
+			if(parseInt($(this).attr('data-lineclip')) == curvid){
+				var posdenus = parsed($(this).attr('d'));
+				_playbackx = parseInt(posdenus.startx);
+				_playbacky = parseInt(posdenus.starty);
+			}			
+		});
+		
+		
 	}
-	
-	$("#linegroup").css({ 'margin-top': (vtop - 40) + 'px', 'margin-left': (newleft - 25) });
-	$("#linegroup_connections").css({ 'margin-top': (vtop - 40) + 'px', 'margin-left': (newleft - 25) });
-	$("#icongroup").css({ 'margin-top': (vtop - 55) + 'px', 'margin-left': (newleft - 40) });
+
+	$("#legmore").css({ "margin-left": ($("#legacy_container").width() / 2) - 90 });
+
+	if(_endscreenon){
+		$("#endscreen_outer").css({ 'width': (w+54) + 'px', 'margin-top': (vtop - 47), 'margin-left': _mladjust + 'px', 'height': (h+110) + 'px' });
+		var denom = ((w+54) - 2) / 1280;
+		var denomh = ((h+110) - 2) / 407;
+		$("#endscreen").css({ 'transform-origin': '0 0', '-webkit-transform-origin': '0 0',  'transform': 'scale(' + denom + ',' + denomh + ');', '-ms-transform': 'scale(' + denom + ',' + denomh + ')', '-webkit-transform': 'scale(' + denom + ',' + denomh + ')' });
+		$("#endtalk").css({ 'top': (vtop + ((h / 2) - 155)), 'left': ((w / 2) - 215) });
+		render_lines(2, { 'w':$("#endscreen").width() ,'h':$("#endscreen").height(),'vtop':vtop,'ml':(_mladjust - 3) });
+	}
+
+
+	if(_starton){
+		$("#legacy_startspace").css({ 'width': (w+54) + 'px', 'margin-top': (vtop -47), 'margin-left':  _mladjust + 'px', 'height': (h+110) + 'px' })
+		var denom = ((w+54) - 2) / 1280;
+		var denomh = ((h+110) - 2) / 407;
+		$("#legstarter").css({ 'transform-origin': '0 0', '-webkit-transform-origin': '0 0',  'transform': 'scale(' + denom + ',' + denomh + ');', '-ms-transform': 'scale(' + denom + ',' + denomh + ')', '-webkit-transform': 'scale(' + denom + ',' + denomh + ')' });
+		var thisw = (w+54);
+		var thish = (h+110);
+		$("#vid_2t").css({ 'width': (thisw - 500), 'top': 20, 'left': (thisw/2) - ((thisw - 500) / 2) }).fadeIn(2000);
+		$("#vid_3t").css({ 'width': 450, 'top': 30, 'left': (thisw - 510), 'top' : ((thish/2) - 100) }).fadeIn(2000);
+		$("#vid_0t").css({ 'width': (thisw - 500), 'top': (thish - 250) , 'left': (thisw/2) - ((thisw - 500) / 2) }).fadeIn(2000);
+		$("#vid_1t").css({ 'width': 450, 'left': 20, 'top' : ((thish/2) - 100) }).fadeIn(2000);
+		render_lines(1);
+	}
 
 }
+
 
 function legacy_draw() {
 
@@ -1241,8 +1324,8 @@ function progressrun (inf) {
 	}
 
 
-	var w = ($("#legacy_container").width() - 100);
-	var h = ($("#legacy_container").width() - 100) * .31
+	var w = ($("#legacy_container").width() - _adjuster);
+	var h = ($("#legacy_container").width() - _adjuster) * .31
 
 
 	// draw a line from the current x/y to this point in time
@@ -1310,7 +1393,6 @@ function progressrun (inf) {
 	}
 	if(clipstarts[curvid][thistime]){
 	
-		// console.log('clipstart detect ' + clipstarts[curvid][thistime] + ' curtime ' + thistime + ' startpoint ' + _clipoffsetfromstart);
 		_clipoffsetfromstart = thistime;	
 
 		var posdenus = parsed($("#l" + clipstarts[curvid][thistime]).attr('d'));	
@@ -1420,16 +1502,20 @@ function markseen (cv,enddata){
 		thisid = $(".pl" + finalid + ":first").attr("id");
 		$('path[data-outbound="' + enddata.dataid + '"]').each(function () {
 			var linecl = $(this).attr('class');
-			if(linecl.indexOf('transition_hot') == -1 && (parseInt($(this).attr('data-outbound')) !=  _intransitions)){
-				gonelines[$(this).attr('id')] = 1;
+			if(linecl.indexOf('transition_used') == -1){
+				var parsers = $(this).attr('id').split('_');
+				gonelines[parsers[0]] = 1;
 				$(this).remove();
+				console.log('markseen outbound ' + $(this).attr('id'));
 			}
 		});
 		$('path[data-inbound="' + enddata.dataid + '"]').each(function () {
 			var linecl = $(this).attr('class');
-			if(linecl.indexOf('transition_hot') == -1){
-				gonelines[$(this).attr('id')] = 1;
+			if(linecl.indexOf('transition_used') == -1){
+				var parsers = $(this).attr('id').split('_');
+				gonelines[parsers[0]] = 1;
 				$(this).remove();
+			console.log('markseen inbound ' + $(this).attr('id'));
 			}
 		});
 	} else {
