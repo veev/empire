@@ -1524,6 +1524,8 @@ function garbagecollection () {
 
 function markseen (cv,enddata){
 
+	$('.cnameon').removeClass('cnameon');
+
 	var finalid = new String();
 	
 	finalid = cv;
