@@ -64,16 +64,22 @@ div#legacy_container div#legacy_containerinner div#linegroup_connections path.tr
 div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_hot {  z-index: 3; stroke: #fff; stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_used { -webkit-transition: 3s; -moz-transition: 3s; z-index: 3; stroke: #fbb03b; stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_gone { z-index: 3; stroke: #f00; opacity: 0; stroke-width: 1px; }
+div#legacy_container div#legacy_containerinner span.cname { opacity: .5; font-size: .8em; position: absolute; color: #888; display: block; }
+div#legacy_container div#legacy_containerinner span.cnameon { -webkit-transition: 1s; -moz-transition: 1s; opacity: .8; font-size: .8em; color: #fbb03b; }
+div#legacy_container div#legacy_containerinner span#ctn0 { }
+div#legacy_container div#legacy_containerinner span#ctn1 { }
+div#legacy_container div#legacy_containerinner span#ctn2 {  }
+div#legacy_container div#legacy_containerinner span#ctn3 {  }
 div#legacy_container div#legacy_containerinner div#endscreen_outer { position: absolute; z-index: 22; pointer-events: none; }
 div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen { position: absolute; width: 1280px; height: 720px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#group0 { position: absolute; top: 0; left: 0; z-index: 4; -webkit-mask-image: url(../art/ends/mask1280_0.png); -moz-mask-image: url(../art/ends/mask1280_0.png); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#group1 { position: absolute; top: 0; left: 0; z-index: 5; -webkit-mask-image: url(../art/ends/mask1280_1.png); -moz-mask-image: url(../art/ends/mask1280_1.png); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#group2 { position: absolute; top: 0; left: 0; z-index: 6; -webkit-mask-image: url(../art/ends/mask1280_2.png); -moz-mask-image: url(../art/ends/mask1280_2.png); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#group3 { position: absolute; top: 0; left: 0; z-index: 7; -webkit-mask-image: url(../art/ends/mask1280_3.png); -moz-mask-image: url(../art/ends/mask1280_3.png); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#group0a { position: absolute; top: 0; left: 0; z-index: 8; -webkit-mask-image: url(../art/ends/mask1280_0.png); -moz-mask-image: url(../art/ends/mask1280_0.png); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#group1a { position: absolute; top: 0; left: 0; z-index: 9; -webkit-mask-image: url(../art/ends/mask1280_1.png); -moz-mask-image: url(../art/ends/mask1280_1.png); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#group2a { position: absolute; top: 0; left: 0; z-index: 10; -webkit-mask-image: url(../art/ends/mask1280_2.png); -moz-mask-image: url(../art/ends/mask1280_2.png); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#group3a { position: absolute; top: 0; left: 0; z-index: 11; -webkit-mask-image: url(../art/ends/mask1280_3.png); -moz-mask-image: url(../art/ends/mask1280_3.png); }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#group0 { position: absolute; top: 0; left: 0; z-index: 4; -webkit-mask-image: url(../art/ends/mask1280_0.png); }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#group1 { position: absolute; top: 0; left: 0; z-index: 5; -webkit-mask-image: url(../art/ends/mask1280_1.png); }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#group2 { position: absolute; top: 0; left: 0; z-index: 6; -webkit-mask-image: url(../art/ends/mask1280_2.png); }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#group3 { position: absolute; top: 0; left: 0; z-index: 7; -webkit-mask-image: url(../art/ends/mask1280_3.png); }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#group0a { position: absolute; top: 0; left: 0; z-index: 8; -webkit-mask-image: url(../art/ends/mask1280_0.png); }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#group1a { position: absolute; top: 0; left: 0; z-index: 9; -webkit-mask-image: url(../art/ends/mask1280_1.png); }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#group2a { position: absolute; top: 0; left: 0; z-index: 10; -webkit-mask-image: url(../art/ends/mask1280_2.png); }
+div#legacy_container div#legacy_containerinner div#endscreen_outer div#group3a { position: absolute; top: 0; left: 0; z-index: 11; -webkit-mask-image: url(../art/ends/mask1280_3.png); }
 div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreena0 { background: url(../art/ends/a_0.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
 div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenb0 { background: url(../art/ends/b_0.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
 div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenc0 { background: url(../art/ends/c_0.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
@@ -103,16 +109,16 @@ div#legacy_container div#legacy_containerinner div#legacy_startspace span.legthe
 div#legacy_container div#legacy_containerinner div#legacy_startspace span.legthemec { background: url(../art/start_c.png); right: -10; bottom: -10; }
 div#legacy_container div#legacy_containerinner div#legacy_startspace span.legthemed { background: url(../art/start_d.png); left: -10; bottom: -10; }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter { position: absolute; z-index: 0; width: 1280px; height: 407px; left: 0; top: 0; }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_0 { position: absolute; top: 0; left: 0; z-index: 4; background: url(../art/start_0.jpg); -webkit-transition: 1s; -moz-transition: 1s; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_0.png); -moz-mask-image: url(../art/ends/mask1280_0.png); }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_1 { position: absolute; top: 0; left: 0; z-index: 5; background: url(../art/start_1.jpg); -webkit-transition: 1s; -moz-transition: 1s; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_1.png); -moz-mask-image: url(../art/ends/mask1280_1.png); }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_2 { position: absolute; top: 0; left: 0; z-index: 6; background: url(../art/start_2.jpg); -webkit-transition: 1s; -moz-transition: 1s; width: 1280px; height: 407px;-webkit-mask-image: url(../art/ends/mask1280_2.png); -moz-mask-image: url(../art/ends/mask1280_2.png); }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_3 { position: absolute; top: 0; left: 0; z-index: 7; background: url(../art/start_3.jpg); -webkit-transition: 1s; -moz-transition: 1s; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_3.png); -moz-mask-image: url(../art/ends/mask1280_3.png); }
+div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_0 { position: absolute; top: 0; left: 0; z-index: 4; background: url(../art/start_0.jpg); -webkit-transition: 1s; -moz-transition: 1s; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_0.png); }
+div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_1 { position: absolute; top: 0; left: 0; z-index: 5; background: url(../art/start_1.jpg); -webkit-transition: 1s; -moz-transition: 1s; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_1.png); }
+div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_2 { position: absolute; top: 0; left: 0; z-index: 6; background: url(../art/start_2.jpg); -webkit-transition: 1s; -moz-transition: 1s; width: 1280px; height: 407px;-webkit-mask-image: url(../art/ends/mask1280_2.png);}
+div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_3 { position: absolute; top: 0; left: 0; z-index: 7; background: url(../art/start_3.jpg); -webkit-transition: 1s; -moz-transition: 1s; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_3.png); }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div.grey { -webkit-filter: grayscale(100%); -moz-filter: grayscale(100%); opacity: .3; }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div.leg_text { cursor: pointer; position: absolute; z-index: 1; opacity: .01; top: 0; left: 0; font-size: 1.1em; }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div.leg_text:hover { opacity: 1; }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div.leg_text img { margin-bottom: 5px; }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div.leg_text p { margin: .5em 0; }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_0t { width: 400px; padding: 100px 20px 100px 20px; }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_1t { width: 500px; padding: 20px; text-align: left;  }
+div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_1t { width: 500px; padding: 20px; text-align: right;  }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_2t { width: 400px; padding: 20px 20px 100px 20px; }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_3t { width: 400px; padding: 20px; text-align: right;  }
+div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_3t { width: 400px; padding: 20px; text-align: left;  }

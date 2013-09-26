@@ -101,7 +101,7 @@ $(window).resize(function () {
 });
 
 function cradle_openscreen () {
-	$("#instructions").fadeIn(2000,);
+	$("#instructions").fadeIn(2000);
 	$("#instructions").click(function () {cradle_closescreen() });
 	openIvl = setTimeout("cradle_closescreen()",15000);
 }

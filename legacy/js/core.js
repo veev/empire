@@ -264,10 +264,10 @@ function startscreen () {
 	var denomh = (h - 2) / 407;
 
 	$("#legstarter").css({ 'transform-origin': '0 0', '-webkit-transform-origin': '0 0',  'transform': 'scale(' + denom + ',' + denomh + ');', '-ms-transform': 'scale(' + denom + ',' + denomh + ')', '-webkit-transform': 'scale(' + denom + ',' + denomh + ')' });
-	$("#vid_2t").css({ 'width': (w - 500), 'top': 20, 'left': (w/2) - ((w - 500) / 2) }).fadeIn(2000);
-	$("#vid_3t").css({ 'width': 450, 'top': 30, 'left': (w - 510), 'top' : ((h/2) - 100) }).fadeIn(2000);
-	$("#vid_0t").css({ 'width': (w - 500), 'top': (h - 250) , 'left': (w/2) - ((w - 500) / 2) }).fadeIn(2000);
-	$("#vid_1t").css({ 'width': 450, 'left': 20, 'top' : ((h/2) - 100) }).fadeIn(2000);
+	$("#vid_0t").css({ 'width': (w - 500), 'top': 20, 'left': (w/2) - ((w - 500) / 2) }).fadeIn(2000);
+	$("#vid_1t").css({ 'width': 450, 'top': 30, 'left': (w - 510), 'top' : ((h/2) - 100) }).fadeIn(2000);
+	$("#vid_2t").css({ 'width': (w - 500), 'top': (h - 250) , 'left': (w/2) - ((w - 500) / 2) }).fadeIn(2000);
+	$("#vid_3t").css({ 'width': 450, 'left': 20, 'top' : ((h/2) - 100) }).fadeIn(2000);
 	
 	$(".leg_text").mouseover(function () {
 		$("#vid_" + $(this).attr('data-clipid')).removeClass('grey');
@@ -1247,6 +1247,12 @@ function redrawing (){
 		
 		
 	}
+	
+	$("#ctn0").css({'top': (vtop - 75), 'left': ((w / 2) + 20) });
+	$("#ctn1").css({'top': ((vtop + (h / 2)) - 50), 'right': 30 });
+	$("#ctn2").css({'top': (vtop + h + 75), 'left': ((w / 2) + 20) });
+	$("#ctn3").css({'top': ((vtop + (h / 2)) - 70), 'left': 12 });
+
 
 	$("#legmore").css({ "margin-left": ($("#legacy_container").width() / 2) - 90 });
 
@@ -1267,10 +1273,10 @@ function redrawing (){
 		$("#legstarter").css({ 'transform-origin': '0 0', '-webkit-transform-origin': '0 0',  'transform': 'scale(' + denom + ',' + denomh + ');', '-ms-transform': 'scale(' + denom + ',' + denomh + ')', '-webkit-transform': 'scale(' + denom + ',' + denomh + ')' });
 		var thisw = (w+54);
 		var thish = (h+110);
-		$("#vid_2t").css({ 'width': (thisw - 500), 'top': 20, 'left': (thisw/2) - ((thisw - 500) / 2) }).fadeIn(2000);
-		$("#vid_3t").css({ 'width': 450, 'top': 30, 'left': (thisw - 510), 'top' : ((thish/2) - 100) }).fadeIn(2000);
-		$("#vid_0t").css({ 'width': (thisw - 500), 'top': (thish - 250) , 'left': (thisw/2) - ((thisw - 500) / 2) }).fadeIn(2000);
-		$("#vid_1t").css({ 'width': 450, 'left': 20, 'top' : ((thish/2) - 100) }).fadeIn(2000);
+		$("#vid_0t").css({ 'width': (thisw - 500), 'top': 20, 'left': (thisw/2) - ((thisw - 500) / 2) }).fadeIn(2000);
+		$("#vid_1t").css({ 'width': 450, 'top': 30, 'left': (thisw - 510), 'top' : ((thish/2) - 100) }).fadeIn(2000);
+		$("#vid_2t").css({ 'width': (thisw - 500), 'top': (thish - 250) , 'left': (thisw/2) - ((thisw - 500) / 2) }).fadeIn(2000);
+		$("#vid_3t").css({ 'width': 450, 'left': 20, 'top' : ((thish/2) - 100) }).fadeIn(2000);
 		render_lines(1);
 	}
 
@@ -1295,6 +1301,15 @@ function legacy_draw() {
 
 	$("#mainarea").css({ "margin-top": matop });
 	
+	var w = ($("#legacy_container").width() - _adjuster);
+	var h = ($("#legacy_container").width() - _adjuster) * .31
+	var vtop = (($("#legacy_container").height() - h) / 2) - 50;
+
+	$("#ctn0").css({'top': (vtop - 75), 'left': ((w / 2) + 20) });
+	$("#ctn1").css({'top': ((vtop + (h / 2)) - 50), 'right': 30 });
+	$("#ctn2").css({'top': (vtop + h + 75), 'left': ((w / 2) + 20) });
+	$("#ctn3").css({'top': ((vtop + (h / 2)) - 70), 'left': 12 });
+
 	$("#legplay").css({ "bottom": legbottom, "margin-left": ($("#legacy_container").width() / 2) - 50 }).fadeIn(4000);
 	$("#legmore").css({ "margin-left": ($("#legacy_container").width() / 2) - 90 });
 
@@ -1373,10 +1388,15 @@ function progressrun (inf) {
 		clipdata[clipends[curvid][thistime]].fired = true;
 		
 		$("#l" + clipends[curvid][thistime] + "_ib").fadeIn();
+		
 
 		$(".gsa" + clipdata[clipends[curvid][thistime]].state + clipdata[clipends[curvid][thistime]].substate).each(function () {
 			if($(this).attr('id') != "l" + clipends[curvid][thistime] + '_ia'){
 				$(this).fadeIn();
+				var thisdatapoint = clipdata[parseInt($(this).attr('data-clipdata'))];
+				if(!($("#ctn" + thisdatapoint.clip).hasClass('cnameon'))){
+					$("#ctn" + thisdatapoint.clip).addClass('cnameon');
+				}
 			}
 		});
 
@@ -1422,6 +1442,10 @@ function progressrun (inf) {
 			if($("#l" + clipedges[curvid][thistime] + "_ib").hasClass('gsoff')){
 				$("#l" + clipedges[curvid][thistime] + "_ib").fadeOut();
 			}		
+			
+			// fade countries 
+			
+			$('.cnameon').removeClass('cnameon');
 			
 			
 			// fade other icons
@@ -1500,8 +1524,10 @@ function markseen (cv,enddata){
 		finalid = cv + '' + enddata.end_secs;
 		endpoint = enddata.end_secs;
 		enddata.seen = true;
+		
 		thiscl = $(".pl" + finalid + ":first").attr("class");
 		thisid = $(".pl" + finalid + ":first").attr("id");
+		
 		$('path[data-outbound="' + enddata.dataid + '"]').each(function () {
 			var linecl = $(this).attr('class');
 			if(linecl.indexOf('transition_used') == -1){
@@ -1520,10 +1546,14 @@ function markseen (cv,enddata){
 			console.log('markseen inbound ' + $(this).attr('id'));
 			}
 		});
+
 	} else {
+
+		console.log('markseen passive');
 		thisid = $('path[data-endsecs="' + parseInt(curplayback) + '"]:first').attr('id');
 		thiscl = $('path[data-endsecs="' + parseInt(curplayback) + '"]:first').attr('class');
 		nonclip = true;
+
 	}
 			
 	thiscl = thiscl.replace("scrubber ","scrubber_seen ");
@@ -1533,6 +1563,28 @@ function markseen (cv,enddata){
 
 	segmentsseen.push({ 'video': cv, 'endpoint': endpoint, 'id': thisid });
 
+}
+
+function linedestroy (targetid) {
+	$('path[data-outbound="' + targetid + '"]').each(function () {
+		var linecl = $(this).attr('class');
+		if(linecl.indexOf('transition_used') == -1){
+			var parsers = $(this).attr('id').split('_');
+			gonelines[parsers[0]] = 1;
+			$(this).remove();
+			console.log('linedestroy outbound ' + $(this).attr('id'));
+		}
+	});
+	$('path[data-inbound="' + targetid + '"]').each(function () {
+		var linecl = $(this).attr('class');
+		if(linecl.indexOf('transition_used') == -1){
+			var parsers = $(this).attr('id').split('_');
+			gonelines[parsers[0]] = 1;
+			$(this).remove();
+			console.log('linedestroy inbound ' + $(this).attr('id'));
+		}
+	});
+	
 }
 
 function svgreset () {
