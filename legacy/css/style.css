@@ -118,7 +118,7 @@ div#legacy_container div#legacy_containerinner div#legacy_startspace div.leg_tex
 div#legacy_container div#legacy_containerinner div#legacy_startspace div.leg_text:hover { opacity: 1; }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div.leg_text img { margin-bottom: 5px; }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div.leg_text p { margin: .5em 0; }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_0t { width: 400px; padding: 100px 20px 100px 20px; }
+div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_0t { width: 400px; padding: 20px 20px 100px 20px; }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_1t { width: 500px; padding: 20px; text-align: right;  }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_2t { width: 400px; padding: 20px 20px 100px 20px; }
+div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_2t { width: 400px; padding: 100px 20px 20px 20px; }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_3t { width: 400px; padding: 20px; text-align: left;  }
