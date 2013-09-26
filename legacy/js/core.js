@@ -87,52 +87,6 @@ $(document).ready(function () {
 
 	// clickability for the initial 4
 
-	$(".videospace").click(function () {
-		if(audioactive){
-			audiostop();
-		}
-		curvid = parseInt($(this).attr('data-clip'));
-		actualclip = $(this).attr('data-clipname');
-
-		var w = ($("#legacy_container").width() - 100);
-		var h = ($("#legacy_container").width() - 100) * .31
-		var vtop = (($("#legacy_container").height() - h) / 2) - 20;
-
-		$(this).animate({ 'z-index': 68, 'width': ($("#legacy_container").width() - 80) + 'px', 'top': vtop, 'left': 40, 'height': 330 }).fadeOut(8000);
-		$(".videospace").hide().unbind('click');
-		$(this).show();
-		$(".blurb").remove();
-		$(".blurbback").remove();
-		drawvideo(actualclip);
-		
-		
-		if(legacy_debug){
-			// debug_listvideo();
-		}
-		
-		
-		// set the playback x and y
-				
-		switch(curvid){
-			case 0:
-				_playbackx = 4;
-				_playbacky = 4;
-				break;
-			case 1:
-				_playbackx = w + 54;
-				_playbacky = 4;
-				break;
-			case 2:
-				_playbackx = w + 54;
-				_playbacky = (h+110);
-				break;
-			case 3:
-				_playbackx = 4;
-				_playbacky = (h+110);
-				break;
-		}
-	});
-	
 	$("#legacy_containerinner").fadeIn();
 	
 	
@@ -225,13 +179,12 @@ $(document).ready(function () {
 			clipedges[3] = clipfinal_d;
 			
 			
-			render_lines(0);
-			$("#linegroup").hide();
-			$("#linegroup_connections").hide();
 			
+	
+			startscreen();
 			
 //			$(".videospace").hide();
-			
+//			endscreen('a',2);			
 		}
 	},500);
 		
@@ -278,6 +231,75 @@ function fullscreen_off() {
 	_fson = false;
 }
 
+
+function startscreen () {
+
+	var w = ($("#legacy_container").width() - 100);
+	var h = ($("#legacy_container").width() - 100) * .31;
+	var vtop = (($("#legacy_container").height() - h) / 2) - 50;
+	w += 54;
+	vtop -= 47;
+	h += 110;
+	
+	render_lines(1);
+	
+	$("#linegroup").hide();
+	$("#linegroup_connections").hide();
+	
+	
+	$("#startspace").show();
+	
+	$(".videospace").click(function () {
+		if(audioactive){
+			audiostop();
+		}
+		curvid = parseInt($(this).attr('data-clip'));
+		actualclip = $(this).attr('data-clipname');
+
+		var w = ($("#legacy_container").width() - 100);
+		var h = ($("#legacy_container").width() - 100) * .31
+		var vtop = (($("#legacy_container").height() - h) / 2) - 20;
+
+		$(this).animate({ 'z-index': 68, 'width': ($("#legacy_container").width() - 80) + 'px', 'top': vtop, 'left': 40, 'height': 330 }).fadeOut(8000);
+		$(".videospace").hide().unbind('click');
+		$(this).show();
+		$(".blurb").remove();
+		$(".blurbback").remove();
+		drawvideo(actualclip);
+		render_lines(0);
+		
+		
+		if(legacy_debug){
+			// debug_listvideo();
+		}
+		
+		
+		// set the playback x and y
+				
+		switch(curvid){
+			case 0:
+				_playbackx = 4;
+				_playbacky = 4;
+				break;
+			case 1:
+				_playbackx = w + 54;
+				_playbacky = 4;
+				break;
+			case 2:
+				_playbackx = w + 54;
+				_playbacky = (h+110);
+				break;
+			case 3:
+				_playbackx = 4;
+				_playbacky = (h+110);
+				break;
+		}
+	});
+	
+
+
+}
+
 function endscreen (theme,focus) {
 
 	// endscreen
@@ -285,6 +307,7 @@ function endscreen (theme,focus) {
 	var w = ($("#legacy_container").width() - 100);
 	var h = ($("#legacy_container").width() - 100) * .31;
 	var vtop = (($("#legacy_container").height() - h) / 2) - 50;
+	var ml = 15;
 	w += 54;
 	vtop -= 47;
 	h += 110;
@@ -304,7 +327,7 @@ function endscreen (theme,focus) {
 	$("#endscreen").append('<div id="group1a" class="color endscreen' + theme + '1" style="display: none;"></div>');
 	$("#endscreen").append('<div id="group2a" class="color endscreen' + theme + '2" style="display: none;"></div>');
 	$("#endscreen").append('<div id="group3a" class="color endscreen' + theme + '3" style="display: none;"></div>');
-	
+	$("#legacy_containerinner").append('<div id="endtalk" style="display: none; top: ' + (vtop + ((h / 2) - 155)) + '; left: ' + ((w / 2) - 215) + '"><p>This the way you moved through the world.</p><p>But there are other ways</p><p id="legrestart" style="display: none">Choose your starting point</p></div>');
 	var denom = (w - 2) / 1280;
 	var denomh = (h - 2) / 407;
 	
@@ -312,13 +335,73 @@ function endscreen (theme,focus) {
 	
 	
 //	$("#endscreen").fadeIn(4000, function () {
-		$("#group" + focus + "a").fadeTo(9500,.8);
+	$("#group" + focus + "a").fadeTo(5000,.8);
+	$("#endtalk").fadeIn(2000, function () {
+			$("#legrestart").fadeIn(6000);
+			$("#legrestart").click(restarter);
+	});
+
 //	});
 	_endscreenon = true;
 	
 	
 	render_lines(2, { 'w':$("#endscreen").width() ,'h':$("#endscreen").height(),'vtop':vtop,'ml':ml });
 
+
+} 
+
+function restarter () {
+
+	// god help me, reset it all
+	
+	$("#endtalk").fadeOut(2000);
+	jwplayer("vidin").remove();
+	$("#videoplayer").html();
+	$("#icongroup").fadeOut(1000, function () {
+		$("#icongroup").html();
+	});
+
+	_scrubwidth = 0;
+	_scrubheight = 0;
+	_highlight_curvid = 0;
+	_highlight_curpt = 0;
+	_highlight_currentx = 0;
+	_videoon = false;
+	_endscreenon = false;
+	_svglevel = false;
+	_fson = false;
+	_curw = new Number();
+	_playbackx =0;
+	_playbacky = 0;
+	_clipoffsetfromstart = 0;
+	_clipstartsincemove = 0;
+	_playbackctr = 90;
+	_intransition = false;
+	_hasended = false;
+	_intransitions = 0;
+
+	preventdoublejump = false;
+
+	curvid = 0;
+	curplayback = 0;
+	curstart = 0;
+
+videotimes.length = 0;
+vidjumpcnt = 0;
+segmentsseen.length = 0;
+themetrack = { 'a':0, 'b':0, 'c':0, 'd':0, 'e':0 };
+usage = {};
+
+
+	$("#endscreen_outer").fadeOut(1000, function () {
+		$("#endscreen").html();
+		litlines = {};
+		liticons = {};
+		gonelines = {};
+		gonescrubbers = {};
+		startscreen();
+		$(".videospace").fadeIn();
+	});
 
 }
 
@@ -347,7 +430,7 @@ function render_lines (mode,spatial){
 		ml = spatial.ml;
 	}
 	
-	
+		
 	_curw = w;
 
 	cliprect[0] = '5 6 ' + (w + 44) + ' 42';
@@ -517,7 +600,7 @@ function render_lines (mode,spatial){
 				}
 			}	
 			
-			if(mode == 0 || (mode == 2 && !gonescrubbers[idcode])){
+			if(mode == 0 || (mode > 0 && !gonescrubbers[idcode])){
 			
 				var newpath = paper.path( drawstring );
 									
@@ -548,6 +631,7 @@ function render_lines (mode,spatial){
 		}
 		
 	}
+	
 
 		// ok, now draw the ends of each line to the corresponding start point of a linked space
 
@@ -909,7 +993,7 @@ function drawvideo (videoclip) {
 	playeroptions.autostart = true;
 	playeroptions.height = h;
 	playeroptions.width = w;
-	playeroptions.controlbar = 'none';
+//	playeroptions.controlbar = 'none';
 	playeroptions.streamer = _rtmpserver;
 	playeroptions.file = 'legacy/' + videoclip + '_crop.mp4';
 	playeroptions.skin = 'art/bekle.zip';
