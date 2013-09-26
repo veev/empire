@@ -55,7 +55,7 @@ div#legacy_container div#legacy_containerinner div#linegroup { position: absolut
 div#legacy_container div#legacy_containerinner div#linegroup_connections { position: absolute; z-index: 25; pointer-events: none; }
 div#legacy_container div#legacy_containerinner div#icongroup { position: absolute; z-index: 27; pointer-events: none; }
 div#legacy_container div#legacy_containerinner div#linegroup path.playback {  z-index: 5; stroke: #fbb03b; stroke-width: 2px; }
-div#legacy_container div#legacy_containerinner div#linegroup path.scrubber { z-index: 4; stroke: #fff; stroke-width: 2px; }
+div#legacy_container div#legacy_containerinner div#linegroup path.scrubber { z-index: 4; stroke: #fff; stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner div#linegroup path.scrubber_inert { z-index: 4; stroke: #ccc; stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner div#linegroup path.scrubber_seen { z-index: 4; stroke: #fbb03b; stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner div#linegroup path.scrubber_gone { z-index: 4; stroke: #000000; opacity: .01; stroke-width: 1px; }

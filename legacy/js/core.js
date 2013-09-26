@@ -324,11 +324,11 @@ function startscreen () {
 				break;
 			case 2:
 				_playbackx = w + 54;
-				_playbacky = (h+110);
+				_playbacky = (h+111);
 				break;
 			case 3:
 				_playbackx = 4;
-				_playbacky = (h+110);
+				_playbacky = (h+111);
 				break;
 		}
 	});
@@ -935,6 +935,9 @@ function iconclick () {
 
 		_playbackx = parseInt(posdenus.startx);
 		_playbacky = parseInt(posdenus.starty);
+		if(curvid == 2){
+			_playbacky++;
+		}
 
 		var clipseq = parseInt($("#l" + data.dataid).attr('data-lineseq'));
 		
@@ -1242,6 +1245,10 @@ function redrawing (){
 				var posdenus = parsed($(this).attr('d'));
 				_playbackx = parseInt(posdenus.startx);
 				_playbacky = parseInt(posdenus.starty);
+				if(curvid == 2){
+					_playbacky++;
+				}
+
 			}			
 		});
 		
@@ -1420,6 +1427,10 @@ function progressrun (inf) {
 		var posdenus = parsed($("#l" + clipstarts[curvid][thistime]).attr('d'));	
 		_playbackx = parseInt(posdenus.startx);
 		_playbacky = parseInt(posdenus.starty);
+		if(curvid == 2){
+			_playbacky++;
+		}
+
 		markseen(curvid);
 
 	}
