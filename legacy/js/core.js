@@ -9,7 +9,7 @@ var clipfirst = new Object();
 var connsloaded = false;
 var loadivl = new Number();
 var clipmap = new Array('indonesia','india','southafrica','srilanka');
-var paper,paper_connections,endpaper,drawpath,drawpath_real;
+var paper,paper_connections,endpaper,drawpath;
 var legacy_debug = true;
 
 var _rtmpserver = 'rtmp://s17pilyt3yyjgf.cloudfront.net/cfx/st';
@@ -73,9 +73,14 @@ $(document).ready(function () {
 		$('html, body').animate({ scrollTop: ($('.yellow_b').offset().top - 20) }, 1000);
 	});
 	
+	var proximity = 350;
+	if($(window).height() < 760){
+		proximity = 150;
+	}
+	
 	$(document).scrollsnap({
 		snaps: '.snap',
-		proximity: 180,
+		proximity: proximity,
 //		handler: cradle_scrollsnaphandle
 	});
 
@@ -765,7 +770,6 @@ function iconclick () {
 				$(this).attr('class',thiscl);
 				litlines[$(this).attr('id')] = 1;
 			} else {
-				console.log('here ' + $(this).attr('id'));
 				gonelines[$(this).attr('id')] = 1;
 				$(this).remove();
 			}
@@ -905,7 +909,7 @@ function drawvideo (videoclip) {
 	playeroptions.autostart = true;
 	playeroptions.height = h;
 	playeroptions.width = w;
-//	playeroptions.controlbar = 'none';
+	playeroptions.controlbar = 'none';
 	playeroptions.streamer = _rtmpserver;
 	playeroptions.file = 'legacy/' + videoclip + '_crop.mp4';
 	playeroptions.skin = 'art/bekle.zip';
@@ -1179,20 +1183,11 @@ function progressrun (inf) {
 		drawpath.remove();
 	}
 	
-//	if(drawpath_real){
-//		drawpath_real.remove();
-//	}
-	
 
 	drawpath = paper.path( playstring );
 		
 	drawpath.attr({'arrow-end': 'classic-wide-long', 'stroke': '#fbb03b' });
 	$(drawpath.node).attr("class","playback");
-
-
-//	drawpath_real = paper.path( realplaystring );
-//	drawpath_real.attr({'stroke': '#ff0000' });
-	
 
 	var thistime = Math.floor(inf);
 	
@@ -1237,7 +1232,6 @@ function progressrun (inf) {
 		var posdenus = parsed($("#l" + clipstarts[curvid][thistime]).attr('d'));	
 		_playbackx = parseInt(posdenus.startx);
 		_playbacky = parseInt(posdenus.starty);
-//		console.log('that calling markseen');
 		markseen(curvid);
 
 	}
@@ -1247,7 +1241,6 @@ function progressrun (inf) {
 		if(!clipdata[clipedges[curvid][thistime]].seen){
 				
 			// change this segment to viewed
-//			console.log('this calling markseen');
 			markseen(curvid,clipdata[clipedges[curvid][thistime]]);
 
 		}
@@ -1278,7 +1271,6 @@ function progressrun (inf) {
 				if(thiscl.indexOf('transition_hot') != -1){
 					var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous':'transition_unused';
 					thiscl = thiscl.replace('transition_hot',replstring);
-					console.log('here now ' + thiscl);
 					$(this).attr('class',thiscl);
 				}
 			});
@@ -1345,7 +1337,6 @@ function markseen (cv,enddata){
 		$('path[data-outbound="' + enddata.dataid + '"]').each(function () {
 			var linecl = $(this).attr('class');
 			if(linecl.indexOf('transition_hot') == -1 && (parseInt($(this).attr('data-outbound')) !=  _intransitions)){
-				console.log(linecl);
 				gonelines[$(this).attr('id')] = 1;
 				$(this).remove();
 			}
@@ -1353,7 +1344,6 @@ function markseen (cv,enddata){
 		$('path[data-inbound="' + enddata.dataid + '"]').each(function () {
 			var linecl = $(this).attr('class');
 			if(linecl.indexOf('transition_hot') == -1){
-			console.log(linecl);
 				gonelines[$(this).attr('id')] = 1;
 				$(this).remove();
 			}
@@ -1363,12 +1353,7 @@ function markseen (cv,enddata){
 		thiscl = $('path[data-endsecs="' + parseInt(curplayback) + '"]:first').attr('class');
 		nonclip = true;
 	}
-	
-	if(legacy_debug){
-//		console.log('markseen ' + cv + ' ' + nonclip + ' ' + thisid + ' ' + parseInt(curplayback));
-	}
-	
-		
+			
 	thiscl = thiscl.replace("scrubber ","scrubber_seen ");
 	$("#" + thisid).attr("class",thiscl);
 	litlines[thisid] = 1;
