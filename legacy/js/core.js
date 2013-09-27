@@ -63,6 +63,12 @@ $(window).resize(function () {
 
 $(document).ready(function () {
 
+	if(navigator.userAgent.indexOf('WebKit') == -1){
+		$('body:first').append('<div id="browserno" style="display: none;"><div class="padded">Sorry, this experiment is only currently working in Google Chrome or Apple\'s Safari browser. Other browsers may encounter problems.  We apologize for the inconvenience.</div></div>');
+		$("#browserno").slideDown();
+	}
+
+
 	$("#legacy_container").css({ 'width': ($(window).width() - 40) });
 	legacy_draw();
 	

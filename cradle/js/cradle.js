@@ -21,6 +21,11 @@ var rightpoint = 0;
 
 $(document).ready(function(){		
 
+	if(navigator.userAgent.indexOf('WebKit') == -1 && navigator.userAgent.indexOf('Firefox') == -1){
+		$('body:first').append('<div id="browserno" style="display: none;"><div class="padded">Sorry, this experiment is only currently working in Google Chrome, Apple\'s Safari and Firefox. Other browsers may encounter problems.  We apologize for the inconvenience.</div></div>');
+		$("#browserno").slideDown();
+	}
+
 	lazywidth = $("#outerouter").width();
 	
 	cradle_sizer();

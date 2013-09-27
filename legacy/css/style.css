@@ -8,6 +8,8 @@ caption, th { text-align:left }
 h1, h2, h3, h4, h5, h6 { font-size:100%; font-weight:normal }
 q:before, q:after { content:''}
 body { background: #000; color: #fff; }
+div#browserno { background-color: #f00; width: 100%; text-align: center; position: absolute; z-index: 99402; top: 0; left: 0; }
+div#browserno div.padded { padding: 30px 20px 10px 20px; font-size: 1.2em; color: #fff; }
 div#legacy_container { height: 98%; text-align: center; position: relative; padding: 20px; }
 div.yellow { text-align: center; background: #fbb03b url(../../art/l_bg.jpg) repeat-x; width: 100%; height: 98%; position: relative }
 div.yellow_b { text-align: center; background: #fbb03b url(../../art/l_bg_b.jpg) bottom left  repeat-x; width: 100%; position: relative }
