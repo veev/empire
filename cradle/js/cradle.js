@@ -18,6 +18,7 @@ var openIvl = new Number();
 var lazywidth = 0;
 var leftpoint = 0;
 var rightpoint = 0;
+var sidetracker = new Array();
 
 $(document).ready(function(){		
 
@@ -26,9 +27,16 @@ $(document).ready(function(){
 		$("#browserno").slideDown();
 	}
 
+
 	lazywidth = $("#outerouter").width();
 	
 	cradle_sizer();
+
+	$(document).scrollsnap({
+		snaps: '.snap',
+		proximity: 180,
+		handler: cradle_scrollsnaphandle
+	});
 
 	$("#outerouter").mouseenter(function () {
 		trackon();
@@ -69,13 +77,13 @@ $(document).ready(function(){
 	playButton();
 }).mouseover(function (){
 	if(playState == 1){
-		$("#playElement").css({'background':'url(art/playWhite.png)'})
-	} else {				
 		$("#playElement").css({'background':'url(art/pauseWhite.png)'})
+	} else {				
+		$("#playElement").css({'background':'url(art/playWhite.png)'})
 	}
 }).mouseout(function (){
 		if(playState == 1){
-			$("#playElement").css({'background':'url(art/playGray.png)'})
+			$("#playElement").css({'background':'url(art/playWhite.png)'})
 		} else {				
 			$("#playElement").css({'background':'url(art/pauseGray.png)'})
 		}
@@ -86,8 +94,8 @@ $(document).ready(function(){
 
 function cradle_scrollsnaphandle () {
 	if(playState == 0 && $(this).attr('id') == "cradle_main"){
-//		playDecide();
-//		cradle_openscreen();
+		playDecide();
+		cradle_openscreen();
 	}
 }
 
@@ -140,7 +148,7 @@ function cradle_sizer () {
 	$("#cradleplay").css({ "bottom": legbottom, "margin-left": ($("#cradle_top").width() / 2) - 70 }).fadeIn(4000).click(function () {
 		$('html, body').animate({ scrollTop: ($('#cradle_main').offset().top - 20) }, 1000);
 //		playDecide();
-//	cradle_openscreen();
+	cradle_openscreen();
 	});
 
 }
@@ -240,7 +248,8 @@ function scrubberUpdater (intime){
 	if(dur > 0){
 		var ratio = (document.getElementById("video1").duration / dur);
 	}
-	$("#progress").css({ "width": (930 / ratio) + 'px' })
+	$("#progress").css({ "width": (930 / ratio) + 'px' });
+	
 }
 
 function playDecide(){
@@ -263,13 +272,13 @@ function playButton(){
 	else if(playState == 2){
 		playVids();
 		playState = 1;
-		$("#playElement").css({'background':'url(art/playGray.png)'})
+		$("#playElement").css({'background':'url(art/playWhite.png)'})
 	}
 	else{
 		document.getElementById("video1").currentTime = 0;
 		document.getElementById("video2").currentTime = 0;
 		playVids();
-		$("#playElement").css({'background':'url(art/playGray.png)'})
+		$("#playElement").css({'background':'url(art/playWhite.png)'})
 		playState = 1;				
 	}
 }
