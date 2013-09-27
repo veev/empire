@@ -66,10 +66,6 @@ div#legacy_container div#legacy_containerinner div#linegroup_connections path.tr
 div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_gone { z-index: 3; stroke: #f00; opacity: 0; stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner span.cname { opacity: .5; font-size: .8em; position: absolute; color: #888; display: block; }
 div#legacy_container div#legacy_containerinner span.cnameon { -webkit-transition: 1s; -moz-transition: 1s; opacity: .8; font-size: .8em; color: #fbb03b; }
-div#legacy_container div#legacy_containerinner span#ctn0 { }
-div#legacy_container div#legacy_containerinner span#ctn1 { }
-div#legacy_container div#legacy_containerinner span#ctn2 {  }
-div#legacy_container div#legacy_containerinner span#ctn3 {  }
 div#legacy_container div#legacy_containerinner div#endscreen_outer { position: absolute; z-index: 22; pointer-events: none; }
 div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen { position: absolute; width: 1280px; height: 720px; }
 div#legacy_container div#legacy_containerinner div#endscreen_outer div#group0 { position: absolute; top: 0; left: 0; z-index: 4; -webkit-mask-image: url(../art/ends/mask1280_0.png); }

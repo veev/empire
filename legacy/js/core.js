@@ -863,7 +863,7 @@ function iconclick () {
 	newclass += (data.substate)? data.substate:'';
 	$(this).removeClass(newclass);
 	
-	$('#l' + _highlight_currentx +'_ia').removeClass(newclass);
+	$('#l' + _highlight_currentx +'_ia').removeClass(newclass).remove();
 	$('#l' + _highlight_currentx +'_ib').removeClass(newclass);
 	
 	$("." + newclass).each(function () {
@@ -906,7 +906,7 @@ function iconclick () {
 				gonelines[thisid] = 1;
 				windsofchange.push(parseInt($("#" + thisid).attr('data-pt')));
 				thiscl = thiscl.replace('scrubber ','scrubber_gone ');
-//				$("#" + thisid + '_ia').remove();
+				$("#" + thisid + '_ia').remove();
 				$("#" + thisid).attr('class',thiscl);
 			}
 		}
@@ -955,6 +955,18 @@ function iconclick () {
 		_clipstartsincemove = data.start_secs;
 		
 
+		$('path[data-lineclip="' + data.clip + '"]').each(function () {
+			if(parseInt($(this).attr('data-lineseq')) < clipseq){
+				var thiscl = $(this).attr('class');
+				if(thiscl.indexOf('scrubber_seen') == -1){
+					gonelines[$(this).attr('id')]
+					thiscl = thiscl.replace('scrubber ','scrubber_gone ');
+					$(this).attr('class',thiscl);
+					linedestroy(parseInt($(this).attr('data-pt')));
+				}
+			}	
+		});
+
 
 		if(clipseq > 0){
 			// go a segment forward and black it out if it's not viewed
@@ -977,22 +989,7 @@ function iconclick () {
 
 
 		for(var x = 0; x < windsofchange.length; x++){
-			$('path[data-inbound="' + windsofchange[x] + '"]').each(function () {
-				var thiscl = $(this).attr('class');
-				if(thiscl.indexOf('transition_used') == -1){
-					var parsers = $(this).attr('id').split('_');
-					gonelines[parsers[0]] = 1;
-					$(this).remove();
-				}
-			});
-			$('path[data-outbound="' + windsofchange[x] + '"]').each(function () {
-				var thiscl = $(this).attr('class');
-				if(thiscl.indexOf('transition_used') == -1){
-					var parsers = $(this).attr('id').split('_');
-					gonelines[parsers[0]] = 1;
-					$(this).remove();
-				}
-			});
+			linedestroy(windsofchange[x]);
 		}
 		
 					
@@ -1118,7 +1115,7 @@ function transition_load (target) {
 
 function linemanager () {
 
-	console.log('linemanager ' + curvid);
+//	console.log('linemanager ' + curvid);
 
 	// look at the clip we just got, hide anything unused that's not an end
 	var ismine = new Object();
@@ -1126,8 +1123,6 @@ function linemanager () {
 	for(clip in clipstarts[curvid]){
 		ismine[clipstarts[curvid][clip]] = true;
 	}
-	
-	console.log(ismine);
 	
 	$(".connline").hide().each(function () {
 		var hider = true;
@@ -1142,8 +1137,6 @@ function linemanager () {
 					thiscl = thiscl.replace('transition_superfluous_unused','transition_unused');
 					$(this).attr('class',thiscl);
 				}
-			} else {
-				console.log('nope');
 			}
 		}
 		if(hider){
@@ -1592,30 +1585,17 @@ function markseen (cv,enddata){
 		thiscl = $(".pl" + finalid + ":first").attr("class");
 		thisid = $(".pl" + finalid + ":first").attr("id");
 		
-		$('path[data-outbound="' + enddata.dataid + '"]').each(function () {
-			var linecl = $(this).attr('class');
-			if(linecl.indexOf('transition_used') == -1){
-				var parsers = $(this).attr('id').split('_');
-				gonelines[parsers[0]] = 1;
-				$(this).remove();
-				console.log('markseen outbound ' + $(this).attr('id'));
-			}
-		});
-		$('path[data-inbound="' + enddata.dataid + '"]').each(function () {
-			var linecl = $(this).attr('class');
-			if(linecl.indexOf('transition_used') == -1){
-				var parsers = $(this).attr('id').split('_');
-				gonelines[parsers[0]] = 1;
-				$(this).remove();
-			console.log('markseen inbound ' + $(this).attr('id'));
-			}
-		});
+		linedestroy(enddata.dataid);
 
 	} else {
 
-		console.log('markseen passive');
-		thisid = $('path[data-endsecs="' + parseInt(curplayback) + '"]:first').attr('id');
-		thiscl = $('path[data-endsecs="' + parseInt(curplayback) + '"]:first').attr('class');
+		$('path[data-endsecs="' + parseInt(curplayback) + '"]').each(function () {
+			if(parseInt($(this).attr('data-lineclip')) == cv){
+				thisid = $(this).attr('id');
+			}
+		});
+		
+		thiscl = $('#' + thisid).attr('class');
 		nonclip = true;
 
 	}
@@ -1636,7 +1616,7 @@ function linedestroy (targetid) {
 			var parsers = $(this).attr('id').split('_');
 			gonelines[parsers[0]] = 1;
 			$(this).remove();
-			console.log('linedestroy outbound ' + $(this).attr('id'));
+//			console.log('linedestroy outbound ' + $(this).attr('id'));
 		}
 	});
 	$('path[data-inbound="' + targetid + '"]').each(function () {
@@ -1645,10 +1625,15 @@ function linedestroy (targetid) {
 			var parsers = $(this).attr('id').split('_');
 			gonelines[parsers[0]] = 1;
 			$(this).remove();
-			console.log('linedestroy inbound ' + $(this).attr('id'));
+//			console.log('linedestroy inbound ' + $(this).attr('id'));
 		}
 	});
-	
+	if($("#l" + targetid + "_ia").hasClass('gsoff')){
+		$("#l" + targetid + "_ia").remove();
+	}
+	if($("#l" + targetid + "_ib").hasClass('gsoff')){
+		$("#l" + targetid + "_ib").remove();
+	}
 }
 
 function svgreset () {
