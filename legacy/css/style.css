@@ -96,8 +96,8 @@ div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen
 div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenb3 { background: url(../art/ends/b_3.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
 div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenc3 { background: url(../art/ends/c_3.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
 div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreend3 { background: url(../art/ends/d_3.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endtalk { z-index: 39; position: absolute; top: 0; left: 0; background: rgba(0,0,0,.7); padding: 30px 90px; width: 250px; height: 220px; }
-div#legacy_container div#legacy_containerinner div#endtalk p { margin: 1em 0; font-size: 1.3em; }
+div#legacy_container div#legacy_containerinner div#endtalk { z-index: 39; position: absolute; top: 0; left: 0; cursor: pointer; background: rgba(0,0,0,.4);  }
+div#legacy_container div#legacy_containerinner div#endtalk div#endtalkinner p { margin: 1em 0; font-size: 1.3em; }
 div#legacy_container div#legacy_containerinner div#endtalk p#legrestart { color: #fbb03b; cursor: pointer; display: block;}
 div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.grey { -webkit-filter: grayscale(100%); -moz-filter: grayscale(100%); }
 div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.color { -webkit-filter: grayscale(0%); -webkit-transition: -webkit-filter 500ms linear; }

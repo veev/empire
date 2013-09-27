@@ -305,6 +305,7 @@ function startscreen () {
 		drawvideo(actualclip);
 		render_lines(0);
 		
+		linemanager();
 		
 		if(legacy_debug){
 			// debug_listvideo();
@@ -379,9 +380,13 @@ function endscreen (theme,focus) {
 	$("#endscreen").append('<div id="group1a" class="color endscreen' + theme + '1" style="display: none;"></div>');
 	$("#endscreen").append('<div id="group2a" class="color endscreen' + theme + '2" style="display: none;"></div>');
 	$("#endscreen").append('<div id="group3a" class="color endscreen' + theme + '3" style="display: none;"></div>');
-	$("#legacy_containerinner").append('<div id="endtalk" style="display: none; top: ' + (vtop + ((h / 2) - 155)) + '; left: ' + ((w / 2) - 215) + '"><p>This the way you moved through the world.</p><p>But there are other ways</p><p id="legrestart" style="display: none">Choose your starting point</p></div>');
+	$("#legacy_containerinner").append('<div id="endtalk"><div id="endtalkinner"><p>This the way you moved through the world.</p><p>But there are other ways</p><p id="legrestart" style="display: none">Choose your starting point</p></div></div>');
 	var denom = (w - 2) / 1280;
 	var denomh = (h - 2) / 407;
+
+
+	$("#endtalk").css({'width': w + 'px',  'margin-top': vtop, 'margin-left': _mladjust + 'px', 'height': h + 'px'  });
+	$("#endtalkinner").css({ 'margin-top': ((h / 2) - 60) });
 	
 	$("#endscreen").css({ 'transform-origin': '0 0', '-webkit-transform-origin': '0 0',  'transform': 'scale(' + denom + ',' + denomh + ');', '-ms-transform': 'scale(' + denom + ',' + denomh + ')', '-webkit-transform': 'scale(' + denom + ',' + denomh + ')' });
 		
@@ -389,7 +394,7 @@ function endscreen (theme,focus) {
 	$("#group" + focus + "a").fadeTo(5000,.8);
 	$("#endtalk").fadeIn(2000, function () {
 			$("#legrestart").fadeIn(6000);
-			$("#legrestart").click(restarter);
+			$("#endtalk").click(restarter);
 	});
 
 //	});
@@ -718,10 +723,10 @@ function render_lines (mode,spatial){
 						
 						var newpath_a, newpath_b, newpath_c, newpath_d;
 					
-						var lineclass = "transition_unused tl" + clipclass + ' tml' + clipdata[clipedges[y][clip]].state;
+						var lineclass = "connline transition_unused tl" + clipclass + ' tml' + clipdata[clipedges[y][clip]].state;
 
 						if(superfluouslinecheck[clipid + '_' + clipedges[y][clip]] || superfluouslinecheck[clipedges[y][clip] + '_' + clipid]){
-							lineclass = "transition_unused_superfluous tl" + clipclass + ' tml' + clipdata[clipedges[y][clip]].state;
+							lineclass = "connline transition_unused_superfluous tl" + clipclass + ' tml' + clipdata[clipedges[y][clip]].state;
 							superflous = true;
 						}
 			
@@ -756,14 +761,14 @@ function render_lines (mode,spatial){
 						} else {
 							
 							if(litlines['cl' + connlineid]){
-								lineclass = "transition_used tl" + clipclass + + ' tml' + clipdata[clipedges[y][clip]].state;
+								lineclass = "connline transition_used tl" + clipclass + + ' tml' + clipdata[clipedges[y][clip]].state;
 							}
 						}						
 
 
 						if(lineyes){
 						
-							superfluouslinecheck[clipid + '_' + clipedges[y][clip]] = true;
+//							superfluouslinecheck[clipid + '_' + clipedges[y][clip]] = true;
 						
 							$(newpath_a.node).attr("id",trans_a);
 						
@@ -1080,7 +1085,7 @@ function drawvideo (videoclip) {
 		setTimeout(function () {
 			$("#leg1").fadeOut(1000, function () {
 				$("#leg2").fadeIn(1000, function () {
-					setTimeout(function () { $("#leg2").fadeOut(); $("#legacy_instructions").fadeOut(1000); },5000);
+					setTimeout(function () { $("#leg2").fadeOut(); $("#legacy_instructions").fadeOut(1000); },4000);
 				});
 			});
 		},4000);
@@ -1096,7 +1101,7 @@ function drawvideo (videoclip) {
 }
 
 function transition_load (target) {
-	
+
 	$("#videotransition").hide();
 	
 	var w = ($("#legacy_container").width() - _adjuster);
@@ -1109,6 +1114,46 @@ function transition_load (target) {
 	$("#videotransition").html(imgcode);
 
 }
+
+
+function linemanager () {
+
+	console.log('linemanager ' + curvid);
+
+	// look at the clip we just got, hide anything unused that's not an end
+	var ismine = new Object();
+	
+	for(clip in clipstarts[curvid]){
+		ismine[clipstarts[curvid][clip]] = true;
+	}
+	
+	console.log(ismine);
+	
+	$(".connline").hide().each(function () {
+		var hider = true;
+		var thiscl = $(this).attr('class');
+		if(thiscl.indexOf('transition_used') != -1){
+			hider = false;
+		} else {
+			if(ismine[parseInt($(this).attr('data-outbound'))]){
+				// show this one;
+				hider = false;			
+				if($(this).attr('data-superfluous') == 1){
+					thiscl = thiscl.replace('transition_superfluous_unused','transition_unused');
+					$(this).attr('class',thiscl);
+				}
+			} else {
+				console.log('nope');
+			}
+		}
+		if(hider){
+			$(this).hide();
+		} else {
+			$(this).show();
+		}
+	});
+}
+
 
 function transition_on (target) {
 
@@ -1204,7 +1249,12 @@ function loadvid (clip,starttime) {
 
 	// set the video player to move to another moment
 
+
 	curvid = clip;
+	linemanager();
+	
+
+
 	videoclipname = $("#vid_" + clip).attr('data-clipname');
 	jwplayer('vidin').load({ 'streamer': _rtmpserver, 'file': 'legacy/' + videoclipname + '_crop.mp4', 'start': starttime, 'autostart': true });
 
@@ -1268,7 +1318,8 @@ function redrawing (){
 		var denom = ((w+54) - 2) / 1280;
 		var denomh = ((h+110) - 2) / 407;
 		$("#endscreen").css({ 'transform-origin': '0 0', '-webkit-transform-origin': '0 0',  'transform': 'scale(' + denom + ',' + denomh + ');', '-ms-transform': 'scale(' + denom + ',' + denomh + ')', '-webkit-transform': 'scale(' + denom + ',' + denomh + ')' });
-		$("#endtalk").css({ 'top': (vtop + ((h / 2) - 155)), 'left': ((w / 2) - 215) });
+		$("#endtalk").css({'width': (w+54) + 'px',  'height': (h+110) + 'px'  });
+		$("#endtalkinner").css({ 'margin-top': ((h / 2) - 60) });
 		render_lines(2, { 'w':$("#endscreen").width() ,'h':$("#endscreen").height(),'vtop':vtop,'ml':(_mladjust - 3) });
 	}
 
