@@ -25,12 +25,6 @@ $(document).ready(function(){
 	
 	cradle_sizer();
 
-	$(document).scrollsnap({
-		snaps: '.snap',
-		proximity: 180,
-		handler: cradle_scrollsnaphandle
-	});
-
 	$("#outerouter").mouseenter(function () {
 		trackon();
 	});
@@ -87,8 +81,8 @@ $(document).ready(function(){
 
 function cradle_scrollsnaphandle () {
 	if(playState == 0 && $(this).attr('id') == "cradle_main"){
-		playDecide();
-		cradle_openscreen();
+//		playDecide();
+//		cradle_openscreen();
 	}
 }
 
@@ -141,7 +135,7 @@ function cradle_sizer () {
 	$("#cradleplay").css({ "bottom": legbottom, "margin-left": ($("#cradle_top").width() / 2) - 70 }).fadeIn(4000).click(function () {
 		$('html, body').animate({ scrollTop: ($('#cradle_main').offset().top - 20) }, 1000);
 //		playDecide();
-	cradle_openscreen();
+//	cradle_openscreen();
 	});
 
 }
