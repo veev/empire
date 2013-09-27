@@ -20,6 +20,7 @@ var lazywidth = 0;
 var leftpoint = 0;
 var rightpoint = 0;
 var sidetracker = new Object();
+var currentvideo = 1;
 
 $(document).ready(function(){		
 
@@ -39,23 +40,28 @@ $(document).ready(function(){
 		handler: cradle_scrollsnaphandle
 	});
 
-	$("#outerouter").mouseenter(function () {
-		trackon();
-	});
 
-	$("#outerouter").mouseleave(function () {
-		trackoff();
-	});
-		$("#leftbutton").click(function () {
-		if(flipside){
-			flipper();
-		}
-	});
-	$("#rightbutton").click(function () {
-		if(!flipside){
-			flipper();
-		}
-	});
+	if(!_ammobile){
+
+		$("#outerouter").mouseenter(function () {
+			trackon();
+		});
+
+		$("#outerouter").mouseleave(function () {
+			trackoff();
+		});
+			$("#leftbutton").click(function () {
+			if(flipside){
+				flipper();
+			}
+		});
+		$("#rightbutton").click(function () {
+			if(!flipside){
+				flipper();
+			}
+		});
+
+	}
 	
 	$(document).keydown(function (e) {
     var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;

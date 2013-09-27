@@ -1,0 +1,97 @@
+<html>
+<head>
+<meta http-equiv="Context Type" content="text/html; charset=iso-8899-1" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="../js/raphael.js"></script>
+<script src="../js/jquery.easing.min.js"></script>
+<script src="../js/jquery.event.special.js"></script>
+<script src="../js/jquery.scrollsnap.js"></script>
+<script src="../js/empirecore.js"></script>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link href='http://fonts.googleapis.com/css?family=IM+Fell+English:400italic' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+<script src="js/cradle.js"></script>
+	<title>Empire: Cradle</title>
+</head>
+<body>
+	<div class="cradle_top snap" id="cradle_top">
+		<div id="cradle_title">
+			<img src="../art/emp_title.png" width="284" height="43" title="Empire" /><h1>Cradle</h1>
+		</div>
+		<div id="cradle_line"></div>
+		<div id="cradle_structure">
+			<div id="c_a">Outside Amsterdam's Schipol airport, plane spotters wait by the runway for a glimpse of their favorite aircraft.</div>
+			<div id="c_b">Inside the airport's mortuary, undertaker Theo prepares the recently deceased for their final flights home.</div>
+			<div id="c_c">Empire: Cradle presents two separate films united by a single soundtrack.</div>
+			<div id="c_d">As the seconds tick by, you decide which you will watch and which you will ignore.</div>	
+		</div>
+		<div class="cradleplay" id="cradleplay" style="display: none"></div>
+	</div>
+	<div class="outer snap" id="cradle_main">
+		<div id="cradle_linewhite"></div>
+		<div id="outerouter">
+			<div id="outerinner">
+				<div id="container">
+					<div id="instructions" style="display: none"><span id="swifter"></span>
+					<p id="crad_0">Use your mouse or your touch to flip the video</p>
+					<p id="crad_1" class="left">Drag to the left to spend time in the morgue</p>
+					<p  id="crad_2" class="right">Drag to the right to spot planes</p>
+					<p  id="crad_3">Your choices will be noted</p>
+					</div>
+					<div id="leftbutton" class="flipbuttons buttonoff"></div>
+					<div id="rightbutton" class="flipbuttons buttonon"></div>
+					<div id="cardover"></div>
+					<div id="card">
+						<div class="front">
+							<video id="video1" width="960" height="540" poster="art/thumbs/full-schipol-2.jpg" controls>
+								 <source src="http://s3.amazonaws.com/empireproj/cradle/schipol.mp4" type="video/mp4">
+								 <source src="http://s3.amazonaws.com/empireproj/cradle/schipol.webm">
+							</video>
+						</div>
+						<div class="back">
+							<video id="video2" width="960" height="540" poster="art/thumbs/full-spotters-2.jpg">
+								 <source src="http://s3.amazonaws.com/empireproj/cradle/spotters.mp4" type="video/mp4">
+								 <source src="http://s3.amazonaws.com/empireproj/cradle/spotters.webm">
+							</video>
+						</div>
+					</div>
+				</div>
+				<div id="controls">
+					<span id="playElement" style="cursor: pointer;"></span>
+					<div id="scrubber"><div id="progress"></div>
+				</div>
+			</div>
+			<div id="endscreen" style="display: none;">
+				<div id="person_a"></div><div id="person_b"></div><div id="people_data"></div><div id="person_overlay"><p>Try again</p></div>
+			</div>
+		</div>
+	</div>
+	<div class="more" id="legmore" style="display:none"></div>
+	</div>
+
+	<div class="cradle_bottom snap" id="cradle_bottom">
+		<div id="cradle_bottomline"></div>
+		<div class="inner">
+		<div id="cbottom_structure"><div class="cbottom_l">
+		<p>Schiphol Airport handles 1100 flights on average per day.</p>
+
+<p>Of those flights, 6 to 7 planes are carrying the body of a deceased person. A great number of these deceased people were born in former Dutch colonies, and are now returning to the countries of their birth for final burial.</p>
+
+<p>Within the borders of the Netherlands, people from former Dutch colonies and/or "overseas territories" like Suriname, Indonesia and The Antilles <a href="http://focus-migration.hwwi.de/The-Netherlands.2644.0.html?L=1" target="_links">make up about 5.5% of the total population.</a> Other notable immigrant groups include Turkish and Moroccan "guest workers" - <a href="http://mcnl.berkeley.edu/netherlands/guest-workers/" target="_links">many of whom came to The Netherlands in the decades after WWII to take on low-wage jobs</a> - and <a href="http://www.arierang.nl" target="_links">Korean adoptees.</a> These days, due to stricter asylum and family migration rules,<a href="http://www.cbs.nl/en-GB/menu/themas/dossiers/allochtonen/publicaties/artikelen/archief/2012/2012-011-pb.htm" target="_links"> intra-European migrants make up the fastest-growing immigrant population in the Netherlands.</a></p></div>
+
+<div class="cbottom_r"><p>Absorbing, and consequently rearranging, immigrant populations (from former colonies or otherwise) around cities in the Netherlands <a href="http://sinisterhumanists.tumblr.com/post/15296546451/living-in-the-curdled-dream-of-a-dutch-utopia-the" target="_links"> has long been a favorite hobby of Dutch engineers and city planners.</a> Other typical Dutch hobbies include ice skating, building canals and <a href="http://www.planespotting.nl/" target="_links">watching through binoculars as planes take off and leave from Schiphol Airport.</a></p>
+
+<p><a href="http://www.smba.nl/en/news/archive/2012/bijlmair-kel-o-neill-and-eline-/" target="_links">The original video installation Empire: Cradle</a> was made and exhibited in January 2012 during the 2011-2012 Stedelijk Museum Bureau Amsterdam (SMBA)/ CBK Zuidoost BijlmAIR residency. The project received support from the Mondriaan Fund. Johan Lagerwerf provided production assistance and Matt Dougherty created the music. A prototype web adaptation of the installation <a href="http://www.pbs.org/pov/blog/2013/01/the-pov-hackathon-2-award-winners/" target="_links">won the Participants' Choice Award at the January 2013 POV Hackathon.</a></p>
+</div>
+</div>
+		<div id="cradle_bottomtitle">
+		<h2>Cradle</h2>
+		<img src="../art/emp_title.png" width="284" height="43" title="Empire" />
+		</div>
+
+		</div>
+	</div>
+			
+</body>
+</html>

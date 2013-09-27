@@ -10,7 +10,7 @@ var connsloaded = false;
 var loadivl = new Number();
 var clipmap = new Array('indonesia','india','southafrica','srilanka');
 var paper,paper_connections,endpaper,drawpath;
-var legacy_debug = true;
+var legacy_debug = false;
 
 var _rtmpserver = 'rtmp://s17pilyt3yyjgf.cloudfront.net/cfx/st';
 var _increment = 5;
@@ -404,7 +404,7 @@ function endscreen (theme,focus) {
 	$("#endscreen").append('<div id="group1a" class="color endscreen' + theme + '1" style="display: none;"></div>');
 	$("#endscreen").append('<div id="group2a" class="color endscreen' + theme + '2" style="display: none;"></div>');
 	$("#endscreen").append('<div id="group3a" class="color endscreen' + theme + '3" style="display: none;"></div>');
-	$("#legacy_containerinner").append('<div id="endtalk"><div id="endtalkinner"><p>This the way you moved through the world.</p><p>But there are other ways</p><p id="legrestart" style="display: none">Choose your starting point</p></div></div>');
+	$("#legacy_containerinner").append('<div id="endtalk"><div id="endtalkinner"><p>This the way you moved through the world.</p><p>But there are other ways</p><p id="legrestart" style="display: none">Start again</p></div></div>');
 	var denom = (w - 2) / 1280;
 	var denomh = (h - 2) / 407;
 
@@ -1076,7 +1076,7 @@ function drawvideo (videoclip) {
 	}
 	
 		if(_ammobile){
-			var divtext = '<video src="http://s3.amazonaws.com/empireproj/hls/1000/' + videoclip + '_1000_crop.m3u8" id="htmlvid" poster="mp4/thumbs/full-' + videoclip + '-10.jpg" width="' + w + '" height="' + h + '" controls></video>';
+			var divtext = '<video src="http://s3.amazonaws.com/empireproj/hls/1000/' + videoclip + '_1000_crop.m3u8" id="htmlvid" poster="mp4/thumbs/full-' + videoclip + '-10.jpg" width="' + w + '" height="' + h + '" type="video/mpeg4" controls></video>';
 			if(!_canhls){
 				divtext = '<video src="http://s3.amazonaws.com/empireproj/legacy/' + videoclip + '_crop.mp4" id="htmlvid" poster="mp4/thumbs/full-' + videoclip + '-10.jpg" width="' + w + '" height="' + h + '" controls></video>';
 			}
@@ -1315,6 +1315,7 @@ function loadvid (clip,starttime) {
 		}
 		_mobileseek = starttime;
 		document.getElementById('htmlvid').addEventListener('canplay',seeker);
+		_inseek = true;
 	
 	} else {
 	
@@ -1325,11 +1326,10 @@ function loadvid (clip,starttime) {
 }
 
 function seeker () {	
-	var skg = document.getElementById('htmlvid').seekable;
-	console.log(skg);
+
 	document.getElementById('htmlvid').currentTime = _mobileseek;	
 	document.getElementById('htmlvid').play();
-	document.getElementById('htmlvid').addEventListener('play',function () { if(_intransition){ transition_off(); }});
+	document.getElementById('htmlvid').addEventListener('play',function () { if(_intransition){ transition_off();  _inseek = false; }});
 //	_inseek = true;
 }
 
@@ -1449,176 +1449,179 @@ function legacy_draw() {
 function progressrun (inf) {
 	// update the play bar during playback, also deal with the highlighting
 
-	curplayback = inf;
+	if(!_inseek){
+
+		curplayback = inf;
 
 
-	// play bar bit
+		// play bar bit
 
-	var reverse = false;
-	var vertical = false;
-	var playstring = new String();
+		var reverse = false;
+		var vertical = false;
+		var playstring = new String();
 
-	playstring = 'M' + _playbackx + ',' + _playbacky + 'L';
+		playstring = 'M' + _playbackx + ',' + _playbacky + 'L';
 
-	var secpx = _scrubwidth / cliplengths[curvid];
-	if(curvid == 1 || curvid == 3){
-		secpx = (_scrubheight - 8) / cliplengths[curvid];
-		vertical = true;
-	}
-	if(curvid == 2 || curvid == 3){
-		reverse = true;
-	}
-
-
-	var w = ($("#legacy_container").width() - _adjuster);
-	var h = ($("#legacy_container").width() - _adjuster) * .31
-
-
-	// draw a line from the current x/y to this point in time
-
-	var desiredlength = (curplayback - _clipoffsetfromstart) * secpx;
-
-	if(vertical){
-		if(reverse){
-			playstring += _playbackx + ',' + (_playbacky - desiredlength);
-		} else {
-			playstring += _playbackx + ',' + (_playbacky + desiredlength);
+		var secpx = _scrubwidth / cliplengths[curvid];
+		if(curvid == 1 || curvid == 3){
+			secpx = (_scrubheight - 8) / cliplengths[curvid];
+			vertical = true;
 		}
-	} else {
-		if(reverse){
-			playstring += (_playbackx - desiredlength) + ',' + _playbacky;
-		} else {
-			playstring += (_playbackx + desiredlength) + ',' + _playbacky;
+		if(curvid == 2 || curvid == 3){
+			reverse = true;
 		}
-	}
-
-	if(drawpath){
-		drawpath.remove();
-	}
 
 
-	drawpath = paper.path( playstring );
-	
-	drawpath.attr({'arrow-end': 'classic-wide-long', 'stroke': '#fbb03b' });
-	$(drawpath.node).attr("class","playback");
+		var w = ($("#legacy_container").width() - _adjuster);
+		var h = ($("#legacy_container").width() - _adjuster) * .31
 
-	var thistime = Math.floor(inf);
 
-	// now look for times to light up other options
+		// draw a line from the current x/y to this point in time
 
-	if(clipends[curvid][thistime] && !clipdata[clipends[curvid][thistime]].fired && !preventdoublejump){
+		var desiredlength = (curplayback - _clipoffsetfromstart) * secpx;
 
-		// we have a point! light stuff up
-
-		_highlight_curvid = curvid;
-		_highlight_curpt = thistime;
-		_highlight_currentx = clipends[curvid][thistime];
-	
-		clipdata[clipends[curvid][thistime]].fired = true;
-	
-		$("#l" + clipends[curvid][thistime] + "_ib").fadeIn();
-	
-
-		$(".gsa" + clipdata[clipends[curvid][thistime]].state + clipdata[clipends[curvid][thistime]].substate).each(function () {
-			if($(this).attr('id') != "l" + clipends[curvid][thistime] + '_ia'){
-				$(this).fadeIn();
-				var thisdatapoint = clipdata[parseInt($(this).attr('data-clipdata'))];
-				if(!($("#ctn" + thisdatapoint.clip).hasClass('cnameon'))){
-					$("#ctn" + thisdatapoint.clip).addClass('cnameon');
-				}
+		if(vertical){
+			if(reverse){
+				playstring += _playbackx + ',' + (_playbacky - desiredlength);
+			} else {
+				playstring += _playbackx + ',' + (_playbacky + desiredlength);
 			}
-		});
-
-		$(".tl" + clipdata[clipends[curvid][thistime]].state + clipdata[clipends[curvid][thistime]].substate).each(function () {
-			var thiscl = $(this).attr('class');
-			if($(this).attr('data-outbound') == clipends[curvid][thistime]){
-				if(thiscl.indexOf('transition_unused') != -1){
-					var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous':'transition_unused';
-					thiscl = thiscl.replace(replstring,'transition_hot');
-					$(this).attr('class',thiscl);
-				}
+		} else {
+			if(reverse){
+				playstring += (_playbackx - desiredlength) + ',' + _playbacky;
+			} else {
+				playstring += (_playbackx + desiredlength) + ',' + _playbacky;
 			}
-		});
+		}
 
+		if(drawpath){
+			drawpath.remove();
+		}
+
+
+		drawpath = paper.path( playstring );
 	
-	}
-	if(clipstarts[curvid][thistime]){
+		drawpath.attr({'arrow-end': 'classic-wide-long', 'stroke': '#fbb03b' });
+		$(drawpath.node).attr("class","playback");
 
-		_clipoffsetfromstart = thistime;	
+		var thistime = Math.floor(inf);
 
-		var posdenus = parsed($("#l" + clipstarts[curvid][thistime]).attr('d'));	
-		_playbackx = parseInt(posdenus.startx);
-		_playbacky = parseInt(posdenus.starty);
-		if(curvid == 2){
-			_playbacky++;
-		}
+		// now look for times to light up other options
 
-		markseen(curvid);
+		if((clipends[curvid][thistime] != undefined) && !clipdata[clipends[curvid][thistime]].fired && !preventdoublejump){
 
-	}
+			// we have a point! light stuff up
 
-	if(clipedges[curvid][thistime]){
+			_highlight_curvid = curvid;
+			_highlight_curpt = thistime;
+			_highlight_currentx = clipends[curvid][thistime];
+	
+			clipdata[clipends[curvid][thistime]].fired = true;
+	
+			$("#l" + clipends[curvid][thistime] + "_ib").fadeIn();
+	
 
-		if(!clipdata[clipedges[curvid][thistime]].seen){
-			
-			// change this segment to viewed
-			markseen(curvid,clipdata[clipedges[curvid][thistime]]);
-
-		}
-
-		if(clipedges[curvid][thistime] == _highlight_currentx){
-
-			// the hot time is over
-
-
-			// fade this icon if it's not selected
-			if($("#l" + clipedges[curvid][thistime] + "_ib").hasClass('gsoff')){
-				$("#l" + clipedges[curvid][thistime] + "_ib").fadeOut();
-			}		
-		
-			// fade countries 
-		
-			$('.cnameon').removeClass('cnameon');
-		
-		
-			// fade other icons
-		
-			$(".gsa" + clipdata[clipedges[curvid][thistime]].state + clipdata[clipedges[curvid][thistime]].substate).each(function () {
-				if(($(this).attr('id') != "l" + clipedges[curvid][thistime] + '_ia') && $(this).hasClass('gsoff')){
-					$(this).fadeOut();
+			$(".gsa" + clipdata[clipends[curvid][thistime]].state + clipdata[clipends[curvid][thistime]].substate).each(function () {
+				if($(this).attr('id') != "l" + clipends[curvid][thistime] + '_ia'){
+					$(this).fadeIn();
+					var thisdatapoint = clipdata[parseInt($(this).attr('data-clipdata'))];
+					if(!($("#ctn" + thisdatapoint.clip).hasClass('cnameon'))){
+						$("#ctn" + thisdatapoint.clip).addClass('cnameon');
+					}
 				}
 			});
-		
-			// fade connecting lines
 
-			$(".tl" + clipdata[clipedges[curvid][thistime]].state + clipdata[clipedges[curvid][thistime]].substate).each(function () {
+			$(".tl" + clipdata[clipends[curvid][thistime]].state + clipdata[clipends[curvid][thistime]].substate).each(function () {
 				var thiscl = $(this).attr('class');
-				if(thiscl.indexOf('transition_hot') != -1){
-					var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous':'transition_unused';
-					thiscl = thiscl.replace('transition_hot',replstring);
-					$(this).attr('class',thiscl);
+				if($(this).attr('data-outbound') == clipends[curvid][thistime]){
+					if(thiscl.indexOf('transition_unused') != -1){
+						var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous':'transition_unused';
+						thiscl = thiscl.replace(replstring,'transition_hot');
+						$(this).attr('class',thiscl);
+					}
 				}
 			});
 
-			_highlight_currentx = 0;
 	
 		}
-	
-	} else {
-		if(thistime == clipfirst[curvid]){
+		if(clipstarts[curvid][thistime] != undefined){
 
-			// this only shows up on the first playback but fucking hell is it annoying to me.
+			_clipoffsetfromstart = thistime;	
+
+			var posdenus = parsed($("#l" + clipstarts[curvid][thistime]).attr('d'));	
+			_playbackx = parseInt(posdenus.startx);
+			_playbacky = parseInt(posdenus.starty);
+			if(curvid == 2){
+				_playbacky++;
+			}
+
 			markseen(curvid);
 
 		}
-	}
 
-	// run a garbage collector every 10 runs of this routine
-	_playbackctr--;
-	if(_playbackctr == 0){
-		garbagecollection();
-		_playbackctr = 90;
-	}	
+		if(clipedges[curvid][thistime] != undefined){
+
+			if(!clipdata[clipedges[curvid][thistime]].seen){
+			
+				// change this segment to viewed
+				markseen(curvid,clipdata[clipedges[curvid][thistime]]);
+
+			}
+
+			if(clipedges[curvid][thistime] == _highlight_currentx){
+
+				// the hot time is over
+
+
+				// fade this icon if it's not selected
+				if($("#l" + clipedges[curvid][thistime] + "_ib").hasClass('gsoff')){
+					$("#l" + clipedges[curvid][thistime] + "_ib").fadeOut();
+				}		
+		
+				// fade countries 
+		
+				$('.cnameon').removeClass('cnameon');
+		
+		
+				// fade other icons
+		
+				$(".gsa" + clipdata[clipedges[curvid][thistime]].state + clipdata[clipedges[curvid][thistime]].substate).each(function () {
+					if(($(this).attr('id') != "l" + clipedges[curvid][thistime] + '_ia') && $(this).hasClass('gsoff')){
+						$(this).fadeOut();
+					}
+				});
+		
+				// fade connecting lines
+
+				$(".tl" + clipdata[clipedges[curvid][thistime]].state + clipdata[clipedges[curvid][thistime]].substate).each(function () {
+					var thiscl = $(this).attr('class');
+					if(thiscl.indexOf('transition_hot') != -1){
+						var replstring = ($(this).attr('data-superflous') == 1)? 'transition_unused_superfluous':'transition_unused';
+						thiscl = thiscl.replace('transition_hot',replstring);
+						$(this).attr('class',thiscl);
+					}
+				});
+
+				_highlight_currentx = 0;
+	
+			}
+	
+		} else {
+			if(thistime == clipfirst[curvid]){
+
+				// this only shows up on the first playback but fucking hell is it annoying to me.
+				markseen(curvid);
+
+			}
+		}
+
+		// run a garbage collector every 10 runs of this routine
+		_playbackctr--;
+		if(_playbackctr == 0){
+			garbagecollection();
+			_playbackctr = 90;
+		}	
+	}
 }
 
 function garbagecollection () {
@@ -1645,6 +1648,9 @@ function garbagecollection () {
 
 function markseen (cv,enddata){
 
+	console.log(cv);
+	console.log(enddata);
+
 	$('.cnameon').removeClass('cnameon');
 
 	var finalid = new String();
@@ -1655,12 +1661,15 @@ function markseen (cv,enddata){
 	var thiscl, thisid;
 		
 	if(enddata){
+	
 		finalid = cv + '' + enddata.end_secs;
 		endpoint = enddata.end_secs;
 		enddata.seen = true;
 		
 		thiscl = $(".pl" + finalid + ":first").attr("class");
 		thisid = $(".pl" + finalid + ":first").attr("id");
+		
+		console.log('killing ' + enddata.dataid);
 		
 		linedestroy(enddata.dataid);
 
@@ -1693,7 +1702,7 @@ function linedestroy (targetid) {
 			var parsers = $(this).attr('id').split('_');
 			gonelines[parsers[0]] = 1;
 			$(this).remove();
-//			console.log('linedestroy outbound ' + $(this).attr('id'));
+			console.log('linedestroy outbound ' + $(this).attr('id'));
 		}
 	});
 	$('path[data-inbound="' + targetid + '"]').each(function () {
@@ -1702,7 +1711,6 @@ function linedestroy (targetid) {
 			var parsers = $(this).attr('id').split('_');
 			gonelines[parsers[0]] = 1;
 			$(this).remove();
-//			console.log('linedestroy inbound ' + $(this).attr('id'));
 		}
 	});
 	if($("#l" + targetid + "_ia").hasClass('gsoff')){

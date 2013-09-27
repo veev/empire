@@ -16,7 +16,7 @@ $(document).ready(function () {
 	}
 	
 	if(navigator.userAgent.indexOf('Android 4') != -1){
-		_canhls = false;
+//		_canhls = false;
 	}
 
 	// load ambient audio
