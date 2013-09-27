@@ -10,6 +10,7 @@ var vid1Loaded = false;
 var vid2Loaded = false;
 var playState = 0;
 var instructionsin = false;
+var enoughwithinstructions = false;
 var flipside = false;
 var flipangle = 0;
 var flipblockIvl = new Number();
@@ -18,7 +19,7 @@ var openIvl = new Number();
 var lazywidth = 0;
 var leftpoint = 0;
 var rightpoint = 0;
-var sidetracker = new Array();
+var sidetracker = new Object();
 
 $(document).ready(function(){		
 
@@ -70,8 +71,8 @@ $(document).ready(function(){
 	document.getElementById("video1").addEventListener("canplay",function(){vid1Loaded = true; },true);
 	document.getElementById("video2").addEventListener("canplay",function(){vid2Loaded = true; },true);
 	
-	document.getElementById("video1").addEventListener("ended",function(){ endVids();},true);
-	document.getElementById("video1").addEventListener("timeupdate",function(){scrubberUpdater();},true);
+	document.getElementById("video2").addEventListener("ended",function(){ endVids();},true);
+	document.getElementById("video2").addEventListener("timeupdate",function(){scrubberUpdater();},true);
 	
 	$("#playElement").click(function () {
 	playButton();
@@ -94,8 +95,10 @@ $(document).ready(function(){
 
 function cradle_scrollsnaphandle () {
 	if(playState == 0 && $(this).attr('id') == "cradle_main"){
-		playDecide();
-		cradle_openscreen();
+		if(!enoughwithinstructions){
+			playDecide();
+			cradle_openscreen();
+		}
 	}
 }
 
@@ -111,6 +114,7 @@ function cradle_openscreen () {
 	$("#instructions").fadeIn(2000);
 	$("#instructions").click(function () {cradle_closescreen() });
 	openIvl = setTimeout("cradle_closescreen()",15000);
+	enoughwithinstructions = true;
 }
 
 function cradle_closescreen () {
@@ -143,6 +147,7 @@ function cradle_sizer () {
 	$("#cradle_structure").css({ 'margin-top': matop, 'left': (($("#cradle_top").width() / 2) - 370) });
 	$("#cbottom_structure").css({ 'margin-top': ((($("#cradle_bottom").height() - 160) / 2) - 235), 'left': (($("#cradle_top").width() / 2) - 465) - 5 });
 
+	$("#legmore").css({ "margin-left": ($("#cradle_main").width() / 2) - 70 });
 
 //	$("#mainarea").css({ "margin-top": matop });
 	$("#cradleplay").css({ "bottom": legbottom, "margin-left": ($("#cradle_top").width() / 2) - 70 }).fadeIn(4000).click(function () {
@@ -249,7 +254,7 @@ function scrubberUpdater (intime){
 		var ratio = (document.getElementById("video1").duration / dur);
 	}
 	$("#progress").css({ "width": (930 / ratio) + 'px' });
-	
+	sidetracker[Math.floor(document.getElementById("video1").currentTime)] = flipside;
 }
 
 function playDecide(){
@@ -301,5 +306,56 @@ function pauseVids(){
 function endVids(){
 //			$("#instructions1").fadeIn('slow');
 	playState = 3;
+	buildendscreen();
 }
 
+function buildendscreen () {
+	$("#container").hide();
+	$("#controls").hide();
+	$("#endscreen").fadeIn();
+	
+	$("#legmore").fadeIn();
+	
+	// now the drawing
+	
+	var outputstring = new String();
+	var nowtop = 0;
+	var multiplier = 1.13;
+	
+	for(var x = 0; x < 446; x++){
+
+		outputstring += '<div style="width: 445px; ';
+		var rightnow = sidetracker[x];
+		var accum = 1;
+		while(sidetracker[x] == rightnow){
+			accum++;
+			x++;	
+			if(x > 446){
+				break;
+			}
+		}
+		outputstring += 'height: ' + (accum * multiplier)+ 'px;';
+		if(rightnow == true){
+			outputstring += ' left: 445';
+		}
+		outputstring += '; top: ' + nowtop + '"></div>';
+		nowtop = nowtop + (accum * multiplier);
+	}
+	
+	$("#people_data").html(outputstring);
+	
+	// click on the overlay, party's over
+	$("#person_overlay").click(function () {
+		sidetracker = {};
+		$("#endscreen").fadeOut();
+		
+		document.getElementById("video1").currentTime = 0;
+		document.getElementById("video2").currentTime = 0;
+		$("#container").fadeIn();
+		$("#controls").fadeIn();
+
+		playVids();
+		$("#playElement").css({'background':'url(art/playWhite.png)'})
+		playState = 1;						
+	});
+}

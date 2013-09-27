@@ -195,3 +195,67 @@ position: absolute;
 	background-image: url(images/playGray.png);
 }
 
+#outerinner #endscreen {
+	position: relative;
+	height: 504px;
+	width: 900px;
+	 z-index: 1;
+	margin: 0 auto;
+}
+
+#outerinner #endscreen div#person_a {
+	width: 445px;
+	height: 504px;
+	position: absolute;
+	z-index: 1;	
+	background: url(../art/endscreen_a.jpg);
+	top: 0;
+	left: 0;
+}
+
+#outerinner #endscreen div#person_b {
+	width: 445px;
+	height: 504px;
+	position: absolute;
+	z-index: 1;	
+	background: url(../art/endscreen_b.jpg);
+	top: 0;
+	left: 445;
+}
+
+#outerinner #endscreen div#people_data {
+	position: absolute;
+	z-index: 2;	
+	height: 504px;
+	left: 0;
+	width: 890px;
+}
+
+#outerinner #endscreen div#people_data div {
+	background-color: #000;
+	width: 445px;
+	position: absolute;
+}
+
+#outerinner #endscreen div#person_overlay {
+	width: 507px;
+	height: 509px;
+	z-index: 3;
+	position: absolute;
+	left: 190;
+	height: 40px;
+	cursor: pointer;
+	width: 307px;
+	text-align: center;
+	padding: 239px 100px 228px 100px;
+	font-size: 1.3em;
+	background: url(../art/obscuredots.png);
+}
+
+#outerinner #endscreen div#person_overlay:hover {
+	color: #eddb58;
+}
+
+#cradle_main div#legmore { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(../art/leg_more.png); }
+
+
