@@ -417,7 +417,7 @@ function restarter () {
 
 	// god help me, reset it all
 	
-	$("#endtalk").fadeOut(2000);
+	$("#endtalk").fadeOut(2000, function () { $("#endtalk").remove() });
 	$("#videoplayer").hide();
 	$("#icongroup").fadeOut(1000);
 
@@ -1055,7 +1055,7 @@ function drawvideo (videoclip) {
 	playeroptions.autostart = true;
 	playeroptions.height = h;
 	playeroptions.width = w;
-//	playeroptions.controlbar = 'none';
+	playeroptions.controlbar = 'none';
 	playeroptions.streamer = _rtmpserver;
 	playeroptions.file = 'legacy/' + videoclip + '_crop.mp4';
 	playeroptions.skin = 'art/bekle.zip';
