@@ -36,6 +36,8 @@ var _legacy_firstrun = true;
 var _starton = false;
 var _adjuster = 140;
 var _mladjust = 35;
+var _mobileseek = 0;
+var _inseek = false;
 
 var preventdoublejumpIvl = new Number();
 var preventdoublejump = false;
@@ -68,6 +70,10 @@ $(document).ready(function () {
 		$("#browserno").slideDown();
 	}
 
+	if(_ammobile){
+		$("#lg_fs").hide();
+	}
+
 
 	$("#legacy_container").css({ 'width': ($(window).width() - 40) });
 	legacy_draw();
@@ -81,7 +87,11 @@ $(document).ready(function () {
 		if(_fson){
 			fullscreen_off();
 		}
-		jwplayer("vidin").pause();
+		if(_ammobile){
+			document.getElementById('htmlvid').pause();
+		} else {
+			jwplayer("vidin").pause();
+		}
 		$('html, body').animate({ scrollTop: ($('.yellow_b').offset().top - 20) }, 1000);
 	});
 	
@@ -207,7 +217,15 @@ $(document).ready(function () {
     if (key == 32){
        e.preventDefault();
     	if(_videoon){
-    		jwplayer("vidin").pause();
+			if(_ammobile){
+				if(document.getElementById('htmlvid').paused){
+					document.getElementById('htmlvid').pause();
+				} else {
+					document.getElementById('htmlvid').pause();
+				}
+			} else {
+				jwplayer("vidin").pause();
+			}
     	}
     }
  	});
@@ -498,6 +516,12 @@ function render_lines (mode,spatial){
 	cliprect[1] = '5 41 20 ' + (_scrubheight - 41);
 	cliprect[2] = (w + 26) + ' 41 ' + (_scrubheight - 41) + ' ' + (w + 36);
 	cliprect[3] = '21 ' + (h + 10) + ' ' + w + ' 99';
+
+	if(_ammobile){
+		cliprect[1] = '5 41 28 ' + (_scrubheight - 41);
+		cliprect[2] = (w + 16) + ' 41 ' + (_scrubheight - 41) + ' ' + (w + 36);
+		cliprect[3] = '21 ' + (h + 23) + ' ' + w + ' 99';
+	}
 	
 	// create a raphael object on the div I made for lines
 
@@ -1044,45 +1068,81 @@ function drawvideo (videoclip) {
 	$("#leg2").css({ 'padding-top': ((h / 2) - 20) + 'px' });
 	
 	if(!_legacy_firstrun){
-		jwplayer('vidin').remove();
+		if(!_ammobile){
+			jwplayer('vidin').remove();
+		}
 		$("#videoplayer").show();
 		$("#vidin").show();
 	}
+	
+		if(_ammobile){
+			var divtext = '<video src="http://s3.amazonaws.com/empireproj/hls/1000/' + videoclip + '_1000_crop.m3u8" id="htmlvid" poster="mp4/thumbs/full-' + videoclip + '-10.jpg" width="' + w + '" height="' + h + '" controls></video>';
+			if(!_canhls){
+				divtext = '<video src="http://s3.amazonaws.com/empireproj/legacy/' + videoclip + '_crop.mp4" id="htmlvid" poster="mp4/thumbs/full-' + videoclip + '-10.jpg" width="' + w + '" height="' + h + '" controls></video>';
+			}
+			$("#vidin").html(divtext);
+			var subthis = this;
+			document.getElementById('htmlvid').addEventListener('timeupdate', function () { subthis.progressrun(document.getElementById('htmlvid').currentTime); })
+//			document.getElementById('htmlvid').addEventListener('playing', function () { if(_intransition){ transition_off(); } })
+			document.getElementById('htmlvid').addEventListener('ended', function () { subthis._ended() })
+			document.getElementById('htmlvid').addEventListener('play', vidinstructions);
+		} else {
+			var playeroptions = { 'controlbar.position': 'over', 'controlbar.idlehide': true };
+			playeroptions.allowFullScreen = false;
+			playeroptions.allowscriptaccess = true;
+			playeroptions.autostart = true;
+			playeroptions.height = h;
+			playeroptions.width = w;
+			playeroptions.controlbar = 'none';
+			playeroptions.streamer = _rtmpserver;
+			playeroptions.file = 'legacy/' + videoclip + '_crop.mp4';
+			playeroptions.skin = 'art/bekle.zip';
+			swfobject.embedSWF('art/player.swf',"vidin",w,h,"9.0.115", 'art/expressInstall.swf', playeroptions, { 'wmode':'direct', 'scale':'noscale', 'salign':'tl', 'menu':false, 'allowFullScreen':false, 'allowScriptAccess':'always' }, { id:'vidin',name:'vidin', bgcolor:'#000000' });
+			subthis = this;
+			jwplayer("vidin").onTime(function (timobj) {
+				subthis.progressrun(timobj.position);
+			});
+			jwplayer("vidin").onComplete(function () {
+				subthis._ended();
+			});
+			jwplayer('vidin').onPlay(function () {
+				if(legacy_debug){
+					console.log('videoready');
+				}
+				if(_intransition){
+					transition_off();
+				}
+			});
+			jwplayer('vidin').onError(function (msg) {
+				if(legacy_debug){
+					console.log('jwplayer error ' + msg);
+				}
+			});
+			
+			vidinstructions();
 
-	var playeroptions = { 'controlbar.position': 'over', 'controlbar.idlehide': true };
-	playeroptions.allowFullScreen = false;
-	playeroptions.allowscriptaccess = true;
-	playeroptions.autostart = true;
-	playeroptions.height = h;
-	playeroptions.width = w;
-	playeroptions.controlbar = 'none';
-	playeroptions.streamer = _rtmpserver;
-	playeroptions.file = 'legacy/' + videoclip + '_crop.mp4';
-	playeroptions.skin = 'art/bekle.zip';
-	swfobject.embedSWF('art/player.swf',"vidin",w,h,"9.0.115", 'art/expressInstall.swf', playeroptions, { 'wmode':'direct', 'scale':'noscale', 'salign':'tl', 'menu':false, 'allowFullScreen':false, 'allowScriptAccess':'always' }, { id:'vidin',name:'vidin', bgcolor:'#000000' });
-	subthis = this;
-	jwplayer("vidin").onTime(function (timobj) {
-		subthis.progressrun(timobj.position);
-	});
-	jwplayer("vidin").onComplete(function () {
-		subthis._ended();
-	});
-	jwplayer('vidin').onPlay(function () {
-		if(legacy_debug){
-			console.log('videoready');
+
 		}
-		if(_intransition){
-			transition_off();
-		}
-	});
-	jwplayer('vidin').onError(function (msg) {
-		if(legacy_debug){
-			console.log('jwplayer error ' + msg);
-		}
-	});
+
+
 
 	_legacy_firstrun = false;
 	
+
+	$("#linegroup").fadeIn();
+	$("#linegroup_connections").fadeIn();
+	$("#icongroup").show();
+
+	_videoon = true;
+			
+
+}
+
+function vidinstructions () {
+	if(_ammobile){
+		document.getElementById('htmlvid').removeEventListener('play', vidinstructions);
+		document.getElementById('htmlvid').controls = false;
+	}
 	$("#legacy_instructions").show();
 	$("#leg1").fadeIn(500, function () {
 		setTimeout(function () {
@@ -1093,14 +1153,6 @@ function drawvideo (videoclip) {
 			});
 		},4000);
 	});
-
-	$("#linegroup").fadeIn();
-	$("#linegroup_connections").fadeIn();
-	$("#icongroup").show();
-
-	_videoon = true;
-			
-
 }
 
 function transition_load (target) {
@@ -1255,9 +1307,30 @@ function loadvid (clip,starttime) {
 
 
 	videoclipname = $("#vid_" + clip).attr('data-clipname');
-	jwplayer('vidin').load({ 'streamer': _rtmpserver, 'file': 'legacy/' + videoclipname + '_crop.mp4', 'start': starttime, 'autostart': true });
-
+	if(_ammobile){
+		if(_canhls){
+			document.getElementById('htmlvid').src = 'http://s3.amazonaws.com/empireproj/hls/1000/' + videoclipname + '_1000_crop.m3u8#t=' + starttime;
+		} else {
+			document.getElementById('htmlvid').src = 'http://s3.amazonaws.com/empireproj/legacy/' + videoclipname + '_crop.mp4#t=' + starttime;		
+		}
+		_mobileseek = starttime;
+		document.getElementById('htmlvid').addEventListener('canplay',seeker);
 	
+	} else {
+	
+		jwplayer('vidin').load({ 'streamer': _rtmpserver, 'file': 'legacy/' + videoclipname + '_crop.mp4', 'start': starttime, 'autostart': true });
+
+	}
+	
+}
+
+function seeker () {	
+	var skg = document.getElementById('htmlvid').seekable;
+	console.log(skg);
+	document.getElementById('htmlvid').currentTime = _mobileseek;	
+	document.getElementById('htmlvid').play();
+	document.getElementById('htmlvid').addEventListener('play',function () { if(_intransition){ transition_off(); }});
+//	_inseek = true;
 }
 
 
@@ -1374,18 +1447,17 @@ function legacy_draw() {
 
 
 function progressrun (inf) {
-
 	// update the play bar during playback, also deal with the highlighting
-	
+
 	curplayback = inf;
 
 
 	// play bar bit
-	
+
 	var reverse = false;
 	var vertical = false;
 	var playstring = new String();
-	
+
 	playstring = 'M' + _playbackx + ',' + _playbacky + 'L';
 
 	var secpx = _scrubwidth / cliplengths[curvid];
@@ -1403,7 +1475,7 @@ function progressrun (inf) {
 
 
 	// draw a line from the current x/y to this point in time
-	
+
 	var desiredlength = (curplayback - _clipoffsetfromstart) * secpx;
 
 	if(vertical){
@@ -1419,33 +1491,33 @@ function progressrun (inf) {
 			playstring += (_playbackx + desiredlength) + ',' + _playbacky;
 		}
 	}
-	
+
 	if(drawpath){
 		drawpath.remove();
 	}
-	
+
 
 	drawpath = paper.path( playstring );
-		
+	
 	drawpath.attr({'arrow-end': 'classic-wide-long', 'stroke': '#fbb03b' });
 	$(drawpath.node).attr("class","playback");
 
 	var thistime = Math.floor(inf);
-	
+
 	// now look for times to light up other options
-	
+
 	if(clipends[curvid][thistime] && !clipdata[clipends[curvid][thistime]].fired && !preventdoublejump){
-	
+
 		// we have a point! light stuff up
 
 		_highlight_curvid = curvid;
 		_highlight_curpt = thistime;
 		_highlight_currentx = clipends[curvid][thistime];
-		
+	
 		clipdata[clipends[curvid][thistime]].fired = true;
-		
+	
 		$("#l" + clipends[curvid][thistime] + "_ib").fadeIn();
-		
+	
 
 		$(".gsa" + clipdata[clipends[curvid][thistime]].state + clipdata[clipends[curvid][thistime]].substate).each(function () {
 			if($(this).attr('id') != "l" + clipends[curvid][thistime] + '_ia'){
@@ -1468,10 +1540,10 @@ function progressrun (inf) {
 			}
 		});
 
-		
+	
 	}
 	if(clipstarts[curvid][thistime]){
-	
+
 		_clipoffsetfromstart = thistime;	
 
 		var posdenus = parsed($("#l" + clipstarts[curvid][thistime]).attr('d'));	
@@ -1486,37 +1558,37 @@ function progressrun (inf) {
 	}
 
 	if(clipedges[curvid][thistime]){
-	
+
 		if(!clipdata[clipedges[curvid][thistime]].seen){
-				
+			
 			// change this segment to viewed
 			markseen(curvid,clipdata[clipedges[curvid][thistime]]);
 
 		}
-	
+
 		if(clipedges[curvid][thistime] == _highlight_currentx){
-	
+
 			// the hot time is over
-	
-	
+
+
 			// fade this icon if it's not selected
 			if($("#l" + clipedges[curvid][thistime] + "_ib").hasClass('gsoff')){
 				$("#l" + clipedges[curvid][thistime] + "_ib").fadeOut();
 			}		
-			
+		
 			// fade countries 
-			
+		
 			$('.cnameon').removeClass('cnameon');
-			
-			
+		
+		
 			// fade other icons
-			
+		
 			$(".gsa" + clipdata[clipedges[curvid][thistime]].state + clipdata[clipedges[curvid][thistime]].substate).each(function () {
 				if(($(this).attr('id') != "l" + clipedges[curvid][thistime] + '_ia') && $(this).hasClass('gsoff')){
 					$(this).fadeOut();
 				}
 			});
-			
+		
 			// fade connecting lines
 
 			$(".tl" + clipdata[clipedges[curvid][thistime]].state + clipdata[clipedges[curvid][thistime]].substate).each(function () {
@@ -1529,9 +1601,9 @@ function progressrun (inf) {
 			});
 
 			_highlight_currentx = 0;
-		
+	
 		}
-		
+	
 	} else {
 		if(thistime == clipfirst[curvid]){
 
@@ -1540,7 +1612,7 @@ function progressrun (inf) {
 
 		}
 	}
-	
+
 	// run a garbage collector every 10 runs of this routine
 	_playbackctr--;
 	if(_playbackctr == 0){
@@ -1548,7 +1620,6 @@ function progressrun (inf) {
 		_playbackctr = 90;
 	}	
 }
-
 
 function garbagecollection () {
 

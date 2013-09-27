@@ -6,15 +6,26 @@ var audiovolume = 30;
 var _currentaudiovolume = 0;
 var vIvl = new Number();
 var dontannoysam = false;
+var _ammobile = false;
+var _canhls = true;
 
 $(document).ready(function () {
+
+	if(navigator.userAgent.indexOf('iPad') != -1 || navigator.userAgent.indexOf('Android 4') != -1){
+		_ammobile = true;
+	}
+	
+	if(navigator.userAgent.indexOf('Android 4') != -1){
+		_canhls = false;
+	}
+
 	// load ambient audio
 	
 	if(window.location.href.indexOf("noaudio") != -1){
 		dontannoysam = true;
 	}
 	
-	if(!dontannoysam){
+	if(!dontannoysam && !_ammobile){
 		$('body:first').append('<div id="audiodiv" style="display: none"><audio src="../audio/ambiance.mp3" type="audio/mpeg" loop id="ambientaudio"></audio></div>');
 		document.getElementById('ambientaudio').addEventListener('canplaythrough',audioready);
 	}
