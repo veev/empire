@@ -75,7 +75,7 @@ div#cradle_main #outerouter #outerinner {
 	position: absolute;
 	height: 540px;
 	width: 960px;
-	 z-index: 1200;
+	 z-index: 8;
 }
 
 #outerinner #container #card {
@@ -90,6 +90,10 @@ position: absolute;
    -webkit-transform-origin: center center;
 }
 
+
+#outerinner #container #card div#cradle1 img, #outerinner #container #card div#cradle0 img {
+	-webkit-filter: blur(4px);
+}
 
 #outerinner #container #cardover {
 	position: absolute;
