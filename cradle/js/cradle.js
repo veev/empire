@@ -68,9 +68,7 @@ $(document).ready(function(){
 			$("#mobilevideo").html('<video src="' + videoprefix + 'schipol_hinted.mp4" id="mobileisgreat" width="960" height="540" poster="art/thumbs/full-schipol-1.jpg" controls>').show();
 		}
 		
-		
-		$("#mobilevideo").css({ 'opacity': .5 });
-		
+				
 		currentvideoid = 'mobileisgreat';
 		
 		document.getElementById("mobileisgreat").addEventListener("play", playhandler);
@@ -122,17 +120,18 @@ $("#playElement").click(function () {
 
 });
 
-function mobile_stills (tim) {
+function mobile_stills (tim) {	
 
-	$("#cradle0img").attr('src','art/thumbs/full-schipol-' + tim + '.jpg');
-	$("#cradle1img").attr('src','art/thumbs/full-spotters-' + tim + '.jpg');
-
+	if(tim >= 1){
+		$("#cradle0img").attr('src','art/thumbs/full-schipol-' + Math.floor(tim) + '.jpg');
+		$("#cradle1img").attr('src','art/thumbs/full-spotters-' + Math.floor(tim) + '.jpg');
+	}
+	
 }
 
 function playhandler () {
 	playState = 1;
 	cradle_closescreen();
-	$("#mobilevideo").css({ 'opacity': 1 });
 	document.getElementById("mobileisgreat").controls = false;
 	if(!_controls){
 		enablecontrols();
@@ -201,10 +200,11 @@ $(window).resize(function () {
 function cradle_openscreen () {
 	$("#instructions").fadeIn(2000);
 	if(_ammobile){
+		$("#ctitle").show();
 		$("#instructions").css({ 'pointer-events':'none' });
 	}
 	$("#instructions").click(function () { if(!_ammobile){ playDecide() } cradle_closescreen(); });
-	openIvl = setTimeout("cradle_closescreen()",10000);
+//	openIvl = setTimeout("cradle_closescreen()",10000);
 	enoughwithinstructions = true;
 }
 
@@ -300,9 +300,9 @@ function flipper (isright){
 //		console.log(videoprefix + newclip + '.mp4#t=' + _curtime);
 //		console.log(document.getElementById('mobileisgreat').src); 
 		document.getElementById('mobileisgreat').addEventListener('canplay', flipmobile);
-		document.getElementById('mobileisgreat').addEventListener('playing', flipmobile);
+//		document.getElementById('mobileisgreat').addEventListener('playing', flipmobile);
 		document.getElementById('mobileisgreat').volume = .6;
-		_inseek = false;
+		_inseek = true;
 		$("#mobilevideo").hide();
 	}
 	if(flipside){		
@@ -321,13 +321,15 @@ function flipper (isright){
 
 function flipmobile (doplay) {
 	document.getElementById('mobileisgreat').play();
-	if(_seektime > _curtime){
+	if(_inseek && _seektime >= _curtime){
+		_inseek = false;
 		document.getElementById('mobileisgreat').currentTime = _seektime;
+	} else {
+		soundup();
+		$("#mobilevideo").fadeIn(300);
+		document.getElementById('mobileisgreat').removeEventListener('canplay', flipmobile);
+		document.getElementById('mobileisgreat').removeEventListener('playing', flipmobile);
 	}
-	soundup();
-	$("#mobilevideo").fadeIn(500);
-	document.getElementById('mobileisgreat').removeEventListener('canplay', flipmobile);
-	document.getElementById('mobileisgreat').removeEventListener('playing', flipmobile);
 }
 
 function sounddown () {
@@ -345,10 +347,11 @@ function soundup () {
 	clearInterval(soundivl);
 	soundivl = setInterval(function () {
 		var thisvol = document.getElementById('mobileisgreat').volume + .2;
-		document.getElementById('mobileisgreat').volume = thisvol;
 		if(thisvol > .5){
 			clearInterval(soundivl);
+			thisvol = .6;
 		}
+		document.getElementById('mobileisgreat').volume = thisvol;
 	},50);
 }
 
@@ -366,6 +369,7 @@ function scrubberUpdater (){
 	
 	if(_ammobile && dur > 0){
 		mobile_stills(dur);
+
 		if(_inseek){
 			flipmobile(true);
 		}
