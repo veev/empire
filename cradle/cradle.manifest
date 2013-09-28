@@ -4,5 +4,5 @@ CACHE MANIFEST
 CACHE:
 css/style.css
 js/cradle.js
-mp4/schipol.mp4
-mp4/spotters.mp4
+http://s3.amazonaws.com/empireproj/cradle/schipol_hinted.mp4
+http://s3.amazonaws.com/empireproj/cradle/spotters_hinted.mp4

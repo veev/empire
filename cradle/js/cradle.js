@@ -64,7 +64,7 @@ $(document).ready(function(){
 		if(_canhls){
 			$("#mobilevideo").html('<video src="' + hlsvideoprefix + 'schipol_1000.m3u8" id="mobileisgreat" width="960" height="540" poster="art/thumbs/full-schipol-1.jpg" controls>').show();
 		}else {
-			$("#mobilevideo").html('<video src="' + videoprefix + 'schipol.mp4" id="mobileisgreat" width="960" height="540" poster="art/thumbs/full-schipol-1.jpg" controls>').show();
+			$("#mobilevideo").html('<video src="' + videoprefix + 'schipol_hinted.mp4" id="mobileisgreat" width="960" height="540" poster="art/thumbs/full-schipol-1.jpg" controls>').show();
 		}
 		
 		currentvideoid = 'mobileisgreat';
@@ -189,8 +189,8 @@ function cradle_openscreen () {
 	if(_ammobile){
 		$("#instructions").css({ 'pointer-events':'none' });
 	}
-	$("#instructions").click(function () {cradle_closescreen() });
-	openIvl = setTimeout("cradle_closescreen()",15000);
+	$("#instructions").click(function () { if(!_ammobile){ playDecide() } cradle_closescreen(); });
+	openIvl = setTimeout("cradle_closescreen()",10000);
 	enoughwithinstructions = true;
 }
 
@@ -228,7 +228,9 @@ function cradle_sizer () {
 
 	$("#cradleplay").css({ "bottom": legbottom, "margin-left": ($("#cradle_top").width() / 2) - 70 }).fadeIn(4000).click(function () {
 		$('html, body').animate({ scrollTop: ($('#cradle_main').offset().top - 20) }, 1000);
-//		playDecide();
+		if(!_ammobile){
+			playDecide();
+		}
 		cradle_openscreen();
 	});
 
@@ -262,7 +264,7 @@ function flipper (isright){
 		if(_canhls){
 			document.getElementById('mobileisgreat').src = hlsvideoprefix + newclip + '_1000.m3u8#t=' + _curtime;
 		} else {
-			document.getElementById('mobileisgreat').src = videoprefix + newclip + '.mp4#t=' + _curtime;
+			document.getElementById('mobileisgreat').src = videoprefix + newclip + '_hinted.mp4#t=' + _curtime;
 		
 		}
 		_seektime = _curtime;
@@ -326,9 +328,9 @@ function playDecide(){
 	if(vid1Loaded && vid2Loaded){
 		playVids();
 		playState = 1;
+	} else {
+		setTimeout("playDecide()",800);
 	}
-
-
 }
 
 function playButton(){
