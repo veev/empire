@@ -20,10 +20,15 @@ function drawer () {
 
 	var w = $("#container").width();
 	var h = $("#container").height();
+	
 	$("#titleblock").css({ 'left': ((w / 2) - 181), 'top': ((h / 2) - 86) });
-	$("#pinchelines").css({ 'height': (h / 2) + 30, 'left': ((w / 2) + 177), 'top': ((h / 2) - 30) });
-	$("#preaching").css({ 'left': ((w / 2) + 185), 'top': ( h - 70) });
+	$("#pinchelines").css({ 'height': (h / 2) + 90, 'left': ((w / 2) + 208), 'top': ((h / 2) - 280) });
+	$("#preaching").css({ 'left': ((w / 2) + 215), 'top': ( h - 70) });
+	$("#legacy").css({ 'top': ((h/2) - 280), left: ((w/4) - 230) });
+	$("#cradle").css({ 'top': ((h/2) + 20), left: ((w/4) - 230) });
 
+	$("#bodytext").css( { 'left': ((w / 2) + 220), 'top':  ((h / 2) - 220) });
+	
 }
 
 $(window).resize(drawer);

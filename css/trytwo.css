@@ -20,9 +20,9 @@ div#audiodiv { display: none; }
 div#container div#preaching { position: absolute; text-align: left; }
 div#container div#preaching ul { margin-top: 4px; }
 div#container div#preaching ul li { float: left; margin-right: 4px; }
-div#container div#legacy { width: 300px; padding: 2px; position: absolute; height: 220px; font-size: 1.3em; }
+div#container div#legacy { left: 20; width: 300px; padding: 2px; position: absolute; height: 220px; font-size: 1.3em; }
 div#container div#legacy:hover { color: #fbb03b; }
 div#container div#legacy span.img0 { display: block; width: 300px; background: url(../art/interim_legacy.jpg); height: 172px; margin-bottom: 8px; }
-div#container div#cradle { lpadding: 2px; width: 300px; position: absolute; font-size: 1.3em; }
+div#container div#cradle { left: 20; padding: 2px; width: 300px; position: absolute; font-size: 1.3em; }
 div#container div#cradle span.img1 { display: block; width: 300px; background: url(../art/interim_cradle.jpg); height: 172px; margin-bottom: 8px; }
 div#container div#cradle:hover { color: #fbb03b; }

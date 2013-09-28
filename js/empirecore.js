@@ -2,7 +2,7 @@
 var ripplemode = true;
 var current_ripple = 0;
 var audioactive = false;
-var audiovolume = 30;
+var audiovolume = 20;
 var _currentaudiovolume = 0;
 var vIvl = new Number();
 var dontannoysam = false;
