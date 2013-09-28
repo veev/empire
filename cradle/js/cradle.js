@@ -266,13 +266,13 @@ function trackon () {
 		}				
 	});
 	$(document).swipeleft(function () {
-		if(!flipside){
-			flipper(true);
+		if(flipside){
+			flipper(false);
 		}
 	});
 	$(document).swiperight(function () {
-		if(flipside){
-			flipper(false);
+		if(!flipside){
+			flipper(true);
 		}
 	});
 }
