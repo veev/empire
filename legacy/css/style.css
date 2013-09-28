@@ -56,6 +56,17 @@ div#legacy_container div#legacy_containerinner div#icongroup div.gd:hover, div#l
 div#legacy_container div#legacy_containerinner div#linegroup { position: absolute; z-index: 23; pointer-events: none; }
 div#legacy_container div#legacy_containerinner div#linegroup_connections { position: absolute; z-index: 25; pointer-events: none; }
 div#legacy_container div#legacy_containerinner div#icongroup { position: absolute; z-index: 27; pointer-events: none; }
+div#legacy_container div#legacy_containerinner div#icongroup span.counter { display: block; position: absolute; z-index: 9; width: 36px; height: 36px; }
+div#legacy_container div#legacy_containerinner div#icongroup span#cnt1 { background: url(../art/countdown_1.gif); }
+div#legacy_container div#legacy_containerinner div#icongroup span#cnt2 { background: url(../art/countdown_2.gif); }
+div#legacy_container div#legacy_containerinner div#icongroup span#cnt3 { background: url(../art/countdown_3.gif); }
+div#legacy_container div#legacy_containerinner div#icongroup span#cnt4 { background: url(../art/countdown_4.gif); }
+div#legacy_container div#legacy_containerinner div#icongroup span#cnt5 { background: url(../art/countdown_5.gif); }
+div#legacy_container div#legacy_containerinner div#icongroup span#cnt6 { background: url(../art/countdown_6.gif); }
+div#legacy_container div#legacy_containerinner div#icongroup span#cnt7 { background: url(../art/countdown_7.gif); }
+div#legacy_container div#legacy_containerinner div#icongroup span#cnt8 { background: url(../art/countdown_8.gif); }
+div#legacy_container div#legacy_containerinner div#icongroup span#cnt9 { background: url(../art/countdown_9.gif); }
+div#legacy_container div#legacy_containerinner div#icongroup span#cnt10 { background: url(../art/countdown_10.gif); }
 div#legacy_container div#legacy_containerinner div#linegroup path.playback {  z-index: 5; stroke: #fbb03b; stroke-width: 2px; }
 div#legacy_container div#legacy_containerinner div#linegroup path.scrubber { z-index: 4; stroke: #fff; stroke-width: 1px; }
 div#legacy_container div#legacy_containerinner div#linegroup path.scrubber_inert { z-index: 4; stroke: #ccc; stroke-width: 1px; }
@@ -107,10 +118,10 @@ div#legacy_container div#legacy_containerinner div#legacy_startspace span.legthe
 div#legacy_container div#legacy_containerinner div#legacy_startspace span.legthemec { background: url(../art/start_c.png); right: -10; bottom: -10; }
 div#legacy_container div#legacy_containerinner div#legacy_startspace span.legthemed { background: url(../art/start_d.png); left: -10; bottom: -10; }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter { position: absolute; z-index: 0; width: 1280px; height: 407px; left: 0; top: 0; }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_0 { position: absolute; top: 0; left: 0; z-index: 4; opacity: .7; background: url(../art/start_0.jpg) 0px -22px; -webkit-transition: 1s; -moz-transition: 1s; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_0.png); }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_1 { position: absolute; top: 0; left: 0; z-index: 5; opacity: .7; background: url(../art/start_1.jpg) 0px -250px; -webkit-transition: 1s; -moz-transition: 1s; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_1.png); }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_2 { position: absolute; top: 0; left: 0; z-index: 6; opacity: .7; background: url(../art/start_2.jpg) 25px -140px; -webkit-transition: 1s; -moz-transition: 1s; width: 1280px; height: 407px;-webkit-mask-image: url(../art/ends/mask1280_2.png);}
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_3 { position: absolute; top: 0; left: 0; z-index: 7; opacity: .7; background: url(../art/start_3.jpg) 0px 0px; -webkit-transition: 1s; -moz-transition: 1s; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_3.png); }
+div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_0 { position: absolute; top: 0; left: 0; z-index: 4; opacity: .5; background: url(../art/start_0.jpg) 0px -22px; -webkit-transition: 1s; -moz-transition: 1s; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_0.png); }
+div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_1 { position: absolute; top: 0; left: 0; z-index: 5; opacity: .5; background: url(../art/start_1.jpg) 0px -250px; -webkit-transition: 1s; -moz-transition: 1s; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_1.png); }
+div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_2 { position: absolute; top: 0; left: 0; z-index: 6; opacity: .5; background: url(../art/start_2.jpg) 25px -140px; -webkit-transition: 1s; -moz-transition: 1s; width: 1280px; height: 407px;-webkit-mask-image: url(../art/ends/mask1280_2.png);}
+div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_3 { position: absolute; top: 0; left: 0; z-index: 7; opacity: .5; background: url(../art/start_3.jpg) 0px 0px; -webkit-transition: 1s; -moz-transition: 1s; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_3.png); }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div.grey { -webkit-filter: grayscale(100%); -moz-filter: grayscale(100%); opacity: .3; }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div.leg_text { cursor: pointer; position: absolute; z-index: 1; opacity: .01; top: 0; left: 0; font-size: 1.1em; }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div.leg_text:hover { opacity: 1; }

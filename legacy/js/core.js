@@ -905,6 +905,36 @@ function iconclick () {
 	if(legacy_debug){
 		console.log('delay of ' + timeleft + 's before execution');
 	}
+	
+	// counter implementation
+	if(Math.floor(timeleft) > 0){
+
+		var cnttop = $(this).position().top - 36;
+		var cntleft = $(this).position().left;
+
+
+		switch(data.clip){
+			case 0:
+				cntleft -= 18;
+				break;
+			case 1:
+				cnttop = cnttop + 36;
+				cntleft += 36;
+				break;
+			case 2:
+				cnttop = cnttop + 72;
+				break;
+			case 3:
+				cnttop = cnttop + 36;
+				cntleft -= 36;
+				break;
+		}
+		
+		$("#icongroup").append('<span class="counter" style="top: ' + cnttop + '; left: ' + cntleft + '" id="cnt' + Math.floor(timeleft) + '"></span>');
+
+		console.log('<span class="counter" style="top: ' + cnttop + '; left: ' + cntleft + '" id="cnt' + Math.floor(timeleft) + '"></span>');
+
+	}
 
 	$(".transition_hot").each(function () {
 		if($(this).attr('data-inbound') == data.dataid && $(this).attr('data-outbound') == _highlight_currentx){
@@ -945,6 +975,8 @@ function iconclick () {
 
 
 	setTimeout(function () {
+	
+		$(".counter").remove();
 
 		// mark the last segment as done
 		
@@ -1093,7 +1125,7 @@ function drawvideo (videoclip) {
 			playeroptions.autostart = true;
 			playeroptions.height = h;
 			playeroptions.width = w;
-//			playeroptions.controlbar = 'none';
+			playeroptions.controlbar = 'none';
 			playeroptions.streamer = _rtmpserver;
 			playeroptions.file = 'legacy/' + videoclip + '_crop.mp4';
 			playeroptions.skin = 'art/bekle.zip';
@@ -1648,9 +1680,6 @@ function garbagecollection () {
 
 function markseen (cv,enddata){
 
-	console.log(cv);
-	console.log(enddata);
-
 	$('.cnameon').removeClass('cnameon');
 
 	var finalid = new String();
@@ -1668,8 +1697,6 @@ function markseen (cv,enddata){
 		
 		thiscl = $(".pl" + finalid + ":first").attr("class");
 		thisid = $(".pl" + finalid + ":first").attr("id");
-		
-		console.log('killing ' + enddata.dataid);
 		
 		linedestroy(enddata.dataid);
 
