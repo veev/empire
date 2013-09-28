@@ -90,10 +90,10 @@ position: absolute;
    -webkit-transform-origin: center center;
 }
 
-
+/*
 #outerinner #container #card div#cradle1 img, #outerinner #container #card div#cradle0 img {
 	-webkit-filter: blur(4px);
-}
+} */
 
 #outerinner #container #cardover {
 	position: absolute;

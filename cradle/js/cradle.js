@@ -24,6 +24,7 @@ var _seektime = 0;
 var _inseek = false;
 var leftpoint = 0;
 var rightpoint = 0;
+var soundivl = new Number();
 var sidetracker = new Object(); // tracking element to get the visualisation later
 var currentvideo = 1; // this is only used in mobile
 var currentvideoid = 'video1'; // this is only used in mobile
@@ -38,7 +39,6 @@ $(document).ready(function(){
 		$('body:first').append('<div id="browserno" style="display: none;"><div class="padded">Sorry, this experiment is only currently working in Google Chrome, Apple\'s Safari and Firefox. Other browsers may encounter problems.  We apologize for the inconvenience.</div></div>');
 		$("#browserno").slideDown();
 	}
-
 
 	lazywidth = $("#outerouter").width();
 	
@@ -66,6 +66,9 @@ $(document).ready(function(){
 		}else {
 			$("#mobilevideo").html('<video src="' + videoprefix + 'schipol_hinted.mp4" id="mobileisgreat" width="960" height="540" poster="art/thumbs/full-schipol-1.jpg" controls>').show();
 		}
+		
+		
+		$("#mobilevideo").css({ 'opacity': .5 });
 		
 		currentvideoid = 'mobileisgreat';
 		
@@ -114,7 +117,8 @@ $("#playElement").click(function () {
 		}
 });
 
-	
+	cradle_openscreen();
+
 });
 
 function mobile_stills (tim) {
@@ -127,6 +131,7 @@ function mobile_stills (tim) {
 function playhandler () {
 	playState = 1;
 	cradle_closescreen();
+	$("#mobilevideo").css({ 'opacity': 1 });
 	document.getElementById("mobileisgreat").controls = false;
 	if(!_controls){
 		enablecontrols();
@@ -136,14 +141,22 @@ function playhandler () {
 function enablecontrols () {
 
 	_controls = true;
-	$("#outerouter").mouseenter(function () {
-		trackon();
-	});
 
-	$("#outerouter").mouseleave(function () {
-		trackoff();
-	});
-		$("#leftbutton").click(function () {
+	if(_ammobile){
+		trackon();	
+	} else {
+		$("#outerouter").mouseenter(function () {
+			trackon();
+			console.log('mouseenter');
+		});
+
+		$("#outerouter").mouseleave(function () {
+			trackoff();
+			console.log('mouseleave');
+		});	
+	}
+	
+	$("#leftbutton").click(function () {
 		if(flipside){
 			flipper();
 		}
@@ -261,19 +274,21 @@ function flipper (isright){
 //	console.log('flipper ' + isright + ' ' + flipside);
 	if(_ammobile){
 		var newclip = (flipside)? 'schipol':'spotters';
+		sounddown();
+		mobile_stills(_curtime);
 		if(_canhls){
 			document.getElementById('mobileisgreat').src = hlsvideoprefix + newclip + '_1000.m3u8#t=' + _curtime;
 		} else {
 			document.getElementById('mobileisgreat').src = videoprefix + newclip + '_hinted.mp4#t=' + _curtime;
-		
 		}
 		_seektime = _curtime;
 //		console.log(videoprefix + newclip + '.mp4#t=' + _curtime);
-		console.log(document.getElementById('mobileisgreat').src);  
+//		console.log(document.getElementById('mobileisgreat').src); 
 		document.getElementById('mobileisgreat').addEventListener('canplay', flipmobile);
 		document.getElementById('mobileisgreat').addEventListener('playing', flipmobile);
+		document.getElementById('mobileisgreat').volume = .6;
 		_inseek = false;
-//		$("#mobilevideo").fadeOut();
+		$("#mobilevideo").hide();
 	}
 	if(flipside){		
 		flipside = false;
@@ -294,9 +309,32 @@ function flipmobile (doplay) {
 	if(_seektime > _curtime){
 		document.getElementById('mobileisgreat').currentTime = _seektime;
 	}
-//	$("#mobilevideo").fadeIn();
+	soundup();
+	$("#mobilevideo").fadeIn(500);
 	document.getElementById('mobileisgreat').removeEventListener('canplay', flipmobile);
 	document.getElementById('mobileisgreat').removeEventListener('playing', flipmobile);
+}
+
+function sounddown () {
+	clearInterval(soundivl);
+	soundivl = setInterval(function () {
+		var thisvol = document.getElementById('mobileisgreat').volume - .2;
+		document.getElementById('mobileisgreat').volume = thisvol;
+		if(thisvol < .1){
+			clearInterval(soundivl);
+		}
+	},50);
+}
+
+function soundup () {
+	clearInterval(soundivl);
+	soundivl = setInterval(function () {
+		var thisvol = document.getElementById('mobileisgreat').volume + .2;
+		document.getElementById('mobileisgreat').volume = thisvol;
+		if(thisvol > .5){
+			clearInterval(soundivl);
+		}
+	},50);
 }
 
 function scrubberUpdater (){
@@ -399,6 +437,10 @@ function buildendscreen () {
 	$("#endscreen").fadeIn();
 	
 	$("#legmore").fadeIn();
+	
+	if(_ammobile){
+		trackoff();
+	}
 	
 	// now the drawing
 	
