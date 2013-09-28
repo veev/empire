@@ -19,12 +19,16 @@ var flipblockIvl = new Number();
 var flipblock = false;
 var openIvl = new Number();
 var lazywidth = 0;
+var _curtime = 0;
+var _seektime = 0;
+var _inseek = false;
 var leftpoint = 0;
 var rightpoint = 0;
 var sidetracker = new Object(); // tracking element to get the visualisation later
 var currentvideo = 1; // this is only used in mobile
 var currentvideoid = 'video1'; // this is only used in mobile
 var videoprefix = 'http://s3.amazonaws.com/empireproj/cradle/'; // in mobile we redraw these and use the stills instead
+//var videoprefix = 'mp4/'; // in mobile we redraw these and use the stills instead
 
 
 $(document).ready(function(){		
@@ -54,19 +58,26 @@ $(document).ready(function(){
 
 		$("#video1").remove();
 		$("#video2").remove();
-		$("#cradle0").html('<img src="art/thumbs/full-schipol-0.jpg" id="cradle0img" width="960" height="540" alt="" />');
-		$("#cradle1").html('<img src="art/thumbs/full-spotters-0.jpg" id="cradle1img" width="960" height="540" alt="" />');
 		
-		mobile_stills(1);
+		$("#mobilevideo").html('<video src="' + videoprefix + 'schipol.mp4" id="mobileisgreat" width="960" height="540" poster="art/thumbs/full-schipol-1.jpg" controls>').show();
+		
+		currentvideoid = 'mobileisgreat';
+		
+		document.getElementById("mobileisgreat").addEventListener("play", playhandler);
+		document.getElementById("mobileisgreat").addEventListener("timeupdate",function(){scrubberUpdater();},true);
+		document.getElementById("mobileisgreat").addEventListener("ended",function(){ endVids();},true);
+
+		$("#cradle0").html('<img src="art/thumbs/full-schipol-1.jpg" id="cradle0img" width="960" height="540" alt="" />');
+		$("#cradle1").html('<img src="art/thumbs/full-spotters-1.jpg" id="cradle1img" width="960" height="540" alt="" />');
 
 
 	} else {
 	
+		currentvideoid = 'video1';
 		document.getElementById("video1").addEventListener("canplay",function(){vid1Loaded = true; },true);
 		document.getElementById("video2").addEventListener("canplay",function(){vid2Loaded = true; },true);
 		document.getElementById("video1").addEventListener("ended",function(){ endVids();},true);
 		document.getElementById("video1").addEventListener("timeupdate",function(){scrubberUpdater();},true);
-		document.getElementById("video1").addEventListener("play", playhandler);
 		enablecontrols();
 
 	}
@@ -103,12 +114,14 @@ $("#playElement").click(function () {
 function mobile_stills (tim) {
 
 	$("#cradle0img").attr('src','art/thumbs/full-schipol-' + tim + '.jpg');
-	$("#cradleqimg").attr('src','art/thumbs/full-spotters-' + tim + '.jpg');
+	$("#cradle1img").attr('src','art/thumbs/full-spotters-' + tim + '.jpg');
 
 }
 
 function playhandler () {
-	document.getElementById("video1").controls = false;
+	playState = 1;
+	cradle_closescreen();
+	document.getElementById("mobileisgreat").controls = false;
 	if(!_controls){
 		enablecontrols();
 	}
@@ -167,6 +180,9 @@ $(window).resize(function () {
 
 function cradle_openscreen () {
 	$("#instructions").fadeIn(2000);
+	if(_ammobile){
+		$("#instructions").css({ 'pointer-events':'none' });
+	}
 	$("#instructions").click(function () {cradle_closescreen() });
 	openIvl = setTimeout("cradle_closescreen()",15000);
 	enoughwithinstructions = true;
@@ -235,6 +251,17 @@ function trackoff () {
 
 function flipper (isright){
 //	console.log('flipper ' + isright + ' ' + flipside);
+	if(_ammobile){
+		var newclip = (flipside)? 'schipol':'spotters';
+		document.getElementById('mobileisgreat').src = videoprefix + newclip + '.mp4#t=' + _curtime;
+		_seektime = _curtime;
+//		console.log(videoprefix + newclip + '.mp4#t=' + _curtime);
+		console.log(document.getElementById('mobileisgreat').src);  
+		document.getElementById('mobileisgreat').addEventListener('canplay', flipmobile);
+		document.getElementById('mobileisgreat').addEventListener('playing', flipmobile);
+		_inseek = false;
+//		$("#mobilevideo").fadeOut();
+	}
 	if(flipside){		
 		flipside = false;
 		flipangle = 0;
@@ -249,14 +276,39 @@ function flipper (isright){
 	$("#card").css({ '-webkit-transform': 'rotateY( ' + flipangle + 'deg )', 'transform': 'rotateY( ' + flipangle + 'deg )' });
 }
 
-function scrubberUpdater (intime){
-	var dur = Math.floor(document.getElementById("video1").currentTime);
-	if(dur > 0){
-		var ratio = (document.getElementById("video1").duration / dur);
+function flipmobile (doplay) {
+	document.getElementById('mobileisgreat').play();
+	if(_seektime > _curtime){
+		document.getElementById('mobileisgreat').currentTime = _seektime;
 	}
-	$("#progress").css({ "width": (930 / ratio) + 'px' });
-	sidetracker[Math.floor(document.getElementById("video1").currentTime)] = flipside;
+//	$("#mobilevideo").fadeIn();
+	document.getElementById('mobileisgreat').removeEventListener('canplay', flipmobile);
+	document.getElementById('mobileisgreat').removeEventListener('playing', flipmobile);
 }
+
+function scrubberUpdater (){
+
+	var dur = Math.floor(document.getElementById(currentvideoid).currentTime);
+	if(dur > 0){
+		var ratio = (document.getElementById(currentvideoid).duration / dur);
+	}
+	
+	_curtime = document.getElementById(currentvideoid).currentTime;
+
+	$("#progress").css({ "width": (930 / ratio) + 'px' });
+	sidetracker[Math.floor(document.getElementById(currentvideoid).currentTime)] = flipside;
+	
+	if(_ammobile && dur > 0){
+		mobile_stills(dur);
+		if(_inseek){
+			flipmobile(true);
+		}
+	}
+	
+	
+}
+
+
 
 function playDecide(){
 //	document.getElementById("video2").volume = 0;
@@ -281,8 +333,15 @@ function playButton(){
 		$("#playElement").css({'background':'url(art/playWhite.png)'})
 	}
 	else{
-		document.getElementById("video1").currentTime = 0;
-		document.getElementById("video2").currentTime = 0;
+		if(_ammobile){
+				document.getElementById("mobileisgreat").currentTime = 0;
+
+		} else {
+		
+			document.getElementById("video1").currentTime = 0;
+			document.getElementById("video2").currentTime = 0;
+	
+		}
 		playVids();
 		$("#playElement").css({'background':'url(art/playWhite.png)'})
 		playState = 1;				
@@ -295,7 +354,7 @@ function playVids(){
 	}
 	if(_ammobile){
 
-		document.getElementById("video1").play();
+		document.getElementById("mobileisgreat").play();
 
 	} else {
 	
@@ -307,13 +366,16 @@ function playVids(){
 }
 
 function pauseVids(){
-	document.getElementById("video1").pause();
-	document.getElementById("video2").pause();
+	if(_ammobile){
+		document.getElementById("mobileisgreat").pause();
+	} else {
+		document.getElementById("video1").pause();
+		document.getElementById("video2").pause();
+	}
 	playState = 2;
 }
 
 function endVids(){
-//			$("#instructions1").fadeIn('slow');
 	playState = 3;
 	buildendscreen();
 }
@@ -344,7 +406,7 @@ function buildendscreen () {
 			}
 		}
 		outputstring += 'height: ' + (accum * multiplier)+ 'px;';
-		if(rightnow == true){
+		if(rightnow == false){
 			outputstring += ' left: 445';
 		}
 		outputstring += '; top: ' + nowtop + '"></div>';
@@ -357,9 +419,14 @@ function buildendscreen () {
 	$("#person_overlay").click(function () {
 		sidetracker = {};
 		$("#endscreen").fadeOut();
-		
-		document.getElementById("video1").currentTime = 0;
-		document.getElementById("video2").currentTime = 0;
+		$("#legmore").fadeOut();
+
+		if(_ammobile){
+			document.getElementById("mobileisawesome").currentTime = 0;
+		} else {
+			document.getElementById("video1").currentTime = 0;
+			document.getElementById("video2").currentTime = 0;
+		}
 		$("#container").fadeIn();
 		$("#controls").fadeIn();
 
