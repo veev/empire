@@ -22,6 +22,7 @@ var lazywidth = 0;
 var _curtime = 0;
 var _seektime = 0;
 var _inseek = false;
+var _trackingon = false;
 var leftpoint = 0;
 var rightpoint = 0;
 var soundivl = new Number();
@@ -249,6 +250,7 @@ function cradle_sizer () {
 
 }
 function trackon () {
+	_trackingon = true;
 	$(document).mousemove(function(e){
 		if(!flipblock){
 			var x = e.pageX;
@@ -263,19 +265,32 @@ function trackon () {
 			}
 		}				
 	});
+	$(document).swipeleft(function () {
+		if(!flipside){
+			flipper(true);
+		}
+	});
+	$(document).swiperight(function () {
+		if(flipside){
+			flipper(false);
+		}
+	});
 }
 
 function trackoff () {
 //	console.log('trackoff');
+_trackingon = false;
+	$(document).unbind("swipeleft");
+	$(document).unbind("swiperight");
 	$(document).unbind('mousemove');
 }
 
 function flipper (isright){
 //	console.log('flipper ' + isright + ' ' + flipside);
 	if(_ammobile){
+		mobile_stills(_curtime);
 		var newclip = (flipside)? 'schipol':'spotters';
 		sounddown();
-		mobile_stills(_curtime);
 		if(_canhls){
 			document.getElementById('mobileisgreat').src = hlsvideoprefix + newclip + '_1000.m3u8#t=' + _curtime;
 		} else {
