@@ -203,7 +203,7 @@ function cradle_openscreen () {
 		$("#ctitle").show();
 		$("#instructions").css({ 'pointer-events':'none' });
 	} else {
-	openIvl = setTimeout("cradle_closescreen()",10000);
+		openIvl = setTimeout("cradle_closescreen()",10000);
 	}
 	$("#instructions").click(function () { if(!_ammobile){ playDecide() } cradle_closescreen(); });
 	openIvl = setTimeout("cradle_closescreen()",10000);
@@ -496,17 +496,21 @@ function buildendscreen () {
 		sidetracker = {};
 		$("#endscreen").fadeOut();
 		$("#legmore").fadeOut();
+		
 
 		if(_ammobile){
-			document.getElementById("mobileisawesome").currentTime = 0;
+			document.getElementById("mobileisgreat").currentTime = 0;
 		} else {
 			document.getElementById("video1").currentTime = 0;
 			document.getElementById("video2").currentTime = 0;
 		}
+
+
 		$("#container").fadeIn();
 		$("#controls").fadeIn();
 
 		playVids();
+
 		$("#playElement").css({'background':'url(art/playWhite.png)'})
 		playState = 1;						
 	});
