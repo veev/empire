@@ -6,6 +6,7 @@ var yMargin = 480;
 var imgWidth = 960;
 var imgHeight = 540;
 
+var _controls = false;
 var vid1Loaded = false;
 var vid2Loaded = false;
 var playState = 0;
@@ -19,8 +20,9 @@ var openIvl = new Number();
 var lazywidth = 0;
 var leftpoint = 0;
 var rightpoint = 0;
-var sidetracker = new Object();
-var currentvideo = 1;
+var sidetracker = new Object(); // tracking element to get the visualisation later
+var currentvideo = 1; // this is only used in mobile
+var currentvideoid = 'video1'; // this is only used in mobile
 
 $(document).ready(function(){		
 
@@ -42,25 +44,9 @@ $(document).ready(function(){
 
 
 	if(!_ammobile){
-
-		$("#outerouter").mouseenter(function () {
-			trackon();
-		});
-
-		$("#outerouter").mouseleave(function () {
-			trackoff();
-		});
-			$("#leftbutton").click(function () {
-			if(flipside){
-				flipper();
-			}
-		});
-		$("#rightbutton").click(function () {
-			if(!flipside){
-				flipper();
-			}
-		});
-
+	
+		enablecontrols();
+		
 	}
 	
 	$(document).keydown(function (e) {
@@ -77,8 +63,14 @@ $(document).ready(function(){
 	document.getElementById("video1").addEventListener("canplay",function(){vid1Loaded = true; },true);
 	document.getElementById("video2").addEventListener("canplay",function(){vid2Loaded = true; },true);
 	
-	document.getElementById("video2").addEventListener("ended",function(){ endVids();},true);
-	document.getElementById("video2").addEventListener("timeupdate",function(){scrubberUpdater();},true);
+	if(_ammobile){
+		document.getElementById("video1").addEventListener("play", playhandler);
+		$("#playElement").css({'background':'url(art/playWhite.png)'})
+		playState = 1;						
+	}
+	
+	document.getElementById("video1").addEventListener("ended",function(){ endVids();},true);
+	document.getElementById("video1").addEventListener("timeupdate",function(){scrubberUpdater();},true);
 	
 	$("#playElement").click(function () {
 	playButton();
@@ -98,6 +90,45 @@ $(document).ready(function(){
 
 	
 });
+
+function playhandler () {
+	document.getElementById("video1").controls = false;
+	if(!_controls){
+		enablecontrols();
+	
+}
+
+function enablecontrols () {
+
+	_controls = true;
+	$("#outerouter").mouseenter(function () {
+		trackon();
+	});
+
+	$("#outerouter").mouseleave(function () {
+		trackoff();
+	});
+		$("#leftbutton").click(function () {
+		if(flipside){
+			flipper();
+		}
+	});
+	$("#rightbutton").click(function () {
+		if(!flipside){
+			flipper();
+		}
+	});
+
+}
+
+function disablecontrols () {
+	$("#outerouter").unbind("mouseenter");
+	$("#outerouter").unbind("mouseleave");
+	$("#leftbutton").unbind("click");
+	$("#rightbutton").unbind("click");
+	_controls = false;
+}
+
 
 function cradle_scrollsnaphandle () {
 	if(playState == 0 && $(this).attr('id') == "cradle_main"){
@@ -178,10 +209,6 @@ function trackon () {
 					flipper(true);
 				}
 			}
-//			if(flipside){
-//			}
-//			flipblock = true;
-//			flipblockIvl = setTimeout(function () { flipblock = false },150);
 		}				
 	});
 }
@@ -298,9 +325,17 @@ function playVids(){
 	if(audioactive){
 		audiostop();
 	}
-	document.getElementById("video1").play();
-//	document.getElementById("video2").play();
-	document.getElementById("video2").volume = 0;
+	if(_ammobile){
+
+		document.getElementById("video1").play();
+
+	} else {
+	
+		document.getElementById("video1").play();
+		document.getElementById("video2").play();
+		document.getElementById("video2").volume = 0;
+	
+	}
 }
 
 function pauseVids(){

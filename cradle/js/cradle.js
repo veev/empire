@@ -5,7 +5,9 @@ var xMargin = 10;
 var yMargin = 480;
 var imgWidth = 960;
 var imgHeight = 540;
+var innercount = 3;
 
+var _controls = false;
 var vid1Loaded = false;
 var vid2Loaded = false;
 var playState = 0;
@@ -19,8 +21,11 @@ var openIvl = new Number();
 var lazywidth = 0;
 var leftpoint = 0;
 var rightpoint = 0;
-var sidetracker = new Object();
-var currentvideo = 1;
+var sidetracker = new Object(); // tracking element to get the visualisation later
+var currentvideo = 1; // this is only used in mobile
+var currentvideoid = 'video1'; // this is only used in mobile
+var videoprefix = 'http://s3.amazonaws.com/empireproj/cradle/'; // in mobile we redraw these and use the stills instead
+
 
 $(document).ready(function(){		
 
@@ -41,25 +46,28 @@ $(document).ready(function(){
 	});
 
 
-	if(!_ammobile){
+	if(_ammobile){
 
-		$("#outerouter").mouseenter(function () {
-			trackon();
-		});
+//		$("#playElement").css({'background':'url(art/playWhite.png)'})
+			
+		// if we're mobile let's get drastic: dump the video and run stills in both cards, then run the video over it
 
-		$("#outerouter").mouseleave(function () {
-			trackoff();
-		});
-			$("#leftbutton").click(function () {
-			if(flipside){
-				flipper();
-			}
-		});
-		$("#rightbutton").click(function () {
-			if(!flipside){
-				flipper();
-			}
-		});
+		$("#video1").remove();
+		$("#video2").remove();
+		$("#cradle0").html('<img src="art/thumbs/full-schipol-0.jpg" id="cradle0img" width="960" height="540" alt="" />');
+		$("#cradle1").html('<img src="art/thumbs/full-spotters-0.jpg" id="cradle1img" width="960" height="540" alt="" />');
+		
+		mobile_stills(1);
+
+
+	} else {
+	
+		document.getElementById("video1").addEventListener("canplay",function(){vid1Loaded = true; },true);
+		document.getElementById("video2").addEventListener("canplay",function(){vid2Loaded = true; },true);
+		document.getElementById("video1").addEventListener("ended",function(){ endVids();},true);
+		document.getElementById("video1").addEventListener("timeupdate",function(){scrubberUpdater();},true);
+		document.getElementById("video1").addEventListener("play", playhandler);
+		enablecontrols();
 
 	}
 	
@@ -72,15 +80,8 @@ $(document).ready(function(){
     	}
     }
  	});
-
-
-	document.getElementById("video1").addEventListener("canplay",function(){vid1Loaded = true; },true);
-	document.getElementById("video2").addEventListener("canplay",function(){vid2Loaded = true; },true);
 	
-	document.getElementById("video2").addEventListener("ended",function(){ endVids();},true);
-	document.getElementById("video2").addEventListener("timeupdate",function(){scrubberUpdater();},true);
-	
-	$("#playElement").click(function () {
+$("#playElement").click(function () {
 	playButton();
 }).mouseover(function (){
 	if(playState == 1){
@@ -99,10 +100,58 @@ $(document).ready(function(){
 	
 });
 
+function mobile_stills (tim) {
+
+	$("#cradle0img").attr('src','art/thumbs/full-schipol-' + tim + '.jpg');
+	$("#cradleqimg").attr('src','art/thumbs/full-spotters-' + tim + '.jpg');
+
+}
+
+function playhandler () {
+	document.getElementById("video1").controls = false;
+	if(!_controls){
+		enablecontrols();
+	}
+}
+
+function enablecontrols () {
+
+	_controls = true;
+	$("#outerouter").mouseenter(function () {
+		trackon();
+	});
+
+	$("#outerouter").mouseleave(function () {
+		trackoff();
+	});
+		$("#leftbutton").click(function () {
+		if(flipside){
+			flipper();
+		}
+	});
+	$("#rightbutton").click(function () {
+		if(!flipside){
+			flipper();
+		}
+	});
+
+}
+
+function disablecontrols () {
+	$("#outerouter").unbind("mouseenter");
+	$("#outerouter").unbind("mouseleave");
+	$("#leftbutton").unbind("click");
+	$("#rightbutton").unbind("click");
+	_controls = false;
+}
+
+
 function cradle_scrollsnaphandle () {
 	if(playState == 0 && $(this).attr('id') == "cradle_main"){
 		if(!enoughwithinstructions){
-			playDecide();
+			if(!_ammobile){
+				playDecide();
+			}
 			cradle_openscreen();
 		}
 	}
@@ -155,11 +204,10 @@ function cradle_sizer () {
 
 	$("#legmore").css({ "margin-left": ($("#cradle_main").width() / 2) - 70 });
 
-//	$("#mainarea").css({ "margin-top": matop });
 	$("#cradleplay").css({ "bottom": legbottom, "margin-left": ($("#cradle_top").width() / 2) - 70 }).fadeIn(4000).click(function () {
 		$('html, body').animate({ scrollTop: ($('#cradle_main').offset().top - 20) }, 1000);
 //		playDecide();
-	cradle_openscreen();
+		cradle_openscreen();
 	});
 
 }
@@ -167,8 +215,6 @@ function trackon () {
 	$(document).mousemove(function(e){
 		if(!flipblock){
 			var x = e.pageX;
-//			var x = e.pageX - $("#cardover").offset().left;
-//			console.log('mousemove ' + flipside + ' ' + x);
 			if(x < (lazywidth / 2)){
 				if(flipside){
 					flipper(false);
@@ -178,57 +224,6 @@ function trackon () {
 					flipper(true);
 				}
 			}
-//			if(flipside){
-//			}
-//			flipblock = true;
-//			flipblockIvl = setTimeout(function () { flipblock = false },150);
-		}				
-	});
-}
-
-
-function trackon_other () {
-	$(document).mousemove(function(e){
-		if(!flipblock){
-			var x = e.pageX;
-//			var x = e.pageX - $("#cardover").offset().left;
-//			console.log('mousemove ' + flipside + ' ' + x);
-			if(x < (lazywidth / 2)){
-				if(x < leftpoint){
-				
-					console.log('in left point');
-					if(flipside){
-						flipper(false);
-					}
-				} else {
-					deg = Math.floor(((x - 210) / 3));
-					flipangle = deg;
-						if(deg < 0){
-							deg = 0;
-						}
-						console.log(deg);
-					$("#card").css({ '-webkit-transform': 'rotateY( ' + deg + 'deg )', 'transform': 'rotateY( ' + deg + 'deg )' });
-				}
-			} else {
-				if(x > rightpoint){
-					console.log('in right point');
-					if(!flipside){
-						flipper(true);
-					}
-				} else {
-					deg = Math.floor(((x - 480) / 3));
-					flipangle = deg;
-						if(deg < 180){
-							deg = 180;
-						}
-						console.log(deg);
-					$("#card").css({ '-webkit-transform': 'rotateY( ' + deg + 'deg )', 'transform': 'rotateY( ' + deg + 'deg )' });
-				}
-			}
-//			if(flipside){
-//			}
-//			flipblock = true;
-//			flipblockIvl = setTimeout(function () { flipblock = false },150);
 		}				
 	});
 }
@@ -264,7 +259,7 @@ function scrubberUpdater (intime){
 }
 
 function playDecide(){
-	document.getElementById("video2").volume = 0;
+//	document.getElementById("video2").volume = 0;
 	if(vid1Loaded && vid2Loaded){
 		playVids();
 		playState = 1;
@@ -298,9 +293,17 @@ function playVids(){
 	if(audioactive){
 		audiostop();
 	}
-	document.getElementById("video1").play();
-	document.getElementById("video2").play();
-	document.getElementById("video2").volume = 0;
+	if(_ammobile){
+
+		document.getElementById("video1").play();
+
+	} else {
+	
+		document.getElementById("video1").play();
+		document.getElementById("video2").play();
+		document.getElementById("video2").volume = 0;
+	
+	}
 }
 
 function pauseVids(){

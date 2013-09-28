@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Context Type" content="text/html; charset=iso-8899-1" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="../js/jquery.min.js"></script>
 <script src="../js/raphael.js"></script>
 <script src="../js/jquery.easing.min.js"></script>
 <script src="../js/jquery.event.special.js"></script>
@@ -41,16 +41,16 @@
 					</div>
 					<div id="leftbutton" class="flipbuttons buttonoff"></div>
 					<div id="rightbutton" class="flipbuttons buttonon"></div>
-					<div id="cardover"></div>
+					<div id="mobilevideo" style="display: none;"></div>
 					<div id="card">
-						<div class="front">
-							<video id="video1" width="960" height="540" poster="art/thumbs/full-schipol-2.jpg">
+						<div class="front" id="cradle0" data-clipname="schipol">
+							<video id="video1" width="960" height="540" poster="art/thumbs/full-schipol-1.jpg" controls>
 								 <source src="http://s3.amazonaws.com/empireproj/cradle/schipol.mp4" type="video/mp4">
 								 <source src="http://s3.amazonaws.com/empireproj/cradle/schipol.webm">
 							</video>
 						</div>
-						<div class="back">
-							<video id="video2" width="960" height="540" poster="art/thumbs/full-spotters-2.jpg">
+						<div class="back" id="cradle1" data-clipname="spotters">
+							<video id="video2" width="960" height="540" poster="art/thumbs/full-spotters-1.jpg">
 								 <source src="http://s3.amazonaws.com/empireproj/cradle/spotters.mp4" type="video/mp4">
 								 <source src="http://s3.amazonaws.com/empireproj/cradle/spotters.webm">
 							</video>

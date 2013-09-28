@@ -30,9 +30,14 @@ $(document).ready(function () {
 		document.getElementById('ambientaudio').addEventListener('canplaythrough',audioready);
 	}
 	
-
+	buildripples();
 
 });
+
+
+function buildripples () {	
+	
+}
 
 function audioready () {
 	
