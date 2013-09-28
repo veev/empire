@@ -202,9 +202,11 @@ function cradle_openscreen () {
 	if(_ammobile){
 		$("#ctitle").show();
 		$("#instructions").css({ 'pointer-events':'none' });
+	} else {
+	openIvl = setTimeout("cradle_closescreen()",10000);
 	}
 	$("#instructions").click(function () { if(!_ammobile){ playDecide() } cradle_closescreen(); });
-//	openIvl = setTimeout("cradle_closescreen()",10000);
+	openIvl = setTimeout("cradle_closescreen()",10000);
 	enoughwithinstructions = true;
 }
 
