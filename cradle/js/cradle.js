@@ -27,6 +27,7 @@ var rightpoint = 0;
 var sidetracker = new Object(); // tracking element to get the visualisation later
 var currentvideo = 1; // this is only used in mobile
 var currentvideoid = 'video1'; // this is only used in mobile
+var hlsvideoprefix = 'http://s3.amazonaws.com/empireproj/hls/1000/'; // in mobile we redraw these and use the stills instead
 var videoprefix = 'http://s3.amazonaws.com/empireproj/cradle/'; // in mobile we redraw these and use the stills instead
 //var videoprefix = 'mp4/'; // in mobile we redraw these and use the stills instead
 
@@ -59,7 +60,12 @@ $(document).ready(function(){
 		$("#video1").remove();
 		$("#video2").remove();
 		
-		$("#mobilevideo").html('<video src="' + videoprefix + 'schipol.mp4" id="mobileisgreat" width="960" height="540" poster="art/thumbs/full-schipol-1.jpg" controls>').show();
+		
+		if(_canhls){
+			$("#mobilevideo").html('<video src="' + hlsvideoprefix + 'schipol_1000.m3u8" id="mobileisgreat" width="960" height="540" poster="art/thumbs/full-schipol-1.jpg" controls>').show();
+		}else {
+			$("#mobilevideo").html('<video src="' + videoprefix + 'schipol.mp4" id="mobileisgreat" width="960" height="540" poster="art/thumbs/full-schipol-1.jpg" controls>').show();
+		}
 		
 		currentvideoid = 'mobileisgreat';
 		
@@ -253,7 +259,12 @@ function flipper (isright){
 //	console.log('flipper ' + isright + ' ' + flipside);
 	if(_ammobile){
 		var newclip = (flipside)? 'schipol':'spotters';
-		document.getElementById('mobileisgreat').src = videoprefix + newclip + '.mp4#t=' + _curtime;
+		if(_canhls){
+			document.getElementById('mobileisgreat').src = hlsvideoprefix + newclip + '_1000.m3u8#t=' + _curtime;
+		} else {
+			document.getElementById('mobileisgreat').src = videoprefix + newclip + '.mp4#t=' + _curtime;
+		
+		}
 		_seektime = _curtime;
 //		console.log(videoprefix + newclip + '.mp4#t=' + _curtime);
 		console.log(document.getElementById('mobileisgreat').src);  
