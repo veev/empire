@@ -22,7 +22,7 @@ function drawer () {
 	var h = $("#container").height();
 	$("#titleblock").css({ 'left': ((w / 2) - 181), 'top': ((h / 2) - 86) });
 	$("#pinchelines").css({ 'height': (h / 2) + 30, 'left': ((w / 2) + 177), 'top': ((h / 2) - 30) });
-	$("#preaching").css({ 'left': ((w / 2) + 185), 'top': ((h / 6) * 4) });
+	$("#preaching").css({ 'left': ((w / 2) + 185), 'top': ( h - 70) });
 
 }
 

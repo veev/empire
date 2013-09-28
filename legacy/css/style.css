@@ -47,12 +47,12 @@ div#legacy_container div#legacy_containerinner div#icongroup div.ga:hover, div#l
 div#legacy_container div#legacy_containerinner div#icongroup div.gb { background: url(../art/iconpanel.png) 0 -48; cursor: pointer; }
 div#legacy_container div#legacy_containerinner div#icongroup div.gb_off { background: url(../art/iconpanel.png) -30 -48; }
 div#legacy_container div#legacy_containerinner div#icongroup div.gb:hover, div#legacy_container div#legacy_containerinner div#icongroup div.gb_on { background: url(../art/iconpanel.png) -62 -48;  }
-div#legacy_container div#legacy_containerinner div#icongroup div.gc { background: url(../art/iconpanel.png) 0 -98; cursor: pointer; }
-div#legacy_container div#legacy_containerinner div#icongroup div.gc_off { background: url(../art/iconpanel.png) -30 -98; }
-div#legacy_container div#legacy_containerinner div#icongroup div.gc:hover, div#legacy_container div#legacy_containerinner div#icongroup div.gc_on { background: url(../art/iconpanel.png) -62 -98;  }
-div#legacy_container div#legacy_containerinner div#icongroup div.gd { background: url(../art/iconpanel.png) 0 -153; cursor: pointer; }
-div#legacy_container div#legacy_containerinner div#icongroup div.gd_off { background: url(../art/iconpanel.png) -30 -153; }
-div#legacy_container div#legacy_containerinner div#icongroup div.gd:hover, div#legacy_container div#legacy_containerinner div#icongroup div.gd_on { background: url(../art/iconpanel.png) -65 -153;  }
+div#legacy_container div#legacy_containerinner div#icongroup div.gd { background: url(../art/iconpanel.png) 0 -98; cursor: pointer; }
+div#legacy_container div#legacy_containerinner div#icongroup div.gd_off { background: url(../art/iconpanel.png) -30 -98; }
+div#legacy_container div#legacy_containerinner div#icongroup div.gd:hover, div#legacy_container div#legacy_containerinner div#icongroup div.gc_on { background: url(../art/iconpanel.png) -62 -98;  }
+div#legacy_container div#legacy_containerinner div#icongroup div.gc { background: url(../art/iconpanel.png) 0 -153; cursor: pointer; }
+div#legacy_container div#legacy_containerinner div#icongroup div.gc_off { background: url(../art/iconpanel.png) -30 -153; }
+div#legacy_container div#legacy_containerinner div#icongroup div.gc:hover, div#legacy_container div#legacy_containerinner div#icongroup div.gd_on { background: url(../art/iconpanel.png) -65 -153;  }
 div#legacy_container div#legacy_containerinner div#linegroup { position: absolute; z-index: 23; pointer-events: none; }
 div#legacy_container div#legacy_containerinner div#linegroup_connections { position: absolute; z-index: 25; pointer-events: none; }
 div#legacy_container div#legacy_containerinner div#icongroup { position: absolute; z-index: 27; pointer-events: none; }
