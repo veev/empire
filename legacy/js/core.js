@@ -288,9 +288,9 @@ function startscreen () {
 	var denomh = (h - 2) / 407;
 
 	$("#legstarter").css({ 'transform-origin': '0 0', '-webkit-transform-origin': '0 0',  'transform': 'scale(' + denom + ',' + denomh + ');', '-ms-transform': 'scale(' + denom + ',' + denomh + ')', '-webkit-transform': 'scale(' + denom + ',' + denomh + ')' });
-	$("#vid_0t").css({ 'width': (w - 500), 'top': 20, 'left': (w/2) - ((w - 500) / 2) }).fadeIn(2000);
+	$("#vid_0t").css({ 'width': (w - 500), 'top': 12, 'left': (w/2) - ((w - 500) / 2) }).fadeIn(2000);
 	$("#vid_1t").css({ 'width': 450, 'top': 30, 'left': (w - 510), 'top' : ((h/2) - 100) }).fadeIn(2000);
-	$("#vid_2t").css({ 'width': (w - 500), 'top': (h - 250) , 'left': (w/2) - ((w - 500) / 2) }).fadeIn(2000);
+	$("#vid_2t").css({ 'width': (w - 500), 'top': (h - 240) , 'left': (w/2) - ((w - 500) / 2) }).fadeIn(2000);
 	$("#vid_3t").css({ 'width': 450, 'left': 20, 'top' : ((h/2) - 100) }).fadeIn(2000);
 	
 	$(".leg_text").mouseover(function () {
@@ -1093,7 +1093,7 @@ function drawvideo (videoclip) {
 			playeroptions.autostart = true;
 			playeroptions.height = h;
 			playeroptions.width = w;
-			playeroptions.controlbar = 'none';
+//			playeroptions.controlbar = 'none';
 			playeroptions.streamer = _rtmpserver;
 			playeroptions.file = 'legacy/' + videoclip + '_crop.mp4';
 			playeroptions.skin = 'art/bekle.zip';
@@ -1403,9 +1403,9 @@ function redrawing (){
 		$("#legstarter").css({ 'transform-origin': '0 0', '-webkit-transform-origin': '0 0',  'transform': 'scale(' + denom + ',' + denomh + ');', '-ms-transform': 'scale(' + denom + ',' + denomh + ')', '-webkit-transform': 'scale(' + denom + ',' + denomh + ')' });
 		var thisw = (w+54);
 		var thish = (h+110);
-		$("#vid_0t").css({ 'width': (thisw - 500), 'top': 20, 'left': (thisw/2) - ((thisw - 500) / 2) }).fadeIn(2000);
+		$("#vid_0t").css({ 'width': (thisw - 500), 'top': 12, 'left': (thisw/2) - ((thisw - 500) / 2) }).fadeIn(2000);
 		$("#vid_1t").css({ 'width': 450, 'top': 30, 'left': (thisw - 510), 'top' : ((thish/2) - 100) }).fadeIn(2000);
-		$("#vid_2t").css({ 'width': (thisw - 500), 'top': (thish - 250) , 'left': (thisw/2) - ((thisw - 500) / 2) }).fadeIn(2000);
+		$("#vid_2t").css({ 'width': (thisw - 500), 'top': (thish - 240) , 'left': (thisw/2) - ((thisw - 500) / 2) }).fadeIn(2000);
 		$("#vid_3t").css({ 'width': 450, 'left': 20, 'top' : ((thish/2) - 100) }).fadeIn(2000);
 		render_lines(1);
 	}
