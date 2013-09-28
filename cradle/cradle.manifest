@@ -1,0 +1,8 @@
+CACHE MANIFEST
+
+# Explicitly cached 'master entries'.
+CACHE:
+css/style.css
+js/cradle.js
+mp4/schipol.mp4
+mp4/spotters.mp4
