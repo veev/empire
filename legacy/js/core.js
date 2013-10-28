@@ -320,7 +320,7 @@ function startscreen () {
 		actualclip = $("#vid_" + $(this).attr('data-clipid')).attr('data-clipname');
 
 		var w = ($("#legacy_container").width() - _adjuster);
-		var h = ($("#legacy_container").width() - _adjuster) * .31
+		var h = ($("#legacy_container").width() - _adjuster) * .31;
 		var vtop = (($("#legacy_container").height() - h) / 2) - 20;
 
 		$("#legacy_startspace").fadeOut(2000);
@@ -515,13 +515,7 @@ function render_lines (mode,spatial){
 	cliprect[0] = '5 6 ' + (w + 44) + ' 42';
 	cliprect[1] = '5 41 20 ' + (_scrubheight - 41);
 	cliprect[2] = (w + 26) + ' 41 ' + (_scrubheight - 41) + ' ' + (w + 36);
-	cliprect[3] = '21 ' + (h + 10) + ' ' + w + ' 99';
-
-	if(_ammobile){
-		cliprect[1] = '5 41 28 ' + (_scrubheight - 41);
-		cliprect[2] = (w + 16) + ' 41 ' + (_scrubheight - 41) + ' ' + (w + 36);
-		cliprect[3] = '21 ' + (h + 23) + ' ' + w + ' 99';
-	}
+	cliprect[3] = '21 ' + h + ' ' + w + ' 99';
 	
 	// create a raphael object on the div I made for lines
 

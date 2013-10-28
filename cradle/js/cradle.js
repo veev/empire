@@ -147,12 +147,12 @@ function enablecontrols () {
 	} else {
 		$("#outerouter").mouseenter(function () {
 			trackon();
-			console.log('mouseenter');
+//			console.log('mouseenter');
 		});
 
 		$("#outerouter").mouseleave(function () {
 			trackoff();
-			console.log('mouseleave');
+//			console.log('mouseleave');
 		});	
 	}
 	
@@ -267,16 +267,18 @@ function trackon () {
 			}
 		}				
 	});
-	$(document).swipeleft(function () {
-		if(flipside){
-			flipper(false);
-		}
-	});
-	$(document).swiperight(function () {
-		if(!flipside){
-			flipper(true);
-		}
-	});
+	if(_ammobile){
+		$(document).swipeleft(function () {
+			if(flipside){
+				flipper(false);
+			}
+		});
+		$(document).swiperight(function () {
+			if(!flipside){
+				flipper(true);
+			}
+		});
+	}
 }
 
 function trackoff () {
@@ -318,7 +320,7 @@ function flipper (isright){
 		$("#rightbutton").removeClass('buttonon').addClass('buttonoff');
 		$("#leftbutton").removeClass('buttonoff').addClass('buttonon');
 	}
-	$("#card").css({ '-webkit-transform': 'rotateY( ' + flipangle + 'deg )', 'transform': 'rotateY( ' + flipangle + 'deg )' });
+	$("#card").css({ '-webkit-transform': 'rotateY( ' + flipangle + 'deg)', 'transform': 'rotateY( ' + flipangle + 'deg)' });
 }
 
 function flipmobile (doplay) {
@@ -467,7 +469,7 @@ function buildendscreen () {
 	
 	var outputstring = new String();
 	var nowtop = 0;
-	var multiplier = 1.13;
+	var multiplier = 1.756;
 	
 	for(var x = 0; x < 446; x++){
 
@@ -481,9 +483,9 @@ function buildendscreen () {
 				break;
 			}
 		}
-		outputstring += 'height: ' + (accum * multiplier)+ 'px;';
+		outputstring += 'height: ' + (accum * multiplier) + 'px';
 		if(rightnow == false){
-			outputstring += ' left: 445';
+			outputstring += '; left: 445';
 		}
 		outputstring += '; top: ' + nowtop + '"></div>';
 		nowtop = nowtop + (accum * multiplier);
