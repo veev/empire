@@ -39,6 +39,9 @@ var _mladjust = 35;
 var _mobileseek = 0;
 var _inseek = false;
 
+var _transitiontimer = new Number();
+var _transitiontimerIvl = new Number();
+
 var preventdoublejumpIvl = new Number();
 var preventdoublejump = false;
 
@@ -247,6 +250,12 @@ $(document).ready(function () {
 		} else {
 			fullscreen_off();
 		}
+		// log that they did this
+		if(ga){
+			var mobilereport = (_ammobile)? 'mobile':'desktop';
+			ga('send', 'event', 'legacy', 'fullscreen on', mobilereport);
+		}
+
  	});
  
 
@@ -359,6 +368,7 @@ function startscreen () {
 	});
 }
 
+
 function start_linehighlights (theme) {
 	// highlight everything in this theme
 	$(".leg_text").hide();
@@ -391,6 +401,12 @@ function endscreen (theme,focus) {
 	w += 54;
 	vtop -= 47;
 	h += 110;
+	
+	// log that they got to the end here
+	if(ga){
+		var mobilereport = (_ammobile)? 'mobile':'desktop';
+		ga('send', 'event', 'legacy', 'endscreen', mobilereport, theme);
+	}
 	
 	$("#videotransition").remove();
 	
@@ -512,10 +528,12 @@ function render_lines (mode,spatial){
 		
 	_curw = w;
 
-	cliprect[0] = '5 6 ' + (w + 44) + ' 42';
-	cliprect[1] = '5 41 20 ' + (_scrubheight - 41);
-	cliprect[2] = (w + 26) + ' 41 ' + (_scrubheight - 41) + ' ' + (w + 36);
-	cliprect[3] = '21 ' + h + ' ' + w + ' 99';
+
+
+	cliprect[0] = '3 5 ' + (w + 52) + ' 45';
+	cliprect[1] = '4 50 21 ' + (h * .9);
+	cliprect[2] = (w + 25) + ' 50 28 ' + (h * .9);
+	cliprect[3] = '3 ' + ((h * .9) + 50) + ' ' + (w + 52) + ' ' + (_scrubheight - ((h * .9) + 50));
 	
 	// create a raphael object on the div I made for lines
 
@@ -709,10 +727,10 @@ function render_lines (mode,spatial){
 
 		}			
 
-
 		
 	}
-	
+
+
 
 		// ok, now draw the ends of each line to the corresponding start point of a linked space
 
@@ -749,11 +767,6 @@ function render_lines (mode,spatial){
 					
 						var lineclass = "connline transition_unused tl" + clipclass + ' tml' + clipdata[clipedges[y][clip]].state;
 
-						if(superfluouslinecheck[clipid + '_' + clipedges[y][clip]] || superfluouslinecheck[clipedges[y][clip] + '_' + clipid]){
-							lineclass = "connline transition_unused_superfluous tl" + clipclass + ' tml' + clipdata[clipedges[y][clip]].state;
-							superflous = true;
-						}
-			
 						var lineyes = true;
 			
 						var trans_a = 'cl' + connlineid + '_1';
@@ -791,9 +804,7 @@ function render_lines (mode,spatial){
 
 
 						if(lineyes){
-						
-//							superfluouslinecheck[clipid + '_' + clipedges[y][clip]] = true;
-						
+							
 							$(newpath_a.node).attr("id",trans_a);
 						
 							if(mode == 0){
@@ -872,6 +883,13 @@ function iconclick () {
 
 
 	// preload the transition image
+
+
+	// log that they clicked an icon
+	if(ga){
+		var mobilereport = (_ammobile)? 'mobile':'desktop';
+		ga('send', 'event', 'legacy', 'icon click', mobilereport, data.dataid);
+	}
 	
 	transition_load(lastx);
 	_intransitions = lastx;	
@@ -924,9 +942,7 @@ function iconclick () {
 				break;
 		}
 		
-		$("#icongroup").append('<span class="counter" style="top: ' + cnttop + '; left: ' + cntleft + '" id="cnt' + Math.floor(timeleft) + '"></span>');
-
-		console.log('<span class="counter" style="top: ' + cnttop + '; left: ' + cntleft + '" id="cnt' + Math.floor(timeleft) + '"></span>');
+		$("#icongroup").append('<span class="counter" style="z-index: -5; top: ' + cnttop + '; left: ' + cntleft + '" id="cnt' + Math.floor(timeleft) + '"></span>');
 
 	}
 
@@ -969,6 +985,11 @@ function iconclick () {
 
 
 	setTimeout(function () {
+	
+		_transitiontimer = 0;
+		
+		_transitiontimerIvl = setInterval(function () { _transitiontimer++ }, 1000);
+		
 	
 		$(".counter").remove();
 
@@ -1081,8 +1102,11 @@ function drawvideo (videoclip) {
 
 	// initial video draw, triggered by users clicking on one of the large images
 
-
-
+	// log that they clicked an initial thing
+	if(ga){
+		var mobilereport = (_ammobile)? 'mobile':'desktop';
+		ga('send', 'event', 'legacy', 'initial click', mobilereport, videoclip);
+	}
 
 	var w = ($("#legacy_container").width() - _adjuster);
 	var h = ($("#legacy_container").width() - _adjuster) * .31
@@ -1113,7 +1137,7 @@ function drawvideo (videoclip) {
 			document.getElementById('htmlvid').addEventListener('ended', function () { subthis._ended() })
 			document.getElementById('htmlvid').addEventListener('play', vidinstructions);
 		} else {
-			var playeroptions = { 'controlbar.position': 'over', 'controlbar.idlehide': true };
+			var playeroptions = { 'controlbar.position': 'over' };
 			playeroptions.allowFullScreen = false;
 			playeroptions.allowscriptaccess = true;
 			playeroptions.autostart = true;
@@ -1255,6 +1279,15 @@ function transition_off () {
 	_intransition = false;
 	$("#videoplayer").css({'opacity':1});
 
+	clearInterval(_transitiontimerIvl);
+	
+	// log that they got to the end here
+	if(ga){
+		var mobilereport = (_ammobile)? 'mobile':'desktop';
+		ga('send', 'event', 'legacy', 'transition timing', mobilereport, _transitiontimer);
+	}
+
+
 	$("#videotransition").fadeOut(2000).removeClass('blurred');
 }
 
@@ -1330,8 +1363,6 @@ function loadvid (clip,starttime) {
 	curvid = clip;
 	linemanager();
 	
-
-
 	videoclipname = $("#vid_" + clip).attr('data-clipname');
 	if(_ammobile){
 		if(_canhls){
@@ -1385,6 +1416,8 @@ function redrawing (){
 		$("#vidin").css({ 'width': w + 'px', 'height': h + 'px' });
 		
 		render_lines(0);
+	
+		linemanager();
 	
 		// now go back through and see what's playing, reorient playback line to that
 		
@@ -1723,7 +1756,6 @@ function linedestroy (targetid) {
 			var parsers = $(this).attr('id').split('_');
 			gonelines[parsers[0]] = 1;
 			$(this).remove();
-			console.log('linedestroy outbound ' + $(this).attr('id'));
 		}
 	});
 	$('path[data-inbound="' + targetid + '"]').each(function () {

@@ -291,6 +291,9 @@ _trackingon = false;
 
 function flipper (isright){
 //	console.log('flipper ' + isright + ' ' + flipside);
+
+
+
 	if(_ammobile){
 		mobile_stills(_curtime);
 		var newclip = (flipside)? 'schipol':'spotters';
@@ -321,6 +324,14 @@ function flipper (isright){
 		$("#leftbutton").removeClass('buttonoff').addClass('buttonon');
 	}
 	$("#card").css({ '-webkit-transform': 'rotateY( ' + flipangle + 'deg)', 'transform': 'rotateY( ' + flipangle + 'deg)' });
+	
+	// log that they did this
+	if(ga){
+		var mobilereport = (_ammobile)? 'mobile':'desktop';
+		ga('send', 'event', 'cradle', 'flip', mobilereport, _curtime);
+	}
+
+	
 }
 
 function flipmobile (doplay) {
@@ -490,6 +501,14 @@ function buildendscreen () {
 		outputstring += '; top: ' + nowtop + '"></div>';
 		nowtop = nowtop + (accum * multiplier);
 	}
+	
+	
+	// log that they got to the end here
+	if(ga){
+		var mobilereport = (_ammobile)? 'mobile':'desktop';
+		ga('send', 'event', 'cradle', 'endscreen', mobilereport);
+	}
+
 	
 	$("#people_data").html(outputstring);
 	
