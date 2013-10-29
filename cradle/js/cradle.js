@@ -33,6 +33,9 @@ var hlsvideoprefix = 'http://s3.amazonaws.com/empireproj/hls/1000/'; // in mobil
 var videoprefix = 'http://s3.amazonaws.com/empireproj/cradle/'; // in mobile we redraw these and use the stills instead
 //var videoprefix = 'mp4/'; // in mobile we redraw these and use the stills instead
 
+var _transitiontimer = new Number();
+var _transitiontimerIvl = new Number();
+
 
 $(document).ready(function(){		
 
@@ -304,6 +307,9 @@ function flipper (isright){
 			document.getElementById('mobileisgreat').src = videoprefix + newclip + '_hinted.mp4#t=' + _curtime;
 		}
 		_seektime = _curtime;
+		_transitiontimer = 0;
+		_transitiontimerIvl = setInterval(function () { _transitiontimer++ }, 200);
+		
 //		console.log(videoprefix + newclip + '.mp4#t=' + _curtime);
 //		console.log(document.getElementById('mobileisgreat').src); 
 		document.getElementById('mobileisgreat').addEventListener('canplay', flipmobile);
@@ -344,6 +350,13 @@ function flipmobile (doplay) {
 		$("#mobilevideo").fadeIn(300);
 		document.getElementById('mobileisgreat').removeEventListener('canplay', flipmobile);
 		document.getElementById('mobileisgreat').removeEventListener('playing', flipmobile);
+		clearInterval(_transitiontimerIvl);
+		// log the lag
+		if(ga){
+			ga('send', 'event', 'cradle', 'flip lag', 'mobile', (_transitiontimer / 5));
+		}
+
+		
 	}
 }
 
