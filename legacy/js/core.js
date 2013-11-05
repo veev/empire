@@ -20,6 +20,7 @@ var _highlight_curvid = 0;
 var _highlight_curpt = 0;
 var _highlight_currentx = 0;
 var _videoon = false;
+var _legstarton = false;
 var _endscreenon = false;
 var _svglevel = false;
 var _fson = false;
@@ -286,6 +287,9 @@ function startscreen () {
 	_starton = true;
 	
 	render_lines(1);
+
+	$("#legstart").css({ 'width': w + 'px', 'height': h + 'px', 'padding-top': ((h / 2) - 20) + 'px' });
+	_legstarton = true;
 	
 //	$("#linegroup").hide();
 //	$("#linegroup_connections").hide();
@@ -302,7 +306,17 @@ function startscreen () {
 	$("#vid_2t").css({ 'width': (w - 500), 'top': (h - 240) , 'left': (w/2) - ((w - 500) / 2) }).fadeIn(2000);
 	$("#vid_3t").css({ 'width': 450, 'left': 20, 'top' : ((h/2) - 100) }).fadeIn(2000);
 	
+	$(".legstarttheme").fadeIn();
+	$(".legthemea:first").css({ 'margin-left': (_mladjust - 15) + 'px', 'margin-top': (vtop - 15) + 'px' });
+	$(".legthemeb:first").css({ 'margin-left': (_mladjust - 22 + w) + 'px', 'margin-top': (vtop - 15) + 'px' });
+	$(".legthemec:first").css({ 'margin-left': (_mladjust - 22 + w) + 'px', 'margin-top': ((h + vtop) - 20) + 'px' });
+	$(".legthemed:first").css({ 'margin-left': (_mladjust - 15) + 'px', 'margin-top': ((h + vtop) - 20) + 'px' });
+	
 	$(".leg_text").mouseover(function () {
+		if(_legstarton){
+			_legstarton = false;
+			$("#legstart").hide();
+		}
 		$("#vid_" + $(this).attr('data-clipid')).removeClass('grey');
 	});
 
@@ -1466,7 +1480,16 @@ function redrawing (){
 		$("#vid_1t").css({ 'width': 450, 'top': 30, 'left': (thisw - 510), 'top' : ((thish/2) - 100) }).fadeIn(2000);
 		$("#vid_2t").css({ 'width': (thisw - 500), 'top': (thish - 240) , 'left': (thisw/2) - ((thisw - 500) / 2) }).fadeIn(2000);
 		$("#vid_3t").css({ 'width': 450, 'left': 20, 'top' : ((thish/2) - 100) }).fadeIn(2000);
+		$(".legthemea:first").css({ 'margin-left': (_mladjust - 15) + 'px', 'margin-top': (vtop - 58) + 'px' });
+		$(".legthemeb:first").css({ 'margin-left': (_mladjust - 22 + thisw) + 'px', 'margin-top': (vtop - 58) + 'px' });
+		$(".legthemec:first").css({ 'margin-left': (_mladjust - 22 + thisw) + 'px', 'margin-top': ((thish + vtop) - 69) + 'px' });
+		$(".legthemed:first").css({ 'margin-left': (_mladjust - 15) + 'px', 'margin-top': ((thish + vtop) - 69) + 'px' });
 		render_lines(1);
+		if(_legstarton){
+			$("#legstart").css({ 'width': thisw + 'px', 'height': thish + 'px', 'padding-top': ((thish / 2) - 20) + 'px' });
+		}
+
+
 	}
 
 }
