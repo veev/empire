@@ -1,4 +1,4 @@
-*, html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, label, fieldset, input, p, th, td { margin:0; padding:0; font-style: italic; font-family: "IM Fell English","Helvetica Neue", sans-serif; }
+*, html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, label, fieldset, input, p, th, td { margin:0; padding:0; font-style: italic; font-family: "EB Garamond","Helvetica Neue", sans-serif; }
 table { border-collapse:collapse; border-spacing:0 }
 iframe { border: 0; margin: 0; padding: 0; }
 fieldset, img { border:0 }
@@ -20,8 +20,8 @@ div#cradle_main div#instructions span#swifter { width: 187px; height: 540px; z-i
 div#cradle_main div#instructions span#ctitle { width: 279px; height: 41px; z-index: 2; left: 338; opacity: .5; top: 30; position: absolute; background: url(../art/cradle_title.png); }
 div#cradle_main div#instructions p { position: relative; font-size: 1.4em; }
 div#cradle_main div#instructions p#crad_0 { top: -80; }
-div#cradle_main div#instructions p#crad_1 { color: #eddb58; top: 45; left: -205;}
-div#cradle_main div#instructions p#crad_2 { color: #eddb58; top: -15; left: 155; }
+div#cradle_main div#instructions p#crad_1 { color: #eddb58; top: 45; left: -220;}
+div#cradle_main div#instructions p#crad_2 { color: #eddb58; top: -15; left: 165; }
 div#cradle_main div#instructions p#crad_3 { top: 120; }
 div#cradle_top h1 { color: #000; padding-top: 8px; font-size: 2.1em; }
 div#cradle_bottom h2 { color: #000; padding-bottom: 8px; font-size: 1.6em; }

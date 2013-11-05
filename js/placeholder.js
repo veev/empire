@@ -27,7 +27,7 @@ function drawer () {
 	$("#legacy").css({ 'top': ((h/2) - 280), left: ((w/4) - 230) });
 	$("#cradle").css({ 'top': ((h/2) + 20), left: ((w/4) - 230) });
 
-	$("#bodytext").css( { 'left': ((w / 2) + 220), 'top':  ((h / 2) - 220) });
+	$("#bodytext").css( { 'left': ((w / 2) + 220), 'top':  ((h / 2) - 200) });
 	
 }
 
