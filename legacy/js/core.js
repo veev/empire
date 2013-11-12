@@ -347,6 +347,7 @@ function startscreen () {
 		var vtop = (($("#legacy_container").height() - h) / 2) - 20;
 
 		$("#legacy_startspace").fadeOut(2000);
+		$(".legstarttheme").fadeOut();
 		$(".leg_text").hide().unbind('click');
 
 		drawvideo(actualclip);
