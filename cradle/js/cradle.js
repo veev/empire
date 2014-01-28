@@ -495,8 +495,6 @@ function buildendscreen () {
 	var nowtop = 0;
 	var multiplier = 1.13;
 	
-	console.log(sidetracker);
-	
 	for(var x = 0; x < 446; x++){
 
 		outputstring += '<div style="width: 445px; ';
