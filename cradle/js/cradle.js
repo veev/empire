@@ -493,7 +493,9 @@ function buildendscreen () {
 	
 	var outputstring = new String();
 	var nowtop = 0;
-	var multiplier = 1.756;
+	var multiplier = 1.13;
+	
+	console.log(sidetracker);
 	
 	for(var x = 0; x < 446; x++){
 
