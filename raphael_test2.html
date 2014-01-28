@@ -1,0 +1,103 @@
+<head>
+<script src="js/raphael-min.js" type="text/javascript" charset="utf-8"></script>
+
+<link rel="stylesheet" href="css/trytwo.css" type="text/css" media="screen" />
+       
+
+</head>
+<body>
+
+	   <body>
+        <div id="canvas_container"></div>
+    </body>
+	<script>
+
+// Raphael.fn.sector = function(cx, cy, r, startAngle, endAngle, params) {
+// 		var rad = Math.PI / 180,
+//         	x1 = cx + r * Math.cos(-startAngle * rad),
+//             x2 = cx + r * Math.cos(-endAngle * rad),
+//             y1 = cy + r * Math.sin(-startAngle * rad),
+//             y2 = cy + r * Math.sin(-endAngle * rad);
+//         return paper.path(["M", cx, cy, "L", x1, y1, "A", r, r, 0, +(endAngle - startAngle > 180), 0, x2, y2, "z"]).attr(params);
+//         console.log("M", cx, cy, "L", x1, y1, "A", r, r, 0, +(endAngle - startAngle > 180), 0, x2, y2, "z");
+//     };
+
+
+		var paper = Raphael('canvas_container', window.innerWidth, window.innerHeight);
+
+		var cx = 0;
+		var cy = 0;
+		var c_bg_r = window.innerWidth;
+		var l_bg_r = window.innerWidth + 60;
+		var m_bg_r = window.innerWidth + 120;
+		var p_bg_r = window.innerWidth + 180;
+		var hShift = 300;
+		var c_bg_y = c_bg_r - hShift;
+		var l_bg_y = l_bg_r - hShift;
+		var m_bg_y = m_bg_r - hShift;
+		var p_bg_y = p_bg_r - hShift;
+
+		//var ripple_c_bg = paper.sector(cx, cy, window.innerWidth - 200, 270, 0, {'fill': '#ecda50', 'fill': 'url(art/c_bg.jpg)', 'stroke': '#ecda50', 'opacity': '0'});
+
+		// var ripple_p = paper.sector(cx, cy, 800, 270, 0, {'fill': '#cc3333', 'fill': 'url(art/p_bg.jpg)', 'stroke': '#cc3333'});
+
+		// var ripple_m = paper.sector(cx, cy, 600, 270, 0, {'fill': '#ff5a00', 'fill': 'url(art/m_bg.jpg)', 'stroke': '#ff5a00'});
+
+		// var ripple_l = paper.sector(cx, cy, 400, 270, 0, {'fill': '#fbb03b', 'fill': 'url(art/l_bg.jpg)', 'stroke': '#fbb03b'});
+
+		// var ripple_c = paper.sector(cx, cy, 200, 270, 0, {'fill': '#ecda50', 'fill': 'url(art/c_bg.jpg)', 'stroke': '#ecda50'});
+
+		var ripple_p = paper.path("M0,0 L800,0 A800,800 0 0,1 0,800z");
+			ripple_p.attr({'fill': '#cc3333', 'fill': 'url(art/p_bg.jpg)', 'stroke': '#cc3333'});
+
+		var ripple_m = paper.path("M0,0 L600,0 A600,600 0 0,1 0,600z");
+			ripple_m.attr({'fill': '#ff5a00', 'fill': 'url(art/m_bg.jpg)', 'stroke': '#ff5a00'});
+
+		var ripple_l = paper.path("M0,0 L400,0 A400,400 0 0,1 0,400z");
+			ripple_l.attr({'fill': '#fbb03b', 'fill': 'url(art/l_bg.jpg)', 'stroke': '#fbb03b'});
+
+		var ripple_c = paper.path("M0,0 L200,0 A200,200 0 0,1 0,200z");
+			ripple_c.attr({'fill': '#ecda50', 'fill': 'url(art/c_bg.jpg)', 'stroke': '#ecda50'});
+
+		ripple_c.click(function() {
+			console.log("clicked");
+			//ripple_c.animate({transform: "s1.5,1.5" + cx + "," + cy}, 1000, "easeIn");
+			ripple_p.animate({path: "M0,0 L" +p_bg_r +",0 A" +p_bg_r +"," +p_bg_y+ " 0 0,1 0," +p_bg_y+ "z"}, 1000);
+			ripple_m.animate({path: "M0,0 L" +m_bg_r +",0 A" +m_bg_r +"," +m_bg_y+ " 0 0,1 0," +m_bg_y+ "z"}, 1000);
+			ripple_l.animate({path: "M0,0 L" +l_bg_r +",0 A" +l_bg_r +"," +l_bg_y+ " 0 0,1 0," +l_bg_y+ "z"}, 1000);
+			ripple_c.animate({path: "M0,0 L" +c_bg_r +",0 A" +c_bg_r +"," +c_bg_y+ " 0 0,1 0," +c_bg_y+ "z"}, 1000);
+
+		});
+
+		ripple_p.mouseover(function() {
+			ripple_p.stop().animate({transform: "s1.05,1.05," + cx + "," + cy}, 400, "backIn", function() {
+				ripple_p.animate({transform: ""}, 400, "backOut");
+			}
+			);
+		 });
+
+		ripple_m.mouseover(function() {
+			ripple_m.stop().animate({transform: "s1.05,1.05, " + cx + "," + cy}, 500, "backIn", function() {
+				ripple_m.animate({transform: ""}, 500, "backOut");
+			}
+			);
+		 });
+
+		ripple_l.mouseover(function() {
+			ripple_l.stop().animate({transform: "s1.05,1.05 " + cx + "," + cy}, 500, "backIn", function() {
+				ripple_l.animate({transform: ""}, 500, "backOut");
+			}
+			);
+		 });
+
+		ripple_c.mouseover(function() {
+			ripple_c.stop().animate({transform: "s1.05,1.05 " + cx + "," + cy}, 500, "backIn", function() {
+				ripple_c.animate({transform: ""}, 500, "backOut");
+			}
+			);
+		 });
+		
+	
+
+	</script>
+</body>

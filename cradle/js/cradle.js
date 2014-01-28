@@ -254,6 +254,7 @@ function cradle_sizer () {
 	});
 
 }
+
 function trackon () {
 	_trackingon = true;
 	$(document).mousemove(function(e){

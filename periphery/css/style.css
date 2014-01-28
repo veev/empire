@@ -1,0 +1,202 @@
+*, html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, label, fieldset, input, p, th, td { margin:0; padding:0; font-family: "EB Garamond","Helvetica Neue", sans-serif; }
+table { border-collapse:collapse; border-spacing:0 }
+iframe { border: 0; margin: 0; padding: 0; }
+fieldset, img { border:0 }
+address, caption, cite, code, dfn, em, strong, th, var { font-style:normal; font-weight:normal }
+ol, ul, li { list-style:none }
+caption, th { text-align:left }
+h1, h2, h3, h4, h5, h6 { font-size:100%; font-weight:normal }
+q:before, q:after { content:''}
+body { background: #000; color: #fff; }
+div#browserno { background-color: #f00; width: 100%; text-align: center; position: absolute; z-index: 99402; top: 0; left: 0; }
+div#browserno div.padded { padding: 30px 20px 10px 20px; font-size: 1.2em; color: #fff; }
+
+div.periphery_top { text-align: center; background: #cc3333 url(../../art/p_bg.jpg) repeat-x; width: 100%; height: 98%; position: relative }
+div.periphery_top div#periphery_line { background: url(../art/b_line.png) repeat-y; width: 3px; position: absolute; }
+div#periphery_top h1 { color: #000; padding-top: 8px; font-size: 2.1em; }
+
+div.periphery_top div#periphery_structure { width: 731px; height: 392px; padding-top: 80px; text-align: left; position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
+div.periphery_intro { text-align: left; position: relative; margin: auto; width: 790px; height: 500px; overflow: auto; }
+div.periphery_intro p { position: absolute; color: #000; font-size: 18px; font-style: italic; margin: 0; padding: 0; }
+div.periphery_intro p#p_a { top: 100px; left: 255px; width: 240px; text-align: right; z-index: 1; }
+div.periphery_intro p#p_b { top: 240px; left: 575px; width: 140px; z-index: 2; }
+div.periphery_intro p#p_c { top: 355px; left: 240px; width: 250px; text-align: right;}
+
+div#periphery_main { position: relative; width: 100%; height: 100%; text-align: center; background: #000; }
+div#periphery_main div#instructions { position: absolute; z-index: 800; cursor: pointer; background: rgba(0,0,0,.6); width: 760px; padding: 200px 100px 160px 100px; height: 180px; text-align: center; }
+div#periphery_main div#instructions span#swifter { width: 187px; height: 540px; z-index: 1; left: 388; top: 0; position: absolute; background: url(../art/instructions_spin.png); }
+div#periphery_main div#instructions span#ptitle { width: 279px; height: 41px; z-index: 2; left: 338; opacity: .5; top: 30; position: absolute; background: url(../art/cradle_title.png); }
+div#periphery_main div#instructions p { position: relative; font-size: 1.4em; }
+div#periphery_main div#instructions p#peri_0 { top: -80; }
+div#periphery_main div#instructions p#peri_1 { color: #cc3333; top: 45; left: -220;}
+div#periphery_main div#instructions p#peri_2 { color: #cc3333; top: -15; left: 165; }
+div#periphery_main div#instructions p#peri_3 { top: 120; }
+
+div.periphery_bottom { text-align: center; background: #cc3333 url(../../art/p_bg_b.jpg) bottom left  repeat-x; width: 100%; position: relative ; clear: both;}
+div.periphery_bottom div.inner { padding: 30px 0 30px 0; }
+div#periphery_bottom h2 { color: #000; padding-bottom: 8px; font-size: 1.6em; }
+div.periphery_top div.peripheryplay { position: absolute; width: 127px; height: 45px; cursor: pointer; z-index: 5; background: url(../art/f_playbutton.png); }
+div.periphery_top div#periphery_line { background: url(../art/b_line.png) repeat-y; width: 3px; position: absolute; }
+div.periphery_bottom div#periphery_bottomline { z-index: 1; background: url(../art/b_line.png) repeat-y; width: 3px; position: absolute; }
+div.periphery_bottom div#periphery_bottomtitle { z-index: 2; position: absolute; bottom: 25; width: 100%; text-align: center; }
+div.periphery_bottom div#pbottom_structure { z-index: 2; position: absolute; width: 930px; height: 465px; background: url(../art/bottomstructure.png) }
+div.periphery_bottom div#pbottom_structure div { text-align: left;  padding: 40px;  color: #000; }
+div.periphery_bottom div#pbottom_structure div p { margin: 1.1em 0; }
+div.periphery_bottom div#pbottom_structure div a { color: 000; }
+div.periphery_bottom div#pbottom_structure div.pbottom_l { color: #000; width: 385px; float: left; margin-right: 40px; }
+div.periphery_bottom div#pbottom_structure div.pbottom_l a { color: #000; }
+div#periphery_main div#periphery_linewhite { background: url(../art/b_linewhite.png) repeat-y; width: 3px; position: absolute; z-index: 1; }
+#periphery_main div#legmore { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(../art/leg_more.png); }
+
+div#periphery_main #outerouter {
+	text-align: center;
+	position: absolute;
+	width: 100%;
+	z-index: 4;
+}
+
+div#periphery_main #outerouter #outerinner {
+	height: 555px;
+	margin: 0 auto;
+	position: relative;
+    transform-style: preserve-3d;
+   -webkit-transform-style: preserve-3d;
+	text-align: left;
+	width:975px;	
+}
+
+
+#outerinner #container {
+	position: relative;
+	height: 550px;
+	width: 960px;
+    transform-style: preserve-3d;
+   -webkit-transform-style: preserve-3d;
+	perspective: 1000;	
+	-webkit-perspective: 1000;	
+	 z-index: 1;
+}
+
+#outerinner #container #card {
+	overflow: visible !important;
+   	width: 100%;
+ 	height: 100%;
+	position: absolute;
+  	transform-style: preserve-3d;
+  	transition: all .5s linear;
+  	transform-origin: center center;
+  	-webkit-transform-style: preserve-3d;
+  	-webkit-transition: all .5s linear;
+  	-webkit-transform-origin: center center;
+}
+
+#outerinner #container #cardover {
+	position: absolute;
+	z-index: 45;
+	top: 0;
+	left: 0;
+	background-color: #f00;
+	opacity: .2;
+	width: 960px;
+	height: 540px;
+}
+
+#outerinner #container #leftbutton {
+	z-index: 40;
+	display: block; position: absolute; left: -40; top: 250; height: 31px; width: 23px; background: url(../art/leftar.png);
+}
+
+#outerinner #container #rightbutton {
+	z-index: 40;
+	display: block; position: absolute; left: 970; top: 250; height: 31px; width: 23px; background: url(../art/rightar.png);
+}
+
+#outerinner #container div.buttonoff {
+	opacity: .2;
+}
+
+#outerinner #container div.buttonon {
+	opacity: .6;
+	cursor: pointer;
+}
+
+#outerinner #container div.buttonon:hover {
+	opacity: 1;
+}
+
+#outerinner #container #card div {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}	
+
+#outerinner #container #card div.back {
+	transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+}
+
+#outerinner #container #card.flipped {
+	transform: translateX( -100% ) rotate( -180deg );
+	-webkit-transform: translateX( -100% ) rotate( -180deg );
+}
+
+#outerinner #controls #scrubber {
+	width: 932px;
+	float: right;
+	margin: 17px 15px 9px 0px;
+	height: 2px; background-color: #888; position: relative;
+}
+
+#outerinner #controls #scrubber #progress {
+	width: 0;
+	position: absolute;
+	height: 2px;
+	top: 0;
+	background-color: #cc3333;
+}
+
+
+
+
+
+#textLeft{
+	width: 480px;
+	float: left;	
+}
+#textRight{
+	width: 480px;
+	float: right;	
+}
+.clear{
+	clear: both;
+}
+
+#outerinner #controls #playElement{
+	display: block;
+	float: left;
+	cursor: pointer;
+	width: 27px;
+	height: 38px;
+	background-image: url(../art/playWhite.png);
+}
+#outerinner #controls #playElement:hover {
+	background-image: url(../art/pauseWhite.png);
+}
+#pauseElement{
+	display: block;
+	float: left;
+	cursor: pointer;
+	width: 27px;
+	height: 38px;
+	background-image: url(images/pauseGray.png);
+}
+#pauseElement:hover;{
+	display: block;
+	cursor: pointer;
+	width: 27px;
+	height: 38px;
+	background-image: url(images/playGray.png);
+}

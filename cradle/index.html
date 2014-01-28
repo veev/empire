@@ -39,6 +39,8 @@
 		</div>
 		<div class="cradleplay" id="cradleplay" style="display: none"></div>
 	</div>
+	<div id="canvas_container" style="display:none"></div>
+
 	<div class="outer snap" id="cradle_main">
 		<div id="cradle_linewhite"></div>
 		<div id="outerouter">
@@ -74,8 +76,14 @@
 				</div>
 			</div>
 			<div id="endscreen" style="display: none;">
-				<div id="person_a"></div><div id="person_b"></div><div id="people_data"></div><div id="person_overlay"><p>This is the path you took.<br />
-If you could try again, what would you do differently?<br /><br />Try again</p></div>
+				<div id="person_a"></div>
+				<div id="person_b"></div>
+				<div id="people_data"></div>
+				<div id="person_overlay">
+					<p>This is the path you took.<br />
+					If you could try again, what would you do differently?<br /><br />Try again
+					</p>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -85,18 +93,21 @@ If you could try again, what would you do differently?<br /><br />Try again</p><
 	<div class="cradle_bottom snap" id="cradle_bottom">
 		<div id="cradle_bottomline"></div>
 		<div class="inner">
-		<div id="cbottom_structure"><div class="cbottom_l">
-		<p>Schiphol Airport handles 1100 flights on average per day.</p>
+			<div id="cbottom_structure">
+				<div class="cbottom_l">
+					<p>Schiphol Airport handles 1100 flights on average per day.</p>
 
-<p>Of those flights, 6 to 7 planes are carrying the body of a deceased person. A great number of these deceased people were born in former Dutch colonies, and are now returning to the countries of their birth for final burial.</p>
+					<p>Of those flights, 6 to 7 planes are carrying the body of a deceased person. A great number of these deceased people were born in former Dutch colonies, and are now returning to the countries of their birth for final burial.</p>
 
-<p>Within the borders of the Netherlands, people from former Dutch colonies and/or "overseas territories" like Suriname, Indonesia and The Antilles <a href="http://focus-migration.hwwi.de/The-Netherlands.2644.0.html?L=1" target="_links">make up about 5.5% of the total population.</a> Other notable immigrant groups include Turkish and Moroccan "guest workers" - <a href="http://mcnl.berkeley.edu/netherlands/guest-workers/" target="_links">many of whom came to The Netherlands in the decades after WWII to take on low-wage jobs</a> - and <a href="http://www.arierang.nl" target="_links">Korean adoptees.</a> These days, due to stricter asylum and family migration rules,<a href="http://www.cbs.nl/en-GB/menu/themas/dossiers/allochtonen/publicaties/artikelen/archief/2012/2012-011-pb.htm" target="_links"> intra-European migrants make up the fastest-growing immigrant population in the Netherlands.</a></p></div>
+					<p>Within the borders of the Netherlands, people from former Dutch colonies and/or "overseas territories" like Suriname, Indonesia and The Antilles <a href="http://focus-migration.hwwi.de/The-Netherlands.2644.0.html?L=1" target="_links">make up about 5.5% of the total population.</a> Other notable immigrant groups include Turkish and Moroccan "guest workers" - <a href="http://mcnl.berkeley.edu/netherlands/guest-workers/" target="_links">many of whom came to The Netherlands in the decades after WWII to take on low-wage jobs</a> - and <a href="http://www.arierang.nl" target="_links">Korean adoptees.</a> These days, due to stricter asylum and family migration rules,<a href="http://www.cbs.nl/en-GB/menu/themas/dossiers/allochtonen/publicaties/artikelen/archief/2012/2012-011-pb.htm" target="_links"> intra-European migrants make up the fastest-growing immigrant population in the Netherlands.</a></p>
+				</div>
 
-<div class="cbottom_r"><p>Absorbing, and consequently rearranging, immigrant populations (from former colonies or otherwise) around cities in the Netherlands <a href="http://sinisterhumanists.tumblr.com/post/15296546451/living-in-the-curdled-dream-of-a-dutch-utopia-the" target="_links"> has long been a favorite hobby of Dutch engineers and city planners.</a> Other typical Dutch hobbies include ice skating, building canals and <a href="http://www.planespotting.nl/" target="_links">watching through binoculars as planes take off and leave from Schiphol Airport.</a></p>
+				<div class="cbottom_r">
+					<p>Absorbing, and consequently rearranging, immigrant populations (from former colonies or otherwise) around cities in the Netherlands <a href="http://sinisterhumanists.tumblr.com/post/15296546451/living-in-the-curdled-dream-of-a-dutch-utopia-the" target="_links"> has long been a favorite hobby of Dutch engineers and city planners.</a> Other typical Dutch hobbies include ice skating, building canals and <a href="http://www.planespotting.nl/" target="_links">watching through binoculars as planes take off and leave from Schiphol Airport.</a></p>
 
-<p><a href="http://www.smba.nl/en/news/archive/2012/bijlmair-kel-o-neill-and-eline-/" target="_links">The original video installation Empire: Cradle</a> was made and exhibited in January 2012 during the 2011-2012 Stedelijk Museum Bureau Amsterdam (SMBA)/ CBK Zuidoost BijlmAIR residency. The project received support from the Mondriaan Fund. Johan Lagerwerf provided production assistance and Matt Dougherty created the music. A prototype web adaptation of the installation <a href="http://www.pbs.org/pov/blog/2013/01/the-pov-hackathon-2-award-winners/" target="_links">won the Participants' Choice Award at the January 2013 POV Hackathon.</a></p>
-</div>
-</div>
+					<p><a href="http://www.smba.nl/en/news/archive/2012/bijlmair-kel-o-neill-and-eline-/" target="_links">The original video installation Empire: Cradle</a> was made and exhibited in January 2012 during the 2011-2012 Stedelijk Museum Bureau Amsterdam (SMBA)/ CBK Zuidoost BijlmAIR residency. The project received support from the Mondriaan Fund. Johan Lagerwerf provided production assistance and Matt Dougherty created the music. A prototype web adaptation of the installation <a href="http://www.pbs.org/pov/blog/2013/01/the-pov-hackathon-2-award-winners/" target="_links">won the Participants' Choice Award at the January 2013 POV Hackathon.</a></p>
+				</div>
+			</div>
 		<div id="cradle_bottomtitle">
 		<h2>Cradle</h2>
 		<img src="../art/emp_title.png" width="284" height="43" title="Empire" />

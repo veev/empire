@@ -8,21 +8,37 @@ caption, th { text-align:left }
 h1, h2, h3, h4, h5, h6 { font-size:100%; font-weight:normal }
 q:before, q:after { content:''}
 body { background: #3d3356; color: #fff; min-width: 1024; }
-div#container { width: 100%; height: 100%; background: url(../art/placeholder_bg.jpg) bottom center no-repeat; text-align: center; }
-h2 { font-size: .85em; margin-top: 4px; }
+div#container { 
+	width: 100%; 
+	height: 100%; 
+	/*background: url(../art/placeholder_bg.jpg) bottom center no-repeat;*/
+	text-align: center; }
+h2 { font-size: 1.25em; margin-top: 4px; font-style: italic; text-align: left}
+/*div#container div#containerinner {position: absolute; margin-left: 860;}*/
 div#container div#titleblock { position: absolute; }
 div#container div#logos { position: absolute; bottom: 20; left: 20; }
 div#container div#pinchelines { position: absolute; width: 4px; background: url(../art/placeholder_dots.png) repeat-y; }
-div#container div#bodytext { position: absolute; margin-right: 20px; text-align: left; }
+div#container div#bodytext { position: absolute; margin-right: 20px; text-align: left; width: 520px; }
 div#container div#bodytext p { margin: 1em 0; font-size: .9em;}
 div#container div#bodytext p.credits { margin-top: 3em; }
 div#audiodiv { display: none; }
 div#container div#preaching { position: absolute; text-align: left; }
 div#container div#preaching ul { margin-top: 4px; }
-div#container div#preaching ul li { float: left; margin-right: 4px; }
+div#container div#preaching ul li { float: left; margin-right: 12px; }
 div#container div#legacy { left: 20; width: 300px; padding: 2px; position: absolute; height: 220px; font-size: 1.3em; }
 div#container div#legacy:hover { color: #fbb03b; }
-div#container div#legacy span.img0 { display: block; width: 300px; background: url(../art/interim_legacy.jpg); height: 172px; margin-bottom: 8px; }
 div#container div#cradle { left: 20; padding: 2px; width: 300px; position: absolute; font-size: 1.3em; }
-div#container div#cradle span.img1 { display: block; width: 300px; background: url(../art/interim_cradle.jpg); height: 172px; margin-bottom: 8px; }
+div#container div#cradle { display: block; width: auto; background: #ecda50 url(../art/c_bg.jpg); }
 div#container div#cradle:hover { color: #fbb03b; }
+/*
+div#container div#home_button { position: absolute; bottom: 30; right: 30; display: none;}
+div#container div#home_button img { width: 40px; height: 35px;}
+*/
+
+div#container div#home_button { position: absolute; bottom: 30; right: 30;}
+div#container div#home_button img { width: 40px; height: 35px;}
+div #canvas_container {
+	width: auto;
+	position: absolute;
+}
+

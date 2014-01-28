@@ -1,0 +1,92 @@
+<html>
+<head>
+	<meta http-equiv="Content Type" content="text/html; charset=iso-8899-1" />
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/raphael.js"></script>
+	<script src="../js/jquery.easing.min.js"></script>
+	<script src="../js/jquery.event.special.js"></script>
+	<script src="../js/jquery.scrollsnap.js"></script>
+	<script src="../js/empirecore.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+	<!--
+	<link rel="stylesheet" href="../css/trytwo.css" type="text/css" media="screen" />
+	-->
+	<script src="js/periphery.js"></script>
+		<title>Empire: Periphery</title>
+
+	</head>
+
+	<body>
+		<div class="periphery_top snap" id="periphery_top">
+			<div id="periphery_title">
+				<img src="../art/emp_title.png" width="284" height="43" title="Empire" />
+				<h1>Peripery</h1>
+			</div>
+			<div id="periphery_line"></div>
+			<div class="periphery_intro" id="mainarea">
+				<p id="p_a">On the outer edges of the colonial domain, the borders between fact and fiction break down. In the US, a man discovers the reality behind his childhood fantasies.</p>
+				<p id="p_b">In Australia, a community searches for certainty in a sea of dreams.</p>
+				<p id="p_c">Crafted from two stories filmed on opposite sides of the world, Empire: Periphery allows you to experience truth and fiction side by side.</p>
+			</div>
+			<div class="periphery_play" id="periphery_play" style="display: none"></div>
+		</div>
+		<div id="canvas_container" style="display:none"></div>
+		<div class="outer snap" id="periphery_main">
+			<div id="outerouter">
+				<div id="outerinner">
+					<div id="container">
+						<div id="instructions" style="display: none"><span id="ptitle" style="display: none"></span><span id="swifter"></span>
+							<p id="peri_0">Use your mouse or your touch to turn the video</p>
+							<p id="peri_1" class="left">Drag to the left to spend time in the morgue</p>
+							<p  id="peri_2" class="right">Drag to the right to spot planes</p>
+							<p  id="peri_3">Your choices will be noted</p>
+						</div>
+							<div id="leftbutton" class="flipbuttons buttonoff"></div>
+							<div id="rightbutton" class="flipbuttons buttonon"></div>
+							<div id="card">
+								<div class="norm" id="periphery0" data-clipname="norm">
+									<video id="video1" width="960" height= "540" poster="art/thumbs/full-schipol-1.jpg" -webkit-mask-box-image="url(art/periphery_mask2.png)">
+										<source src="http://s3.amazonaws.com/empireproject/PERIPHERY_NORM_VIMEO.mp4" type="video/mp4">
+									</video>
+								</div>
+								<div class="yeti" id="periphery1" data-clipname="yeti">
+									<video id="video2" width="960" height="540" poster="art/thumbs/full-spotters-1/jpg" -webkit-mask-box-image="art/periphery_mask2.png">
+										<source src="http://s3.amazonaws.com/empireproject/PERIPHERY_NORM_VIMEO.mp4" type="video/mp4">
+									</video>
+								</div>
+							</div>
+					</div>
+					<div id="controls">
+						<span id="playElement" style="cursor: pointer;"></span>
+						<div id="scrubber"><div id="progress"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="more" id="legmore" style="display:none"></div>
+		</div>
+
+		<div class="periphery_bottom snap" id="periphery_bottom">
+			<div id="periphery_bottomline"></div>
+			<div class="inner">
+				<div id="pbottom_structure">
+					<div class="pbottom_l">
+						<p>Schiphol Airport handles 1100 flights on average per day.</p>
+
+						<p>Of those flights, 6 to 7 planes are carrying the body of a deceased person. A great number of these deceased people were born in former Dutch colonies, and are now returning to the countries of their birth for final burial.</p>
+					</div>
+					<div class="pbottom_r">
+						<p>Schiphol Airport handles 1100 flights on average per day.</p>
+
+						<p>Of those flights, 6 to 7 planes are carrying the body of a deceased person. A great number of these deceased people were born in former Dutch colonies, and are now returning to the countries of their birth for final burial.</p>
+					</div>
+				</div>
+				<div id="periphery_bottomtitle">
+					<h2>Periphery</h2>
+					<img src="../art/emp_title.png" width="284" height="43" title="Empire" />
+				</div>
+			</div>
+		</div>
+	</body>
+	</html>
