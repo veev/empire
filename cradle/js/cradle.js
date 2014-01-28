@@ -483,7 +483,9 @@ function buildendscreen () {
 	$("#controls").hide();
 	$("#endscreen").fadeIn();
 	
-	$("#legmore").fadeIn();
+	$("#legmore").fadeIn().click(function () {		
+		$('html, body').animate({ scrollTop: ($('#cradle_bottom').offset().top - 20) }, 1000);
+	});
 	
 	if(_ammobile){
 		trackoff();
