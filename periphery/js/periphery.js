@@ -183,8 +183,16 @@ function enablecontrols () {
       trackoff();
       if(flipangle < 90) {
         flipangle = 0;
+
+        //set yeti volume to 0, norm to 1
+      document.getElementById("audio_norm").volume = 1;
+      document.getElementById("audio_yeti").volume = 0;
+
       } else {
         flipangle = 180;
+      //set yeti volume to 1, norm to 0
+      document.getElementById("audio_norm").volume = 0;
+      document.getElementById("audio_yeti").volume = 1;
       }
       $("#card").css({ '-webkit-transform': 'rotate( ' + flipangle + 'deg)', 'transform': 'rotate( ' + flipangle + 'deg)' });
 

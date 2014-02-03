@@ -163,6 +163,7 @@ div#periphery_main #outerouter #outerinner {
 	background-color: #888; 
 	position: relative;
 	margin-right:308px;
+	z-index: 2;
 }
 
 #outerinner #controls #scrubber #progress {
@@ -171,6 +172,7 @@ div#periphery_main #outerouter #outerinner {
 	height: 2px;
 	top: 0;
 	background-color: #cc3333;
+	z-index: 2;
 }
 
 
@@ -204,6 +206,7 @@ div#periphery_main #outerouter #outerinner {
 	height: 38px;
 	background-image: url(../art/playWhite.png);
 	margin-left: 320px;
+	z-index: 2;
 }
 #outerinner #controls #playElement:hover {
 	background-image: url(../art/pauseWhite.png);
@@ -216,6 +219,7 @@ div#periphery_main #outerouter #outerinner {
 	height: 38px;
 	background-image: url(images/pauseGray.png);
 	margin-left:320px;
+	z-index: 2;
 }
 #pauseElement:hover;{
 	display: block;
