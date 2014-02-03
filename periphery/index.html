@@ -39,27 +39,21 @@
 						<div id="instructions" style="display: none"><span id="ptitle" style="display: none"></span><span id="swifter"></span>
 							<p id="peri_0">Use your mouse or your touch to turn the video</p>
 							<p id="peri_1" class="left">Drag to the left to spend time in the morgue</p>
-							<p  id="peri_2" class="right">Drag to the right to spot planes</p>
-							<p  id="peri_3">Your choices will be noted</p>
+							<p id="peri_2" class="right">Drag to the right to spot planes</p>
+							<p id="peri_3">Your choices will be noted</p>
 						</div>
 							<div id="leftbutton" class="flipbuttons buttonoff"></div>
 							<div id="rightbutton" class="flipbuttons buttonon"></div>
 							<div id="card">
-<!--
-<svg>
-  <defs>
-    <clipPath id="clipping">
-      <rect cx="210" cy="0" w="540" h="540" />
-      rectangle(<top>, <left>, <width>, <height>
-    </clipPath>
-  </defs>
-</svg>
--->
-
 								<div class="norm" id="periphery0" data-clipname="norm">
-									<video id="video1" width="960" height= "540" -webkit-mask-box-image="url(art/periphery_mask2.png)">
+									<!--
+									<video id="video1" width="1280" height= "720" -webkit-mask-box-image="url(art/periphery_mask.svg)">
 										<source src="http://s3.amazonaws.com/empireproject/PERIPHERY_NORM_VIMEO.mp4" type="video/mp4">
 									</video>
+									-->
+									<video id="target" height="720" width="1280">
+        							<source src="http://s3.amazonaws.com/empireproject/PERIPHERY_NORM_VIMEO.mp4"  type="video/mp4">
+   								 </video>
 								</div>
 								
 							</div>

@@ -66,25 +66,28 @@ $(document).ready(function () {
 // 		//fade out titles
 // 		fadeTitles(0);
 // 	});
-	// for(var i = 0; i < total; i++) {
-	// 	menu[i].ripple.isActive = false;
-	// 	menu[i].ripple.click(function() {
-	// 		menu[i].ripple.isActive = !menu[i].ripple.isActive;
-	// 		//console.log(menu[0] + " was clicked");
-	// 		console.log("menu[i] is active = " + menu[i].ripple.isActive);
-	// 		if (menu[i].ripple.isActive) {
-	// 			growRippleNode(i);
- // 				$("#navigation").fadeIn();
- // 				$("#containerinner").fadeOut();
-	// 			//fade out titles (pass in opacity)
-	// 			fadeTitles(0);
-	// 		} else {
-	// 			shrinkRippleNode(i);
-	// 		}
-	// 	});
-	// }
+	var item;
+	for(var i = 0; i < total; i++) {
+		item = menu[i];
+		item.ripple.isActive = false;
+		console.log(item);
+		item.ripple.click(function() {
+			item.ripple.isActive = !item.ripple.isActive;
+			//console.log(menu[0] + " was clicked");
+			console.log("menu[i] is active = " + item.ripple.isActive);
+			if (item.ripple.isActive) {
+				growRippleNode(item.index);
+ 				$("#navigation").fadeIn();
+ 				$("#containerinner").fadeOut();
+				//fade out titles (pass in opacity)
+				fadeTitles(0);
+			} else {
+				shrinkRippleNode(item.index);
+			}
+		});
+	}
 
-
+/*
 	menu[0].ripple.isActive = false;
 	menu[0].ripple.click(function() {
 		menu[0].ripple.isActive = !menu[0].ripple.isActive;
@@ -153,7 +156,7 @@ $(document).ready(function () {
 
 	});
 
-
+*/
 });
 
 $(window).resize(drawer);
@@ -195,11 +198,17 @@ function buildRippleNode(index){
 
 	ripple = paper.path("M0,0 L"+pos+",0 A"+pos+","+pos+" 0 0,1 0,"+pos+"z")
 	ripple.attr({'fill': COLORS[index], 'fill': URL[index], 'stroke': COLORS[index]})
-		  .data('id', RIPPLE_ID[index]);
+		  .data('name_', RIPPLE_ID[index]);
 	title = paper.text(pos - titleOffset, titleHeight, LABELS[index]).attr({'font-size': '24px', 'font-style': 'italic', 'opacity': 1});
 	topLetter = paper.text(topLetX, titleHeight, LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0});
 	bottomLetter = paper.text(botLetX, (h - titleHeight), LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0});
-    return {ripple: ripple, title: title, topLetter: topLetter, bottomLetter: bottomLetter};
+    var btn = new Button(ripple, title, topLetter, bottomLetter, false);
+    btn.id = RIPPLE_ID[index];
+    btn.index = index;
+
+    btn.onClick();
+    return btn;
+    // return {ripple: ripple, title: title, topLetter: topLetter, bottomLetter: bottomLetter};
 }
 
 function bottomLetterPlacing() {
@@ -226,6 +235,12 @@ function Button(ripple, title, topLetter, bottomLetter, isActive) {
 	// bottomLetter = paper.text((w-155), (h - titleHeight), LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0});
  //    return {ripple: ripple, title: title, topLetter: topLetter, bottomLetter: bottomLetter};
 }
+Button.prototype.onClick = function(){
+	console.log('hola ', this.title);
+};
+Button.prototype.addClickListener = function(callback){
+	this.ripple.click($.proxy(callback, this));
+};
 
 function buildRipples(total) {	
 
@@ -234,6 +249,10 @@ function buildRipples(total) {
 	for(var index = total-1; index >= 0; index--)
 	{
 		button = buildRippleNode(index);
+
+		button.addClickListener(function(){
+			console.log('console here', this.index)
+		});
 		//button.on('click', handleMenu);
 		menu.unshift(button);
 
@@ -329,12 +348,22 @@ function fadeBottomLetters(index, opacity) {
 	var speed = config.titleFadeSpeed;
 	var bottom = menu[index].bottomLetter;
 	bottom.animate({'opacity': opacity}, speed);
+	if(opacity === 0) {
+		bottom.hide();
+	} else if (opacity === 1){
+		bottom.show();
+	}
 }
 
 function fadeTopLetters(index, opacity) {
 	var speed = config.titleFadeSpeed;
 	var top = menu[index].topLetter;
 	top.animate({'opacity': opacity}, speed);
+	if(opacity === 0) {
+		top.hide();
+	} else if (opacity === 1){
+		top.show();
+	}
 }
 
 function drawer () {
