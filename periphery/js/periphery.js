@@ -181,7 +181,11 @@ function enablecontrols () {
     $("#outerouter").mouseleave(function () {
       //trackMouseY();
       trackoff();
-      flipangle = 0;
+      if(flipangle < 90) {
+        flipangle = 0;
+      } else {
+        flipangle = 180;
+      }
       $("#card").css({ '-webkit-transform': 'rotate( ' + flipangle + 'deg)', 'transform': 'rotate( ' + flipangle + 'deg)' });
 
       console.log('mouseleave');
@@ -287,9 +291,11 @@ function trackMouseY() {
       var y = e.pageY;
       console.log(y);
       var buffer = 0;
+      
       var audioLevelNorm, audioLevelYeti;
       audioLevelNorm = map(y, lazyYtop, lazyYbottom, 1, 0);
       audioLevelYeti = map(y, lazyYtop, lazyYbottom, 0, 1);
+      
       if(flipside){
 
         flipangle = map(y, lazyYtop + buffer, lazyYbottom - buffer, 180, 0);  
@@ -299,21 +305,10 @@ function trackMouseY() {
       }
        // console.log("flip angle: " + flipangle + " , flipped :" + flipside) ;
 
-    document.getElementById("audio_norm").volume = audioLevelNorm;
-    document.getElementById("audio_yeti").volume = audioLevelYeti;
+      document.getElementById("audio_norm").volume = audioLevelNorm;
+      document.getElementById("audio_yeti").volume = audioLevelYeti;
 
       $("#card").css({ '-webkit-transform': 'rotate( ' + flipangle + 'deg)', 'transform': 'rotate( ' + flipangle + 'deg)' });
-
-
-    // box.css({ "-webkit-transform": 'rotate(' + angle + 'deg)'});    
-    // box.css({ '-moz-transform': 'rotate(' + angle + 'deg)'});
-    // box.css({ 'transform': 'rotate(' + angle + 'deg)'});
-
-    // $("#card").css({ '-webkit-transform': 'rotate( ' + flipangle + 'deg)', 'transform': 'rotate( ' + flipangle + 'deg)' });
-
-      // var angle = 0;
-      // lazyYtop = 1
-      // lazyYbottom = 1
     }
   });
 }
@@ -472,7 +467,7 @@ function scrubberUpdater (){
   
   _curtime = document.getElementById(currentvideoid).currentTime;
 
-  $("#progress").css({ "width": (930 / ratio) + 'px' });
+  $("#progress").css({ "width": (640 / ratio) + 'px' });
   sidetracker[Math.floor(document.getElementById(currentvideoid).currentTime)] = flipside;
   
   // if(_ammobile && dur > 0){
