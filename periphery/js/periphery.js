@@ -3,6 +3,7 @@ var card = document.getElementById('card');
 var _curtime = 0;
 var _seektime = 0;
 var flipside = false;
+var leftside = false;
 var flipangle = 0;
 var flipblock = false;
 var _controls = false;
@@ -13,6 +14,7 @@ var vidClicked = false;
 var instructionsin = false;
 var enoughwithinstructions = false;
 
+var audioLevelNorm, audioLevelYeti;
 
 var _curtime = 0;
 var _seektime = 0;
@@ -183,7 +185,6 @@ function enablecontrols () {
       trackoff();
       if(flipangle < 90) {
         flipangle = 0;
-
         //set yeti volume to 0, norm to 1
       document.getElementById("audio_norm").volume = 1;
       document.getElementById("audio_yeti").volume = 0;
@@ -297,19 +298,37 @@ function trackMouseY() {
   $(document).mousemove(function(e) {
     if(!flipblock) {
       var y = e.pageY;
-      console.log(y);
+      var x = e.pageX;
+      //console.log(y);
+      console.log("leftside = " + leftside);
+      //console.log("lazywidth = " + lazywidth);
       var buffer = 0;
-      
-      var audioLevelNorm, audioLevelYeti;
+
+      if (x < (lazywidth/2)) {
+        leftside = true;
+      } else {
+        leftside = false;
+      }
+
       audioLevelNorm = map(y, lazyYtop, lazyYbottom, 1, 0);
       audioLevelYeti = map(y, lazyYtop, lazyYbottom, 0, 1);
       
-      if(flipside){
-
-        flipangle = map(y, lazyYtop + buffer, lazyYbottom - buffer, 180, 0);  
+      if(leftside){
+        //TO DO: Figure out how to make it always map clockwise
+        flipangle = map(y, lazyYtop + buffer, lazyYbottom - buffer, 0, 180);  
       }
       else{
        flipangle = map(y, lazyYtop + buffer, lazyYbottom - buffer, 0, 180);   
+      }
+
+      if(flipangle > 35 && flipangle < 55){
+        flipangle = 45;
+      }
+      if(flipangle > 80 && flipangle < 100){
+        flipangle = 90;
+      }
+      if(flipangle > 125 && flipangle < 145){
+        flipangle = 135;
       }
        // console.log("flip angle: " + flipangle + " , flipped :" + flipside) ;
 
@@ -443,7 +462,8 @@ function playAudio() {
     document.getElementById("audio_yeti").play();
 
     //is this the best place to set yeti audio?
-    document.getElementById("audio_yeti").volume = 0;
+    document.getElementById("audio_yeti").volume = audioLevelYeti;
+    document.getElementById("audio_norm").volume = audioLevelNorm;
 
 }
 
