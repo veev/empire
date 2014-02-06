@@ -4,8 +4,11 @@
 <title>Empire - The unintended consequences of colonialism by Jongsma & O'Neill</title>
 <script src="js/raphael-min.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/jquery.min.js" type="text/javascript" charset="utf=8"></script>
+ <script src="js/jquery.getCSS.js" type="text/javascript" charset="utf=8"></script>
+ <script src="/js/jquery.scrollsnap.js"></script>
 <link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="css/trytwo.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="cradle/css/style.css" type="text/css" media="screen" />
 <meta property="og:title" content="Empire"/> 
 <meta property="og:type" content="article"/>
 <meta property="og:image" content="http://empireproject.eu/art/shareimage.jpg"/>	
@@ -27,6 +30,7 @@
 -->
 
 <script src="js/empirecore.js"></script>
+<!-- <script src="cradle/js/cradle.js"></script> -->
 <!--
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -42,6 +46,7 @@
 </head>
 <body>
 <div id="container">
+
 	<div id="canvas_container"></div>
 	<div id="containerinner">
 		<div id="pinchelines" ></div>
@@ -66,6 +71,9 @@
 			<img src="art/placeholder_logos.png" width="742" height="64" alt="IDFA 2012 / Official Selection, 51st New York Film Festival" />
 		</div>
 	</div>
+	<div id="cradleContent"></div>
+	<div id="cradleContent2"></div>		
+
 	<div id="navigation" style="display: none">
 		<div id="home_button">
 			<img src="art/e_nav.png" width="40" height="35" alt="home"/>

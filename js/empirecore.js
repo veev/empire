@@ -20,10 +20,12 @@ var config = {
 	smCradleRadius: 100,
 	smRadiusOffset: 70,
 	bottomLetterOffset: 30,
-	rippleGrowSpeed: 1000,
+	rippleGrowSpeed: 500,
 	titleFadeSpeed: 500,
 	theta: 40.10359804
 };
+
+var cradleLoaded = false;
 var menu = [];
 var RIPPLE_ID = ['ripple_c', 'ripple_l', 'ripple_m', 'ripple_p'];
 var LABELS = ['Cradle','Legacy','Migrants', 'Periphery'];
@@ -32,214 +34,46 @@ var COLORS = ['#ecda50', '#fbb03b', '#ff5a00', '#cc3333'];
 var URL = ['url(art/c_bg.jpg)', 'url(art/l_bg.jpg)', 'url(art/m_bg.jpg)', 'url(art/p_bg.jpg)' ];
 var URL_BOTTOM = ['url(art/c_bg_b.jpg)', 'url(art/l_bg_b.jpg)', 'url(art/m_bg_b.jpg)', 'url(art/p_bg_b.jpg)' ];
 
+
 $(document).ready(function () {
 
+	if(cradleLoaded){
+		cradleLoaded = false;	
+
+	}
+
+	else{
+
+	console.log("Im in ready ");
 	w = $("#container").width();
 	h = $("#container").height();
 	paper = Raphael('canvas_container', w, h);
 	
+
 	buildRipples(total); //creates four ripples
 
 	//loadCradlePage();
 	drawer();
 	$("#containerinner").fadeIn();
 
+	// var navVisible = $( "#navigation" ).is( ":visible" );
 
+	// if (navVisible) {
+	// 	$("#home_button")
+	// }
 
-
-/*
-	var item;
-	for(var i = 0; i < total; i++) {
-		item = menu[i];
-		//item.ripple.isActive = false;
-		console.log(item);
-		item.ripple.click(function() {
-			//if ripple is clicked it becomes active
-			item.ripple.isActive = true;
-			//item.ripple.isActive = !item.ripple.isActive;
-			//console.log(menu[0] + " was clicked");
-			console.log("menu[" +i+ "] is active = " + item.ripple.isActive);
-			console.log("menu[" +i+ "] is big = " + item.ripple.isBig);
-
-
-			if (item.ripple.isActive && !item.ripple.isBig) {
-				growRippleNode(item.index);
- 				$("#navigation").fadeIn();
- 				$("#containerinner").fadeOut();
-				//fade out titles (pass in opacity)
-				fadeTitles(0);
-			} else if (!item.ripple.isBig) {
-				shrinkRippleNode(item.index);
-			}
-		});
-	}
-*/
-
-
-/*
-	menu[0].ripple.click(function() {
-		
-		//if ripple is clicked it becomes active
-		menu[0].ripple.isActive = true;
-		menu[1].ripple.isActive = false;
-		menu[2].ripple.isActive = false;
-		menu[3].ripple.isActive = false;
-		//menu[0].ripple.isActive = !menu[0].ripple.isActive;
-		//console.log(menu[0] + " was clicked");
-		console.log("menu[0] is active = " + menu[0].ripple.isActive);
-		//if menu is active and it was small it grows
-		if (menu[0].ripple.isActive && !menu[0].ripple.isBig) {
-			growRippleNode(0);
- 			$("#navigation").fadeIn();
- 			$("#containerinner").fadeOut();
-			//fade out titles (pass in opacity)
-			fadeTitles(0);
-
-			//once ripple grows it is big
-			menu[0].ripple.isBig = true;
-
-			menu[1].ripple.isBig = false;
-			menu[2].ripple.isBig = false;
-			menu[3].ripple.isBig = false;
-			console.log("menu[0] is big = " + menu[0].ripple.isBig);
-			//it is not active (can't be grown or shrunk)
-			menu[0].ripple.isActive = false;
-			console.log("menu[0] is active = " + menu[0].ripple.isActive);
-
-
-		} else if (!menu[0].ripple.isBig) {
-			shrinkRippleNode(0);
-		}
-
-	});
-
-
-	menu[1].ripple.click(function() {
-		//if ripple is clicked it becomes active
-		menu[1].ripple.isActive = true;
-		menu[0].ripple.isActive = false;
-		menu[2].ripple.isActive = false;
-		menu[3].ripple.isActive = false;
-		//menu[1].ripple.isActive = !menu[1].ripple.isActive;
-		//console.log(menu[0] + " was clicked");
-		console.log("menu[1] is active = " + menu[1].ripple.isActive);
-
-		if (menu[1].ripple.isActive && !menu[1].ripple.isBig) {
-			growRippleNode(1);
- 			$("#navigation").fadeIn();
- 			$("#containerinner").fadeOut();
-			//fade out titles (pass in opacity)
-			fadeTitles(0);
-			menu[1].ripple.isBig = true;
-
-			menu[0].ripple.isBig = false;
-			menu[2].ripple.isBig = false;
-			menu[3].ripple.isBig = false;
-			console.log("menu[1] is big = " + menu[1].ripple.isBig);
-			menu[1].ripple.isActive = false;
-			// console.log("menu[1] is active = " + menu[1].ripple.isActive);
-
-
-		} else if (!menu[1].ripple.isBig) {
-			console.log("Shrinking menu[1]")
-			shrinkRippleNode(1);
-		}
-
-	});
-
-
-	menu[2].ripple.click(function() {
-		menu[2].ripple.isActive = true;
-		
-		menu[0].ripple.isActive = false;		
-		menu[1].ripple.isActive = false;
-		menu[3].ripple.isActive = false;
-		//menu[2].ripple.isActive = !menu[2].ripple.isActive;
-		//console.log(menu[0] + " was clicked");
-		console.log("menu[2] is active = " + menu[2].ripple.isActive);
-		if (menu[2].ripple.isActive && !menu[2].ripple.isBig) {
-			growRippleNode(2);
- 			$("#navigation").fadeIn();
- 			$("#containerinner").fadeOut();
-			//fade out titles (pass in opacity)
-			fadeTitles(0);
-			menu[2].ripple.isBig = true;
-
-			menu[0].ripple.isBig = false;
-			menu[1].ripple.isBig = false;
-			menu[3].ripple.isBig = false;
-
-			console.log("menu[2] is big = " + menu[2].ripple.isBig);
-			menu[2].ripple.isActive = false;
-			console.log("menu[2] is active = " + menu[2].ripple.isActive);
-
-		} else if (!menu[2].ripple.isBig) {
-			shrinkRippleNode(2);
-		}
-
-	});
-
-	menu[3].ripple.click(function() {
-		//menu[3].ripple.isActive = !menu[3].ripple.isActive;
-		//console.log(menu[0] + " was clicked");
-		menu[3].ripple.isActive = true;
-
-		menu[0].ripple.isActive = false;
-		menu[1].ripple.isActive = false;
-		menu[2].ripple.isActive = false;
-		console.log("menu[3] is active = " + menu[3].ripple.isActive);
-		if (menu[3].ripple.isActive && !menu[3].ripple.isBig) {
-			growRippleNode(3);
- 			$("#navigation").fadeIn();
- 			$("#containerinner").fadeOut();
-			//fade out titles (pass in opacity)
-			fadeTitles(0);
-			menu[3].ripple.isBig = true;
-
-			menu[0].ripple.isBig = false;
-			menu[2].ripple.isBig = false;
-			menu[1].ripple.isBig = false;
-
-			console.log("menu[3] is big = " + menu[3].ripple.isBig);
-			menu[3].ripple.isActive = false;
-			console.log("menu[3] is active = " + menu[3].ripple.isActive);
-		} else if (!menu[3].ripple.isBig) {
-			shrinkRippleNode(3);
-		}
-
-	});
-
-*/
-
-	// 	menu[3].ripple.click(function() {
-		
-	// 		animateHome();
-
-	// });
-
-
+	//if $("navigation" :visible)
 	var home = document.getElementById("home_button");
-	$("home_button").on('click', function() {
+	$("#home_button").on('click', function() {
 		console.log("go home");
 		animateHome();
 	});
-
+ }
 });
 
 $(window).resize(drawer);
+//$(window).resize(buildRipples(total));
 
-function fadeTitleNode(index, opacity) {
-	var speed = config.titleFadeSpeed;
-	var title = menu[index].title;
-	title.animate({'opacity': opacity}, speed);
-}
-
-function fadeTitles(opacity) {
-	for(var i=0; i<menu.length; i++){
-		fadeTitleNode(i, opacity);
-		console.log("fade");
-	}
-}
 
 function buildRippleNode(index){
 	var ripple, title, bottomLetter, topLetter;
@@ -292,19 +126,6 @@ function Button(ripple, title, topLetter, bottomLetter, isActive, isBig) {
 	this.bottomLetter = bottomLetter;
 	this.isActive = isActive;
 	this.isBig = isBig;
-
-	// var ripple, title, bottomLetter, topLetter;
-	// var offset = 180;
-	// var pos = (offset * index) + offset; //radius of Home Button
-	// var titleOffset = config.titleOffset;
-	// var titleHeight = config.titleHeight;
-	// ripple = paper.path("M0,0 L"+pos+",0 A"+pos+","+pos+" 0 0,1 0,"+pos+"z")
-	// ripple.attr({'fill': COLORS[index], 'fill': URL[index], 'stroke': COLORS[index]})
-	// 	  .data('id', RIPPLE_ID[index]);
-	// title = paper.text(pos - titleOffset, titleHeight, LABELS[index]).attr({'font-size': '24px', 'font-style': 'italic', 'opacity': 1});
-	// topLetter = paper.text(pos - titleOffset, titleHeight, LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0});
-	// bottomLetter = paper.text((w-155), (h - titleHeight), LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0});
- //    return {ripple: ripple, title: title, topLetter: topLetter, bottomLetter: bottomLetter};
 }
 
 Button.prototype.onClick = function(){
@@ -312,6 +133,7 @@ Button.prototype.onClick = function(){
 };
 
 Button.prototype.addClickListener = function(callback){
+	//magic function for button click listeners
 	this.ripple.click($.proxy(callback, this));
 };
 
@@ -320,69 +142,111 @@ function buildRipples(total) {
 	//var button = new Button();
 	var button;
 
-
 	for(var index = total-1; index >= 0; index--)
 	{
 		button = buildRippleNode(index);
 		button.addClickListener(function(){
+			//call animate function on click
 			animateButton(this.index);
+
+		// // if(this.index !== i){
+		// 		//set all the other ripples to not active / not big
+		// 		// this.ripple.isActive = false;
+		// 		// this.ripple.isBig = false;	
+		// // }
+
+		// this.ripple.isActive = true;
+		// console.log( this.index +"is active = " + this.ripple.isActive);
+
+		// if (this.ripple.isActive && !this.ripple.isBig) {
+		// 	growRippleNode(this.index);	 			
+		// 	$("#navigation").fadeIn();
+	 // 		$("#containerinner").fadeOut(function() {
+	 // 			if(this.index === 0){
+
+		// 			loadCradle();
+		// 		}
+	 // 		});		
+		// 	fadeTitles(0);				
+		// 	this.ripple.isBig = true;
+		// 	console.log(index + " is big = " + this.ripple.isBig);
+		// 	this.ripple.isActive = false;
+		// 	console.log(index+" is active = " + this.ripple.isActive);
+
+		// } else if (!this.ripple.isBig) {
+		// 		console.log("Shrinking menu["+index+"]")
+		// 		shrinkRippleNode(1);
+		// }	 		
 			//growRippleNode(this.index);
+			// if(this.index === 0){
+			// 	loadCradle();
+			// }
 		});
 		//button.on('click', handleMenu);
 		menu.unshift(button);
-
 	}
 
 	for(var i = 0; i < total; i++) {
 		console.log(menu[i].id);
 	}
-	
 }
-function animateButton(index){
-				console.log('console here', index)
 
-			for(var i=0; i<menu.length; i++){
-				if(index !== i){
+function animateButton(index){
+
+//interactivity for ripple navigation
+	console.log('console here', index)
+
+		for(var i = 0; i < menu.length; i++ ) {
+			if(index !== i){
+				//set all the other ripples to not active / not big
 				menu[index].ripple.isActive = false;
 				menu[index].ripple.isBig = false;	
+			}
+		}
+		//set this ripple to active	
+		menu[index].ripple.isActive = true;
+		console.log("menu[" + index + "] is active = " + menu[index].ripple.isActive);
+
+		if (menu[index].ripple.isActive && !menu[index].ripple.isBig) {
+			growRippleNode(index, function() {
+				if(index === 0){
+					loadCradle();
+					$("#cradleContent").css({"display" : ""});
+					//loadCradle2();
+				} else {
+					$("#cradleContent").css({"display" : "none"});
 				}
-				
-			}
-			menu[index].ripple.isActive = true;
-		
-			//menu[1].ripple.isActive = !menu[1].ripple.isActive;
-			//console.log(menu[0] + " was clicked");
-			console.log("menu[" + index + "] is active = " + menu[index].ripple.isActive);
+			});	 			
+			$("#navigation").fadeIn();
+	 		$("#containerinner").fadeOut(function() {
 
-			if (menu[index].ripple.isActive && !menu[index].ripple.isBig) {
-				growRippleNode(index);
-	 			$("#navigation").fadeIn();
-	 			$("#containerinner").fadeOut();
-				//fade out titles (pass in opacity)
-				fadeTitles(0);
-				menu[index].ripple.isBig = true;
-				console.log("menu["+index+"] is big = " + menu[index].ripple.isBig);
-				menu[index].ripple.isActive = false;
-				// console.log("menu[1] is active = " + menu[1].ripple.isActive);
+	 		});
 
 
-			} else if (!menu[index].ripple.isBig) {
-				console.log("Shrinking menu["+index+"]")
-				shrinkRippleNode(1);
-			}
+			//fade out titles (pass in opacity)
+			fadeTitles(0);				
+			menu[index].ripple.isBig = true;
+			console.log("menu["+index+"] is big = " + menu[index].ripple.isBig);
+			menu[index].ripple.isActive = false;
+			console.log("menu["+index+"] is active = " + menu[index].ripple.isActive);
+
+			// if(index === 0){
+			// 	loadCradle();
+			// }
+
+		} else if (!menu[index].ripple.isBig) {
+			console.log("Shrinking menu["+index+"]")
+			//shrinkRippleNode(1);
+			shrinkRippleNode(index);
+		}
 }
-// function setRippleID(total) {
-// 	for (var i = 0; i < total; i++) {
-// 		ripples[i] = menu[i].button.ripple;
-// 		console.log(ripples[i]);
-// 	}
-// }
+
 
 function growRipples() {
 
 }
 
-function growRippleNode(index) {
+function growRippleNode(index, callback) {
 	var speed = config.rippleGrowSpeed;
 	var bigRadiusOffset = config.bigRadiusOffset;
 
@@ -393,16 +257,16 @@ function growRippleNode(index) {
 		var posY = posX * (0.8154762); //multiplier is same as ((posX - bigRadHeightShift)/ posX)
 		ripple.animate({path: "M0,0 L" + posX +",0 A" + posX +"," + posY + " 0 0,1 0," + posY + "z"}, speed,
 		function() {
-			$(document).trigger("animation.end");
+			//$(document).trigger("animation.end");
 			for(var i = index; i < menu.length; i++) {
 
-					var _index = i+1
-					if( i === menu.length-1) {
-						continue;
-					}
-	
-					fadeBottomLetters( _index, 1);
-					fadeTopLetters(i, 0);
+				var _index = i+1
+				if( i === menu.length-1) {
+					continue;
+				}
+
+				fadeBottomLetters( _index, 1);
+				fadeTopLetters(i, 0);
 			}
 		});
 	}
@@ -410,6 +274,8 @@ function growRippleNode(index) {
 	for(var i = 0; i < index; i++) {
 		shrinkRippleNode(i);
 	}
+
+	callback();
 }
 
 function shrinkRippleNode(index) {
@@ -422,7 +288,7 @@ function shrinkRippleNode(index) {
 		var pos = smCradleR + (smRadiusOffset * i);
 		ripple.animate({path: "M0,0 L" + pos +",0 A" + pos +"," + pos + " 0 0,1 0," + pos + "z"}, speed,
 		function() {
-			$(document).trigger("animation.end");
+			//$(document).trigger("animation.end");
 			 for(var i = 0; i <= index; i++) {
 
 			 	var _index = i + 1;
@@ -440,25 +306,37 @@ function shrinkRippleNode(index) {
 function animateHome() {
 	for( var i = 0; i < menu.length; i++) {
 		animateHomeNode(i);
-
 	}
 }
 
 function animateHomeNode(index) {
+	//take ripples back to original state - home page
 	var speed = config.rippleGrowSpeed;
 	var offset = 180;
 	var pos = (offset * index) + offset; //radius of Home Button
 	var titleOffset = config.titleOffset;
 	var titleHeight = config.titleHeight;
 
-	var ripple = menu[index].ripple;
-	menu[index].isActive = false;
-	ripple.animate({path: "M0,0 L"+pos+",0 A"+pos+","+pos+" 0 0,1 0,"+pos+"z"}), speed,
-	function() {
-		$(document).trigger("animation.end");
-			//fade in titles, opacity = 1
-			fadeTitles(1);
+	for(var i = 0; i < menu.length; i++) {
+		//fade out bottom letters, opacity = 0
+		fadeBottomLetters(i, 0);	
+		fadeTopLetters(i, 0);
 	}
+
+	var ripple = menu[index].ripple;
+	ripple.animate({path: "M0,0 L"+pos+",0 A"+pos+","+pos+" 0 0,1 0,"+pos+"z"}, speed,
+	function() {
+		//$(document).trigger("animation.end");
+		//fade in titles, opacity = 1
+		fadeTitles(1);
+		$("#navigation").fadeOut();
+ 		$("#containerinner").fadeIn();
+ 		$("#cradleContent").fadeOut();
+ 		console.log("In animate home");
+	});
+	//set menus to not big, not active
+	menu[index].isActive = false;
+	menu[index].isBig = false;
 }
 
 // function loadCradlePage() {
@@ -485,14 +363,112 @@ function animateHomeNode(index) {
 // 	// fadeTitles(0);
 // }
 
-function loadCradle() {
-	growRippleNode(0);
-	$("#navigation").fadeIn();
-	$("containerinner").fadeOut();
-	//fade out titles (pass in opacity)
-	fadeTitles(0);
+var loadCradle2 = function() {
+	$("cradleContent2").load("/cradle/index.html #cradle_main", function() {
+	var cssLink = "/cradle/css/style.css";
+    // $("head").append("  <link href="+ &quot; + cssLink + &quot; +" rel="stylesheet" />");
+    console.log("THis is the css link : " + cssLink);
+   //  $('<link rel="stylesheet" type="text/css" href="'+cssLink+'" >')
+   // .appendTo("head");
+
+   $.get(cssLink, function(css) {
+   		$('<style type="text/css"></style>')
+     		.html(css)
+      		// .appendTo("head");
+	});
+   $("#cradleContent2").css({'width': '100%', 'height': '98%'});
+});
 }
 
+var loadCradle = function () {
+	//growRippleNode(0);
+	//$("#navigation").fadeIn();
+	//$("containerinner").fadeOut();
+	//fade out titles (pass in opacity)
+	//fadeTitles(0);
+
+//this works, but doesn't load cradle css
+$("#cradleContent").load("/cradle/index.html #cradle_wrapper", function() {
+	console.log("cradle was loaded");
+	cradleLoaded = true;
+	var cssLink = "/cradle/css/style.css";
+	var jsLink = "/cradle/js/cradle.js";
+    // $("head").append("  <link href="+ &quot; + cssLink + &quot; +" rel="stylesheet" />");
+    console.log("THis is the css link : " + cssLink);
+   //  $('<link rel="stylesheet" type="text/css" href="'+cssLink+'" >')
+   // .appendTo("head");
+
+   $.get(cssLink, function(css) {
+   		$('<style type="text/css"></style>')
+     		.html(css)
+      		// .appendTo("head");
+	});
+   $.getScript(jsLink);
+   $("#cradleContent").css({'width': '100%', 'height': '98%'});
+   $(".cradle_top").css({'background': 'none'});
+   //$("#cradle_structure").css({'top': '70', 'left': '30%'});
+   //$("#cradleContent").fadeIn();
+	// e.preventDefault();
+	// $.getScript("/cradle/js/cradle.js");
+    //$.getCSS({href:"cradle/css/style.css", media:"screen"});
+    // $.getCSS("/cradle/css/style.css");
+ });
+
+
+
+
+// $("#cradleContent").html("Loading...");
+ 	
+ 	
+//     var pagelink = "cradle/";
+//     var url = pagelink + "index.html";
+//  	console.log("this is the url im loading  : "+ url);
+//     $.ajax({
+//         url : url,
+//         type : "GET",
+//         dataType : "html",
+//         context: cradleContent
+//     }).done(function(data) {
+//         $("#cradleContent").html(data);
+//         $("#cradleContent link").each(function() {
+//             //var cssLink = pagelink + $(this).attr('href');
+//             var cssLink = "/cradle/css/style.css";
+//             // $("head").append("  <link href="+ &quot; + cssLink + &quot; +" rel="stylesheet" />");
+//             console.log("THis is the css link : " + cssLink);
+//             $('<link rel="stylesheet" type="text/css" href="'+cssLink+'" >')
+//    .appendTo("head");
+//             // $("head").append("  <link href= \'' "+  cssLink " \'' " +"rel= \'stylesheet \'' />");
+//         });
+//         $("#cradleContent script").each(function() {
+//             //var jsLink = pagelink + $(this).attr('src');
+//             var jsLink = "cradle/js/cradle.js";
+
+//             console.log("THis is the js link : " + jsLink);
+//             $('<script type="text/javascript" src="'+jsLink+'">').appendTo("head");
+//             cradleLoaded = true;
+//             // $("head").append("<script type="text/javascript" src="&quot; + jsLink + &quot;"></script>");
+//  });
+
+
+ 
+//  }).fail(function(jqXHR, textStatus, errorThrown) {
+//  $("#cradleContent").html("Error!! File is not loaded");
+//  });
+
+}
+
+function fadeTitleNode(index, opacity) {
+	var speed = config.titleFadeSpeed;
+	var title = menu[index].title;
+	title.animate({'opacity': opacity}, speed);
+}
+
+function fadeTitles(opacity) {
+	for(var i=0; i<menu.length; i++){
+		fadeTitleNode(i, opacity);
+		console.log("fade");
+	}
+}
 
 function fadeBottomLetters(index, opacity) {
 	var speed = config.titleFadeSpeed;

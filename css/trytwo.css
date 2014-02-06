@@ -21,7 +21,7 @@ div#container {
 h2 { font-size: 1.25em; margin-top: 4px; font-style: italic; text-align: left}
 /*div#container div#containerinner {position: absolute; margin-left: 860;}*/
 div#container div#titleblock { position: absolute; }
-div#container div#logos { position: absolute; bottom: 20; left: 20; }
+div#container div#logos { position: absolute; bottom: 20; left: 20; z-index: 5;}
 div#container div#pinchelines { position: absolute; width: 4px; background: url(../art/placeholder_dots.png) repeat-y; }
 div#container div#bodytext { position: absolute; margin-right: 20px; text-align: left; width: 520px; }
 div#container div#bodytext p { margin: 1em 0; font-size: .9em;}
@@ -38,12 +38,36 @@ div#container div#cradle:hover { color: #fbb03b; }
 /*
 div#container div#home_button { position: absolute; bottom: 30; right: 30; display: none;}
 div#container div#home_button img { width: 40px; height: 35px;}
-*/
 
-div#container div#home_button { position: absolute; bottom: 30; right: 30;}
+div#container #navigation {position: relative; }
+*/
+div#container div#home_button { position: absolute; bottom: 30; right: 30; z-index: 5;}
 div#container div#home_button img { width: 40px; height: 35px;}
 div #canvas_container {
 	width: auto;
 	position: absolute;
+	z-index: 1;
+}
+div #cradleContent {
+	/*width: 100%;
+	height: 100%;*/
+	width: auto;
+	position: absolute;
+	z-index: 10;
+	top: 0px;
+	left: 0px;
+	text-align: right;
+}
+
+div #cradleContent {
+	/*width: 100%;
+	height: 100%;*/
+	width: auto;
+	position: absolute;
+	z-index: 10;
+	top: 0px;
+	left: 0px;
+	text-align: right;
+	pointer-events: none;
 }
 
