@@ -132,3 +132,8 @@ div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_1t 
 div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_2t { width: 400px; padding: 100px 20px 20px 20px; }
 div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_3t { width: 400px; padding: 20px; text-align: left;  }
 div#legacy_container div#legacy_containerinner div#legacy_startspace p#legstart { position: absolute; z-index: 5090; pointer-events: none; font-size: 1.7em }
+#legacy_wrapper {
+	position: relative;
+	width: auto;
+	height: auto;
+}

@@ -14,8 +14,19 @@ div#browserno { background-color: #f00; width: 100%; text-align: center; positio
 div#browserno div.padded { padding: 30px 20px 10px 20px; font-size: 1.2em; color: #fff; }
 div#legacy_container { height: 98%; text-align: center; position: relative; padding: 20px; width: 98%; }
 div.cradle_top { text-align: center; background: #ecda50 url(../../art/c_bg.jpg) repeat-x; width: 100%; height: 98%; position: relative }
-div#cradle_main { position: relative; width: 100%; height: 100%; text-align: center; background: #000;}
-div.cradle_bottom { text-align: center; background: #ead84e url(../../art/c_bg_b.jpg) bottom left  repeat-x; width: 100%; position: relative ; clear: both;}
+div#cradle_main { 
+	position: relative; 
+	width: 100%; height: 100%; 
+	text-align: center; 
+	background: #000;
+	pointer-events: all;}
+div.cradle_bottom { 
+	text-align: center; 
+	background: #ead84e url(../../art/c_bg_b.jpg) bottom left repeat-x; 
+	width: 100%; 
+	height: 100%;
+	position: relative ; 
+	clear: both;}
 div.cradle_bottom div.inner { padding: 30px 0 30px 0; }
 div#cradle_main div#instructions { position: absolute; z-index: 800; cursor: pointer; background: rgba(0,0,0,.6); width: 760px; padding: 200px 100px 160px 100px; height: 180px; text-align: center; }
 div#cradle_main div#instructions span#swifter { width: 187px; height: 540px; z-index: 1; left: 388; top: 0; position: absolute; background: url(../art/instructions_spin.png); }
@@ -27,7 +38,7 @@ div#cradle_main div#instructions p#crad_2 { color: #eddb58; top: -15; left: 165;
 div#cradle_main div#instructions p#crad_3 { top: 120; }
 div#cradle_top h1 { color: #000; padding-top: 8px; font-size: 2.1em; }
 div#cradle_bottom h2 { color: #000; padding-bottom: 8px; font-size: 1.6em; text-align: center; }
-div.cradle_top div.cradleplay { position: absolute; width: 127px; height: 45px; cursor: pointer; z-index: 5; background: url(../../art/f_playbutton.png); }
+div.cradle_top div.cradleplay { position: absolute; width: 127px; height: 45px; cursor: pointer; z-index: 5; background: url(../../art/f_playbutton.png); pointer-events: all; }
 div.cradle_top div#cradle_line { background: url(../art/b_line.png) repeat-y; width: 3px; position: absolute; }
 div.cradle_bottom div#cradle_bottomline { z-index: 1; background: url(../art/b_line.png) repeat-y; width: 3px; position: absolute; }
 div.cradle_bottom div#cradle_bottomtitle { z-index: 2; position: absolute; bottom: 25; width: 100%; text-align: center; }
@@ -38,7 +49,16 @@ div.cradle_bottom div#cbottom_structure div a { color: 000; }
 div.cradle_bottom div#cbottom_structure div.cbottom_l { color: #ead84e; width: 385px; float: left; margin-right: 40px; }
 div.cradle_bottom div#cbottom_structure div.cbottom_l a { color: #ead84e; }
 div#cradle_main div#cradle_linewhite { background: url(../art/b_linewhite.png) repeat-y; width: 3px; position: absolute; z-index: 1; }
-div.cradle_top div#cradle_structure { width: 731px; height: 392px; padding-top: 80px; text-align: left; position: absolute; top: 0; left: 0; z-index: 3; color: #ecda50; background: url(../art/structurebg.png); }
+div.cradle_top div#cradle_structure { 
+	width: 731px; 
+	height: 392px; 
+	padding-top: 80px; 
+	text-align: left; 
+	position: absolute; 
+	top: 0; left: 25%; 
+	z-index: 3; 
+	color: #ecda50; 
+	background: url(../art/structurebg.png); }
 div.cradle_top div#cradle_structure div { width: 306px; height: 89px; padding: 20px 30px 20px 30px; position: absolute; }
 div.cradle_top div#cradle_structure div#c_c { left: 366; top: 235; } 
 div.cradle_top div#cradle_structure div#c_d { top: 355; }

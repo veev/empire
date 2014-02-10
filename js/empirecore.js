@@ -16,16 +16,20 @@ var config = {
 	animationSpeed:1000,
 	titleHeight:40,
 	bigRadiusOffset: 60,
-	bigRadHeightShift: 310,
+	bigRadHeightShift: 200,
 	smCradleRadius: 100,
 	smRadiusOffset: 70,
-	bottomLetterOffset: 30,
-	rippleGrowSpeed: 500,
+	bottomLetterOffset: 28,
+	rippleGrowSpeed: 600,
+	heightMultiplier: 0.20,
 	titleFadeSpeed: 500,
-	theta: 40.10359804
+	// theta: 40.10359804
+	theta: 39
 };
 
 var cradleLoaded = false;
+var legacyLoaded = false;
+var peripheryLoaded = false;
 var menu = [];
 var RIPPLE_ID = ['ripple_c', 'ripple_l', 'ripple_m', 'ripple_p'];
 var LABELS = ['Cradle','Legacy','Migrants', 'Periphery'];
@@ -40,6 +44,12 @@ $(document).ready(function () {
 	if(cradleLoaded){
 		cradleLoaded = false;	
 
+	} else if (legacyLoaded) {
+		legacyLoaded = false;
+
+	} else if (peripheryLoaded) {
+		peripheryLoaded = false;
+
 	}
 
 	else{
@@ -47,12 +57,12 @@ $(document).ready(function () {
 	console.log("Im in ready ");
 	w = $("#container").width();
 	h = $("#container").height();
-	paper = Raphael('canvas_container', w, h);
-	
+	paper = ScaleRaphael('canvas_container', w, h);
+	// paper.setViewBox(0, 0, w, h, true);
+	// paper.canvas.setAttribute('preserveAspectRatio', 'none'); 
 
 	buildRipples(total); //creates four ripples
 
-	//loadCradlePage();
 	drawer();
 	$("#containerinner").fadeIn();
 
@@ -69,10 +79,21 @@ $(document).ready(function () {
 		animateHome();
 	});
  }
+
+ //   	$(document).on('click', function (e) {
+   		
+ // 			//console.log('playElement');
+ // 			console.log(e);
+	// 		//playButton();
+	// });
+
+
 });
 
 $(window).resize(drawer);
-//$(window).resize(buildRipples(total));
+// $(window).resize(function() {
+// 	w = 
+// });
 
 
 function buildRippleNode(index){
@@ -81,7 +102,7 @@ function buildRippleNode(index){
 	var pos = (offset * index) + offset; //radius of Home Button
 	var titleOffset = config.titleOffset;
 	var titleHeight = config.titleHeight;
-
+	var aspectRatio = h/w;
 	//topLetter variables
 	var smCradleR = config.smCradleRadius;
 	var smRadiusOffset = config.smRadiusOffset;
@@ -89,13 +110,30 @@ function buildRippleNode(index){
 
 	//bottomLetter variables
 	var bigRadiusOffset = config.bigRadiusOffset;
-	var posX = w + (bigRadiusOffset * index);
+	//var posX = w + (bigRadiusOffset * index);
+	var posX = w + (0.036 * w * index);
 	//var posY = posX - config.bigRadHeightShift;
-	var posY = posX * (0.8154762);
+	//var posY = posX * (0.8154762);
+	//var posY = posX - 100;
+	// var posY = posX   * ((posX - config.heightMultiplier)/ posX);
+		// var posY = posX * (0.8154762);
+	//var posY = posX * (0.8154762);
+	var posY = (posX * aspectRatio);
+	posY += posY*0.5;
 	var bottomLetterOffset = config.bottomLetterOffset;
 	var theta = config.theta;
 	var rad = Math.PI/180;
-	var botLetX = (posX * Math.cos(theta*rad)) + (bottomLetterOffset * index);
+	// var botLetX = (posX * Math.cos(theta*rad)) + (bottomLetterOffset * index);
+
+	//var botLetX =  posX * Math.cos((theta-(index*1.2)) * rad);
+	var posY_ = w * aspectRatio;
+	posY_ += posY_*0.5;
+	var thetaY = theta;
+	var botLetX =  (posX) * Math.cos((theta) * rad) + (bottomLetterOffset * index) - (bottomLetterOffset*1.3);
+	var botLetY =  posY_ * Math.sin(thetaY * rad);
+	
+	// botLetX += 80*(index);
+	// var botLetX = w* 0.75 +bottomLetterOffset*index ;//+ bottomLetterOffset*0.80*index;
 
 	ripple = paper.path("M0,0 L"+pos+",0 A"+pos+","+pos+" 0 0,1 0,"+pos+"z")
 	ripple.attr({'fill': COLORS[index], 'fill': URL[index], 'stroke': COLORS[index]})
@@ -104,8 +142,13 @@ function buildRippleNode(index){
 	delete ripple.pattern;
 	title = paper.text(pos - titleOffset, titleHeight, LABELS[index]).attr({'font-size': '24px', 'font-style': 'italic', 'opacity': 1});
 	topLetter = paper.text(topLetX, titleHeight, LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0});
-	bottomLetter = paper.text(botLetX, (h - titleHeight), LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0});
-    
+	bottomLetter = paper.text(botLetX, botLetY, LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0});
+
+	// for(var i=0; i< 360; i++){
+	// 	botLetX =  posX * Math.cos(i * rad);
+	// 	botLetY =  posY * Math.sin(i * rad);
+	// 	bottomLetter = paper.text(botLetX, botLetY, i).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0.1});
+	// }    
     var btn = new Button(ripple, title, topLetter, bottomLetter, false, false);
     btn.id = RIPPLE_ID[index];
     btn.index = index;
@@ -149,38 +192,6 @@ function buildRipples(total) {
 			//call animate function on click
 			animateButton(this.index);
 
-		// // if(this.index !== i){
-		// 		//set all the other ripples to not active / not big
-		// 		// this.ripple.isActive = false;
-		// 		// this.ripple.isBig = false;	
-		// // }
-
-		// this.ripple.isActive = true;
-		// console.log( this.index +"is active = " + this.ripple.isActive);
-
-		// if (this.ripple.isActive && !this.ripple.isBig) {
-		// 	growRippleNode(this.index);	 			
-		// 	$("#navigation").fadeIn();
-	 // 		$("#containerinner").fadeOut(function() {
-	 // 			if(this.index === 0){
-
-		// 			loadCradle();
-		// 		}
-	 // 		});		
-		// 	fadeTitles(0);				
-		// 	this.ripple.isBig = true;
-		// 	console.log(index + " is big = " + this.ripple.isBig);
-		// 	this.ripple.isActive = false;
-		// 	console.log(index+" is active = " + this.ripple.isActive);
-
-		// } else if (!this.ripple.isBig) {
-		// 		console.log("Shrinking menu["+index+"]")
-		// 		shrinkRippleNode(1);
-		// }	 		
-			//growRippleNode(this.index);
-			// if(this.index === 0){
-			// 	loadCradle();
-			// }
 		});
 		//button.on('click', handleMenu);
 		menu.unshift(button);
@@ -209,13 +220,35 @@ function animateButton(index){
 
 		if (menu[index].ripple.isActive && !menu[index].ripple.isBig) {
 			growRippleNode(index, function() {
-				if(index === 0){
-					loadCradle();
-					$("#cradleContent").css({"display" : ""});
-					//loadCradle2();
-				} else {
-					$("#cradleContent").css({"display" : "none"});
-				}
+
+				if(index === 0 && !cradleLoaded){
+					loadCradle( function() {
+						//attachCradleEvents();
+						 //$("#cradleContent").fadeIn(1000);
+					});
+					$("#cradleContent").fadeIn(2000);
+				 } else if (index != 0 ) {
+				 	cradleLoaded = false;
+				 	$("#cradleContent").fadeOut("fast");
+				 }
+
+				 // if(index === 1 && !legacyLoaded) {
+				 // 	loadLegacy();
+				 // 	$("#legacyContent").fadeIn(2000);
+				 // } else if (index != 1) {
+				 // 	legacyLoaded = false;
+				 // 	$("#legacyContent").fadeOut("fast");
+				 // }
+
+				 if(index === 3 && !peripheryLoaded) {
+				 	loadPeriphery( function() {
+				 		//not sure if i need a callback or not
+				 	});
+				 	$("#peripheryContent").fadeIn(2000);
+				 } else if ( index != 3 ) {
+				 	peripheryLoaded = false;
+				 	$("#peripheryContent").fadeOut("fast");
+				 }
 			});	 			
 			$("#navigation").fadeIn();
 	 		$("#containerinner").fadeOut(function() {
@@ -229,10 +262,6 @@ function animateButton(index){
 			console.log("menu["+index+"] is big = " + menu[index].ripple.isBig);
 			menu[index].ripple.isActive = false;
 			console.log("menu["+index+"] is active = " + menu[index].ripple.isActive);
-
-			// if(index === 0){
-			// 	loadCradle();
-			// }
 
 		} else if (!menu[index].ripple.isBig) {
 			console.log("Shrinking menu["+index+"]")
@@ -249,12 +278,23 @@ function growRipples() {
 function growRippleNode(index, callback) {
 	var speed = config.rippleGrowSpeed;
 	var bigRadiusOffset = config.bigRadiusOffset;
+	var aspectRatio = h/w;
+	//console.log('aspectRatio:' + aspectRatio);
+	//var newBigRadOffset = bigRadiusOffset/w;
 
 	for(var i = index; i < menu.length; i++) {
+		fadeTopLetters(i, 0);
 		var ripple = menu[i].ripple;
-		var posX = w + (bigRadiusOffset * i);
+		var posX = w + (0.036*w * i);
+		//var posX = w + (bigRadiusOffset * i);
+		//console.log("ratio: " + (bigRadiusOffset/w) );
 		//var posY = posX - config.bigRadHeightShift;
-		var posY = posX * (0.8154762); //multiplier is same as ((posX - bigRadHeightShift)/ posX)
+		// var posY = posX * ((posX - h + h*config.heightMultiplier)/ posX);
+		//var posY = h * (0.8154762); //multiplier is same as ((posX - bigRadHeightShift)/ posX)
+		//var posY = posX * (0.8154762);
+		var posY = (posX * aspectRatio);
+		posY += posY*0.5;
+		console.log("posY: " + posY);
 		ripple.animate({path: "M0,0 L" + posX +",0 A" + posX +"," + posY + " 0 0,1 0," + posY + "z"}, speed,
 		function() {
 			//$(document).trigger("animation.end");
@@ -266,8 +306,10 @@ function growRippleNode(index, callback) {
 				}
 
 				fadeBottomLetters( _index, 1);
-				fadeTopLetters(i, 0);
+
 			}
+			console.log("faded bottom letters");
+
 		});
 	}
 
@@ -284,19 +326,29 @@ function shrinkRippleNode(index) {
 	var smRadiusOffset = config.smRadiusOffset;
 
 	for(var i = 0; i <= index; i++) {
+		
+		var _index = i + 1;
+
+		if(index === menu.length - 1) {
+			 continue;
+			}
+		fadeBottomLetters( _index, 0);
+
 		var ripple = menu[i].ripple;
 		var pos = smCradleR + (smRadiusOffset * i);
 		ripple.animate({path: "M0,0 L" + pos +",0 A" + pos +"," + pos + " 0 0,1 0," + pos + "z"}, speed,
 		function() {
 			//$(document).trigger("animation.end");
-			 for(var i = 0; i <= index; i++) {
+			  for(var i = 0; i <= index; i++) {
 
-			 	var _index = i + 1;
-			 	if(i === menu.length - 1) {
-			 		continue;
-			 	}
-			 	fadeTopLetters( i, 1);
-			 	fadeBottomLetters( _index, 0);
+			 	// var _index = i + 1;
+			 	// if(i === menu.length - 1) {
+			 	// 	continue;
+			 	// }
+
+				fadeTopLetters( i, 1);	
+
+			 	// fadeBottomLetters( _index, 0);
 
 			 }
 		});
@@ -322,7 +374,9 @@ function animateHomeNode(index) {
 		fadeBottomLetters(i, 0);	
 		fadeTopLetters(i, 0);
 	}
-
+	$("#cradleContent").fadeOut();
+	$("#legacyContent").fadeOut();
+	$("#peripheryContent").fadeOut();
 	var ripple = menu[index].ripple;
 	ripple.animate({path: "M0,0 L"+pos+",0 A"+pos+","+pos+" 0 0,1 0,"+pos+"z"}, speed,
 	function() {
@@ -331,7 +385,6 @@ function animateHomeNode(index) {
 		fadeTitles(1);
 		$("#navigation").fadeOut();
  		$("#containerinner").fadeIn();
- 		$("#cradleContent").fadeOut();
  		console.log("In animate home");
 	});
 	//set menus to not big, not active
@@ -339,54 +392,9 @@ function animateHomeNode(index) {
 	menu[index].isBig = false;
 }
 
-// function loadCradlePage() {
-// 	//buildRipples(total);
-// 	var bigRadiusOffset = config.bigRadiusOffset;
 
-// 	for (var i = 0; i < menu.length; i++) {
-// 		var ripple = menu[i].ripple;
-// 		var posX = w + (bigRadiusOffset * i);
-// 		//var posY = posX - config.bigRadHeightShift;
-// 		var posY = posX * (0.8154762); //multiplier is same as ((posX - bigRadHeightShift)/ posX)
-// 		ripple = paper.path("M0,0 L" + posX +",0 A" + posX +"," + posY + " 0 0,1 0," + posY + "z");
-
-// 		var _index = i + 1;
-// 		if(i === menu.length - 1) {
-// 			 continue;
-// 		}
-// 		fadeBottomLetters( _index, 1);
-// 	}
-// 	// growRippleNode(0);
-//  // 	$("#navigation").fadeIn();
-//  // 	$("#containerinner").fadeOut();
-// 	// //fade out titles (pass in opacity)
-// 	// fadeTitles(0);
-// }
-
-var loadCradle2 = function() {
-	$("cradleContent2").load("/cradle/index.html #cradle_main", function() {
-	var cssLink = "/cradle/css/style.css";
-    // $("head").append("  <link href="+ &quot; + cssLink + &quot; +" rel="stylesheet" />");
-    console.log("THis is the css link : " + cssLink);
-   //  $('<link rel="stylesheet" type="text/css" href="'+cssLink+'" >')
-   // .appendTo("head");
-
-   $.get(cssLink, function(css) {
-   		$('<style type="text/css"></style>')
-     		.html(css)
-      		// .appendTo("head");
-	});
-   $("#cradleContent2").css({'width': '100%', 'height': '98%'});
-});
-}
-
-var loadCradle = function () {
-	//growRippleNode(0);
-	//$("#navigation").fadeIn();
-	//$("containerinner").fadeOut();
-	//fade out titles (pass in opacity)
-	//fadeTitles(0);
-
+var loadCradle = function (callback) {
+ 
 //this works, but doesn't load cradle css
 $("#cradleContent").load("/cradle/index.html #cradle_wrapper", function() {
 	console.log("cradle was loaded");
@@ -398,30 +406,243 @@ $("#cradleContent").load("/cradle/index.html #cradle_wrapper", function() {
    //  $('<link rel="stylesheet" type="text/css" href="'+cssLink+'" >')
    // .appendTo("head");
 
+
    $.get(cssLink, function(css) {
    		$('<style type="text/css"></style>')
      		.html(css)
       		// .appendTo("head");
+        $.getScript(jsLink, function(){
+   			console.log('cradle getScript');
+   		    attachCradleEvents();
+   		});
 	});
-   $.getScript(jsLink);
-   $("#cradleContent").css({'width': '100%', 'height': '98%'});
+   $("#cradleContent").css({'width': '100%', 'height': '100%'});
    $(".cradle_top").css({'background': 'none'});
-   //$("#cradle_structure").css({'top': '70', 'left': '30%'});
-   //$("#cradleContent").fadeIn();
-	// e.preventDefault();
-	// $.getScript("/cradle/js/cradle.js");
-    //$.getCSS({href:"cradle/css/style.css", media:"screen"});
-    // $.getCSS("/cradle/css/style.css");
+   //$("#cradleContent").css({'display': 'none'});
+  	//$("#cradleContent").fadeIn(1000);
+
+ //   	$("#containerinner").on('click', function (e) {
+ //   		if(e.target && e.targetNode)
+ // 			//console.log('playElement');
+ // 			console.log(e);
+	// 		//playButton();
+	// });
+ 
  });
 
+callback();
+
+}
+
+function attachCradleEvents() {
+		if(document.getElementById("video1") !== null) {
+			console.log("video1 not null");
+			document.getElementById("video1").addEventListener("canplay",function(){
+				vid1Loaded = true; 
+				console.log('vid1Loaded = '+ vid1Loaded);
+			},false);
+			document.getElementById("video1").addEventListener("ended",function(){ 
+				endVids();
+			},false);
+			document.getElementById("video1").addEventListener("timeupdate",function(){
+				scrubberUpdater();
+			},false);
+		}
+
+		if(document.getElementById("video2") !== null) {
+			console.log("video2 not null");
+			document.getElementById("video2").addEventListener("canplay",function(){
+				vid2Loaded = true; 
+				console.log('vid2Loaded = '+ vid2Loaded);
+			},false);
+		}
+
+		$(document).on('keydown',function (e) {
+    		var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+    		if (key === 32){
+       			e.preventDefault();
+    			if(c_playState === 1 || c_playState === 2){
+    				playButton();
+    				console.log("cradle playButton(); event");
+    			}
+    		}
+ 		});
+
+ 		$("#playElement").on('click', function () {
+ 			console.log('playElement');
+			playButton();
+		}).on('mouseover', function (){
+			console.log("c_playState: " + c_playState);
+			if(c_playState === 1){
+				$("#playElement").css({'background':'url(cradle/art/pauseWhite.png)'})
+			} else {				
+				$("#playElement").css({'background':'url(cradle/art/playWhite.png)'})
+			}
+		}).on('mouseout', function (){
+			if(c_playState === 1){
+				$("#playElement").css({'background':'url(cradle/art/playWhite.png)'})
+			} else {				
+				$("#playElement").css({'background':'url(cradle/art/pauseGray.png)'})
+			}
+		});
+
+		//cradle_openscreen();
+
+	// });
+
+		$("#instructions").on('click', function () { 
+			if(!_ammobile){ 
+				playDecide() 
+			} 
+			cradle_closescreen(); 
+		});
+
+		console.log('tried to update cradle listeners');
+		
+		enablecontrols();
+
+		$(document).scrollsnap({
+			snaps: '.snap',
+			proximity: 180,
+			handler: cradle_scrollsnaphandle
+	});
+}
+
+var loadLegacy = function () {
+ 
+//this works, but doesn't load cradle css
+$("#legacyContent").load("/legacy/index.html #legacy_wrapper", function() {
+	console.log("legacy was loaded");
+	legacyLoaded = true;
+	var cssLink = "/legacy/css/style.css";
+	var jsLink = "/legacy/js/core.js";
+    // $("head").append("  <link href="+ &quot; + cssLink + &quot; +" rel="stylesheet" />");
+    console.log("THis is the css link : " + cssLink);
+   //  $('<link rel="stylesheet" type="text/css" href="'+cssLink+'" >')
+   // .appendTo("head");
+   $.getScript(jsLink, function(){
+   	console.log('hi');
+   	$("#outerinner").on('mouseenter', function(){console.log('zzz');});
+   });
+
+   $.get(cssLink, function(css) {
+   		$('<style type="text/css"></style>')
+     		.html(css)
+      		// .appendTo("head");
+      		console.log("got legacy css");
+	});
+   $("#legacyContent").css({'width': '100%', 'height': '100%'});
+   $(".legacy_top").css({'background': 'none'});
+   $(".yellow").css({'background': 'none'});
+   //$("#cradleContent").css({'display': 'none'});
+   $("#legacyContent").fadeIn(1000);
+ });
+}
+
+var loadPeriphery = function () {
+ 
+//this works, but doesn't load cradle css
+$("#peripheryContent").load("/periphery/index.html #periphery_wrapper", function() {
+	console.log("periphery was loaded");
+	legacyLoaded = true;
+	var cssLink = "/periphery/css/style.css";
+	var jsLink = "/periphery/js/periphery.js";
+    // $("head").append("  <link href="+ &quot; + cssLink + &quot; +" rel="stylesheet" />");
+    console.log("THis is the css link : " + cssLink);
+   //  $('<link rel="stylesheet" type="text/css" href="'+cssLink+'" >')
+   // .appendTo("head");
+   $.getScript(jsLink, function(){
+   		attachPeripheryEvents();
+   		console.log('periphery getScript');
+   		//$("#outerinner").on('mouseenter', function(){console.log('zzz');});
+   });
+
+   $.get(cssLink, function(css) {
+   		$('<style type="text/css"></style>')
+     		.html(css)
+      		// .appendTo("head");
+      		console.log("got periphery css");
+	});
+   $("#peripheryContent").css({'width': '100%', 'height': '100%'});
+   $(".periphery_top").css({'background': 'none'});
+   //$("#cradleContent").css({'display': 'none'});
+   $("#peripheryContent").fadeIn(1000);
+ });
+}
+
+function attachPeripheryEvents() {
+	if(document.getElementById("target") !== null) {
+			console.log("target not null");
+			document.getElementById("target").addEventListener("canplay",function(){
+				p_vidLoaded = true; 
+				console.log('p_vidLoaded = '+ p_vidLoaded);
+			},true);
+			document.getElementById("target").addEventListener("ended",function(){ 
+				p_endVids();
+			},true);
+			document.getElementById("target").addEventListener("timeupdate",function(){
+				p_scrubberUpdater();
+			},true);
+		}
+
+	// $(document).on('keydown', function (e) {
+ //    	var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+ //    	if (key == 32) {
+ //      		e.preventDefault();
+ //      	if(p_playState === 1 || p_playState === 2){
+	// 		 p_playButton();
+ //        	 console.log("p_playButton stuff");
+ //      		}
+ //    	}
+ // 	});
+
+	$("#playElement").on('click', function() {
+  		p_playButton();
+  	}).on('mouseover', function() {
+ 		if(p_playState == 1){
+   			$("#playElement").css({'background':'url(art/pauseWhite.png)'})
+    	} else {        
+     		$("#playElement").css({'background':'url(art/playWhite.png)'})
+    	}
+  		}).on('mouseout', function() {
+    	if(p_playState == 1){
+      		$("#playElement").css({'background':'url(art/playWhite.png)'})
+   		} else {        
+     		$("#playElement").css({'background':'url(art/pauseGray.png)'})
+    	}
+  	});
+
+  	$("#p_instructions").on('click', function () { 
+    if(!_ammobile){ 
+      p_playDecide();
+    } 
+    periphery_closescreen(); 
+  });
+
+  	$(document).scrollsnap({
+    	snaps: '.snap',
+    	proximity: 180,
+    	handler: periphery_scrollsnaphandle
+  });
+
+  	var phome = document.getElementById("home_button_pmain");
+	$("#home_button_pmain").on('click', function() {
+		console.log("go home");
+		animateHome();
+		p_pauseVids();
+		document.getElementById("target").currentTime = 0;
+	});
 
 
+  	p_enablecontrols();
+}
 
 // $("#cradleContent").html("Loading...");
  	
  	
 //     var pagelink = "cradle/";
 //     var url = pagelink + "index.html";
+
 //  	console.log("this is the url im loading  : "+ url);
 //     $.ajax({
 //         url : url,
@@ -429,10 +650,11 @@ $("#cradleContent").load("/cradle/index.html #cradle_wrapper", function() {
 //         dataType : "html",
 //         context: cradleContent
 //     }).done(function(data) {
-//         $("#cradleContent").html(data);
+//     	var $result = $(data).filter('#cradle_wrapper');
+//         $("#cradleContent").html($result);
 //         $("#cradleContent link").each(function() {
 //             //var cssLink = pagelink + $(this).attr('href');
-//             var cssLink = "/cradle/css/style.css";
+//             var cssLink = "cradle/css/style.css";
 //             // $("head").append("  <link href="+ &quot; + cssLink + &quot; +" rel="stylesheet" />");
 //             console.log("THis is the css link : " + cssLink);
 //             $('<link rel="stylesheet" type="text/css" href="'+cssLink+'" >')
@@ -452,10 +674,10 @@ $("#cradleContent").load("/cradle/index.html #cradle_wrapper", function() {
 
  
 //  }).fail(function(jqXHR, textStatus, errorThrown) {
-//  $("#cradleContent").html("Error!! File is not loaded");
+//  	$("#cradleContent").html("Error!! File is not loaded");
 //  });
 
-}
+// }
 
 function fadeTitleNode(index, opacity) {
 	var speed = config.titleFadeSpeed;
@@ -473,12 +695,15 @@ function fadeTitles(opacity) {
 function fadeBottomLetters(index, opacity) {
 	var speed = config.titleFadeSpeed;
 	var bottom = menu[index].bottomLetter;
+	console.log(index);
+	console.log(opacity);
+	console.log(bottom);
 	bottom.animate({'opacity': opacity}, speed);
-	if(opacity === 0) {
-		bottom.hide();
-	} else if (opacity === 1){
-		bottom.show();
-	}
+	// if(opacity === 0) {
+	// 	bottom.hide();
+	// } else if (opacity === 1){
+	// 	bottom.show();
+	// }
 }
 
 function fadeTopLetters(index, opacity) {
@@ -505,6 +730,8 @@ function drawer () {
 	$("#cradle").css({ 'top': ((h/2) + 20), left: ((w/4) - 230) });
 
 	$("#bodytext").css( { 'left': ((w/2) + rMargin), 'top': 220 });
+
+		paper.changeSize(w, h, true, false);
 }
 
 function audioready () {

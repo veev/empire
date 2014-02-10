@@ -6,12 +6,12 @@
 	<script src="../js/jquery.easing.min.js"></script>
 	<script src="../js/jquery.event.special.js"></script>
 	<script src="../js/jquery.scrollsnap.js"></script>
-	<script src="../js/empirecore.js"></script>
+	<!--<script src="../js/empirecore.js"></script>-->
 	<link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
-	<!--
+	
 	<link rel="stylesheet" href="../css/trytwo.css" type="text/css" media="screen" />
-	-->
+	
 	<script src="js/periphery.js"></script>
 		<title>Empire: Periphery</title>
 
@@ -30,41 +30,45 @@
 				<p id="p_b">In Australia, a community searches for certainty in a sea of dreams.</p>
 				<p id="p_c">Crafted from two stories filmed on opposite sides of the world, Empire: Periphery allows you to experience truth and fiction side by side.</p>
 			</div>
-			<div class="periphery_play" id="periphery_play" style="display: none"></div>
+			<div class="peripheryplay" id="peripheryplay" style="display: none"></div>
 		</div>
 		<div id="canvas_container" style="display:none"></div>
 		<div class="outer snap" id="periphery_main">
-			<div id="outerouter">
-				<div id="outerinner">
+			<div id="home_button_pmain">
+					<img src="../art/e_nav.png" width="40" height="35" alt="home"/>
+			</div>
+			<div id="periphery_linewhite"></div>
+			<div id="p_outerouter">				
+				<div id="p_outerinner">
 					<div id="container">
-						<div id="instructions" style="display: none"><span id="ptitle" style="display: none"></span><span id="swifter"></span>
-							<p id="peri_0">Use your mouse or your touch to turn the video</p>
-							<p id="peri_1" class="left">Drag to the left to spend time in the morgue</p>
-							<p id="peri_2" class="right">Drag to the right to spot planes</p>
+						<div id="p_instructions" style="display: none"><span id="ptitle" style="display: none"></span><span id="swifter"></span>
+							<p id="peri_0">Use your mouse to rotate the video</p>
+							<p id="peri_1" class="left">Move to the top to spend time in California</p>
+							<p id="peri_2" class="right">Move to the bottom to visit Australia</p>
 							<p id="peri_3">Your choices will be noted</p>
 						</div>
 							<div id="leftbutton" class="flipbuttons buttonoff"></div>
 							<div id="rightbutton" class="flipbuttons buttonon"></div>
 							<div id="card">
-								<div class="norm" id="periphery0" data-clipname="norm">
+								<div class="norm">
 									<!--
 									<video id="video1" width="1280" height= "720" -webkit-mask-box-image="url(art/periphery_mask.svg)">
 										<source src="http://s3.amazonaws.com/empireproject/PERIPHERY_NORM_VIMEO.mp4" type="video/mp4">
 									</video>
 									-->
-									<video id="target" height="720" width="1280">
-        							<source src="http://s3.amazonaws.com/empireproject/PERIPHERY_NORM_VIMEO.mp4"  type="video/mp4">
+									<video id="target" src="https://s3.amazonaws.com/empireproject/PERIPHERY_NORM_VIMEO_web.mp4" height="720" width="1280" type="video/mp4">
    								 </video>
 								</div>
 								
 							</div>
 					</div>
 					<div id="controls">
-						<span id="playElement" style="cursor: pointer;"></span>
-						<div id="scrubber"><div id="progress"></div>
+						<span id="p_playElement" style="cursor: pointer;"></span>
+						<div id="p_scrubber"><div id="progress"></div>
 					</div>
 				</div>
 			</div>
+
 		</div>
 		<div class="more" id="legmore" style="display:none"></div>
 		</div>
@@ -89,6 +93,9 @@
 					<img src="../art/emp_title.png" width="284" height="43" title="Empire" />
 				</div>
 			</div>
+						<div id="home_button_pbottom">
+					<img src="../art/e_nav.png" width="40" height="35" alt="home"/>
+				</div>
 		</div>
 	</div>	
 	</body>

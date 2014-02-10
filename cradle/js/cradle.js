@@ -7,10 +7,14 @@ var imgWidth = 960;
 var imgHeight = 540;
 var innercount = 3;
 
+//these were declared in empirecore.js, now cradle.js doesn't know about that
+var audioactive = false;
+var _ammobile = false;
+
 var _controls = false;
 var vid1Loaded = false;
 var vid2Loaded = false;
-var playState = 0;
+var c_playState = 0;
 var instructionsin = false;
 var enoughwithinstructions = false;
 var flipside = false;
@@ -37,7 +41,7 @@ var _transitiontimer = new Number();
 var _transitiontimerIvl = new Number();
 
 
-$(document).ready(function(){		
+$(document).ready(function(){	
 
 	if(navigator.userAgent.indexOf('WebKit') == -1 && navigator.userAgent.indexOf('Firefox') == -1){
 		$('body:first').append('<div id="browserno" style="display: none;"><div class="padded">Sorry, this experiment is only currently working in Google Chrome, Apple\'s Safari and Firefox. Other browsers may encounter problems.  We apologize for the inconvenience.</div></div>');
@@ -75,8 +79,12 @@ $(document).ready(function(){
 		currentvideoid = 'mobileisgreat';
 		
 		document.getElementById("mobileisgreat").addEventListener("play", playhandler);
-		document.getElementById("mobileisgreat").addEventListener("timeupdate",function(){scrubberUpdater();},true);
-		document.getElementById("mobileisgreat").addEventListener("ended",function(){ endVids();},true);
+		document.getElementById("mobileisgreat").addEventListener("timeupdate",function(){
+			scrubberUpdater();
+		},true);
+		document.getElementById("mobileisgreat").addEventListener("ended",function(){ 
+			endVids();
+		},true);
 
 		$("#cradle0").html('<img src="art/thumbs/full-schipol-1.jpg" id="cradle0img" width="960" height="540" alt="" />');
 		$("#cradle1").html('<img src="art/thumbs/full-spotters-1.jpg" id="cradle1img" width="960" height="540" alt="" />');
@@ -85,37 +93,45 @@ $(document).ready(function(){
 	} else {
 	
 		currentvideoid = 'video1';
-		document.getElementById("video1").addEventListener("canplay",function(){vid1Loaded = true; },true);
-		document.getElementById("video2").addEventListener("canplay",function(){vid2Loaded = true; },true);
-		document.getElementById("video1").addEventListener("ended",function(){ endVids();},true);
-		document.getElementById("video1").addEventListener("timeupdate",function(){scrubberUpdater();},true);
+		document.getElementById("video1").addEventListener("canplay",function(){
+			vid1Loaded = true; 
+		},false);
+		document.getElementById("video2").addEventListener("canplay",function(){
+			vid2Loaded = true; 
+		},false);
+		document.getElementById("video1").addEventListener("ended",function(){ 
+			endVids();
+		},false);
+		document.getElementById("video1").addEventListener("timeupdate",function(){
+			scrubberUpdater();
+		},false);
 		enablecontrols();
 
 	}
 	
-	$(document).keydown(function (e) {
+	$(document).on('keydown',function (e) {
     var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
     if (key == 32){
        e.preventDefault();
-    	if(playState == 1 || playState == 2){
+    	if(c_playState == 1 || c_playState == 2){
     		playButton();
     	}
     }
  	});
 	
-$("#playElement").click(function () {
+$("#playElement").on('click', function () {
 	playButton();
-}).mouseover(function (){
-	if(playState == 1){
-		$("#playElement").css({'background':'url(art/pauseWhite.png)'})
+}).on('mouseover', function (){
+	if(c_playState == 1){
+		$("#playElement").css({'background':'url(/cradle/art/pauseWhite.png)'})
 	} else {				
-		$("#playElement").css({'background':'url(art/playWhite.png)'})
+		$("#playElement").css({'background':'url(/cradle/art/playWhite.png)'})
 	}
-}).mouseout(function (){
-		if(playState == 1){
-			$("#playElement").css({'background':'url(art/playWhite.png)'})
+}).on('mouseout', function (){
+		if(c_playState == 1){
+			$("#playElement").css({'background':'url(/cradle/art/playWhite.png)'})
 		} else {				
-			$("#playElement").css({'background':'url(art/pauseGray.png)'})
+			$("#playElement").css({'background':'url(/cradle/art/pauseGray.png)'})
 		}
 });
 
@@ -133,7 +149,7 @@ function mobile_stills (tim) {
 }
 
 function playhandler () {
-	playState = 1;
+	c_playState = 1;
 	cradle_closescreen();
 	document.getElementById("mobileisgreat").controls = false;
 	if(!_controls){
@@ -148,27 +164,29 @@ function enablecontrols () {
 	if(_ammobile){
 		trackon();	
 	} else {
-		$("#outerouter").mouseenter(function () {
+		console.log('bbbbbzzz')
+		$("#outerouter").on('mouseenter', function () {
 			trackon();
-//			console.log('mouseenter');
+			console.log('mouseenter');
 		});
 
-		$("#outerouter").mouseleave(function () {
+		$("#outerouter").on('mouseleave', function () {
 			trackoff();
-//			console.log('mouseleave');
+			console.log('mouseleave');
 		});	
 	}
 	
-	$("#leftbutton").click(function () {
+	$("#leftbutton").on('click', function () {
 		if(flipside){
 			flipper();
 		}
 	});
-	$("#rightbutton").click(function () {
+	$("#rightbutton").on('click', function () {
 		if(!flipside){
 			flipper();
 		}
 	});
+	console.log("controls are: " + _controls);
 
 }
 
@@ -178,11 +196,13 @@ function disablecontrols () {
 	$("#leftbutton").unbind("click");
 	$("#rightbutton").unbind("click");
 	_controls = false;
+	console.log("controls are: " + _controls);
+
 }
 
 
 function cradle_scrollsnaphandle () {
-	if(playState == 0 && $(this).attr('id') == "cradle_main"){
+	if(c_playState == 0 && $(this).attr('id') == "cradle_main"){
 		if(!enoughwithinstructions){
 			if(!_ammobile){
 				playDecide();
@@ -208,14 +228,21 @@ function cradle_openscreen () {
 	} else {
 		openIvl = setTimeout("cradle_closescreen()",10000);
 	}
-	$("#instructions").click(function () { if(!_ammobile){ playDecide() } cradle_closescreen(); });
+	$("#instructions").on('click', function () { 
+		if(!_ammobile){ 
+			playDecide() 
+		} 
+		cradle_closescreen(); 
+	});
 	openIvl = setTimeout("cradle_closescreen()",10000);
 	enoughwithinstructions = true;
 }
 
 function cradle_closescreen () {
 	clearInterval(openIvl);
-	$("#instructions").fadeOut(1000);
+	$("#instructions").fadeOut(1000, function() {
+		console.log("close instructions");
+	});
 }
 
 function cradle_sizer () {
@@ -246,7 +273,7 @@ function cradle_sizer () {
 	$("#legmore").css({ "margin-left": ($("#cradle_main").width() / 2) - 70 });
 
 	$("#cradleplay").css({ "bottom": legbottom, "margin-left": ($("#cradle_top").width() / 2) - 70 }).fadeIn(4000).click(function () {
-		$('html, body').animate({ scrollTop: ($('#cradle_main').offset().top - 20) }, 1000);
+		$('html, body').animate({ scrollTop: ($('#cradle_main').offset().top) }, 1000);
 		if(!_ammobile){
 			playDecide();
 		}
@@ -257,7 +284,8 @@ function cradle_sizer () {
 
 function trackon () {
 	_trackingon = true;
-	$(document).mousemove(function(e){
+	console.log("tracking is: " + _trackingon);
+	$(document).on('mousemove', function(e){
 		if(!flipblock){
 			var x = e.pageX;
 			if(x < (lazywidth / 2)){
@@ -272,12 +300,12 @@ function trackon () {
 		}				
 	});
 	if(_ammobile){
-		$(document).swipeleft(function () {
+		$(document).on('swipeleft', function () {
 			if(flipside){
 				flipper(false);
 			}
 		});
-		$(document).swiperight(function () {
+		$(document).on('swiperight', function () {
 			if(!flipside){
 				flipper(true);
 			}
@@ -287,7 +315,9 @@ function trackon () {
 
 function trackoff () {
 //	console.log('trackoff');
-_trackingon = false;
+	_trackingon = false;
+	console.log("tracking is: " + _trackingon);
+
 	$(document).unbind("swipeleft");
 	$(document).unbind("swiperight");
 	$(document).unbind('mousemove');
@@ -313,9 +343,9 @@ function flipper (isright){
 		
 //		console.log(videoprefix + newclip + '.mp4#t=' + _curtime);
 //		console.log(document.getElementById('mobileisgreat').src); 
-		document.getElementById('mobileisgreat').addEventListener('canplay', flipmobile);
+		// document.getElementById('mobileisgreat').addEventListener('canplay', flipmobile);
 //		document.getElementById('mobileisgreat').addEventListener('playing', flipmobile);
-		document.getElementById('mobileisgreat').volume = .6;
+		// document.getElementById('mobileisgreat').volume = .6;
 		_inseek = true;
 		$("#mobilevideo").hide();
 	}
@@ -413,27 +443,27 @@ function playDecide(){
 //	document.getElementById("video2").volume = 0;
 	if(vid1Loaded && vid2Loaded){
 		playVids();
-		playState = 1;
+		c_playState = 1;
 	} else {
 		setTimeout("playDecide()",800);
 	}
 }
 
 function playButton(){
-//	console.log('playbutton');
-	if(playState == 1){
+	console.log('cradle playbutton');
+	if(c_playState == 1){
 		pauseVids();
-		playState = 2;
-		$("#playElement").css({'background':'url(art/pauseGray.png)'})
+		c_playState = 2;
+		$("#playElement").css({'background':'url(/cradle/art/pauseGray.png)'})
 	}
-	else if(playState == 2){
+	else if(c_playState == 2){
 		playVids();
-		playState = 1;
-		$("#playElement").css({'background':'url(art/playWhite.png)'})
+		c_playState = 1;
+		$("#playElement").css({'background':'url(/cradle/art/playWhite.png)'})
 	}
 	else{
 		if(_ammobile){
-				document.getElementById("mobileisgreat").currentTime = 0;
+			document.getElementById("mobileisgreat").currentTime = 0;
 
 		} else {
 		
@@ -442,8 +472,8 @@ function playButton(){
 	
 		}
 		playVids();
-		$("#playElement").css({'background':'url(art/playWhite.png)'})
-		playState = 1;				
+		$("#playElement").css({'background':'url(/cradle/art/playWhite.png)'})
+		c_playState = 1;				
 	}
 }
 
@@ -470,12 +500,14 @@ function pauseVids(){
 	} else {
 		document.getElementById("video1").pause();
 		document.getElementById("video2").pause();
+		console.log("cradle paused");
+		console.log(document.getElementById("video1").pause);		
 	}
-	playState = 2;
+	c_playState = 2;
 }
 
 function endVids(){
-	playState = 3;
+	c_playState = 3;
 	buildendscreen();
 }
 
@@ -546,7 +578,7 @@ function buildendscreen () {
 
 		playVids();
 
-		$("#playElement").css({'background':'url(art/playWhite.png)'})
-		playState = 1;						
+		$("#playElement").css({'background':'url(/cradle/art/playWhite.png)'})
+		c_playState = 1;						
 	});
 }
