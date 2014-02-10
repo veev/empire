@@ -54,7 +54,7 @@ $(document).ready(function () {
 
 	else{
 
-	console.log("Im in ready ");
+	//console.log("Im in ready ");
 	w = $("#container").width();
 	h = $("#container").height();
 	paper = ScaleRaphael('canvas_container', w, h);
@@ -75,7 +75,7 @@ $(document).ready(function () {
 	//if $("navigation" :visible)
 	var home = document.getElementById("home_button");
 	$("#home_button").on('click', function() {
-		console.log("go home");
+		//console.log("go home");
 		animateHome();
 	});
  }
@@ -172,7 +172,7 @@ function Button(ripple, title, topLetter, bottomLetter, isActive, isBig) {
 }
 
 Button.prototype.onClick = function(){
-	console.log('hola ', this.title);
+	//console.log('hola ', this.title);
 };
 
 Button.prototype.addClickListener = function(callback){
@@ -198,14 +198,14 @@ function buildRipples(total) {
 	}
 
 	for(var i = 0; i < total; i++) {
-		console.log(menu[i].id);
+		//console.log(menu[i].id);
 	}
 }
 
 function animateButton(index){
 
 //interactivity for ripple navigation
-	console.log('console here', index)
+	//console.log('console here', index)
 
 		for(var i = 0; i < menu.length; i++ ) {
 			if(index !== i){
@@ -216,7 +216,7 @@ function animateButton(index){
 		}
 		//set this ripple to active	
 		menu[index].ripple.isActive = true;
-		console.log("menu[" + index + "] is active = " + menu[index].ripple.isActive);
+		//console.log("menu[" + index + "] is active = " + menu[index].ripple.isActive);
 
 		if (menu[index].ripple.isActive && !menu[index].ripple.isBig) {
 			growRippleNode(index, function() {
@@ -227,6 +227,7 @@ function animateButton(index){
 						 //$("#cradleContent").fadeIn(1000);
 					});
 					$("#cradleContent").fadeIn(2000);
+
 				 } else if (index != 0 ) {
 				 	cradleLoaded = false;
 				 	$("#cradleContent").fadeOut("fast");
@@ -242,7 +243,7 @@ function animateButton(index){
 
 				 if(index === 3 && !peripheryLoaded) {
 				 	loadPeriphery( function() {
-				 		//not sure if i need a callback or not
+				 		//attachPeripheryEvents();
 				 	});
 				 	$("#peripheryContent").fadeIn(2000);
 				 } else if ( index != 3 ) {
@@ -259,12 +260,12 @@ function animateButton(index){
 			//fade out titles (pass in opacity)
 			fadeTitles(0);				
 			menu[index].ripple.isBig = true;
-			console.log("menu["+index+"] is big = " + menu[index].ripple.isBig);
+			//console.log("menu["+index+"] is big = " + menu[index].ripple.isBig);
 			menu[index].ripple.isActive = false;
-			console.log("menu["+index+"] is active = " + menu[index].ripple.isActive);
+			//console.log("menu["+index+"] is active = " + menu[index].ripple.isActive);
 
 		} else if (!menu[index].ripple.isBig) {
-			console.log("Shrinking menu["+index+"]")
+			//console.log("Shrinking menu["+index+"]")
 			//shrinkRippleNode(1);
 			shrinkRippleNode(index);
 		}
@@ -294,7 +295,7 @@ function growRippleNode(index, callback) {
 		//var posY = posX * (0.8154762);
 		var posY = (posX * aspectRatio);
 		posY += posY*0.5;
-		console.log("posY: " + posY);
+		//console.log("posY: " + posY);
 		ripple.animate({path: "M0,0 L" + posX +",0 A" + posX +"," + posY + " 0 0,1 0," + posY + "z"}, speed,
 		function() {
 			//$(document).trigger("animation.end");
@@ -308,7 +309,7 @@ function growRippleNode(index, callback) {
 				fadeBottomLetters( _index, 1);
 
 			}
-			console.log("faded bottom letters");
+			//console.log("faded bottom letters");
 
 		});
 	}
@@ -377,6 +378,10 @@ function animateHomeNode(index) {
 	$("#cradleContent").fadeOut();
 	$("#legacyContent").fadeOut();
 	$("#peripheryContent").fadeOut();
+	cradleLoaded = false;
+	legacyLoaded = false;
+	peripheryLoaded = false;
+
 	var ripple = menu[index].ripple;
 	ripple.animate({path: "M0,0 L"+pos+",0 A"+pos+","+pos+" 0 0,1 0,"+pos+"z"}, speed,
 	function() {
@@ -385,7 +390,7 @@ function animateHomeNode(index) {
 		fadeTitles(1);
 		$("#navigation").fadeOut();
  		$("#containerinner").fadeIn();
- 		console.log("In animate home");
+ 		//console.log("In animate home");
 	});
 	//set menus to not big, not active
 	menu[index].isActive = false;
@@ -397,22 +402,20 @@ var loadCradle = function (callback) {
  
 //this works, but doesn't load cradle css
 $("#cradleContent").load("/cradle/index.html #cradle_wrapper", function() {
-	console.log("cradle was loaded");
+	//console.log("cradle was loaded");
 	cradleLoaded = true;
 	var cssLink = "/cradle/css/style.css";
 	var jsLink = "/cradle/js/cradle.js";
     // $("head").append("  <link href="+ &quot; + cssLink + &quot; +" rel="stylesheet" />");
-    console.log("THis is the css link : " + cssLink);
+    //console.log("THis is the css link : " + cssLink);
    //  $('<link rel="stylesheet" type="text/css" href="'+cssLink+'" >')
    // .appendTo("head");
-
-
    $.get(cssLink, function(css) {
    		$('<style type="text/css"></style>')
      		.html(css)
       		// .appendTo("head");
         $.getScript(jsLink, function(){
-   			console.log('cradle getScript');
+   			//console.log('cradle getScript');
    		    attachCradleEvents();
    		});
 	});
@@ -436,10 +439,10 @@ callback();
 
 function attachCradleEvents() {
 		if(document.getElementById("video1") !== null) {
-			console.log("video1 not null");
+			//console.log("video1 not null");
 			document.getElementById("video1").addEventListener("canplay",function(){
 				vid1Loaded = true; 
-				console.log('vid1Loaded = '+ vid1Loaded);
+				//console.log('vid1Loaded = '+ vid1Loaded);
 			},false);
 			document.getElementById("video1").addEventListener("ended",function(){ 
 				endVids();
@@ -450,12 +453,14 @@ function attachCradleEvents() {
 		}
 
 		if(document.getElementById("video2") !== null) {
-			console.log("video2 not null");
+			//console.log("video2 not null");
 			document.getElementById("video2").addEventListener("canplay",function(){
 				vid2Loaded = true; 
-				console.log('vid2Loaded = '+ vid2Loaded);
+				//console.log('vid2Loaded = '+ vid2Loaded);
 			},false);
 		}
+
+		  $(document).ready(function() {
 
 		$(document).on('keydown',function (e) {
     		var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
@@ -463,16 +468,16 @@ function attachCradleEvents() {
        			e.preventDefault();
     			if(c_playState === 1 || c_playState === 2){
     				playButton();
-    				console.log("cradle playButton(); event");
+    				//console.log("cradle playButton(); event");
     			}
     		}
  		});
 
  		$("#playElement").on('click', function () {
- 			console.log('playElement');
+ 			//console.log('playElement');
 			playButton();
 		}).on('mouseover', function (){
-			console.log("c_playState: " + c_playState);
+			//console.log("c_playState: " + c_playState);
 			if(c_playState === 1){
 				$("#playElement").css({'background':'url(cradle/art/pauseWhite.png)'})
 			} else {				
@@ -497,39 +502,96 @@ function attachCradleEvents() {
 			cradle_closescreen(); 
 		});
 
-		console.log('tried to update cradle listeners');
+		//console.log('tried to update cradle listeners');
 		
-		enablecontrols();
+		//enablecontrols();
 
 		$(document).scrollsnap({
 			snaps: '.snap',
 			proximity: 180,
 			handler: cradle_scrollsnaphandle
 	});
+
+  	var chome = document.getElementById("home_button_cmain");
+	$("#home_button_cmain").on('click', function() {
+		//console.log("go home");
+		animateHome();
+		pauseVids();
+		document.getElementById("video1").currentTime = 0;
+		document.getElementById("video2").currentTime = 0;
+
+   		// document.getElementById("audio_norm").currentTime = 0;
+    	// document.getElementById("audio_yeti").currentTime = 0;
+    	// cradleLoaded = false;
+	});
+
+  var chome_bottom = document.getElementById("home_button_cbottom");
+  $("#home_button_cbottom").on('click', function() {
+    //console.log("go home");
+    animateHome();
+    pauseVids();
+    document.getElementById("video1").currentTime = 0;
+    document.getElementById("video2").currentTime = 0;
+    // document.getElementById("audio_norm").currentTime = 0;
+    // document.getElementById("audio_yeti").currentTime = 0;
+
+    // cradleLoaded = false;
+    //TODO: also set audio to 0
+  });
+
+    $("#periphery_cbutton").on('click', function() {
+  		//console.log("go to periphery page");
+  		animateButton(3);
+  		pauseVids();
+    	document.getElementById("video1").currentTime = 0;
+   		document.getElementById("video2").currentTime = 0;
+  	});
+
+  	$("#legacy_cbutton").on('click', function() {
+  		//console.log("go to legacy page");
+  		animateButton(1);
+  		pauseVids();
+    	document.getElementById("video1").currentTime = 0;
+    	document.getElementById("video2").currentTime = 0;
+  	});
+
+  	$("#migrants_cbutton").on('click', function() {
+  		//console.log("go to migrants page");
+  		animateButton(2);
+  		pauseVids();
+    	document.getElementById("video1").currentTime = 0;
+    	document.getElementById("video2").currentTime = 0;
+  	});
+
+
+});
+
 }
 
 var loadLegacy = function () {
  
 //this works, but doesn't load cradle css
 $("#legacyContent").load("/legacy/index.html #legacy_wrapper", function() {
-	console.log("legacy was loaded");
+	//console.log("legacy was loaded");
 	legacyLoaded = true;
 	var cssLink = "/legacy/css/style.css";
 	var jsLink = "/legacy/js/core.js";
     // $("head").append("  <link href="+ &quot; + cssLink + &quot; +" rel="stylesheet" />");
-    console.log("THis is the css link : " + cssLink);
+    //console.log("THis is the css link : " + cssLink);
    //  $('<link rel="stylesheet" type="text/css" href="'+cssLink+'" >')
    // .appendTo("head");
    $.getScript(jsLink, function(){
-   	console.log('hi');
-   	$("#outerinner").on('mouseenter', function(){console.log('zzz');});
+   		//console.log('hi');
+   	$("#outerinner").on('mouseenter', function(){
+   		//console.log('zzz');
+   	});
    });
 
    $.get(cssLink, function(css) {
    		$('<style type="text/css"></style>')
      		.html(css)
       		// .appendTo("head");
-      		console.log("got legacy css");
+      		//console.log("got legacy css");
 	});
    $("#legacyContent").css({'width': '100%', 'height': '100%'});
    $(".legacy_top").css({'background': 'none'});
@@ -543,17 +605,17 @@ var loadPeriphery = function () {
  
 //this works, but doesn't load cradle css
 $("#peripheryContent").load("/periphery/index.html #periphery_wrapper", function() {
-	console.log("periphery was loaded");
-	legacyLoaded = true;
+	//console.log("periphery was loaded");
+	peripheryLoaded = true;
 	var cssLink = "/periphery/css/style.css";
 	var jsLink = "/periphery/js/periphery.js";
     // $("head").append("  <link href="+ &quot; + cssLink + &quot; +" rel="stylesheet" />");
-    console.log("THis is the css link : " + cssLink);
+    //console.log("THis is the css link : " + cssLink);
    //  $('<link rel="stylesheet" type="text/css" href="'+cssLink+'" >')
    // .appendTo("head");
    $.getScript(jsLink, function(){
    		attachPeripheryEvents();
-   		console.log('periphery getScript');
+   		//console.log('periphery getScript');
    		//$("#outerinner").on('mouseenter', function(){console.log('zzz');});
    });
 
@@ -561,7 +623,7 @@ $("#peripheryContent").load("/periphery/index.html #periphery_wrapper", function
    		$('<style type="text/css"></style>')
      		.html(css)
       		// .appendTo("head");
-      		console.log("got periphery css");
+      		//console.log("got periphery css");
 	});
    $("#peripheryContent").css({'width': '100%', 'height': '100%'});
    $(".periphery_top").css({'background': 'none'});
@@ -572,10 +634,10 @@ $("#peripheryContent").load("/periphery/index.html #periphery_wrapper", function
 
 function attachPeripheryEvents() {
 	if(document.getElementById("target") !== null) {
-			console.log("target not null");
+			//console.log("target not null");
 			document.getElementById("target").addEventListener("canplay",function(){
 				p_vidLoaded = true; 
-				console.log('p_vidLoaded = '+ p_vidLoaded);
+				//console.log('p_vidLoaded = '+ p_vidLoaded);
 			},true);
 			document.getElementById("target").addEventListener("ended",function(){ 
 				p_endVids();
@@ -595,6 +657,12 @@ function attachPeripheryEvents() {
  //      		}
  //    	}
  // 	});
+  $(document).ready(function() {
+
+
+  	//p_enablecontrols();
+
+  	//console.log('tried to update periphery listeners');
 
 	$("#playElement").on('click', function() {
   		p_playButton();
@@ -625,19 +693,64 @@ function attachPeripheryEvents() {
     	handler: periphery_scrollsnaphandle
   });
 
-  	var phome = document.getElementById("home_button_pmain");
+
+  var phome = document.getElementById("home_button_pmain");
 	$("#home_button_pmain").on('click', function() {
-		console.log("go home");
+		//console.log("go home");
 		animateHome();
 		p_pauseVids();
 		document.getElementById("target").currentTime = 0;
+   		document.getElementById("audio_norm").currentTime = 0;
+    	document.getElementById("audio_yeti").currentTime = 0;
 	});
 
+  var phome_bottom = document.getElementById("home_button_pbottom");
+  $("#home_button_pbottom").on('click', function() {
+    //console.log("go home");
+    animateHome();
+    p_pauseVids();
+    document.getElementById("target").currentTime = 0;
+    document.getElementById("audio_norm").currentTime = 0;
+    document.getElementById("audio_yeti").currentTime = 0;
+    //TODO: also set audio to 0
+  });
 
-  	p_enablecontrols();
+
+  	$("#cradle_pbutton").on('click', function() {
+  		//console.log("go to cradle page");
+  		animateButton(0);
+  		p_pauseVids();
+  		document.getElementById("target").currentTime = 0;
+    	document.getElementById("audio_norm").currentTime = 0;
+    	document.getElementById("audio_yeti").currentTime = 0;
+  	});
+
+  	$("#legacy_pbutton").on('click', function() {
+  		//console.log("go to legacy page");
+  		animateButton(1);
+  		p_pauseVids();
+  		document.getElementById("target").currentTime = 0;
+    	document.getElementById("audio_norm").currentTime = 0;
+    	document.getElementById("audio_yeti").currentTime = 0;
+  	});
+
+  	$("#migrants_pbutton").on('click', function() {
+  		//console.log("go to migrants page");
+  		animateButton(2);
+  		p_pauseVids();
+  		document.getElementById("target").currentTime = 0;
+    	document.getElementById("audio_norm").currentTime = 0;
+    	document.getElementById("audio_yeti").currentTime = 0;
+  	});
+
+
+  });
+  
+
+
 }
 
-// $("#cradleContent").html("Loading...");
+// $("#cradleContent").heightMultiplierl("Loading...");
  	
  	
 //     var pagelink = "cradle/";
@@ -688,16 +801,16 @@ function fadeTitleNode(index, opacity) {
 function fadeTitles(opacity) {
 	for(var i=0; i<menu.length; i++){
 		fadeTitleNode(i, opacity);
-		console.log("fade");
+		//console.log("fade");
 	}
 }
 
 function fadeBottomLetters(index, opacity) {
 	var speed = config.titleFadeSpeed;
 	var bottom = menu[index].bottomLetter;
-	console.log(index);
-	console.log(opacity);
-	console.log(bottom);
+	// console.log(index);
+	// console.log(opacity);
+	// console.log(bottom);
 	bottom.animate({'opacity': opacity}, speed);
 	// if(opacity === 0) {
 	// 	bottom.hide();

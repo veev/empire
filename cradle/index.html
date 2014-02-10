@@ -1,4 +1,4 @@
-<html manifest="cradle.appcache">
+<!-- <html manifest="cradle.appcache"> -->
 <head>
 <meta http-equiv="Context Type" content="text/html; charset=iso-8899-1" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -24,7 +24,7 @@
 <script src="../js/jquery.easing.min.js"></script>
 <script src="../js/jquery.event.special.js"></script>
 <script src="../js/jquery.scrollsnap.js"></script>
-<script src="js/jquery.mobile-1.3.2.min.js"></script>
+<!-- <script src="js/jquery.mobile-1.3.2.min.js"></script> -->
 <!-- <script src="../js/empirecore.js"></script>
  --><script src="js/cradle.js"></script>
 </head>
@@ -48,6 +48,15 @@
 	<!-- <div id="canvas_container" style="display:none"></div> -->
 
 	<div class="outer snap" id="cradle_main">
+		<div id="cmain_nav_buttons">
+				<!-- <button type="button" id="cradle_cbutton">C</button> -->
+				<button type="button" id="legacy_cbutton">L</button>
+				<button type="button" id="migrants_cbutton">M</button>
+				<button type="button" id="periphery_cbutton">P</button>
+			</div>
+		<div id="home_button_cmain">
+			<img src="../art/e_nav.png" width="40" height="35" alt="home"/>
+		</div>
 		<div id="cradle_linewhite"></div>
 		<div id="outerouter">
 			<div id="outerinner">
@@ -120,6 +129,9 @@
 		</div>
 
 		</div>
+		<div id="home_button_cbottom">
+				<img src="../art/e_nav.png" width="40" height="35" alt="home"/>
+			</div>
 	</div>
 </div>			
 </body>

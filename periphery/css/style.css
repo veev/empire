@@ -46,7 +46,7 @@ div#periphery_main div#p_instructions p#peri_1 { color: #cc3333; top: 45; left: 
 div#periphery_main div#p_instructions p#peri_2 { color: #cc3333; top: -15; left: 165; }
 div#periphery_main div#p_instructions p#peri_3 { top: 120; }
 
-div.periphery_bottom { text-align: center; background: #cc3333 url(../../art/p_bg_b.jpg) bottom left  repeat-x; width: 100%; position: relative ; clear: both;}
+div.periphery_bottom { text-align: center; background: #cc3333 url(../../art/p_bg_b.jpg) bottom left  repeat-x; width: 100%; position: relative ; clear: both; pointer-events: all;}
 div.periphery_bottom div.inner { padding: 30px 0 30px 0; }
 div#periphery_bottom h2 { color: #000; padding-bottom: 8px; font-size: 1.6em; text-align: center; }
 div.periphery_bottom div#periphery_bottomline { z-index: 1; background: url(../art/b_line.png) repeat-y; width: 3px; position: absolute; }
@@ -68,11 +68,11 @@ div#periphery_main #p_outerouter {
 }
 
 div#periphery_main  #home_button_pmain {
-	position: absolute; bottom: 30; right: 30; z-index: 5; opacity: 0.5;
+	position: absolute; bottom: 30; right: 30; z-index: 5; opacity: 0.5; cursor: pointer;
 }
 
 div.periphery_bottom #home_button_pbottom {
-	position: absolute; bottom: 30; right: 30; z-index: 5; opacity: 1;
+	position: absolute; bottom: 30; right: 30; z-index: 5; opacity: 1; cursor: pointer;
 }
 
 div#periphery_main #p_outerouter div#home_button img { width: 40px; height: 35px;}
@@ -99,7 +99,7 @@ div#periphery_main #p_outerouter #p_outerinner {
 	 z-index: 1;
 }
 
-#p_outerinner #container #card {
+#p_outerinner #container #pcard {
 	overflow: visible !important;
    	width: 100%;
  	height: 100%;
@@ -113,7 +113,7 @@ div#periphery_main #p_outerouter #p_outerinner {
 }
 
 /*
-#outerinner #container #cardover {
+#outerinner #container #pcardover {
 	position: absolute;
 /*	z-index: 45;*/
 /*	top: 0;
@@ -160,7 +160,7 @@ div#periphery_main #p_outerouter #p_outerinner {
 	opacity: 1;
 }
 
-/*#outerinner #container #card div {
+/*#outerinner #container #pcard div {
   display: block;
   position: absolute;
   width: 100%;
@@ -169,12 +169,12 @@ div#periphery_main #p_outerouter #p_outerinner {
   -webkit-backface-visibility: hidden;
 }	*/
 
-#p_outerinner #container #card div.back {
+#p_outerinner #container #pcard div.back {
 	transform: rotate(180deg);
 	-webkit-transform: rotate(180deg);
 }
 
-#p_outerinner #container #card.flipped {
+#p_outerinner #container #pcard.flipped {
 	transform: translateX( -100% ) rotate( -180deg );
 	-webkit-transform: translateX( -100% ) rotate( -180deg );
 }
@@ -257,4 +257,46 @@ div#periphery_main #p_outerouter #p_outerinner {
 	width: 27px;
 	height: 38px;
 	background-image: url(images/playGray.png);
+}
+
+div #pmain_nav_buttons {
+	float: left;
+	position: absolute;
+	z-index: 10;
+	opacity: 0.6;
+}
+
+div #pmain_nav_buttons #cradle_pbutton {
+	font-size: 28px;
+	font-style: italic;
+	color: #ecda50;
+	background-color: #000;
+	border: none;
+	padding-top: 30px;
+	padding-left: 50px;
+	padding-right: 25px;
+	cursor: pointer;
+}
+
+div #pmain_nav_buttons #legacy_pbutton {
+	font-size: 28px;
+	font-style: italic;
+	color: #fbb03b;
+	background-color: #000;
+	border: none;
+	padding-top: 30px;
+	padding-left: 25px;
+	padding-right: 25px;
+	cursor: pointer;
+}
+div #pmain_nav_buttons #migrants_pbutton {
+	font-size: 28px;
+	font-style: italic;
+	color: #ff5a00;
+	background-color: #000;
+	border: none;
+	padding-top: 30px;
+	padding-left: 25px;
+	padding-right: 25px;
+	cursor: pointer;
 }

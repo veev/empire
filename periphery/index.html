@@ -6,6 +6,8 @@
 	<script src="../js/jquery.easing.min.js"></script>
 	<script src="../js/jquery.event.special.js"></script>
 	<script src="../js/jquery.scrollsnap.js"></script>
+	<script src="../js/scaleraphael.js" type="text/javascript" ></script>
+
 	<!--<script src="../js/empirecore.js"></script>-->
 	<link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
@@ -34,6 +36,13 @@
 		</div>
 		<div id="canvas_container" style="display:none"></div>
 		<div class="outer snap" id="periphery_main">
+			<div id="pmain_nav_buttons">
+				<button type="button" id="cradle_pbutton">C</button>
+				<button type="button" id="legacy_pbutton">L</button>
+				<button type="button" id="migrants_pbutton">M</button>
+				<!-- <button type="button" id="periphery_pbutton">P</button> -->
+			</div>
+
 			<div id="home_button_pmain">
 					<img src="../art/e_nav.png" width="40" height="35" alt="home"/>
 			</div>
@@ -49,7 +58,7 @@
 						</div>
 							<div id="leftbutton" class="flipbuttons buttonoff"></div>
 							<div id="rightbutton" class="flipbuttons buttonon"></div>
-							<div id="card">
+							<div id="pcard">
 								<div class="norm">
 									<!--
 									<video id="video1" width="1280" height= "720" -webkit-mask-box-image="url(art/periphery_mask.svg)">
@@ -74,6 +83,7 @@
 		</div>
 
 		<div class="periphery_bottom snap" id="periphery_bottom">
+			<div id="p_menubottom"></div>
 			<div id="periphery_bottomline"></div>
 			<div class="inner">
 				<div id="pbottom_structure">
@@ -93,9 +103,9 @@
 					<img src="../art/emp_title.png" width="284" height="43" title="Empire" />
 				</div>
 			</div>
-						<div id="home_button_pbottom">
-					<img src="../art/e_nav.png" width="40" height="35" alt="home"/>
-				</div>
+			<div id="home_button_pbottom">
+				<img src="../art/e_nav.png" width="40" height="35" alt="home"/>
+			</div>
 		</div>
 	</div>	
 	</body>

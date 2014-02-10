@@ -26,7 +26,8 @@ div.cradle_bottom {
 	width: 100%; 
 	height: 100%;
 	position: relative ; 
-	clear: both;}
+	clear: both;
+	pointer-events: all;}
 div.cradle_bottom div.inner { padding: 30px 0 30px 0; }
 div#cradle_main div#instructions { position: absolute; z-index: 800; cursor: pointer; background: rgba(0,0,0,.6); width: 760px; padding: 200px 100px 160px 100px; height: 180px; text-align: center; }
 div#cradle_main div#instructions span#swifter { width: 187px; height: 540px; z-index: 1; left: 388; top: 0; position: absolute; background: url(../art/instructions_spin.png); }
@@ -71,6 +72,8 @@ div#cradle_main #outerouter {
 	width: 100%;
 	z-index: 4;
 }
+
+div#cradle_main #p_outerouter div#home_button img { width: 40px; height: 35px;}
 
 div#cradle_main #outerouter #outerinner {
 	height: 555px;
@@ -299,4 +302,63 @@ position: absolute;
 	position: relative;
 	width: auto;
 	height: auto;
+}
+
+div#cradle_main  #home_button_cmain {
+	position: absolute; bottom: 30; right: 30; z-index: 5; opacity: 0.5; cursor: pointer;
+}
+
+div.cradle_bottom #home_button_cbottom {
+	position: absolute; bottom: 30; right: 30; z-index: 5; opacity: 1; cursor: pointer;
+}
+
+div #cmain_nav_buttons {
+	position: absolute;
+	z-index: 10;
+	opacity: 0.6;
+	bottom: 30;
+	right: 8%;
+}
+
+div #cmain_nav_buttons #cradle_cbutton {
+	font-size: 28px;
+	font-style: italic;
+	color: #ecda50;
+	background-color: #000;
+	border: none;
+	padding-left: 28px;
+	padding-right: 28px;
+	cursor: pointer;
+}
+
+div #cmain_nav_buttons #legacy_cbutton {
+	font-size: 28px;
+	font-style: italic;
+	color: #fbb03b;
+	background-color: #000;
+	border: none;
+	padding-left: 28px;
+	padding-right: 28px;
+	cursor: pointer;
+}
+div #cmain_nav_buttons #migrants_cbutton {
+	font-size: 28px;
+	font-style: italic;
+	color: #ff5a00;
+	background-color: #000;
+	border: none;
+	padding-left: 28px;
+	padding-right: 28px;
+	cursor: pointer;
+}
+
+div #cmain_nav_buttons #periphery_cbutton {
+	font-size: 28px;
+	font-style: italic;
+	color: #cc3333;
+	background-color: #000;
+	border: none;
+	padding-left: 28px;
+	padding-right: 28px;
+	cursor: pointer;
 }

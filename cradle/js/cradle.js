@@ -164,15 +164,15 @@ function enablecontrols () {
 	if(_ammobile){
 		trackon();	
 	} else {
-		console.log('bbbbbzzz')
+		//console.log('bbbbbzzz');
 		$("#outerouter").on('mouseenter', function () {
 			trackon();
-			console.log('mouseenter');
+			//console.log('mouseenter');
 		});
 
 		$("#outerouter").on('mouseleave', function () {
 			trackoff();
-			console.log('mouseleave');
+			//console.log('mouseleave');
 		});	
 	}
 	
@@ -186,7 +186,7 @@ function enablecontrols () {
 			flipper();
 		}
 	});
-	console.log("controls are: " + _controls);
+	//console.log("controls are: " + _controls);
 
 }
 
@@ -196,7 +196,7 @@ function disablecontrols () {
 	$("#leftbutton").unbind("click");
 	$("#rightbutton").unbind("click");
 	_controls = false;
-	console.log("controls are: " + _controls);
+	//console.log("controls are: " + _controls);
 
 }
 
@@ -241,7 +241,7 @@ function cradle_openscreen () {
 function cradle_closescreen () {
 	clearInterval(openIvl);
 	$("#instructions").fadeOut(1000, function() {
-		console.log("close instructions");
+		//console.log("close instructions");
 	});
 }
 
@@ -284,7 +284,7 @@ function cradle_sizer () {
 
 function trackon () {
 	_trackingon = true;
-	console.log("tracking is: " + _trackingon);
+	//console.log("tracking is: " + _trackingon);
 	$(document).on('mousemove', function(e){
 		if(!flipblock){
 			var x = e.pageX;
@@ -316,7 +316,7 @@ function trackon () {
 function trackoff () {
 //	console.log('trackoff');
 	_trackingon = false;
-	console.log("tracking is: " + _trackingon);
+	//console.log("tracking is: " + _trackingon);
 
 	$(document).unbind("swipeleft");
 	$(document).unbind("swiperight");
@@ -324,7 +324,7 @@ function trackoff () {
 }
 
 function flipper (isright){
-//	console.log('flipper ' + isright + ' ' + flipside);
+	//console.log('flipper ' + isright + ' ' + flipside);
 
 
 
@@ -363,10 +363,10 @@ function flipper (isright){
 	$("#card").css({ '-webkit-transform': 'rotateY( ' + flipangle + 'deg)', 'transform': 'rotateY( ' + flipangle + 'deg)' });
 	
 	// log that they did this
-	if(ga){
-		var mobilereport = (_ammobile)? 'mobile':'desktop';
-		ga('send', 'event', 'cradle', 'flip', mobilereport, _curtime);
-	}
+	// if(ga){
+	// 	var mobilereport = (_ammobile)? 'mobile':'desktop';
+	// 	ga('send', 'event', 'cradle', 'flip', mobilereport, _curtime);
+	// }
 
 	
 }
@@ -383,9 +383,9 @@ function flipmobile (doplay) {
 		document.getElementById('mobileisgreat').removeEventListener('playing', flipmobile);
 		clearInterval(_transitiontimerIvl);
 		// log the lag
-		if(ga){
-			ga('send', 'event', 'cradle', 'flip lag', 'mobile', (_transitiontimer / 5));
-		}
+		// if(ga){
+		// 	ga('send', 'event', 'cradle', 'flip lag', 'mobile', (_transitiontimer / 5));
+		// }
 
 		
 	}
@@ -450,7 +450,7 @@ function playDecide(){
 }
 
 function playButton(){
-	console.log('cradle playbutton');
+	//console.log('cradle playbutton');
 	if(c_playState == 1){
 		pauseVids();
 		c_playState = 2;
@@ -500,8 +500,8 @@ function pauseVids(){
 	} else {
 		document.getElementById("video1").pause();
 		document.getElementById("video2").pause();
-		console.log("cradle paused");
-		console.log(document.getElementById("video1").pause);		
+		//console.log("cradle paused");
+		//console.log(document.getElementById("video1").pause);		
 	}
 	c_playState = 2;
 }
@@ -550,10 +550,10 @@ function buildendscreen () {
 	
 	
 	// log that they got to the end here
-	if(ga){
-		var mobilereport = (_ammobile)? 'mobile':'desktop';
-		ga('send', 'event', 'cradle', 'endscreen', mobilereport);
-	}
+	// if(ga){
+	// 	var mobilereport = (_ammobile)? 'mobile':'desktop';
+	// 	ga('send', 'event', 'cradle', 'endscreen', mobilereport);
+	// }
 
 	
 	$("#people_data").html(outputstring);

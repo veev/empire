@@ -1,18 +1,19 @@
 var rotate = 0;
-var card = document.getElementById('card');
-var _curtime = 0;
+var pcard = document.getElementById('pcard');
+var p_curtime = 0;
 var _seektime = 0;
-var flipside = false;
-var leftside = false;
-var flipangle = 0;
-var flipblock = false;
-var _controls = false;
+var p_flipside = false;
+var p_leftside = false;
+var p_flipangle = 0;
+var p_flipblock = false;
+var p_controls = false;
 var p_vidLoaded = false;
 //var vid2Loaded = false;
 var p_playState = 0;
-var vidClicked = false;
+var vidClicked = true;
 var instructionsin = false;
 var enoughwithinstructions = false;
+var pbottom;
 
 //these were declared in empirecore.js, now cradle.js doesn't know about that
 var audioactive = false;
@@ -21,10 +22,8 @@ var dontannoysam = false;
 
 var audioLevelNorm, audioLevelYeti;
 
-var _curtime = 0;
-var _seektime = 0;
-var _inseek = false;
-var _trackingon = false;
+var p_inseek = false;
+var p_trackingon = false;
 
 var plazywidth = 0;
 
@@ -74,6 +73,10 @@ $(document).ready(function() {
   // console.log("lazyHeight: " + lazyHeight);
   // console.log("lazyYtop: "+ lazyYtop);
   // console.log("lazyYbottom: "+ lazyYbottom);
+  //console.log("Im in ready ");
+  w = $("#container").width();
+  h = $("#container").height();
+  //paper = ScaleRaphael('p_menubottom', w, h);
 
   //load audio
   if(window.location.href.indexOf("noaudio") != -1) {
@@ -108,10 +111,19 @@ $(document).ready(function() {
   // document.getElementById("video1").addEventListener("timeupdate",function(){scrubberUpdater();},true);
  
   if(vidClicked) {
-    trackMouseY();
+    //trackMouseY();
+    p_enablecontrols();
   }
+  //console.log("vidClicked = " + vidClicked);
 
-  p_enablecontrols();
+
+  // var phome_bottom = document.getElementById("home_button_pbottom");
+  // $("#home_button_pbottom").on('click', function() {
+  //   console.log("go home");
+  //   animateHome();
+  //   p_pauseVids();
+  //   document.getElementById("target").currentTime = 0;
+  // });
 
   $(document).on('keydown', function (e) {
     var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
@@ -120,7 +132,7 @@ $(document).ready(function() {
       if(p_playState == 1 || p_playState == 2){
 
         p_playButton();
-        console.log("p_playButton(); event");
+        //console.log("p_playButton(); event");
 
       }
     }
@@ -150,18 +162,19 @@ function p_playhandler () {
   p_playState = 1;
   periphery_closescreen();
   document.getElementById("mobileisgreat").controls = false;
-  if(!_controls){
+  if(!p_controls){
     p_enablecontrols();
   }
 }
 
 function p_enablecontrols () {
 
-  _controls = true;
+  p_controls = true;
 
   // if(_ammobile){
   //   trackon();  
   // } else {
+    //console.log('periphery bbbbbzzz');
     $("#p_outerouter").on('mouseenter', function () {
       if(vidClicked) {
         trackMouseY();
@@ -177,38 +190,38 @@ function p_enablecontrols () {
       } else {
         //console.log("not tracking mouse Y");
       }
-     // console.log('mousemove');
+      //console.log('mousemove');
     });
 
 
     $("#p_outerouter").on('mouseleave', function () {
-      if(flipangle < 90) {
+      if(p_flipangle < 90) {
         //console.log("less than 90");
-        //flipangle = 0;
+        //p_flipangle = 0;
         //set yeti volume to 0, norm to 1
       document.getElementById("audio_norm").volume = 1;
       document.getElementById("audio_yeti").volume = 0;
 
-      } else if (flipangle > 90 ) {
+      } else if (p_flipangle > 90 ) {
         // console.log("greater than 90");
-        //flipangle = 180;
+        //p_flipangle = 180;
       //set yeti volume to 1, norm to 0
       document.getElementById("audio_norm").volume = 0;
       document.getElementById("audio_yeti").volume = 1;
       }
-      // $("#card").css({ '-webkit-transform': 'rotate( ' + flipangle + 'deg)', 'transform': 'rotate( ' + flipangle + 'deg)' });
+      // $("#pcard").css({ '-webkit-transform': 'rotate( ' + p_flipangle + 'deg)', 'transform': 'rotate( ' + p_flipangle + 'deg)' });
       trackoff();
       //console.log('mouseleave');
     }); 
   // }
   
   $("#leftbutton").on('click', function () {
-    if(flipside){
+    if(p_flipside){
       // flipper(true);
     }
   });
   $("#rightbutton").on('click', function () {
-    if(!flipside){
+    if(!p_flipside){
       // flipper(false);
     }
   });
@@ -220,7 +233,7 @@ function p_disablecontrols () {
   $("#p_outerouter").unbind("mouseleave");
   $("#leftbutton").unbind("click");
   $("#rightbutton").unbind("click");
-  _controls = false;
+  p_controls = false;
 }
 
 
@@ -264,7 +277,7 @@ function periphery_openscreen () {
 function periphery_closescreen () {
   clearInterval(openIvl);
   $("#p_instructions").fadeOut(1000, function() {
-      console.log("close p_instructions");
+      //console.log("close p_instructions");
   });
 }
 
@@ -305,9 +318,10 @@ function periphery_sizer () {
 }
 
 function trackMouseY() {
-  _trackingon = true;
+  p_trackingon = true;
+  //console.log("periphery tracking is: " + p_trackingon);
   $(document).mousemove(function(e) {
-    if(!flipblock) {
+    if(!p_flipblock) {
       var y = e.pageY;
       var x = e.pageX;
       //console.log(y);
@@ -322,42 +336,44 @@ function trackMouseY() {
       audioLevelYeti = map(y, newTop, newBottom, 0, 1);
       
       
-      flipangle = map(y, newTop, newBottom, 0, 180);  
+      p_flipangle = map(y, newTop, newBottom, 0, 180);  
       
 
-      if(flipangle > 0 && flipangle < 35) {
-        flipangle = 0;
+      if(p_flipangle > 0 && p_flipangle < 35) {
+        p_flipangle = 0;
       }
 
-      if(flipangle > 35 && flipangle < 55){
-        flipangle = 45;
+      if(p_flipangle > 35 && p_flipangle < 55){
+        p_flipangle = 45;
       }
-      if(flipangle > 55 && flipangle < 125){
-        flipangle = 90;
+      if(p_flipangle > 55 && p_flipangle < 125){
+        p_flipangle = 90;
       }
-      if(flipangle > 125 && flipangle < 145){
-        flipangle = 135;
-      }
-
-      if(flipangle > 145 && flipangle < 180) {
-        flipangle = 180;
+      if(p_flipangle > 125 && p_flipangle < 145){
+        p_flipangle = 135;
       }
 
-      //console.log("flip angle: " + flipangle + " , flipped :" + flipside) ;
+      if(p_flipangle > 145 && p_flipangle < 180) {
+        p_flipangle = 180;
+      }
+
+      //console.log("p flip angle: " + p_flipangle + " , p flipped :" + p_flipside) ;
+      //console.log("audioLevelNorm: " + audioLevelNorm);
+      //console.log("audioLevelYeti: " + audioLevelYeti);
 
       document.getElementById("audio_norm").volume = audioLevelNorm;
       document.getElementById("audio_yeti").volume = audioLevelYeti;
 
-      $("#card").css({ '-webkit-transform': 'rotate( ' + flipangle + 'deg)', 'transform': 'rotate( ' + flipangle + 'deg)' });
+      $("#pcard").css({ '-webkit-transform': 'rotate( ' + p_flipangle + 'deg)', 'transform': 'rotate( ' + p_flipangle + 'deg)' });
     }
   });
 }
 
 function flipper (isDown){
-  console.log('flipper isDown = ' + isDown + '; isUp = ' + flipside);
-  if(flipside){   
-    flipside = false;
-    // flipangle = 0;
+  //console.log('flipper isDown = ' + isDown + '; isUp = ' + p_flipside);
+  if(p_flipside){   
+    p_flipside = false;
+    // p_flipangle = 0;
     $("#leftbutton").removeClass('buttonon').addClass('buttonoff');
     $("#rightbutton").removeClass('buttonoff').addClass('buttonon');
     // document.getElementById("audio_norm").volume = 1;
@@ -365,8 +381,8 @@ function flipper (isDown){
 
 
   } else {
-    flipside = true;
-    // flipangle = 180;
+    p_flipside = true;
+    // p_flipangle = 180;
     $("#rightbutton").removeClass('buttonon').addClass('buttonoff');
     $("#leftbutton").removeClass('buttonoff').addClass('buttonon');
     // document.getElementById("audio_norm").volume = 0;
@@ -375,20 +391,20 @@ function flipper (isDown){
     //$audio.animation({volume:newvolume}, 1000);
 
   }
-  // $("#card").css({ '-webkit-transform': 'rotate( ' + flipangle + 'deg)', 'transform': 'rotate( ' + flipangle + 'deg)' });
+  // $("#pcard").css({ '-webkit-transform': 'rotate( ' + p_flipangle + 'deg)', 'transform': 'rotate( ' + p_flipangle + 'deg)' });
   
   //set volume accordingly
 
   // log that they did this
   if(ga){
     var mobilereport = (_ammobile)? 'mobile':'desktop';
-    ga('send', 'event', 'cradle', 'flip', mobilereport, _curtime);
+    ga('send', 'event', 'cradle', 'flip', mobilereport, p_curtime);
   }
 }
 
 function trackoff () {
 //  console.log('trackoff');
-_trackingon = false;
+p_trackingon = false;
   $(document).unbind("swipeleft");
   $(document).unbind("swiperight");
   $(document).unbind('mousemove');
@@ -399,14 +415,14 @@ $(document).unbind('mouseleave');
 // function trackon () {
 //   _trackingon = true;
 //   $(document).on('mousemove', function(e){
-//     if(!flipblock){
+//     if(!p_flipblock){
 //       var y = e.pageY;
 //       if(y < ( lazyYbottom - (lazyHeight/2) ) ){
-//         if(flipside){
+//         if(p_flipside){
 //           flipper(false);
 //         }
 //       } else {
-//         if(!flipside){
+//         if(!p_flipside){
 //           flipper(true);
 //         }
 //       }
@@ -414,12 +430,12 @@ $(document).unbind('mouseleave');
 //   });
 //   if(_ammobile){
 //     $(document).swipeleft(function () {
-//       if(flipside){
+//       if(p_flipside){
 //         flipper(false);
 //       }
 //     });
 //     $(document).swiperight(function () {
-//       if(!flipside){
+//       if(!p_flipside){
 //         flipper(true);
 //       }
 //     });
@@ -431,16 +447,16 @@ function p_playDecide(){
   if(p_vidLoaded){
     p_playVids();
     p_playState = 1;
-    vidClicked = true;
+    //vidClicked = true;
   } else {
     setTimeout("p_playDecide()",800);
   }
 }
 
 function p_playButton(){
-  console.log('p_playbutton');
-  console.log('p_playState = ' + p_playState);
-  vidClicked = true;
+  //console.log('p_playbutton');
+  //console.log('p_playState = ' + p_playState);
+  //vidClicked = true;
 
   if(p_playState == 1){
     p_pauseVids();
@@ -517,15 +533,15 @@ function p_scrubberUpdater (){
     var ratio = (document.getElementById(currentvideoid).duration / dur);
   }
   
-  _curtime = document.getElementById(currentvideoid).currentTime;
+  p_curtime = document.getElementById(currentvideoid).currentTime;
 
   $("#progress").css({ "width": (640 / ratio) + 'px' });
-  sidetracker[Math.floor(document.getElementById(currentvideoid).currentTime)] = flipside;
+  sidetracker[Math.floor(document.getElementById(currentvideoid).currentTime)] = p_flipside;
   
   // if(_ammobile && dur > 0){
   //   mobile_stills(dur);
 
-  //   if(_inseek){
+  //   if(p_inseek){
   //     flipmobile(true);
   //   }
   // }

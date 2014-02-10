@@ -9,6 +9,7 @@ h1, h2, h3, h4, h5, h6 { font-size:100%; font-weight:normal }
 q:before, q:after { content:''}
 body { background: #3d3356; 
 	background-image:  url(../art/e_bg.jpg), url(../art/e_bg_b.jpg); 
+	background-size: 100%;
 	background-position: top left, 0px 800px;
 	background-repeat: repeat-x, repeat-x;
 	color: #fff; 
@@ -43,7 +44,7 @@ div#container div#home_button img { width: 40px; height: 35px;}
 
 div#container #navigation {position: relative; }
 */
-div#container div#home_button { position: absolute; bottom: 30; right: 30; z-index: 5;}
+div#container div#home_button { position: absolute; bottom: 30; right: 30; z-index: 5; cursor: pointer;}
 div#container div#home_button img { width: 40px; height: 35px;}
 div #canvas_container {
 	width: auto;
@@ -85,4 +86,6 @@ div #peripheryContent {
 	text-align: right;
 	pointer-events: none;
 }
+
+
 
