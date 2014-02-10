@@ -462,34 +462,35 @@ function attachCradleEvents() {
 
 		  $(document).ready(function() {
 
-		$(document).on('keydown',function (e) {
-    		var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-    		if (key === 32){
-       			e.preventDefault();
-    			if(c_playState === 1 || c_playState === 2){
-    				playButton();
-    				//console.log("cradle playButton(); event");
-    			}
-    		}
- 		});
+		// $(document).on('keydown',function (e) {
+  //   		var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+  //   		if (key === 32){
+  //      			e.preventDefault();
+  //   			if(c_playState === 1 || c_playState === 2){
+  //   				playButton();
+  //   				//console.log("cradle playButton(); event");
+  //   			}
+  //   		}
+ 	// 	});
 
- 		$("#playElement").on('click', function () {
- 			//console.log('playElement');
-			playButton();
-		}).on('mouseover', function (){
-			//console.log("c_playState: " + c_playState);
-			if(c_playState === 1){
-				$("#playElement").css({'background':'url(cradle/art/pauseWhite.png)'})
-			} else {				
-				$("#playElement").css({'background':'url(cradle/art/playWhite.png)'})
-			}
-		}).on('mouseout', function (){
-			if(c_playState === 1){
-				$("#playElement").css({'background':'url(cradle/art/playWhite.png)'})
-			} else {				
-				$("#playElement").css({'background':'url(cradle/art/pauseGray.png)'})
-			}
-		});
+ 	// 	$("#playElement").on('click', function () {
+ 	// 		//console.log('playElement');
+ 	// 		console.log("c_playState: " + c_playState);
+		// 	playButton();
+		// }).on('mouseover', function (){
+
+		// 	if(c_playState === 1){
+		// 		$("#playElement").css({'background':'url(cradle/art/pauseWhite.png)'})
+		// 	} else {				
+		// 		$("#playElement").css({'background':'url(cradle/art/playWhite.png)'})
+		// 	}
+		// }).on('mouseout', function (){
+		// 	if(c_playState === 1){
+		// 		$("#playElement").css({'background':'url(cradle/art/playWhite.png)'})
+		// 	} else {				
+		// 		$("#playElement").css({'background':'url(cradle/art/pauseGray.png)'})
+		// 	}
+		// });
 
 		//cradle_openscreen();
 
@@ -664,21 +665,23 @@ function attachPeripheryEvents() {
 
   	//console.log('tried to update periphery listeners');
 
-	$("#playElement").on('click', function() {
-  		p_playButton();
-  	}).on('mouseover', function() {
- 		if(p_playState == 1){
-   			$("#playElement").css({'background':'url(art/pauseWhite.png)'})
-    	} else {        
-     		$("#playElement").css({'background':'url(art/playWhite.png)'})
-    	}
-  		}).on('mouseout', function() {
-    	if(p_playState == 1){
-      		$("#playElement").css({'background':'url(art/playWhite.png)'})
-   		} else {        
-     		$("#playElement").css({'background':'url(art/pauseGray.png)'})
-    	}
-  	});
+	// $("#playElement").on('click', function() {
+	// 	 console.log("p_playState: " + p_playState);
+
+ //  		p_playButton();
+ //  	}).on('mouseover', function() {
+ // 		if(p_playState == 1){
+ //   			$("#playElement").css({'background':'url(art/pauseWhite.png)'})
+ //    	} else {        
+ //     		$("#playElement").css({'background':'url(art/playWhite.png)'})
+ //    	}
+ //  		}).on('mouseout', function() {
+ //    	if(p_playState == 1){
+ //      		$("#playElement").css({'background':'url(art/playWhite.png)'})
+ //   		} else {        
+ //     		$("#playElement").css({'background':'url(art/pauseGray.png)'})
+ //    	}
+ //  	});
 
   	$("#p_instructions").on('click', function () { 
     if(!_ammobile){ 
@@ -844,7 +847,7 @@ function drawer () {
 
 	$("#bodytext").css( { 'left': ((w/2) + rMargin), 'top': 220 });
 
-		paper.changeSize(w, h, true, false);
+	paper.changeSize(w, h, true, false);
 }
 
 function audioready () {
