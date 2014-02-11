@@ -97,7 +97,7 @@ $(window).resize(drawer);
 
 
 function buildRippleNode(index){
-	var ripple, title, bottomLetter, topLetter;
+	var ripple, pattern, title, bottomLetter, topLetter;
 	var offset = 180;
 	var pos = (offset * index) + offset; //radius of Home Button
 	var titleOffset = config.titleOffset;
@@ -138,11 +138,51 @@ function buildRippleNode(index){
 	ripple = paper.path("M0,0 L"+pos+",0 A"+pos+","+pos+" 0 0,1 0,"+pos+"z")
 	ripple.attr({'fill': COLORS[index], 'fill': URL[index], 'stroke': COLORS[index]})
 		  .data('name_', RIPPLE_ID[index]);
+
+/*
+	var isURL = Str(value).match(URL[index]);
+	if (isURL) {
+	el = $("pattern");
+	var ig = $("image");
+	el.id = R.createUUID();
+	$(el, {x: 0, y: 0, height: 1, width: 1, "patternContentUnits": "objectBoundingBox"});
+	$(ig, {x: 0, y: 0, width: 1, height: 1, "preserveAspectRatio": "none", "xlink:href": isURL[1]});
+	el.appendChild(ig);
+
+	o.paper.defs.appendChild(el);
+	$(node, {fill: "url(#" + el.id + ")"});
+	o.pattern = el;
+}	  
+	
+	// console.log(ripple.node.outerHTML);
+	pattern = $(ripple.node).attr('fill');
+    
+    if(pattern) {
+        pattern = pattern.replace('url(', '').replace(')', '');
+        pattern = $(pattern);
+        
+        // console.log($(pattern).find('image').css('height','10'));//[0]);//.getAttribute("x"));//getElementsByTagName("image")[0]);//.get("image"));//	/.getAttribute());
+    }
+	setTimeout(function() {
+		// $(pattern)[0].setAttribute('y', 100);
+    	// $(pattern)[0].setAttribute('x', 10);
+    	$(pattern)[0].setAttribute('viewBox', '0 0 250 200');//('height', 780);
+   		$(pattern).find('image')[0];//setAttribute('height',100);//attr('width','10');
+   		// console.log($(pattern).find('image')[0].getAttribute("y"));
+   		console.log($(pattern)[0]);
+   		// console.log($(pattern).find('image')[0].setAttribute("height"));//.find('image')	);//.attr("width"));
+		$(pattern).find('image')[0].setAttribute("height", 0)
+		console.log($(pattern)[0]);
+   		//setAttribute('height', h);
+   		// ($(pattern).find('image').css('height','10'));
+    	// $(pattern).find('image')[0].setAttribute('defer none meet');
+	});
+*/
 	ripple.patternTmp = ripple.pattern;
 	delete ripple.pattern;
-	title = paper.text(pos - titleOffset, titleHeight, LABELS[index]).attr({'font-size': '24px', 'font-style': 'italic', 'opacity': 1});
-	topLetter = paper.text(topLetX, titleHeight, LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0});
-	bottomLetter = paper.text(botLetX, botLetY, LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0});
+	title = paper.text(pos - titleOffset, titleHeight, LABELS[index]).attr({'font-size': '24px', 'font-style': 'italic', 'opacity': 1, 'cursor': 'pointer'});
+	topLetter = paper.text(topLetX, titleHeight, LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0, 'cursor': 'pointer'});
+	bottomLetter = paper.text(botLetX, botLetY, LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0, 'cursor': 'pointer'});
 
 	// for(var i=0; i< 360; i++){
 	// 	botLetX =  posX * Math.cos(i * rad);
@@ -164,6 +204,7 @@ function bottomLetterPlacing() {
 
 function Button(ripple, title, topLetter, bottomLetter, isActive, isBig) {
 	this.ripple = ripple;
+	//this.image = image;
 	this.title = title;
 	this.topLetter = topLetter;
 	this.bottomLetter = bottomLetter;
@@ -177,7 +218,9 @@ Button.prototype.onClick = function(){
 
 Button.prototype.addClickListener = function(callback){
 	//magic function for button click listeners
-	this.ripple.click($.proxy(callback, this));
+	this.title.click($.proxy(callback, this));
+	this.topLetter.click($.proxy(callback, this));
+	this.bottomLetter.click($.proxy(callback, this));
 };
 
 function buildRipples(total) {	
