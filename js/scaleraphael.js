@@ -84,7 +84,7 @@
       if (center){
         wrapper.style.position = "absolute";
         wrapper.style.left = parseInt((w - newWidth) / 2) + "px";
-        wrapper.style.top = parseInt((h - newHeight) / 2) + "px";
+        //wrapper.style.top = parseInt((h - newHeight) / 2) + "px";
       }
     }
     

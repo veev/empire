@@ -9,8 +9,9 @@ var dontannoysam = false;
 var _ammobile = false;
 var _canhls = true;
 var paper;
+var resizing = false;
 var total = 4;
-var w, h;
+var w, h, paperHeight, paperWidth;
 var config = {
 	titleOffset:90,
 	animationSpeed:1000,
@@ -42,24 +43,28 @@ var URL_BOTTOM = ['url(art/c_bg_b.jpg)', 'url(art/l_bg_b.jpg)', 'url(art/m_bg_b.
 $(document).ready(function () {
 
 	if(cradleLoaded){
-		cradleLoaded = false;	
+		//cradleLoaded = false;	
 
 	} else if (legacyLoaded) {
-		legacyLoaded = false;
+		//legacyLoaded = false;
 
 	} else if (peripheryLoaded) {
-		peripheryLoaded = false;
+		//peripheryLoaded = false;
 
 	}
 
 	else{
 
 	//console.log("Im in ready ");
-	w = $("#container").width();
-	h = $("#container").height();
-	paper = ScaleRaphael('canvas_container', w, h);
+	paperWidth = $('#container').width();
+	paperHeight = $('#container').height();
+	paper = ScaleRaphael('canvas_container', paperWidth, paperHeight);
+	console.log('paperWidth: '+paperWidth+', paperHeight: '+paperHeight);
+	w = paper.w;
+	h = paper.h;
+	console.log('w: '+w+', h: '+h);
 	// paper.setViewBox(0, 0, w, h, true);
-	// paper.canvas.setAttribute('preserveAspectRatio', 'none'); 
+	paper.canvas.setAttribute('preserveAspectRatio', 'none'); 
 
 	buildRipples(total); //creates four ripples
 
@@ -86,13 +91,18 @@ $(document).ready(function () {
  // 			console.log(e);
 	// 		//playButton();
 	// });
+resizePaper();
 
+$(window).resize(resizePaper);
+$(window).resize(drawer);
 
 });
 
-$(window).resize(drawer);
+
 // $(window).resize(function() {
-// 	w = 
+// 	resizePaper( function() {
+// 		drawer();
+// 	});
 // });
 
 
@@ -136,7 +146,7 @@ function buildRippleNode(index){
 	// var botLetX = w* 0.75 +bottomLetterOffset*index ;//+ bottomLetterOffset*0.80*index;
 
 	ripple = paper.path("M0,0 L"+pos+",0 A"+pos+","+pos+" 0 0,1 0,"+pos+"z")
-	ripple.attr({'fill': COLORS[index], 'fill': URL[index], 'stroke': COLORS[index]})
+	ripple.attr({'fill': COLORS[index], 'fill': URL[index], 'stroke': COLORS[index], 'cursor': 'pointer'})
 		  .data('name_', RIPPLE_ID[index]);
 
 /*
@@ -193,6 +203,9 @@ function buildRippleNode(index){
     btn.id = RIPPLE_ID[index];
     btn.index = index;
 
+    //TODO: how do i set isActive and isBig to be false at initialization?
+    //console log says they are "undefined"
+
     btn.onClick();
     return btn;
     // return {ripple: ripple, title: title, topLetter: topLetter, bottomLetter: bottomLetter};
@@ -218,10 +231,21 @@ Button.prototype.onClick = function(){
 
 Button.prototype.addClickListener = function(callback){
 	//magic function for button click listeners
+	this.ripple.click($.proxy(callback, this));
 	this.title.click($.proxy(callback, this));
 	this.topLetter.click($.proxy(callback, this));
 	this.bottomLetter.click($.proxy(callback, this));
 };
+
+function resizePaper( ){
+    resizing = true;
+    clearTimeout(this.id);
+    this.id = setTimeout(function(){
+    var win = $(this);
+    paper.changeSize(win.width(), win.height(), false, false);
+    resizing = false;
+    }, 500);
+}
 
 function buildRipples(total) {	
 
@@ -240,8 +264,11 @@ function buildRipples(total) {
 		menu.unshift(button);
 	}
 
+	//set all ripples to !isBig and !isActive
 	for(var i = 0; i < total; i++) {
 		//console.log(menu[i].id);
+		menu[i].ripple.isActive = false;
+		menu[i].ripple.isBig = false;
 	}
 }
 
@@ -264,15 +291,15 @@ function animateButton(index){
 		if (menu[index].ripple.isActive && !menu[index].ripple.isBig) {
 			growRippleNode(index, function() {
 
-				if(index === 0 && !cradleLoaded){
-					loadCradle( function() {
-						//attachCradleEvents();
-						 //$("#cradleContent").fadeIn(1000);
-					});
+				if(index === 0) {
+					if(!cradleLoaded) {
+						loadCradle();
+					}
 					$("#cradleContent").fadeIn(2000);
+					//menu[index].ripple.attr({'cursor' : 'default'});
 
-				 } else if (index != 0 ) {
-				 	cradleLoaded = false;
+				 } else {
+				 	//cradleLoaded = false;
 				 	$("#cradleContent").fadeOut("fast");
 				 }
 
@@ -284,21 +311,21 @@ function animateButton(index){
 				 // 	$("#legacyContent").fadeOut("fast");
 				 // }
 
-				 if(index === 3 && !peripheryLoaded) {
-				 	loadPeriphery( function() {
-				 		//attachPeripheryEvents();
-				 	});
-				 	$("#peripheryContent").fadeIn(2000);
-				 } else if ( index != 3 ) {
-				 	peripheryLoaded = false;
+				 if(index === 3) {
+				 	if(!peripheryLoaded) {
+				 		loadPeriphery();
+				 	}
+					$("#peripheryContent").fadeIn(2000);
+
+				 } else {
+				 	//peripheryLoaded = false;
 				 	$("#peripheryContent").fadeOut("fast");
 				 }
 			});	 			
 			$("#navigation").fadeIn();
 	 		$("#containerinner").fadeOut(function() {
-
+	 			//console.log("faded out containerinner");
 	 		});
-
 
 			//fade out titles (pass in opacity)
 			fadeTitles(0);				
@@ -311,6 +338,24 @@ function animateButton(index){
 			//console.log("Shrinking menu["+index+"]")
 			//shrinkRippleNode(1);
 			shrinkRippleNode(index);
+
+			//debugging states for pointer, not working yet
+			for(var i = 0; i < index; i++) {
+				menu[index].ripple.isBig = false;
+				console.log("after shrink menu["+i+"] is big = " + menu[i].ripple.isBig);
+			}
+		}
+
+		for( var i = 0; i < total; i++) {
+			console.log("menu["+i+"] is big = " + menu[i].ripple.isBig);
+			console.log("menu["+i+"] is active = " + menu[i].ripple.isActive);
+		}
+
+		//trying to set cursor to pointer if ripple is not big, then to default when it is
+		if(menu[index].ripple.isBig) {
+			menu[index].ripple.attr({'cursor' : 'default'});
+			} else if (!menu[index].ripple.isBig) {
+			menu[index].ripple.attr({'cursor' : 'pointer'});
 		}
 }
 
@@ -339,6 +384,7 @@ function growRippleNode(index, callback) {
 		var posY = (posX * aspectRatio);
 		posY += posY*0.5;
 		//console.log("posY: " + posY);
+		//ripple.attr({'cursor': 'default'});
 		ripple.animate({path: "M0,0 L" + posX +",0 A" + posX +"," + posY + " 0 0,1 0," + posY + "z"}, speed,
 		function() {
 			//$(document).trigger("animation.end");
@@ -385,14 +431,7 @@ function shrinkRippleNode(index) {
 			//$(document).trigger("animation.end");
 			  for(var i = 0; i <= index; i++) {
 
-			 	// var _index = i + 1;
-			 	// if(i === menu.length - 1) {
-			 	// 	continue;
-			 	// }
-
 				fadeTopLetters( i, 1);	
-
-			 	// fadeBottomLetters( _index, 0);
 
 			 }
 		});
@@ -441,7 +480,7 @@ function animateHomeNode(index) {
 }
 
 
-var loadCradle = function (callback) {
+var loadCradle = function () {
  
 //this works, but doesn't load cradle css
 $("#cradleContent").load("/cradle/index.html #cradle_wrapper", function() {
@@ -475,8 +514,6 @@ $("#cradleContent").load("/cradle/index.html #cradle_wrapper", function() {
 	// });
  
  });
-
-callback();
 
 }
 
@@ -585,26 +622,34 @@ function attachCradleEvents() {
 
     $("#periphery_cbutton").on('click', function() {
   		//console.log("go to periphery page");
-  		animateButton(3);
   		pauseVids();
-    	document.getElementById("video1").currentTime = 0;
-   		document.getElementById("video2").currentTime = 0;
+  		$('html, body').animate({ scrollTop: ($('#cradle_top').offset().top) }, 1000, function() {
+  			 animateButton(3);
+  		});
+    	// document.getElementById("video1").currentTime = 0;
+   		// document.getElementById("video2").currentTime = 0;
   	});
 
   	$("#legacy_cbutton").on('click', function() {
   		//console.log("go to legacy page");
-  		animateButton(1);
   		pauseVids();
-    	document.getElementById("video1").currentTime = 0;
-    	document.getElementById("video2").currentTime = 0;
+  		$('html, body').animate({ scrollTop: ($('#cradle_top').offset().top) }, 1000, function() {
+  			animateButton(1);
+  		});
+
+    	// document.getElementById("video1").currentTime = 0;
+    	// document.getElementById("video2").currentTime = 0;
   	});
 
   	$("#migrants_cbutton").on('click', function() {
   		//console.log("go to migrants page");
-  		animateButton(2);
   		pauseVids();
-    	document.getElementById("video1").currentTime = 0;
-    	document.getElementById("video2").currentTime = 0;
+  		$('html, body').animate({ scrollTop: ($('#cradle_top').offset().top) }, 1000, function() {
+  			animateButton(2);
+  		});
+
+    	// document.getElementById("video1").currentTime = 0;
+    	// document.getElementById("video2").currentTime = 0;
   	});
 
 
@@ -641,7 +686,7 @@ $("#legacyContent").load("/legacy/index.html #legacy_wrapper", function() {
    $(".legacy_top").css({'background': 'none'});
    $(".yellow").css({'background': 'none'});
    //$("#cradleContent").css({'display': 'none'});
-   $("#legacyContent").fadeIn(1000);
+   //$("#legacyContent").fadeIn(1000);
  });
 }
 
@@ -672,7 +717,7 @@ $("#peripheryContent").load("/periphery/index.html #periphery_wrapper", function
    $("#peripheryContent").css({'width': '100%', 'height': '100%'});
    $(".periphery_top").css({'background': 'none'});
    //$("#cradleContent").css({'display': 'none'});
-   $("#peripheryContent").fadeIn(1000);
+   //$("#peripheryContent").fadeIn(1000);
  });
 }
 
@@ -764,29 +809,35 @@ function attachPeripheryEvents() {
 
   	$("#cradle_pbutton").on('click', function() {
   		//console.log("go to cradle page");
-  		animateButton(0);
   		p_pauseVids();
-  		document.getElementById("target").currentTime = 0;
-    	document.getElementById("audio_norm").currentTime = 0;
-    	document.getElementById("audio_yeti").currentTime = 0;
+  		$('html, body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
+  			animateButton(0);
+  		});
+  	// document.getElementById("target").currentTime = 0;
+    // 	document.getElementById("audio_norm").currentTime = 0;
+    // 	document.getElementById("audio_yeti").currentTime = 0;
   	});
 
   	$("#legacy_pbutton").on('click', function() {
   		//console.log("go to legacy page");
-  		animateButton(1);
   		p_pauseVids();
-  		document.getElementById("target").currentTime = 0;
-    	document.getElementById("audio_norm").currentTime = 0;
-    	document.getElementById("audio_yeti").currentTime = 0;
+  		$('html, body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
+  			animateButton(1);
+  		});
+  		// document.getElementById("target").currentTime = 0;
+    // 	document.getElementById("audio_norm").currentTime = 0;
+    // 	document.getElementById("audio_yeti").currentTime = 0;
   	});
 
   	$("#migrants_pbutton").on('click', function() {
   		//console.log("go to migrants page");
-  		animateButton(2);
   		p_pauseVids();
-  		document.getElementById("target").currentTime = 0;
-    	document.getElementById("audio_norm").currentTime = 0;
-    	document.getElementById("audio_yeti").currentTime = 0;
+  		$('html, body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
+  			animateButton(2);
+  		});
+  		// document.getElementById("target").currentTime = 0;
+    // 	document.getElementById("audio_norm").currentTime = 0;
+    // 	document.getElementById("audio_yeti").currentTime = 0;
   	});
 
 
@@ -877,24 +928,24 @@ function fadeTopLetters(index, opacity) {
 }
 
 function drawer () {
-
-	var w = $("#container").width();
-	var h = $("#container").height();
+	// var _w = $(window).width();
+	// var _h = $(window).height();
+	var _w = $("#container").width();
+	var _h = $("#container").height();
 	var rMargin = 200;
 	
-	$("#titleblock").css({ 'left': ((w/2)+ rMargin), 'top': (86)});
-	$("#pinchelines").css({ 'height': (h-(86+80)), 'left': ((w/2) + (rMargin + 544)), 'top': 162 });
-	$("#preaching").css({ 'left': ((w / 2) + rMargin + 400), 'top': ( h - 70) });
-	$("#legacy").css({ 'top': ((h/2) - 280), left: ((w/4) - 230) });
-	$("#cradle").css({ 'top': ((h/2) + 20), left: ((w/4) - 230) });
+	$("#titleblock").css({ 'left': ((_w/2)+ rMargin), 'top': (86)});
+	$("#pinchelines").css({ 'height': (_h-(86+80)), 'left': ((_w/2) + (rMargin + 544)), 'top': 162 });
+	$("#preaching").css({ 'left': ((_w / 2) + rMargin + 400), 'top': ( _h - 70) });
+	$("#legacy").css({ 'top': ((_h/2) - 280), left: ((_w/4) - 230) });
+	$("#cradle").css({ 'top': ((_h/2) + 20), left: ((_w/4) - 230) });
 
-	$("#bodytext").css( { 'left': ((w/2) + rMargin), 'top': 220 });
+	$("#bodytext").css( { 'left': ((_w/2) + rMargin), 'top': 220 });
 
-	paper.changeSize(w, h, true, false);
+	//paper.changeSize(w, h, true, false);
 }
 
 function audioready () {
-	
 	// audio has loaded, let's do this
 
 	if(!audioactive){

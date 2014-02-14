@@ -10,7 +10,7 @@ var p_controls = false;
 var p_vidLoaded = false;
 //var vid2Loaded = false;
 var p_playState = 0;
-var vidClicked = true;
+var p_vidClicked = false;
 var instructionsin = false;
 var enoughwithinstructions = false;
 var pbottom;
@@ -62,7 +62,7 @@ function map(i, sStart, sEnd, tStart, tEnd)
 $(document).ready(function() {
 
   if(navigator.userAgent.indexOf('WebKit') == -1 && navigator.userAgent.indexOf('Firefox') == -1){
-     $('body:first').append('<div id="browserno" style="display: none;"><div class="padded">Sorry, this experiment is only currently working in Google Chrome, Apple\'s Safari and Firefox. Other browsers may encounter problems.  We apologize for the inconvenience.</div></div>');
+     $('body:first').append('<div id="browserno" style="display: none;"><div class="padded">Sorry, this experiment is only currently working in Google Chrome or Apple\'s Safari browser. Other browsers may encounter problems.  We apologize for the inconvenience.</div></div>');
      $("#browserno").slideDown();
   }
 
@@ -110,11 +110,11 @@ $(document).ready(function() {
   // document.getElementById("video1").addEventListener("ended",function(){ endVids();},true);
   // document.getElementById("video1").addEventListener("timeupdate",function(){scrubberUpdater();},true);
  
-  if(vidClicked) {
+  // if(p_vidClicked) {
     //trackMouseY();
     p_enablecontrols();
-  }
-  //console.log("vidClicked = " + vidClicked);
+  // }
+  console.log("p_vidClicked = " + p_vidClicked);
 
 
   // var phome_bottom = document.getElementById("home_button_pbottom");
@@ -142,17 +142,21 @@ $("#p_playElement").on('click', function() {
   p_playButton();
   }).on('mouseover', function() {
   if(p_playState == 1){
-    $("#p_playElement").css({'background':'url(art/pauseWhite.png)'})
+    $("#p_playElement").css({'background':'url(/periphery/art/pauseWhite.png)'})
     } else {        
-     $("#p_playElement").css({'background':'url(art/playWhite.png)'})
+     $("#p_playElement").css({'background':'url(/periphery/art/playWhite.png)'})
     }
   }).on('mouseout', function() {
     if(p_playState == 1){
-      $("#p_playElement").css({'background':'url(art/playWhite.png)'})
+      $("#p_playElement").css({'background':'url(/periphery/art/playWhite.png)'})
     } else {        
-      $("#p_playElement").css({'background':'url(art/pauseGray.png)'})
+      $("#p_playElement").css({'background':'url(/periphery/art/pauseGray.png)'})
     }
   });
+
+$("#p_refresh").on('click', function() {
+  p_restartVids();
+})
 
 periphery_openscreen();
 
@@ -176,7 +180,7 @@ function p_enablecontrols () {
   // } else {
     //console.log('periphery bbbbbzzz');
     $("#p_outerouter").on('mouseenter', function () {
-      if(vidClicked) {
+      if(p_vidClicked) {
         trackMouseY();
       } else {
         //console.log("not tracking mouse Y");
@@ -185,7 +189,7 @@ function p_enablecontrols () {
     });
 
     $("#p_outerouter").on('mousemove', function () {
-      if(vidClicked) {
+      if(p_vidClicked) {
         trackMouseY();
       } else {
         //console.log("not tracking mouse Y");
@@ -283,7 +287,8 @@ function periphery_closescreen () {
 
 function periphery_sizer () {
 
-  var matop = ($("#periphery_top").height() / 2) - 320; // top of the matrix
+  // var matop = ($("#periphery_top").height() / 2) - 320; // top of the matrix
+  var matop = 0;
   var padtop = 10; // top of the main title
   var legbottom = 60; //offset of the bottom play button on the open screen
   
@@ -304,7 +309,7 @@ function periphery_sizer () {
   $("#periphery_title").css({ 'padding-top': padtop });
 
   $("#periphery_structure").css({ 'margin-top': matop, 'left': (($("#periphery_top").width() / 2) - 370) });
-  $("#pbottom_structure").css({ 'margin-top': ((($("#periphery_bottom").height() - 160) / 2) - 235), 'left': (($("#periphery_top").width() / 2) - 465) - 5 });
+  $("#pbottom_structure").css({ 'margin-top': ((($("#periphery_bottom").height() - 160) / 2) - 330), 'left': (($("#periphery_top").width() / 2) - 465) - 5 });
 
   $("#legmore").css({ "margin-left": ($("#periphery_main").width() / 2) - 70 });
 
@@ -341,25 +346,36 @@ function trackMouseY() {
 
       if(p_flipangle > 0 && p_flipangle < 35) {
         p_flipangle = 0;
+        // audioLevelNorm = 1.0;
+        // audioLevelYeti = 0.0;
       }
 
       if(p_flipangle > 35 && p_flipangle < 55){
         p_flipangle = 45;
+        // audioLevelNorm = 0.75;
+        // audioLevelYeti = 0.25;
       }
       if(p_flipangle > 55 && p_flipangle < 125){
         p_flipangle = 90;
+        // audioLevelNorm = 0.5;
+        // audioLevelYeti = 0.5;
+
       }
       if(p_flipangle > 125 && p_flipangle < 145){
         p_flipangle = 135;
+        // audioLevelNorm = 0.25;
+        // audioLevelYeti = 0.75;
       }
 
       if(p_flipangle > 145 && p_flipangle < 180) {
         p_flipangle = 180;
+        // audioLevelNorm = 0.0;
+        // audioLevelYeti = 1.0;
       }
 
-      //console.log("p flip angle: " + p_flipangle + " , p flipped :" + p_flipside) ;
-      //console.log("audioLevelNorm: " + audioLevelNorm);
-      //console.log("audioLevelYeti: " + audioLevelYeti);
+      // console.log("p flip angle: " + p_flipangle + " , p flipped :" + p_flipside) ;
+      // console.log("audioLevelNorm: " + audioLevelNorm);
+      // console.log("audioLevelYeti: " + audioLevelYeti);
 
       document.getElementById("audio_norm").volume = audioLevelNorm;
       document.getElementById("audio_yeti").volume = audioLevelYeti;
@@ -396,10 +412,10 @@ function flipper (isDown){
   //set volume accordingly
 
   // log that they did this
-  if(ga){
-    var mobilereport = (_ammobile)? 'mobile':'desktop';
-    ga('send', 'event', 'cradle', 'flip', mobilereport, p_curtime);
-  }
+  // if(ga){
+  //   var mobilereport = (_ammobile)? 'mobile':'desktop';
+  //   ga('send', 'event', 'cradle', 'flip', mobilereport, p_curtime);
+  // }
 }
 
 function trackoff () {
@@ -409,7 +425,7 @@ p_trackingon = false;
   $(document).unbind("swiperight");
   $(document).unbind('mousemove');
   $(document).unbind('mouseenter');
-$(document).unbind('mouseleave');  
+  $(document).unbind('mouseleave');  
 }
 
 // function trackon () {
@@ -447,16 +463,27 @@ function p_playDecide(){
   if(p_vidLoaded){
     p_playVids();
     p_playState = 1;
-    //vidClicked = true;
+    p_vidClicked = true;
   } else {
     setTimeout("p_playDecide()",800);
   }
 }
 
+function p_restartVids() {
+  p_playState = 1;
+  document.getElementById("target").currentTime = 0;
+  document.getElementById("target").volume = 0;
+  document.getElementById("audio_norm").currentTime = 0;
+  document.getElementById("audio_yeti").currentTime = 0;
+  document.getElementById("target").play();
+  document.getElementById("audio_norm").play();
+  document.getElementById("audio_yeti").play();
+}
+
 function p_playButton(){
   //console.log('p_playbutton');
   //console.log('p_playState = ' + p_playState);
-  //vidClicked = true;
+  //p_vidClicked = true;
 
   if(p_playState == 1){
     p_pauseVids();
@@ -523,7 +550,7 @@ function p_pauseVids(){
 
 function p_endVids(){
   p_playState = 3;
-  buildendscreen();
+  p_buildendscreen();
 }
 
 function p_scrubberUpdater (){
@@ -547,6 +574,78 @@ function p_scrubberUpdater (){
   // }
   
   
+}
+
+function p_buildendscreen () {
+  $("#p_container").hide();
+  $("#pcontrols").hide();
+  $("#p_endscreen").fadeIn();
+  
+  $("#plegmore").fadeIn();
+  
+  if(_ammobile){
+    trackoff();
+  }
+  
+  // now the drawing
+  
+  var outputstring = new String();
+  var nowtop = 0;
+  var multiplier = 1.756;
+  
+  for(var x = 0; x < 446; x++){
+
+    outputstring += '<div style="width: 445px; ';
+    var rightnow = sidetracker[x];
+    var accum = 1;
+    while(sidetracker[x] == rightnow){
+      accum++;
+      x++;  
+      if(x > 446){
+        break;
+      }
+    }
+    outputstring += 'height: ' + (accum * multiplier) + 'px';
+    if(rightnow == false){
+      outputstring += '; left: 445';
+    }
+    outputstring += '; top: ' + nowtop + '"></div>';
+    nowtop = nowtop + (accum * multiplier);
+  }
+  
+  
+  // log that they got to the end here
+  // if(ga){
+  //  var mobilereport = (_ammobile)? 'mobile':'desktop';
+  //  ga('send', 'event', 'cradle', 'endscreen', mobilereport);
+  // }
+
+  
+  $("#people_data").html(outputstring);
+  
+  // click on the overlay, party's over
+  $("#person_overlay").click(function () {
+    sidetracker = {};
+    $("#p_endscreen").fadeOut();
+    $("#plegmore").fadeOut();
+    
+
+    if(_ammobile){
+      document.getElementById("mobileisgreat").currentTime = 0;
+    } else {
+      document.getElementById("video1").currentTime = 0;
+      document.getElementById("video2").currentTime = 0;
+    }
+
+
+    $("#p_container").fadeIn();
+    $("#pcontrols").fadeIn();
+
+    playVids();
+
+    $("#p_playElement").css({'background':'url(/cradle/art/playWhite.png)'})
+    c_playState = 1;            
+  });
 }
 
 

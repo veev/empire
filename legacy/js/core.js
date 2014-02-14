@@ -6,6 +6,10 @@ var cliplengths = new Object();
 var cliprect = new Object();
 var clipfirst = new Object();
 
+//these were declared in empirecore.js, now cradle.js doesn't know about that
+var audioactive = false;
+var _ammobile = false;
+
 var connsloaded = false;
 var loadivl = new Number();
 var clipmap = new Array('indonesia','india','southafrica','srilanka');
@@ -1489,10 +1493,7 @@ function redrawing (){
 		if(_legstarton){
 			$("#legstart").css({ 'width': thisw + 'px', 'height': thish + 'px', 'padding-top': ((thish / 2) - 20) + 'px' });
 		}
-
-
 	}
-
 }
 
 
@@ -1502,11 +1503,11 @@ function legacy_draw() {
 	var padtop = 84; // top of the main title
 	var legbottom = 60; //offset of the bottom play button on the open screen
 	
-	if($(".yellow:first").height() < 780){ // if this a wee screen
-		padtop = 10;
-		matop = 20;
-		legbottom = 20;
-	}
+	// if($(".yellow:first").height() < 780){ // if this a wee screen
+	// 	padtop = 10;
+	// 	matop = 20;
+	// 	legbottom = 20;
+	// }
 	
 	$(".yellow_b").css("height",$(".yellow:first").height());
 	

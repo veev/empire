@@ -15,6 +15,7 @@ var _controls = false;
 var vid1Loaded = false;
 var vid2Loaded = false;
 var c_playState = 0;
+var c_vidClicked = false;
 var instructionsin = false;
 var enoughwithinstructions = false;
 var flipside = false;
@@ -105,8 +106,9 @@ $(document).ready(function(){
 		document.getElementById("video1").addEventListener("timeupdate",function(){
 			scrubberUpdater();
 		},false);
-		enablecontrols();
 
+		enablecontrols();
+		console.log("c_vidClicked = " + c_vidClicked);
 	}
 	
 	$(document).on('keydown',function (e) {
@@ -134,6 +136,10 @@ $("#playElement").on('click', function () {
 			$("#playElement").css({'background':'url(/cradle/art/pauseGray.png)'})
 		}
 });
+
+$("#c_refresh").on('click', function() {
+	restartVids();
+})
 
 	cradle_openscreen();
 
@@ -166,7 +172,9 @@ function enablecontrols () {
 	} else {
 		//console.log('bbbbbzzz');
 		$("#outerouter").on('mouseenter', function () {
-			trackon();
+			if(c_vidClicked) {
+				trackon();
+			}
 			//console.log('mouseenter');
 		});
 
@@ -433,20 +441,26 @@ function scrubberUpdater (){
 			flipmobile(true);
 		}
 	}
-	
-	
 }
-
-
 
 function playDecide(){
 //	document.getElementById("video2").volume = 0;
 	if(vid1Loaded && vid2Loaded){
 		playVids();
 		c_playState = 1;
+		c_vidClicked = true;
 	} else {
 		setTimeout("playDecide()",800);
 	}
+}
+
+function restartVids() {
+	c_playState = 1;
+	document.getElementById("video1").currentTime = 0;
+	document.getElementById("video2").currentTime = 0;
+	document.getElementById("video1").play();
+	document.getElementById("video2").play();
+	document.getElementById("video2").volume = 0;
 }
 
 function playButton(){

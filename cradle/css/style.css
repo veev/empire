@@ -12,8 +12,12 @@ body { background: #000; color: #fff; }
 */
 div#browserno { background-color: #f00; width: 100%; text-align: center; position: absolute; z-index: 99402; top: 0; left: 0; }
 div#browserno div.padded { padding: 30px 20px 10px 20px; font-size: 1.2em; color: #fff; }
-div#legacy_container { height: 98%; text-align: center; position: relative; padding: 20px; width: 98%; }
-div.cradle_top { text-align: center; background: #ecda50 url(../../art/c_bg.jpg) repeat-x; width: 100%; height: 98%; position: relative }
+/*div#legacy_container { height: 98%; text-align: center; position: relative; padding: 20px; width: 98%; }
+*/div.cradle_top { 
+	text-align: center; 
+	background: #ecda50 url(../../art/c_bg.jpg) repeat-x; 
+	width: 100%; height: 98%; 
+	position: relative }
 div#cradle_main { 
 	position: relative; 
 	width: 100%; height: 100%; 
@@ -182,7 +186,7 @@ position: absolute;
 
 
 #outerinner #controls #scrubber {
-	width: 932px;
+	width: 900px;
 	float: right;
 	margin: 17px 15px 9px 0px;
 	height: 2px; background-color: #888; position: relative;
@@ -233,6 +237,15 @@ position: absolute;
 	width: 27px;
 	height: 38px;
 	background-image: url(images/playGray.png);
+}
+
+#outerinner #controls #c_refresh{
+	display: block;
+	float: left;
+	cursor: pointer;
+	width: 27px;
+	height: 38px;
+	background-image: url(../art/refresh.png);
 }
 
 #outerinner #endscreen {

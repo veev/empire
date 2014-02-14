@@ -19,10 +19,10 @@ div.periphery_top div#periphery_structure { width: 731px; height: 392px; padding
 div.periphery_top div#periphery_line { background: url(../art/b_line.png) repeat-y; width: 3px; position: absolute; }
 div.periphery_intro { text-align: left; position: relative; margin: auto; width: 790px; height: 500px; overflow: auto; }
 div.periphery_intro p { position: absolute; color: #000; font-size: 18px; font-style: italic; margin: 0; padding: 0; }
-div.periphery_intro p#p_a { top: 100px; left: 255px; width: 240px; text-align: right; z-index: 1; }
-div.periphery_intro p#p_b { top: 240px; left: 575px; width: 140px; z-index: 2; }
-div.periphery_intro p#p_c { top: 355px; left: 240px; width: 250px; text-align: right;}
-
+div.periphery_intro p#p_a { top: 60px; left: 280px; width: 210px; text-align: right; z-index: 1; }
+div.periphery_intro p#p_b { top: 120px; left: 570px; width: 220px; z-index: 2; }
+div.periphery_intro p#p_c { top: 240px; left: 315px; width: 180px; text-align: right;}
+div.periphery_intro p#p_d { top: 350px; left: 570px; width: 220px;}
 div#periphery_main { 
 	position: relative; 
 	width: 100%; height: 100%; 
@@ -34,17 +34,18 @@ div#periphery_main div#p_instructions {
 	z-index: 800; 
 	cursor: pointer; 
 	background: rgba(0,0,0,.6); 
-	width: 640px; 
-	padding: 200px 100px 160px 360px; 
-	height: 360px; 
+	width: 980px; 
+	left: 150;
+/*	padding: 200px 100px 160px 360px; */
+	height: 730px; 
 	text-align: center; }
 div#periphery_main div#p_instructions span#swifter { width: 187px; height: 720px; z-index: 1; left: 665; top: 0; position: absolute; background: url(../art/instructions_spin.png); display: none; }
 div#periphery_main div#p_instructions span#ptitle { width: 279px; height: 41px; z-index: 2; left: 588; opacity: .5; top: 30; position: absolute; background: url(../art/cradle_title.png); }
 div#periphery_main div#p_instructions p { position: relative; font-size: 1.4em; }
-div#periphery_main div#p_instructions p#peri_0 { top: -80; }
-div#periphery_main div#p_instructions p#peri_1 { color: #cc3333; top: 45; left: -220;}
-div#periphery_main div#p_instructions p#peri_2 { color: #cc3333; top: -15; left: 165; }
-div#periphery_main div#p_instructions p#peri_3 { top: 120; }
+div#periphery_main div#p_instructions p#peri_0 { top: 180; }
+div#periphery_main div#p_instructions p#peri_1 { color: #cc3333; top: 250; left: -180;}
+div#periphery_main div#p_instructions p#peri_2 { color: #cc3333; top: 260; left: 160; }
+div#periphery_main div#p_instructions p#peri_3 { top: 350; }
 
 div.periphery_bottom { text-align: center; background: #cc3333 url(../../art/p_bg_b.jpg) bottom left  repeat-x; width: 100%; position: relative ; clear: both; pointer-events: all;}
 div.periphery_bottom div.inner { padding: 30px 0 30px 0; }
@@ -58,7 +59,7 @@ div.periphery_bottom div#pbottom_structure div a { color: 000; }
 div.periphery_bottom div#pbottom_structure div.pbottom_l { color: #000; width: 385px; float: left; margin-right: 40px; }
 div.periphery_bottom div#pbottom_structure div.pbottom_l a { color: #000; }
 div#periphery_main div#periphery_linewhite { background: url(../art/b_linewhite.png) repeat-y; width: 3px; position: absolute; z-index: 1; }
-#periphery_main div#legmore { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(../art/leg_more.png); }
+#periphery_main div#plegmore { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(../art/leg_more.png); }
 
 div#periphery_main #p_outerouter {
 	text-align: center;
@@ -88,7 +89,7 @@ div#periphery_main #p_outerouter #p_outerinner {
 }
 
 
-#p_outerinner #container {
+#p_outerinner #p_container {
 	position: relative;
 	height: 730px;
 	width: 1280px;
@@ -99,7 +100,7 @@ div#periphery_main #p_outerouter #p_outerinner {
 	 z-index: 1;
 }
 
-#p_outerinner #container #pcard {
+#p_outerinner #p_container #pcard {
 	overflow: visible !important;
    	width: 100%;
  	height: 100%;
@@ -125,7 +126,7 @@ div#periphery_main #p_outerouter #p_outerinner {
 }*/
 
 
-#p_outerinner #container #leftbutton {
+#p_outerinner #p_container #leftbutton {
 	z-index: 40;
 	display: block; 
 	position: absolute; 
@@ -136,7 +137,7 @@ div#periphery_main #p_outerouter #p_outerinner {
 	background: url(../art/leftar.png);
 }
 
-#p_outerinner #container #rightbutton {
+#p_outerinner #p_container #rightbutton {
 	z-index: 40;
 	display: block; 
 	position: absolute; 
@@ -147,16 +148,16 @@ div#periphery_main #p_outerouter #p_outerinner {
 	background: url(../art/rightar.png);
 }
 
-#p_outerinner #container div.buttonoff {
+#p_outerinner #p_container div.buttonoff {
 	opacity: .2;
 }
 
-#p_outerinner #container div.buttonon {
+#p_outerinner #p_container div.buttonon {
 	opacity: .6;
 	cursor: pointer;
 }
 
-#p_outerinner #container div.buttonon:hover {
+#p_outerinner #p_container div.buttonon:hover {
 	opacity: 1;
 }
 
@@ -169,28 +170,28 @@ div#periphery_main #p_outerouter #p_outerinner {
   -webkit-backface-visibility: hidden;
 }	*/
 
-#p_outerinner #container #pcard div.back {
+#p_outerinner #p_container #pcard div.back {
 	transform: rotate(180deg);
 	-webkit-transform: rotate(180deg);
 }
 
-#p_outerinner #container #pcard.flipped {
+#p_outerinner #p_container #pcard.flipped {
 	transform: translateX( -100% ) rotate( -180deg );
 	-webkit-transform: translateX( -100% ) rotate( -180deg );
 }
 
-#p_outerinner #controls #p_scrubber {
-	width: 640px;
-	float: right;
+#p_outerinner #pcontrols #p_scrubber {
+	width: 588px;
+	float: left;
 	margin: 17px 15px 9px 0px;
 	height: 2px; 
 	background-color: #888; 
 	position: relative;
-	margin-right:308px;
+	/*margin-right:308px;*/
 	z-index: 2;
 }
 
-#p_outerinner #controls #p_scrubber #progress {
+#p_outerinner #pcontrols #p_scrubber #progress {
 	width: 0;
 	position: absolute;
 	height: 2px;
@@ -228,17 +229,17 @@ div#periphery_main #p_outerouter #p_outerinner {
 	clear: both;
 }
 
-#p_outerinner #controls #p_playElement{
+#p_outerinner #pcontrols #p_playElement{
 	display: block;
 	float: left;
 	cursor: pointer;
 	width: 27px;
 	height: 38px;
 	background-image: url(../art/playWhite.png);
-	margin-left: 320px;
+	/*margin-left: 320px;*/
 	z-index: 2;
 }
-#p_outerinner #controls #p_playElement:hover {
+#p_outerinner #pcontrols #p_playElement:hover {
 	background-image: url(../art/pauseWhite.png);
 }
 #p_pauseElement{
@@ -248,7 +249,7 @@ div#periphery_main #p_outerouter #p_outerinner {
 	width: 27px;
 	height: 38px;
 	background-image: url(images/pauseGray.png);
-	margin-left:320px;
+	/*margin-left:320px;*/
 	z-index: 2;
 }
 #p_pauseElement:hover;{
@@ -257,6 +258,16 @@ div#periphery_main #p_outerouter #p_outerinner {
 	width: 27px;
 	height: 38px;
 	background-image: url(images/playGray.png);
+}
+
+#p_outerinner #pcontrols #p_refresh{
+	display: block;
+	float: left;
+	cursor: pointer;
+	width: 27px;
+	height: 38px;
+	background-image: url(../art/refresh.png);
+	margin-left: 320px;
 }
 
 div #pmain_nav_buttons {
@@ -299,4 +310,65 @@ div #pmain_nav_buttons #migrants_pbutton {
 	padding-left: 25px;
 	padding-right: 25px;
 	cursor: pointer;
+}
+
+#p_outerinner #p_endscreen {
+	position: relative;
+	height: 504px;
+	width: 900px;
+	 z-index: 1;
+	margin: 0 auto;
+}
+
+#p_outerinner #p_endscreen div#person_a {
+	width: 445px;
+	height: 504px;
+	position: absolute;
+	z-index: 1;	
+	background: url(../art/endscreen_a.jpg);
+	top: 0;
+	left: 0;
+}
+
+#p_outerinner #p_endscreen div#person_b {
+	width: 445px;
+	height: 504px;
+	position: absolute;
+	z-index: 1;	
+	background: url(../art/endscreen_b.jpg);
+	top: 0;
+	left: 445;
+}
+
+#p_outerinner #p_endscreen div#people_data {
+	position: absolute;
+	z-index: 2;	
+	height: 504px;
+	left: 0;
+	width: 890px;
+}
+
+#p_outerinner #p_endscreen div#people_data div {
+	background-color: #000;
+	width: 445px;
+	position: absolute;
+}
+
+#p_outerinner #p_endscreen div#person_overlay {
+	width: 507px;
+	height: 509px;
+	z-index: 3;
+	position: absolute;
+	left: 190;
+	height: 90px;
+	cursor: pointer;
+	width: 307px;
+	text-align: center;
+	padding: 199px 100px 218px 100px;
+	font-size: 1.3em;
+	background: url(../art/obscuredots.png);
+}
+
+#p_outerinner #p_endscreen div#person_overlay:hover {
+	color: #eddb58;
 }

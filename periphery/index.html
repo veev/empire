@@ -24,13 +24,14 @@
 		<div class="periphery_top snap" id="periphery_top">
 			<div id="periphery_title">
 				<img src="../art/emp_title.png" width="284" height="43" title="Empire" />
-				<h1>Peripery</h1>
+				<h1>Periphery</h1>
 			</div>
 			<div id="periphery_line"></div>
 			<div class="periphery_intro" id="mainarea">
-				<p id="p_a">On the outer edges of the colonial domain, the borders between fact and fiction break down. In the US, a man discovers the reality behind his childhood fantasies.</p>
-				<p id="p_b">In Australia, a community searches for certainty in a sea of dreams.</p>
-				<p id="p_c">Crafted from two stories filmed on opposite sides of the world, Empire: Periphery allows you to experience truth and fiction side by side.</p>
+				<p id="p_a">Two stories play out on opposite sides of the world.</p>
+				<p id="p_b">In the US, a man forsakes his childhood dreams to play the part society has written for him.</p>
+				<p id="p_c">In Australia, a man draws on a disputed history to create a new identity.</p>
+				<p id="p_d">Experience both of these stories in Empire: Periphery, and divide your attention between two men who are each other's reflection.</p>
 			</div>
 			<div class="peripheryplay" id="peripheryplay" style="display: none"></div>
 		</div>
@@ -49,53 +50,60 @@
 			<div id="periphery_linewhite"></div>
 			<div id="p_outerouter">				
 				<div id="p_outerinner">
-					<div id="container">
+					<div id="p_container">
 						<div id="p_instructions" style="display: none"><span id="ptitle" style="display: none"></span><span id="swifter"></span>
-							<p id="peri_0">Use your mouse to rotate the video</p>
-							<p id="peri_1" class="left">Move to the top to spend time in California</p>
-							<p id="peri_2" class="right">Move to the bottom to visit Australia</p>
-							<p id="peri_3">Your choices will be noted</p>
+							<p id="peri_0">Move your mouse to rotate the world</p>
+							<p id="peri_1" class="left">up for the US</p>
+							<p id="peri_2" class="right">down for Australia</p>
+							<p id="peri_3">or try to find some common ground</p>
 						</div>
-							<div id="leftbutton" class="flipbuttons buttonoff"></div>
-							<div id="rightbutton" class="flipbuttons buttonon"></div>
-							<div id="pcard">
-								<div class="norm">
-									<!--
-									<video id="video1" width="1280" height= "720" -webkit-mask-box-image="url(art/periphery_mask.svg)">
-										<source src="http://s3.amazonaws.com/empireproject/PERIPHERY_NORM_VIMEO.mp4" type="video/mp4">
-									</video>
-									-->
-									<video id="target" src="https://s3.amazonaws.com/empireproject/PERIPHERY_NORM_VIMEO_web.mp4" height="720" width="1280" type="video/mp4">
-   								 </video>
-								</div>
-								
+						<div id="leftbutton" class="flipbuttons buttonoff"></div>
+						<div id="rightbutton" class="flipbuttons buttonon"></div>
+						<div id="pcard">
+							<div class="norm">
+								<!--
+								<video id="video1" width="1280" height= "720" -webkit-mask-box-image="url(art/periphery_mask.svg)">
+								<source src="http://s3.amazonaws.com/empireproject/PERIPHERY_NORM_VIMEO.mp4" type="video/mp4">
+								</video>
+								-->
+								<video id="target" src="https://s3.amazonaws.com/empireproject/PERIPHERY_NORM_VIMEO_web.mp4" height="720" width="1280" type="video/mp4"></video>
 							</div>
+						</div>
 					</div>
-					<div id="controls">
+
+
+					<div id="pcontrols">
+						<span id="p_refresh" style="cursor: pointer;"></span>
 						<span id="p_playElement" style="cursor: pointer;"></span>
 						<div id="p_scrubber"><div id="progress"></div>
 					</div>
+					<div id="p_endscreen" style="display: none;">
+						<div id="person_a"></div>
+						<div id="person_b"></div>
+						<div id="people_data"></div>
+						<div id="person_overlay">
+						<p>This is the world you experienced<br />
+						Try again to change your perspective</p>
+					</div>
 				</div>
 			</div>
-
 		</div>
-		<div class="more" id="legmore" style="display:none"></div>
-		</div>
+	</div>
+	<div class="more" id="plegmore" style="display:none"></div>
+	</div>
 
-		<div class="periphery_bottom snap" id="periphery_bottom">
+	<div class="periphery_bottom snap" id="periphery_bottom">
 			<div id="p_menubottom"></div>
 			<div id="periphery_bottomline"></div>
 			<div class="inner">
 				<div id="pbottom_structure">
 					<div class="pbottom_l">
-						<p>Schiphol Airport handles 1100 flights on average per day.</p>
+						<p>In 1711, a VOC ship called the Zuytdorp set out on a trading mission to the Dutch East Indies. Nearly a year later, the ship<a href="http://www.abc.net.au/backyard/shipwrecks/wa/zuytdorp.htm" target="_blank"> smashed into a reef off of Western Australia,</a> dislodging a cadre of European sailors into some of the most desolate country in the world. Local legend says that the Zuytdorp surviving crew were taken in and given shelter by the Nhanda, a coastal or “salt water” aboriginal tribe. Today, the Nhanda are known to be taller and lighter skinned than other tribes in the area—evidence, some say, of interbreeding with the marooned Dutchmen of the Zuytdorp. The story has captured the imagination of the Dutch media: rumors of blond-haired, blue-eyed aborigines appear <a href="http://www.npo.nl/beagle-in-het-kielzog-van-darwin/06-08-2013/VPWON_1201702" target="_blank">on television programs and in newspaper stories.</a></p>
 
-						<p>Of those flights, 6 to 7 planes are carrying the body of a deceased person. A great number of these deceased people were born in former Dutch colonies, and are now returning to the countries of their birth for final burial.</p>
+						<p>In the late 1940s, a bloody struggle for independence transformed the Dutch East Indies into the independent nation of Indonesia. A sizable portion of the Dutch-Indonesian minority—many of whom had enjoyed privileged positions under Dutch colonial rule—fled to the Netherlands. Some set off from there to Southern California, where they created enclaves in a more familiar climate. Los Angeles and the San Gabriel Valley now hold <a href="http://www.latimesmagazine.com/2011/02/the-long-way-home.html" target="_blank"> three generations of Dutch-Indonesians,</a> although few outsiders are aware of this ethnic minority's existence. The blended quality of their features defies easy categorization: sometimes they are taken for Southern Europeans, sometimes for Filipinos, and most frequently for Mexicans.</p>
 					</div>
 					<div class="pbottom_r">
-						<p>Schiphol Airport handles 1100 flights on average per day.</p>
-
-						<p>Of those flights, 6 to 7 planes are carrying the body of a deceased person. A great number of these deceased people were born in former Dutch colonies, and are now returning to the countries of their birth for final burial.</p>
+						<p>The original video installation Empire: Periphery was researched and shot between March and August of 2013. The project received public funds from the Netherlands Cultural Services, and support from the Mondriaan Fund and DutchCulture. Matt Dougherty created the music. The installation premiered at <a href=“http://www.latimes.com/entertainment/envelope/moviesnow/la-et-mn-nyff-2013-immersive-documentary-empire-20131008,0,4216044.story”> the Film Society of Lincoln Center's 51st New York Film Festival.</a></p>
 					</div>
 				</div>
 				<div id="periphery_bottomtitle">
