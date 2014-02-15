@@ -41,16 +41,16 @@ div#container div#cradle:hover { color: #fbb03b; }
 /*
 div#container div#home_button { position: absolute; bottom: 30; right: 30; display: none;}
 div#container div#home_button img { width: 40px; height: 35px;}
-
-div#container #navigation {position: relative; }
 */
-div#container div#home_button { position: absolute; bottom: 30; right: 30; z-index: 5; cursor: pointer;}
+div#container #navigation {position: relative; z-index: 5; cursor: pointer;}
+
+div#container div#home_button { position: absolute; bottom: 30; right: 30; z-index: 1; cursor: pointer;}
 div#container div#home_button img { width: 40px; height: 35px;}
 div #canvas_container {
 	width: auto;
 	height: auto;
 	position: absolute;
-	z-index: 1;
+	z-index: 4;
 	pointer-events:visible;
 }
 

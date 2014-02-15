@@ -175,11 +175,12 @@ function enablecontrols () {
 			if(c_vidClicked) {
 				trackon();
 			}
-			//console.log('mouseenter');
+			console.log('mouseenter');
 		});
 
 		$("#outerouter").on('mouseleave', function () {
 			trackoff();
+			c_vidClicked = false;
 			//console.log('mouseleave');
 		});	
 	}
@@ -292,7 +293,7 @@ function cradle_sizer () {
 
 function trackon () {
 	_trackingon = true;
-	//console.log("tracking is: " + _trackingon);
+	console.log("tracking is: " + _trackingon);
 	$(document).on('mousemove', function(e){
 		if(!flipblock){
 			var x = e.pageX;
@@ -445,10 +446,13 @@ function scrubberUpdater (){
 
 function playDecide(){
 //	document.getElementById("video2").volume = 0;
+
 	if(vid1Loaded && vid2Loaded){
 		playVids();
 		c_playState = 1;
 		c_vidClicked = true;
+		console.log("c_vidClicked: " + c_vidClicked);
+		trackon();
 	} else {
 		setTimeout("playDecide()",800);
 	}
@@ -472,6 +476,9 @@ function playButton(){
 	}
 	else if(c_playState == 2){
 		playVids();
+		c_vidClicked = true;
+		console.log("c_vidClicked: " + c_vidClicked);
+		trackon();
 		c_playState = 1;
 		$("#playElement").css({'background':'url(/cradle/art/playWhite.png)'})
 	}

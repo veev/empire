@@ -33,6 +33,10 @@ var sidetracker = new Object(); // tracking element to get the visualisation lat
 var _transitiontimer = new Number();
 var _transitiontimerIvl = new Number();
 
+var audioTrackCurrentPosition = 0;
+// var audioTrackYetiCurrentPosition = 0;
+var videoTrackCurrentPosition = 0;
+
 function map(i, sStart, sEnd, tStart, tEnd)
 {
     var v = i-sStart;
@@ -139,6 +143,7 @@ $(document).ready(function() {
   });
 
 $("#p_playElement").on('click', function() {
+  console.log("Playing videos");
   p_playButton();
   }).on('mouseover', function() {
   if(p_playState == 1){
@@ -203,14 +208,14 @@ function p_enablecontrols () {
         //console.log("less than 90");
         //p_flipangle = 0;
         //set yeti volume to 0, norm to 1
-      document.getElementById("audio_norm").volume = 1;
+      document.getElementById("target").volume = 1;
       document.getElementById("audio_yeti").volume = 0;
 
       } else if (p_flipangle > 90 ) {
         // console.log("greater than 90");
         //p_flipangle = 180;
       //set yeti volume to 1, norm to 0
-      document.getElementById("audio_norm").volume = 0;
+      document.getElementById("target").volume = 0;
       document.getElementById("audio_yeti").volume = 1;
       }
       // $("#pcard").css({ '-webkit-transform': 'rotate( ' + p_flipangle + 'deg)', 'transform': 'rotate( ' + p_flipangle + 'deg)' });
@@ -246,6 +251,9 @@ function periphery_scrollsnaphandle () {
     if(!enoughwithinstructions){
       if(!_ammobile){
         p_playDecide();
+      }
+      else{
+        console.log("MOBILE");
       }
       periphery_openscreen();
     }
@@ -392,7 +400,7 @@ function flipper (isDown){
     // p_flipangle = 0;
     $("#leftbutton").removeClass('buttonon').addClass('buttonoff');
     $("#rightbutton").removeClass('buttonoff').addClass('buttonon');
-    // document.getElementById("audio_norm").volume = 1;
+    // document.getElementById("target").volume = 1;
     // document.getElementById("audio_yeti").volume = 0;
 
 
@@ -401,7 +409,7 @@ function flipper (isDown){
     // p_flipangle = 180;
     $("#rightbutton").removeClass('buttonon').addClass('buttonoff');
     $("#leftbutton").removeClass('buttonoff').addClass('buttonon');
-    // document.getElementById("audio_norm").volume = 0;
+    // document.getElementById("tarrget").volume = 0;
     // document.getElementById("audio_yeti").volume = 1;
 
     //$audio.animation({volume:newvolume}, 1000);
@@ -421,6 +429,7 @@ function flipper (isDown){
 function trackoff () {
 //  console.log('trackoff');
 p_trackingon = false;
+p_vidClicked = false;
   $(document).unbind("swipeleft");
   $(document).unbind("swiperight");
   $(document).unbind('mousemove');
@@ -460,11 +469,14 @@ p_trackingon = false;
 
 function p_playDecide(){
 //  document.getElementById("video2").volume = 0;
+    console.log("Playing videos");
   if(p_vidLoaded){
     p_playVids();
+
     p_playState = 1;
-    p_vidClicked = true;
+    // p_vidClicked = true;
   } else {
+    console.log("Not Playing videos");
     setTimeout("p_playDecide()",800);
   }
 }
@@ -483,8 +495,8 @@ function p_restartVids() {
 function p_playButton(){
   //console.log('p_playbutton');
   //console.log('p_playState = ' + p_playState);
-  //p_vidClicked = true;
-
+  p_vidClicked = true;
+console.log("Playing videos play buttons");
   if(p_playState == 1){
     p_pauseVids();
     p_playState = 2;
@@ -511,20 +523,28 @@ function p_playVids(){
   if(audioactive){
     audiostop();
   }
-    //changing id to "target" from "video1"
-    document.getElementById("target").play();
+   
+  // if(videoTrackCurrentPosition > 0){
+      document.getElementById("target").currentTime = videoTrackCurrentPosition ;
+      document.getElementById("target").play();
+   
+  // }
+  // else{
+  //     document.getElementById("target").play();
+  // }
+
+
     document.getElementById("target").volume = 0;
-
-    // document.getElementById("video1").play();
-    // document.getElementById("video1").volume = 0;
-
-    //document.getElementById("video2").play();
-    //document.getElementById("video2").volume = 0;
+    p_vidClicked = true;
+    console.log("p_videClicked = " + p_vidClicked);
     p_playAudio();
   
 }
 
 function p_playAudio() {
+  // console.log("Norm Tack Pos : "+audioTrackNormCurrentPosition+" Yeti Track Pos : "+ audioTrackYetiCurrentPosition);
+    document.getElementById("audio_norm").currentTime = audioTrackCurrentPosition ;
+    document.getElementById("audio_yeti").currentTime = audioTrackCurrentPosition ;
     document.getElementById("audio_norm").play();
     document.getElementById("audio_yeti").play();
 
@@ -536,14 +556,16 @@ function p_playAudio() {
 
 function p_pauseVids(){
 
-    //changing id to "target" from "video1"
-    document.getElementById("target").pause();
+    // document.getElementById("audio_yeti").pause();
+     // currentTime =  document.getElementById("audio_yeti").currentTime ;
+     audioTrackCurrentPosition = document.getElementById("audio_norm").currentTime  ;
+     // audioTrackCurrentPosition = document.getElementById("audio_yeti").currentTime ;
+     videoTrackCurrentPosition  = document.getElementById("target").currentTime;
+    // audiostop();
 
-    //document.getElementById("video1").pause();
-    document.getElementById("audio_norm").pause();
     document.getElementById("audio_yeti").pause();
-
-    //document.getElementById("video2").pause();
+    document.getElementById("target").pause();
+    document.getElementById("audio_norm").pause();
 
   p_playState = 2;
 }

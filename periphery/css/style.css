@@ -47,7 +47,16 @@ div#periphery_main div#p_instructions p#peri_1 { color: #cc3333; top: 250; left:
 div#periphery_main div#p_instructions p#peri_2 { color: #cc3333; top: 260; left: 160; }
 div#periphery_main div#p_instructions p#peri_3 { top: 350; }
 
-div.periphery_bottom { text-align: center; background: #cc3333 url(../../art/p_bg_b.jpg) bottom left  repeat-x; width: 100%; position: relative ; clear: both; pointer-events: all;}
+div.periphery_bottom { 
+	text-align: center; 
+	background: #cc3333 url(../../art/p_bg_b.jpg) bottom left  repeat-x; 
+	width: 100%;
+	height: 100%;
+	background-size: : 100%;
+	position: relative ;
+	clear: both;
+	pointer-events: all;
+	}
 div.periphery_bottom div.inner { padding: 30px 0 30px 0; }
 div#periphery_bottom h2 { color: #000; padding-bottom: 8px; font-size: 1.6em; text-align: center; }
 div.periphery_bottom div#periphery_bottomline { z-index: 1; background: url(../art/b_line.png) repeat-y; width: 3px; position: absolute; }

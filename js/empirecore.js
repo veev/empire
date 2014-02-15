@@ -122,20 +122,12 @@ function buildRippleNode(index){
 	var bigRadiusOffset = config.bigRadiusOffset;
 	//var posX = w + (bigRadiusOffset * index);
 	var posX = w + (0.036 * w * index);
-	//var posY = posX - config.bigRadHeightShift;
-	//var posY = posX * (0.8154762);
-	//var posY = posX - 100;
-	// var posY = posX   * ((posX - config.heightMultiplier)/ posX);
-		// var posY = posX * (0.8154762);
-	//var posY = posX * (0.8154762);
 	var posY = (posX * aspectRatio);
 	posY += posY*0.5;
 	var bottomLetterOffset = config.bottomLetterOffset;
 	var theta = config.theta;
 	var rad = Math.PI/180;
-	// var botLetX = (posX * Math.cos(theta*rad)) + (bottomLetterOffset * index);
 
-	//var botLetX =  posX * Math.cos((theta-(index*1.2)) * rad);
 	var posY_ = w * aspectRatio;
 	posY_ += posY_*0.5;
 	var thetaY = theta;
@@ -149,47 +141,8 @@ function buildRippleNode(index){
 	ripple.attr({'fill': COLORS[index], 'fill': URL[index], 'stroke': COLORS[index], 'cursor': 'pointer'})
 		  .data('name_', RIPPLE_ID[index]);
 
-/*
-	var isURL = Str(value).match(URL[index]);
-	if (isURL) {
-	el = $("pattern");
-	var ig = $("image");
-	el.id = R.createUUID();
-	$(el, {x: 0, y: 0, height: 1, width: 1, "patternContentUnits": "objectBoundingBox"});
-	$(ig, {x: 0, y: 0, width: 1, height: 1, "preserveAspectRatio": "none", "xlink:href": isURL[1]});
-	el.appendChild(ig);
-
-	o.paper.defs.appendChild(el);
-	$(node, {fill: "url(#" + el.id + ")"});
-	o.pattern = el;
-}	  
-	
-	// console.log(ripple.node.outerHTML);
-	pattern = $(ripple.node).attr('fill');
-    
-    if(pattern) {
-        pattern = pattern.replace('url(', '').replace(')', '');
-        pattern = $(pattern);
-        
-        // console.log($(pattern).find('image').css('height','10'));//[0]);//.getAttribute("x"));//getElementsByTagName("image")[0]);//.get("image"));//	/.getAttribute());
-    }
-	setTimeout(function() {
-		// $(pattern)[0].setAttribute('y', 100);
-    	// $(pattern)[0].setAttribute('x', 10);
-    	$(pattern)[0].setAttribute('viewBox', '0 0 250 200');//('height', 780);
-   		$(pattern).find('image')[0];//setAttribute('height',100);//attr('width','10');
-   		// console.log($(pattern).find('image')[0].getAttribute("y"));
-   		console.log($(pattern)[0]);
-   		// console.log($(pattern).find('image')[0].setAttribute("height"));//.find('image')	);//.attr("width"));
-		$(pattern).find('image')[0].setAttribute("height", 0)
-		console.log($(pattern)[0]);
-   		//setAttribute('height', h);
-   		// ($(pattern).find('image').css('height','10'));
-    	// $(pattern).find('image')[0].setAttribute('defer none meet');
-	});
-*/
-	ripple.patternTmp = ripple.pattern;
-	delete ripple.pattern;
+	// ripple.patternTmp = ripple.pattern;
+	// delete ripple.pattern;
 	title = paper.text(pos - titleOffset, titleHeight, LABELS[index]).attr({'font-size': '24px', 'font-style': 'italic', 'opacity': 1, 'cursor': 'pointer'});
 	topLetter = paper.text(topLetX, titleHeight, LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0, 'cursor': 'pointer'});
 	bottomLetter = paper.text(botLetX, botLetY, LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0, 'cursor': 'pointer'});
@@ -210,6 +163,7 @@ function buildRippleNode(index){
     return btn;
     // return {ripple: ripple, title: title, topLetter: topLetter, bottomLetter: bottomLetter};
 }
+
 
 function bottomLetterPlacing() {
 
@@ -254,21 +208,26 @@ function buildRipples(total) {
 
 	for(var index = total-1; index >= 0; index--)
 	{
+		// menu[index] = new Button;c
+		// console.log(buildRippleNode(in
+
 		button = buildRippleNode(index);
+		// button.
+		menu.unshift(button);
 		button.addClickListener(function(){
 			//call animate function on click
 			animateButton(this.index);
 
 		});
 		//button.on('click', handleMenu);
-		menu.unshift(button);
+	
 	}
 
 	//set all ripples to !isBig and !isActive
 	for(var i = 0; i < total; i++) {
 		//console.log(menu[i].id);
-		menu[i].ripple.isActive = false;
-		menu[i].ripple.isBig = false;
+		// menu[i].ripple.isActive = false;
+		// menu[i].ripple.isBig = false;
 	}
 }
 
@@ -278,42 +237,46 @@ function animateButton(index){
 	//console.log('console here', index)
 
 		for(var i = 0; i < menu.length; i++ ) {
-			if(index !== i){
+			// if(index !== i){
 				//set all the other ripples to not active / not big
-				menu[index].ripple.isActive = false;
-				menu[index].ripple.isBig = false;	
-			}
+				menu[i].ripple.isActive = false;
+				menu[i].ripple.isBig = false;	
+				menu[i].ripple.attr({'cursor' : 'pointer'});
+			// }
 		}
 		//set this ripple to active	
-		menu[index].ripple.isActive = true;
-		//console.log("menu[" + index + "] is active = " + menu[index].ripple.isActive);
-
-		if (menu[index].ripple.isActive && !menu[index].ripple.isBig) {
-			growRippleNode(index, function() {
-
+		
+ 		growRippleNode(index);
 				if(index === 0) {
 					if(!cradleLoaded) {
 						loadCradle();
+						menu[index].ripple.isActive = true;
 					}
 					$("#cradleContent").fadeIn(2000);
 					//menu[index].ripple.attr({'cursor' : 'default'});
 
-				 } else {
+				 } 
+				 else {
 				 	//cradleLoaded = false;
 				 	$("#cradleContent").fadeOut("fast");
 				 }
 
-				 // if(index === 1 && !legacyLoaded) {
-				 // 	loadLegacy();
-				 // 	$("#legacyContent").fadeIn(2000);
-				 // } else if (index != 1) {
-				 // 	legacyLoaded = false;
-				 // 	$("#legacyContent").fadeOut("fast");
-				 // }
+				 if(index === 1) {
+				 	if(!legacyLoaded){
+				 	 	loadLegacy();	
+				 	 	menu[index].ripple.isActive = true;
+				 	}	
+				 	$("#legacyContent").fadeIn(2000);
+				 } 
+				 else  {
+				 	// legacyLoaded = false;
+				 	$("#legacyContent").fadeOut("fast");
+				 }
 
 				 if(index === 3) {
 				 	if(!peripheryLoaded) {
 				 		loadPeriphery();
+				 		menu[index].ripple.isActive = true;
 				 	}
 					$("#peripheryContent").fadeIn(2000);
 
@@ -321,42 +284,39 @@ function animateButton(index){
 				 	//peripheryLoaded = false;
 				 	$("#peripheryContent").fadeOut("fast");
 				 }
-			});	 			
+			// });	 			
 			$("#navigation").fadeIn();
 	 		$("#containerinner").fadeOut(function() {
 	 			//console.log("faded out containerinner");
 	 		});
 
+
+			// if(menu[index].ripple.isActive) {
+			menu[index].ripple.attr({'cursor' : 'default'});
+			// } else {
+			// 	menu[index].ripple.attr({'cursor' : 'pointer'});
+			// }
 			//fade out titles (pass in opacity)
 			fadeTitles(0);				
-			menu[index].ripple.isBig = true;
-			//console.log("menu["+index+"] is big = " + menu[index].ripple.isBig);
-			menu[index].ripple.isActive = false;
-			//console.log("menu["+index+"] is active = " + menu[index].ripple.isActive);
-
-		} else if (!menu[index].ripple.isBig) {
-			//console.log("Shrinking menu["+index+"]")
-			//shrinkRippleNode(1);
-			shrinkRippleNode(index);
 
 			//debugging states for pointer, not working yet
-			for(var i = 0; i < index; i++) {
-				menu[index].ripple.isBig = false;
-				console.log("after shrink menu["+i+"] is big = " + menu[i].ripple.isBig);
-			}
-		}
+			// for(var i = 0; i < index; i++) {
+			// 	// menu[index].ripple.isBig = false;
+			// 	console.log("after shrink menu["+i+"] is big = " + menu[i].ripple.isBig);
+			// }
+		// }
 
-		for( var i = 0; i < total; i++) {
-			console.log("menu["+i+"] is big = " + menu[i].ripple.isBig);
-			console.log("menu["+i+"] is active = " + menu[i].ripple.isActive);
-		}
+		// for( var i = 0; i < menu.length; i++) {
+		// 	if(i !== index){
+		// 		// shrinkRippleNode(i);
+		// 	}
+		// 	console.log("menu["+i+"] is big = " + menu[i].ripple.isBig);
+		// 	// console.log("menu["+i+"] is ripple = " + menu[i].ripple.title);
+		// 	console.log("menu["+i+"] is active = " + menu[i].ripple.isActive);
+		// }
 
 		//trying to set cursor to pointer if ripple is not big, then to default when it is
-		if(menu[index].ripple.isBig) {
-			menu[index].ripple.attr({'cursor' : 'default'});
-			} else if (!menu[index].ripple.isBig) {
-			menu[index].ripple.attr({'cursor' : 'pointer'});
-		}
+
 }
 
 
@@ -364,7 +324,7 @@ function growRipples() {
 
 }
 
-function growRippleNode(index, callback) {
+function growRippleNode(index) {
 	var speed = config.rippleGrowSpeed;
 	var bigRadiusOffset = config.bigRadiusOffset;
 	var aspectRatio = h/w;
@@ -374,6 +334,7 @@ function growRippleNode(index, callback) {
 	for(var i = index; i < menu.length; i++) {
 		fadeTopLetters(i, 0);
 		var ripple = menu[i].ripple;
+
 		var posX = w + (0.036*w * i);
 		//var posX = w + (bigRadiusOffset * i);
 		//console.log("ratio: " + (bigRadiusOffset/w) );
@@ -385,29 +346,34 @@ function growRippleNode(index, callback) {
 		posY += posY*0.5;
 		//console.log("posY: " + posY);
 		//ripple.attr({'cursor': 'default'});
+	console.log(index);
+
+		// ripple.attr({'cursor' : 'default'});
 		ripple.animate({path: "M0,0 L" + posX +",0 A" + posX +"," + posY + " 0 0,1 0," + posY + "z"}, speed,
 		function() {
 			//$(document).trigger("animation.end");
 			for(var i = index; i < menu.length; i++) {
 
-				var _index = i+1
-				if( i === menu.length-1) {
-					continue;
-				}
+				var _index = i+1;
+				// if( i === menu.length-1) {
+				// continue;
+				// }
+
 
 				fadeBottomLetters( _index, 1);
-
+	console.log("faded bottom letters");
 			}
-			//console.log("faded bottom letters");
+		
 
 		});
 	}
 
 	for(var i = 0; i < index; i++) {
 		shrinkRippleNode(i);
+
 	}
 
-	callback();
+	// callback();
 }
 
 function shrinkRippleNode(index) {
@@ -421,11 +387,13 @@ function shrinkRippleNode(index) {
 
 		if(index === menu.length - 1) {
 			 continue;
-			}
+		}
+
 		fadeBottomLetters( _index, 0);
 
 		var ripple = menu[i].ripple;
 		var pos = smCradleR + (smRadiusOffset * i);
+			ripple.attr({'cursor' : 'pointer'});
 		ripple.animate({path: "M0,0 L" + pos +",0 A" + pos +"," + pos + " 0 0,1 0," + pos + "z"}, speed,
 		function() {
 			//$(document).trigger("animation.end");
@@ -465,6 +433,7 @@ function animateHomeNode(index) {
 	peripheryLoaded = false;
 
 	var ripple = menu[index].ripple;
+	ripple.attr({'cursor' : 'pointer'});
 	ripple.animate({path: "M0,0 L"+pos+",0 A"+pos+","+pos+" 0 0,1 0,"+pos+"z"}, speed,
 	function() {
 		//$(document).trigger("animation.end");
@@ -472,7 +441,7 @@ function animateHomeNode(index) {
 		fadeTitles(1);
 		$("#navigation").fadeOut();
  		$("#containerinner").fadeIn();
- 		//console.log("In animate home");
+ 		console.log("In animate home");
 	});
 	//set menus to not big, not active
 	menu[index].isActive = false;
@@ -623,6 +592,7 @@ function attachCradleEvents() {
     $("#periphery_cbutton").on('click', function() {
   		//console.log("go to periphery page");
   		pauseVids();
+  		c_vidClicked = false;
   		$('html, body').animate({ scrollTop: ($('#cradle_top').offset().top) }, 1000, function() {
   			 animateButton(3);
   		});
@@ -698,19 +668,18 @@ $("#peripheryContent").load("/periphery/index.html #periphery_wrapper", function
 	peripheryLoaded = true;
 	var cssLink = "/periphery/css/style.css";
 	var jsLink = "/periphery/js/periphery.js";
-    // $("head").append("  <link href="+ &quot; + cssLink + &quot; +" rel="stylesheet" />");
-    //console.log("THis is the css link : " + cssLink);
-   //  $('<link rel="stylesheet" type="text/css" href="'+cssLink+'" >')
-   // .appendTo("head");
+    console.log("This is the css link : " + cssLink);
+   console.log("This is the js link : " + jsLink);
    $.getScript(jsLink, function(){
    		attachPeripheryEvents();
-   		//console.log('periphery getScript');
+   		
+   		// console.log('periphery getScript/
    		//$("#outerinner").on('mouseenter', function(){console.log('zzz');});
    });
 
    $.get(cssLink, function(css) {
    		$('<style type="text/css"></style>')
-     		.html(css)
+     		.html(css);
       		// .appendTo("head");
       		//console.log("got periphery css");
 	});
@@ -736,40 +705,8 @@ function attachPeripheryEvents() {
 			},true);
 		}
 
-	// $(document).on('keydown', function (e) {
- //    	var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
- //    	if (key == 32) {
- //      		e.preventDefault();
- //      	if(p_playState === 1 || p_playState === 2){
-	// 		 p_playButton();
- //        	 console.log("p_playButton stuff");
- //      		}
- //    	}
- // 	});
+
   $(document).ready(function() {
-
-
-  	//p_enablecontrols();
-
-  	//console.log('tried to update periphery listeners');
-
-	// $("#playElement").on('click', function() {
-	// 	 console.log("p_playState: " + p_playState);
-
- //  		p_playButton();
- //  	}).on('mouseover', function() {
- // 		if(p_playState == 1){
- //   			$("#playElement").css({'background':'url(art/pauseWhite.png)'})
- //    	} else {        
- //     		$("#playElement").css({'background':'url(art/playWhite.png)'})
- //    	}
- //  		}).on('mouseout', function() {
- //    	if(p_playState == 1){
- //      		$("#playElement").css({'background':'url(art/playWhite.png)'})
- //   		} else {        
- //     		$("#playElement").css({'background':'url(art/pauseGray.png)'})
- //    	}
- //  	});
 
   	$("#p_instructions").on('click', function () { 
     if(!_ammobile){ 
@@ -839,55 +776,9 @@ function attachPeripheryEvents() {
     // 	document.getElementById("audio_norm").currentTime = 0;
     // 	document.getElementById("audio_yeti").currentTime = 0;
   	});
-
-
   });
-  
-
 
 }
-
-// $("#cradleContent").heightMultiplierl("Loading...");
- 	
- 	
-//     var pagelink = "cradle/";
-//     var url = pagelink + "index.html";
-
-//  	console.log("this is the url im loading  : "+ url);
-//     $.ajax({
-//         url : url,
-//         type : "GET",
-//         dataType : "html",
-//         context: cradleContent
-//     }).done(function(data) {
-//     	var $result = $(data).filter('#cradle_wrapper');
-//         $("#cradleContent").html($result);
-//         $("#cradleContent link").each(function() {
-//             //var cssLink = pagelink + $(this).attr('href');
-//             var cssLink = "cradle/css/style.css";
-//             // $("head").append("  <link href="+ &quot; + cssLink + &quot; +" rel="stylesheet" />");
-//             console.log("THis is the css link : " + cssLink);
-//             $('<link rel="stylesheet" type="text/css" href="'+cssLink+'" >')
-//    .appendTo("head");
-//             // $("head").append("  <link href= \'' "+  cssLink " \'' " +"rel= \'stylesheet \'' />");
-//         });
-//         $("#cradleContent script").each(function() {
-//             //var jsLink = pagelink + $(this).attr('src');
-//             var jsLink = "cradle/js/cradle.js";
-
-//             console.log("THis is the js link : " + jsLink);
-//             $('<script type="text/javascript" src="'+jsLink+'">').appendTo("head");
-//             cradleLoaded = true;
-//             // $("head").append("<script type="text/javascript" src="&quot; + jsLink + &quot;"></script>");
-//  });
-
-
- 
-//  }).fail(function(jqXHR, textStatus, errorThrown) {
-//  	$("#cradleContent").html("Error!! File is not loaded");
-//  });
-
-// }
 
 function fadeTitleNode(index, opacity) {
 	var speed = config.titleFadeSpeed;
