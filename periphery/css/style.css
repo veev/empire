@@ -15,6 +15,7 @@ div.periphery_top { text-align: center; background: #cc3333 url(../../art/p_bg.j
 div.periphery_top div#periphery_line { background: url(../art/b_line.png) repeat-y; width: 3px; position: absolute; }
 div#periphery_top h1 { color: #000; padding-top: 8px; font-size: 2.1em; }
 div.periphery_top div.peripheryplay { position: absolute; width: 127px; height: 45px; cursor: pointer; z-index: 5; background: url(../../art/f_playbutton.png); pointer-events: all; }
+div.periphery_top div.peripherymore { position: absolute; width: 127px; height: 45px; cursor: pointer; z-index: 5; background: url(../art/periphery_more.png); pointer-events: all; }
 div.periphery_top div#periphery_structure { width: 731px; height: 392px; padding-top: 80px; text-align: left; position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
 div.periphery_top div#periphery_line { background: url(../art/b_line.png) repeat-y; width: 3px; position: absolute; }
 div.periphery_intro { text-align: left; position: relative; margin: auto; width: 790px; height: 500px; overflow: auto; }
@@ -41,6 +42,7 @@ div#periphery_main div#p_instructions {
 	text-align: center; }
 div#periphery_main div#p_instructions span#swifter { width: 187px; height: 720px; z-index: 1; left: 665; top: 0; position: absolute; background: url(../art/instructions_spin.png); display: none; }
 div#periphery_main div#p_instructions span#ptitle { width: 279px; height: 41px; z-index: 2; left: 588; opacity: .5; top: 30; position: absolute; background: url(../art/cradle_title.png); }
+div#periphery_main div#p_instructions span#peripheryplay2 { position: absolute; cursor: pointer; z-index: 5; pointer-events: all; bottom: 350; right: 440;}
 div#periphery_main div#p_instructions p { position: relative; font-size: 1.4em; }
 div#periphery_main div#p_instructions p#peri_0 { top: 180; }
 div#periphery_main div#p_instructions p#peri_1 { color: #cc3333; top: 250; left: -180;}
@@ -61,7 +63,7 @@ div.periphery_bottom div.inner { padding: 30px 0 30px 0; }
 div#periphery_bottom h2 { color: #000; padding-bottom: 8px; font-size: 1.6em; text-align: center; }
 div.periphery_bottom div#periphery_bottomline { z-index: 1; background: url(../art/b_line.png) repeat-y; width: 3px; position: absolute; }
 div.periphery_bottom div#periphery_bottomtitle { z-index: 2; position: absolute; bottom: 25; width: 100%; text-align: center; }
-div.periphery_bottom div#pbottom_structure { z-index: 2; position: absolute; width: 930px; height: 465px; background: url(../art/bottomstructure.png) }
+div.periphery_bottom div#pbottom_structure { z-index: 2; position: absolute; width: 930px; height: 465px; /*background: url(../art/bottomstructure.png);*/ }
 div.periphery_bottom div#pbottom_structure div { text-align: left;  padding: 40px;  color: #000; }
 div.periphery_bottom div#pbottom_structure div p { margin: 1.1em 0; }
 div.periphery_bottom div#pbottom_structure div a { color: 000; }

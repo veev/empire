@@ -41,6 +41,8 @@ var videoprefix = 'http://s3.amazonaws.com/empireproj/cradle/'; // in mobile we 
 var _transitiontimer = new Number();
 var _transitiontimerIvl = new Number();
 
+c_videoTrackCurrentPosition = 0; 
+
 
 $(document).ready(function(){	
 
@@ -108,7 +110,7 @@ $(document).ready(function(){
 		},false);
 
 		enablecontrols();
-		console.log("c_vidClicked = " + c_vidClicked);
+		//console.log("c_vidClicked = " + c_vidClicked);
 	}
 	
 	$(document).on('keydown',function (e) {
@@ -156,6 +158,7 @@ function mobile_stills (tim) {
 
 function playhandler () {
 	c_playState = 1;
+	console.log("playhandler c_playState: "+ c_playState);
 	cradle_closescreen();
 	document.getElementById("mobileisgreat").controls = false;
 	if(!_controls){
@@ -175,12 +178,13 @@ function enablecontrols () {
 			if(c_vidClicked) {
 				trackon();
 			}
-			console.log('mouseenter');
+			//console.log('mouseenter');
+			//console.log('c_vidClicked: '+c_vidClicked);
 		});
 
 		$("#outerouter").on('mouseleave', function () {
 			trackoff();
-			c_vidClicked = false;
+			//c_vidClicked = false;
 			//console.log('mouseleave');
 		});	
 	}
@@ -239,7 +243,7 @@ function cradle_openscreen () {
 	}
 	$("#instructions").on('click', function () { 
 		if(!_ammobile){ 
-			playDecide() 
+			playDecide(); 
 		} 
 		cradle_closescreen(); 
 	});
@@ -289,20 +293,30 @@ function cradle_sizer () {
 		cradle_openscreen();
 	});
 
+	$("#cradlemore").css({"bottom": legbottom, "margin-left": ($("#cradle_top").width() / 2) - 70 }).fadeIn(4000).click(function() {
+		$('html, body').animate({scrollTop: ($('#cradle_main').offset().top) }, 1000);
+	});
+
 }
 
 function trackon () {
 	_trackingon = true;
-	console.log("tracking is: " + _trackingon);
+	//console.log("tracking is: " + _trackingon);
 	$(document).on('mousemove', function(e){
 		if(!flipblock){
 			var x = e.pageX;
-			if(x < (lazywidth / 2)){
+			//console.log("cradle page x: " + x);
+			var threshold = lazywidth/2;
+			//console.log("lazywidth/2 = " + threshold);
+			if(x < (threshold)){
+				//console.log("flipside = " + flipside);
 				if(flipside){
+					//console.log('we are in flipper(false)');
 					flipper(false);
 				}
 			} else {
 				if(!flipside){
+					//console.log('we are in flipper(true)');
 					flipper(true);
 				}
 			}
@@ -333,7 +347,7 @@ function trackoff () {
 }
 
 function flipper (isright){
-	//console.log('flipper ' + isright + ' ' + flipside);
+	//console.log('flipper isright = ' + isright + ', flipside = ' + flipside);
 
 
 
@@ -446,20 +460,25 @@ function scrubberUpdater (){
 
 function playDecide(){
 //	document.getElementById("video2").volume = 0;
-
+	//console.log("Playing cradle videos");
+  // if(p_vidLoaded){
 	if(vid1Loaded && vid2Loaded){
 		playVids();
 		c_playState = 1;
+		console.log("playDecide c_playState: "+ c_playState);
 		c_vidClicked = true;
-		console.log("c_vidClicked: " + c_vidClicked);
+		console.log("playDecide c_vidClicked: " + c_vidClicked);
 		trackon();
 	} else {
+		//console.log("Not Playing videos");
 		setTimeout("playDecide()",800);
 	}
 }
 
 function restartVids() {
+	//playDecide();
 	c_playState = 1;
+	console.log("restartVids c_playState: "+ c_playState);
 	document.getElementById("video1").currentTime = 0;
 	document.getElementById("video2").currentTime = 0;
 	document.getElementById("video1").play();
@@ -469,17 +488,20 @@ function restartVids() {
 
 function playButton(){
 	//console.log('cradle playbutton');
-	if(c_playState == 1){
+	console.log('initial playButton c_playState: ' + c_playState);
+	c_vidClicked = true;
+	console.log("playButton c_vidClicked: " + c_vidClicked);
+	if(c_playState === 1){
 		pauseVids();
 		c_playState = 2;
+		console.log('playButton if c_play === 1: '+ c_playState);
 		$("#playElement").css({'background':'url(/cradle/art/pauseGray.png)'})
 	}
-	else if(c_playState == 2){
+	else if(c_playState === 2){
 		playVids();
-		c_vidClicked = true;
-		console.log("c_vidClicked: " + c_vidClicked);
-		trackon();
+		//trackon();
 		c_playState = 1;
+		console.log('playButton if c_play === 2: '+ c_playState);
 		$("#playElement").css({'background':'url(/cradle/art/playWhite.png)'})
 	}
 	else{
@@ -492,10 +514,15 @@ function playButton(){
 			document.getElementById("video2").currentTime = 0;
 	
 		}
-		playVids();
+		 playVids();
+		// trackon();
+		//playDecide();
 		$("#playElement").css({'background':'url(/cradle/art/playWhite.png)'})
-		c_playState = 1;				
+		c_playState = 1;	
+		console.log('playButton if c_play !1 or 2: '+ c_playState);
+			
 	}
+		console.log("*********************");
 }
 
 function playVids(){
@@ -507,33 +534,42 @@ function playVids(){
 		document.getElementById("mobileisgreat").play();
 
 	} else {
-	
+		
+		document.getElementById("video1").currentTime = c_videoTrackCurrentPosition;
+		document.getElementById("video2").currentTime = c_videoTrackCurrentPosition;
 		document.getElementById("video1").play();
 		document.getElementById("video2").play();
 		document.getElementById("video2").volume = 0;
 	
 	}
+
+	c_vidClicked = true;
+    console.log("playVids c_vidClicked = " + c_vidClicked);
 }
 
 function pauseVids(){
 	if(_ammobile){
 		document.getElementById("mobileisgreat").pause();
 	} else {
+		c_videoTrackCurrentPosition = document.getElementById("video1").currentTime;
 		document.getElementById("video1").pause();
 		document.getElementById("video2").pause();
 		//console.log("cradle paused");
 		//console.log(document.getElementById("video1").pause);		
 	}
-	c_playState = 2;
+	// c_playState = 2;
+	// console.log("pauseVids c_playState: " + c_playState);
 }
 
 function endVids(){
 	c_playState = 3;
+	console.log("endVids c_playState: " + c_playState);
 	buildendscreen();
 }
 
 function buildendscreen () {
-	$("#container").hide();
+	console.log("we're in buildendscreen");
+	$("#c_container").hide();
 	$("#controls").hide();
 	$("#endscreen").fadeIn();
 	
@@ -594,12 +630,13 @@ function buildendscreen () {
 		}
 
 
-		$("#container").fadeIn();
+		$("#c_container").fadeIn();
 		$("#controls").fadeIn();
 
 		playVids();
 
 		$("#playElement").css({'background':'url(/cradle/art/playWhite.png)'})
-		c_playState = 1;						
+		c_playState = 1;	
+		console.log("buildendscreen c_playState: " + c_playState);					
 	});
 }

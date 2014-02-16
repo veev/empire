@@ -118,7 +118,7 @@ $(document).ready(function() {
     //trackMouseY();
     p_enablecontrols();
   // }
-  console.log("p_vidClicked = " + p_vidClicked);
+  //console.log("p_vidClicked = " + p_vidClicked);
 
 
   // var phome_bottom = document.getElementById("home_button_pbottom");
@@ -143,7 +143,7 @@ $(document).ready(function() {
   });
 
 $("#p_playElement").on('click', function() {
-  console.log("Playing videos");
+  //console.log("Playing videos");
   p_playButton();
   }).on('mouseover', function() {
   if(p_playState == 1){
@@ -169,6 +169,7 @@ periphery_openscreen();
 
 function p_playhandler () {
   p_playState = 1;
+  console.log("p_playhandler p_playState: "+ p_playState);
   periphery_closescreen();
   document.getElementById("mobileisgreat").controls = false;
   if(!p_controls){
@@ -328,6 +329,10 @@ function periphery_sizer () {
     }
     periphery_openscreen();
   });
+
+  $("#peripherymore").css({"bottom": legbottom, "margin-left": ($("#periphery_top").width() / 2) - 70 }).fadeIn(4000).click(function() {
+    $('html, body').animate({scrollTop: ($('#periphery_main').offset().top) }, 1000);
+  });
 }
 
 function trackMouseY() {
@@ -429,7 +434,7 @@ function flipper (isDown){
 function trackoff () {
 //  console.log('trackoff');
 p_trackingon = false;
-p_vidClicked = false;
+//p_vidClicked = false;
   $(document).unbind("swipeleft");
   $(document).unbind("swiperight");
   $(document).unbind('mousemove');
@@ -469,20 +474,23 @@ p_vidClicked = false;
 
 function p_playDecide(){
 //  document.getElementById("video2").volume = 0;
-    console.log("Playing videos");
+    //console.log("Playing periphery videos");
   if(p_vidLoaded){
     p_playVids();
 
     p_playState = 1;
-    // p_vidClicked = true;
+    console.log("p_playDecide p_playState: "+ p_playState);
+    p_vidClicked = true;
+    console.log("p_playDecide p_vidClicked: "+ p_vidClicked);
   } else {
-    console.log("Not Playing videos");
+    //console.log("Not Playing videos");
     setTimeout("p_playDecide()",800);
   }
 }
 
 function p_restartVids() {
   p_playState = 1;
+  console.log("p_restartVids p_playState: "+ p_playState);
   document.getElementById("target").currentTime = 0;
   document.getElementById("target").volume = 0;
   document.getElementById("audio_norm").currentTime = 0;
@@ -494,18 +502,21 @@ function p_restartVids() {
 
 function p_playButton(){
   //console.log('p_playbutton');
-  //console.log('p_playState = ' + p_playState);
+  console.log('initial p_playState = ' + p_playState);
   p_vidClicked = true;
-console.log("Playing videos play buttons");
-  if(p_playState == 1){
+  console.log("p_playButton p_vidClicked: " + p_vidClicked);
+  if(p_playState === 1){
     p_pauseVids();
     p_playState = 2;
-    $("#playElement").css({'background':'url(art/pauseGray.png)'})
+    console.log('p_playButton if p_play === 1: '+ p_playState);
+
+    $("#p_playElement").css({'background':'url(art/pauseGray.png)'})
   }
-  else if(p_playState == 2){
+  else if(p_playState === 2){
     p_playVids();
     p_playState = 1;
-    $("#playElement").css({'background':'url(art/playWhite.png)'})
+    console.log('p_playButton if p_play === 2: '+ p_playState);
+    $("#p_playElement").css({'background':'url(art/playWhite.png)'})
   }
   else {
       //changing id to "target" from "video1"
@@ -514,9 +525,13 @@ console.log("Playing videos play buttons");
       
       //document.getElementById("video2").currentTime = 0;
     p_playVids();
-    $("#playElement").css({'background':'url(art/playWhite.png)'})
-    p_playState = 1;        
+    $("#p_playElement").css({'background':'url(art/playWhite.png)'})
+    p_playState = 1; 
+    console.log('p_playButton if p_play !1 or 2: '+ p_playState);
+       
   }
+
+  console.log("*********************");
 }
 
 function p_playVids(){
@@ -527,16 +542,16 @@ function p_playVids(){
   // if(videoTrackCurrentPosition > 0){
       document.getElementById("target").currentTime = videoTrackCurrentPosition ;
       document.getElementById("target").play();
-   
+      document.getElementById("target").volume = 0;
   // }
   // else{
   //     document.getElementById("target").play();
   // }
 
 
-    document.getElementById("target").volume = 0;
+
     p_vidClicked = true;
-    console.log("p_videClicked = " + p_vidClicked);
+    console.log("playVids p_vidClicked = " + p_vidClicked);
     p_playAudio();
   
 }
@@ -567,11 +582,13 @@ function p_pauseVids(){
     document.getElementById("target").pause();
     document.getElementById("audio_norm").pause();
 
-  p_playState = 2;
+  // p_playState = 2;
+  // console.log("p_pauseVids p_playState: " + p_playState);
 }
 
 function p_endVids(){
   p_playState = 3;
+  console.log("p_endVids p_playState: " + p_playState);
   p_buildendscreen();
 }
 
@@ -666,7 +683,8 @@ function p_buildendscreen () {
     playVids();
 
     $("#p_playElement").css({'background':'url(/cradle/art/playWhite.png)'})
-    c_playState = 1;            
+    c_playState = 1;  
+    console.log("p_buildendscreen p_playState: " + p_playState);          
   });
 }
 

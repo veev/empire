@@ -355,9 +355,9 @@ function growRippleNode(index) {
 			for(var i = index; i < menu.length; i++) {
 
 				var _index = i+1;
-				// if( i === menu.length-1) {
-				// continue;
-				// }
+				if( i === menu.length-1) {
+				continue;
+				}
 
 
 				fadeBottomLetters( _index, 1);
@@ -458,15 +458,17 @@ $("#cradleContent").load("/cradle/index.html #cradle_wrapper", function() {
 	var cssLink = "/cradle/css/style.css";
 	var jsLink = "/cradle/js/cradle.js";
     // $("head").append("  <link href="+ &quot; + cssLink + &quot; +" rel="stylesheet" />");
-    //console.log("THis is the css link : " + cssLink);
+    console.log("THis is the css link : " + cssLink);
    //  $('<link rel="stylesheet" type="text/css" href="'+cssLink+'" >')
    // .appendTo("head");
    $.get(cssLink, function(css) {
    		$('<style type="text/css"></style>')
      		.html(css)
       		// .appendTo("head");
+      		console.log('cradle get css');
+      		//console.log($);
         $.getScript(jsLink, function(){
-   			//console.log('cradle getScript');
+   			console.log('cradle getScript');
    		    attachCradleEvents();
    		});
 	});
@@ -747,6 +749,7 @@ function attachPeripheryEvents() {
   	$("#cradle_pbutton").on('click', function() {
   		//console.log("go to cradle page");
   		p_pauseVids();
+  		c_vidClicked = true;
   		$('html, body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
   			animateButton(0);
   		});
