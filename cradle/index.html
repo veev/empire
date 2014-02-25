@@ -43,31 +43,34 @@
 			<div id="c_c">Empire: Cradle presents two separate films united by a single soundtrack.</div>
 			<div id="c_d">As the seconds tick by, you decide which you will watch and which you will ignore.</div>	
 		</div>
-<!-- 		<div class="cradleplay" id="cradleplay" style="display: none"></div> -->
-			<div class="cradlemore" id="cradlemore" style="display: none"></div>
+		<div class="cradleplay" id="cradleplay" style="display: none"></div>
+			<div class="more_button" id="cradlemore" style="display: none"></div>
 	</div>
 	<!-- <div id="canvas_container" style="display:none"></div> -->
 
 	<div class="outer snap" id="cradle_main">
-		<div id="cmain_nav_buttons">
+		<div class="main_nav_buttons">
 				<!-- <button type="button" id="cradle_cbutton">C</button> -->
-				<button type="button" id="legacy_cbutton">L</button>
-				<button type="button" id="migrants_cbutton">M</button>
-				<button type="button" id="periphery_cbutton">P</button>
+				<button type="button" class="nav_button" id="legacy_cbutton">L</button>
+				<button type="button" class="nav_button" id="migrants_cbutton">M</button>
+				<button type="button" class="nav_button" id="periphery_cbutton">P</button>
 			</div>
-		<div id="home_button_cmain">
+
+		<div class="home_button">
 			<img src="../art/e_nav.png" width="40" height="35" alt="home"/>
 		</div>
 		<div id="cradle_linewhite"></div>
-		<div id="outerouter">
-			<div id="outerinner">
+		<div id="c_outerouter">
+			<div id="c_outerinner">
 				<div id="c_container">
-					<div id="instructions" style="display: none"><span id="ctitle" style="display: none"></span><span id="swifter"></span>
-					<span id="cradleplay2"><img src="/cradle/art/playWhite.png" width="70px" height="70px" title="play" /></span>
-					<p id="crad_0">Use your mouse or your touch to flip the video</p>
-					<p id="crad_1" class="left">Drag to the left to spend time in the morgue</p>
-					<p  id="crad_2" class="right">Drag to the right to spot planes</p>
-					<p  id="crad_3">Your choices will be noted</p>
+					<div id="c_instructions" style="display: none">
+						<span id="ctitle" style="display: none"></span>
+						<span id="swifter"></span>
+						<span id="cradleplay2"><img src="/cradle/art/playWhite.png" width="70px" height="70px" title="play" /></span>
+						<p id="crad_0">Use your mouse or your touch to flip the video</p>
+						<p id="crad_1" class="left">Drag to the left to spend time in the morgue</p>
+						<p  id="crad_2" class="right">Drag to the right to spot planes</p>
+						<p  id="crad_3">Your choices will be noted</p>
 					</div>
 					<div id="leftbutton" class="flipbuttons buttonoff"></div>
 					<div id="rightbutton" class="flipbuttons buttonon"></div>
@@ -87,17 +90,17 @@
 						</div>
 					</div>
 				</div>
-				<div id="controls">
+				<div id="c_controls">
 					<span id="c_refresh" style="cursor: pointer;"></span>
-					<span id="playElement" style="cursor: pointer;"></span>
-					<div id="scrubber"><div id="progress"></div>
+					<span id="c_playElement" style="cursor: pointer;"></span>
+					<div id="c_scrubber"><div id="c_progress"></div>
 				</div>
 			</div>
-			<div id="endscreen" style="display: none;">
-				<div id="person_a"></div>
-				<div id="person_b"></div>
-				<div id="people_data"></div>
-				<div id="person_overlay">
+			<div id="c_endscreen" style="display: none;">
+				<div id="c_person_a"></div>
+				<div id="c_person_b"></div>
+				<div id="c_people_data"></div>
+				<div id="c_person_overlay">
 					<p>This is the path you took.<br />
 					If you could try again, what would you do differently?<br /><br />Try again
 					</p>
@@ -105,12 +108,14 @@
 			</div>
 		</div>
 	</div>
-	<div class="more" id="legmore" style="display:none"></div>
+	<div class="more" id="c_legmore" style="display:none"></div>
 	</div>
 
 	<div class="cradle_bottom snap" id="cradle_bottom">
+
 		<div id="cradle_bottomline"></div>
 		<div class="inner">
+					<div class="returnTop_button" id="cradle_returnTop" style="display: none"></div>
 			<div id="cbottom_structure">
 				<div class="cbottom_l">
 					<p>Schiphol Airport handles 1100 flights on average per day.</p>
@@ -132,7 +137,7 @@
 		</div>
 
 		</div>
-		<div id="home_button_cbottom">
+		<div class="home_button">
 				<img src="../art/e_nav.png" width="40" height="35" alt="home"/>
 			</div>
 	</div>

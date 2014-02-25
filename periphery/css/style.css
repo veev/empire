@@ -11,13 +11,13 @@ q:before, q:after { content:''}
 div#browserno { background-color: #f00; width: 100%; text-align: center; position: absolute; z-index: 99402; top: 0; left: 0; }
 div#browserno div.padded { padding: 30px 20px 10px 20px; font-size: 1.2em; color: #fff; }
 
-div.periphery_top { text-align: center; background: #cc3333 url(../../art/p_bg.jpg) repeat-x; width: 100%; height: 98%; position: relative; -moz-background-size: 100% 100%; -webkit-background-size: 100% 100%; background-size: 100% 100%; }
-div.periphery_top div#periphery_line { background: url(../art/b_line.png) repeat-y; width: 3px; position: absolute; }
+div.periphery_top { text-align: center; background: #d3314a url(../../art/p_bg.jpg) repeat-x; width: 100%; height: 98%; position: relative; -moz-background-size: 100% 100%; -webkit-background-size: 100% 100%; background-size: 100% 100%; }
+div.periphery_top div#periphery_line { background: url(../../art/periphery/b_line.png) repeat-y; width: 3px; position: absolute; }
 div#periphery_top h1 { color: #000; padding-top: 8px; font-size: 2.1em; }
 div.periphery_top div.peripheryplay { position: absolute; width: 127px; height: 45px; cursor: pointer; z-index: 5; background: url(../../art/f_playbutton.png); pointer-events: all; }
-div.periphery_top div.peripherymore { position: absolute; width: 127px; height: 45px; cursor: pointer; z-index: 5; background: url(../art/periphery_more.png); pointer-events: all; }
+div.periphery_top div.peripherymore { position: absolute; width: 127px; height: 45px; cursor: pointer; z-index: 5; background: url(../../art/periphery/periphery_more.png); pointer-events: all; }
 div.periphery_top div#periphery_structure { width: 731px; height: 392px; padding-top: 80px; text-align: left; position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
-div.periphery_top div#periphery_line { background: url(../art/b_line.png) repeat-y; width: 3px; position: absolute; }
+div.periphery_top div#periphery_line { background: url(../../art/periphery/b_line.png) repeat-y; width: 3px; position: absolute; }
 div.periphery_intro { text-align: left; position: relative; margin: auto; width: 790px; height: 500px; overflow: auto; }
 div.periphery_intro p { position: absolute; color: #000; font-size: 18px; font-style: italic; margin: 0; padding: 0; }
 div.periphery_intro p#p_a { top: 60px; left: 280px; width: 210px; text-align: right; z-index: 1; }
@@ -40,18 +40,18 @@ div#periphery_main div#p_instructions {
 /*	padding: 200px 100px 160px 360px; */
 	height: 730px; 
 	text-align: center; }
-div#periphery_main div#p_instructions span#swifter { width: 187px; height: 720px; z-index: 1; left: 665; top: 0; position: absolute; background: url(../art/instructions_spin.png); display: none; }
+div#periphery_main div#p_instructions span#swifter { width: 187px; height: 720px; z-index: 1; left: 665; top: 0; position: absolute; background: url(../../art/periphery/instructions_spin.png); display: none; }
 div#periphery_main div#p_instructions span#ptitle { width: 279px; height: 41px; z-index: 2; left: 588; opacity: .5; top: 30; position: absolute; background: url(../art/cradle_title.png); }
 div#periphery_main div#p_instructions span#peripheryplay2 { position: absolute; cursor: pointer; z-index: 5; pointer-events: all; bottom: 350; right: 440;}
 div#periphery_main div#p_instructions p { position: relative; font-size: 1.4em; }
 div#periphery_main div#p_instructions p#peri_0 { top: 180; }
-div#periphery_main div#p_instructions p#peri_1 { color: #cc3333; top: 250; left: -180;}
-div#periphery_main div#p_instructions p#peri_2 { color: #cc3333; top: 260; left: 160; }
+div#periphery_main div#p_instructions p#peri_1 { color: #d3314a; top: 250; left: -180;}
+div#periphery_main div#p_instructions p#peri_2 { color: #d3314a; top: 260; left: 160; }
 div#periphery_main div#p_instructions p#peri_3 { top: 350; }
 
 div.periphery_bottom { 
 	text-align: center; 
-	background: #cc3333 url(../../art/p_bg_b.jpg) bottom left  repeat-x; 
+	background: #d3314a url(../../art/p_bg_b.jpg) bottom left  repeat-x; 
 	width: 100%;
 	height: 100%;
 	background-size: : 100%;
@@ -61,7 +61,7 @@ div.periphery_bottom {
 	}
 div.periphery_bottom div.inner { padding: 30px 0 30px 0; }
 div#periphery_bottom h2 { color: #000; padding-bottom: 8px; font-size: 1.6em; text-align: center; }
-div.periphery_bottom div#periphery_bottomline { z-index: 1; background: url(../art/b_line.png) repeat-y; width: 3px; position: absolute; }
+div.periphery_bottom div#periphery_bottomline { z-index: 1; background: url(../../art/periphery/b_line.png) repeat-y; width: 3px; position: absolute; }
 div.periphery_bottom div#periphery_bottomtitle { z-index: 2; position: absolute; bottom: 25; width: 100%; text-align: center; }
 div.periphery_bottom div#pbottom_structure { z-index: 2; position: absolute; width: 930px; height: 465px; /*background: url(../art/bottomstructure.png);*/ }
 div.periphery_bottom div#pbottom_structure div { text-align: left;  padding: 40px;  color: #000; }
@@ -69,8 +69,8 @@ div.periphery_bottom div#pbottom_structure div p { margin: 1.1em 0; }
 div.periphery_bottom div#pbottom_structure div a { color: 000; }
 div.periphery_bottom div#pbottom_structure div.pbottom_l { color: #000; width: 385px; float: left; margin-right: 40px; }
 div.periphery_bottom div#pbottom_structure div.pbottom_l a { color: #000; }
-div#periphery_main div#periphery_linewhite { background: url(../art/b_linewhite.png) repeat-y; width: 3px; position: absolute; z-index: 1; }
-#periphery_main div#plegmore { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(../art/leg_more.png); }
+div#periphery_main div#periphery_linewhite { background: url(../../art/periphery/b_linewhite.png) repeat-y; width: 3px; position: absolute; z-index: 1; }
+#periphery_main div#p_legmore { position: absolute; z-index: 10; bottom: 30; width: 127px; height: 45px; cursor: pointer; background: url(../../art/periphery/leg_more.png); }
 
 div#periphery_main #p_outerouter {
 	text-align: center;
@@ -79,6 +79,15 @@ div#periphery_main #p_outerouter {
 	z-index: 4;
 }
 
+#periphery_main .home_button {
+	z-index: 5; opacity: 0.5;
+}
+
+#periphery_bottom .home_button {
+	z-index: 2; opacity: 1;
+}
+
+/*
 div#periphery_main  #home_button_pmain {
 	position: absolute; bottom: 30; right: 30; z-index: 5; opacity: 0.5; cursor: pointer;
 }
@@ -88,7 +97,7 @@ div.periphery_bottom #home_button_pbottom {
 }
 
 div#periphery_main #p_outerouter div#home_button img { width: 40px; height: 35px;}
-
+*/
 div#periphery_main #p_outerouter #p_outerinner {
 	height: 735px;
 	margin: 0 auto;
@@ -124,6 +133,7 @@ div#periphery_main #p_outerouter #p_outerinner {
   	-webkit-transform-origin: center center;
 }
 
+
 /*
 #outerinner #container #pcardover {
 	position: absolute;
@@ -145,7 +155,7 @@ div#periphery_main #p_outerouter #p_outerinner {
 	top: 250; 
 	height: 31px; 
 	width: 23px; 
-	background: url(../art/leftar.png);
+	background: url(../../art/periphery/leftar.png);
 }
 
 #p_outerinner #p_container #rightbutton {
@@ -156,7 +166,7 @@ div#periphery_main #p_outerouter #p_outerinner {
 	top: 250; 
 	height: 31px; 
 	width: 23px; 
-	background: url(../art/rightar.png);
+	background: url(../../art/periphery/rightar.png);
 }
 
 #p_outerinner #p_container div.buttonoff {
@@ -182,16 +192,16 @@ div#periphery_main #p_outerouter #p_outerinner {
 }	*/
 
 #p_outerinner #p_container #pcard div.back {
-	transform: rotate(180deg);
-	-webkit-transform: rotate(180deg);
+/*	transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);*/
 }
 
 #p_outerinner #p_container #pcard.flipped {
-	transform: translateX( -100% ) rotate( -180deg );
-	-webkit-transform: translateX( -100% ) rotate( -180deg );
+/*	transform: translateX( -100% ) rotate( -180deg );
+	-webkit-transform: translateX( -100% ) rotate( -180deg );*/
 }
 
-#p_outerinner #pcontrols #p_scrubber {
+#p_outerinner #p_controls #p_scrubber {
 	width: 588px;
 	float: left;
 	margin: 17px 15px 9px 0px;
@@ -202,12 +212,12 @@ div#periphery_main #p_outerouter #p_outerinner {
 	z-index: 2;
 }
 
-#p_outerinner #pcontrols #p_scrubber #progress {
+#p_outerinner #p_controls #p_scrubber #p_progress {
 	width: 0;
 	position: absolute;
 	height: 2px;
 	top: 0;
-	background-color: #cc3333;
+	background-color: #d3314a;
 	z-index: 2;
 }
 
@@ -217,9 +227,9 @@ div#periphery_main #p_outerouter #p_outerinner {
 }*/
 
 .norm #target {
-        mask: url("mask.svg#c1");
-        -webkit-mask-box-image: url(mask.svg);
-      }
+    mask: url("mask.svg#c1");
+    -webkit-mask-box-image: url(mask.svg);
+}
 
 /*#outerinner #container.norm {
 	position: absolute;
@@ -240,18 +250,19 @@ div#periphery_main #p_outerouter #p_outerinner {
 	clear: both;
 }
 
-#p_outerinner #pcontrols #p_playElement{
+#p_outerinner #p_controls #p_playElement{
 	display: block;
 	float: left;
 	cursor: pointer;
 	width: 27px;
 	height: 38px;
-	background-image: url(../art/playWhite.png);
+	background-image: url(../../art/periphery/playWhite.png);
 	/*margin-left: 320px;*/
+	position: relative;
 	z-index: 2;
 }
-#p_outerinner #pcontrols #p_playElement:hover {
-	background-image: url(../art/pauseWhite.png);
+#p_outerinner #p_controls #p_playElement:hover {
+	background-image: url(../../art/periphery/pauseWhite.png);
 }
 #p_pauseElement{
 	display: block;
@@ -263,6 +274,25 @@ div#periphery_main #p_outerouter #p_outerinner {
 	/*margin-left:320px;*/
 	z-index: 2;
 }
+
+#cradleContent .more_button{
+	color:blue;
+}
+
+#legacyContent .more_button{
+	color:green;
+}
+
+.more_button{
+	position: absolute;
+	width:127px;
+	height: 45px;
+	cursor: pointer;
+	z-index: 5;
+	background: url(../../art/cradle/cradle_more.png); 
+	pointer-events: all;
+}
+
 #p_pauseElement:hover;{
 	display: block;
 	cursor: pointer;
@@ -271,17 +301,17 @@ div#periphery_main #p_outerouter #p_outerinner {
 	background-image: url(images/playGray.png);
 }
 
-#p_outerinner #pcontrols #p_refresh{
+#p_outerinner #p_controls #p_refresh{
 	display: block;
 	float: left;
 	cursor: pointer;
 	width: 27px;
 	height: 38px;
-	background-image: url(../art/refresh.png);
+	background-image: url(../../art/periphery/refresh.png);
 	margin-left: 320px;
 }
 
-div #pmain_nav_buttons {
+/*div #pmain_nav_buttons {
 	float: left;
 	position: absolute;
 	z-index: 10;
@@ -321,65 +351,71 @@ div #pmain_nav_buttons #migrants_pbutton {
 	padding-left: 25px;
 	padding-right: 25px;
 	cursor: pointer;
-}
+}*/
 
 #p_outerinner #p_endscreen {
 	position: relative;
-	height: 504px;
-	width: 900px;
-	 z-index: 1;
+	height: 725px;
+	width: 725px;
+	z-index: 1;
 	margin: 0 auto;
-}
-
-#p_outerinner #p_endscreen div#person_a {
-	width: 445px;
-	height: 504px;
-	position: absolute;
-	z-index: 1;	
-	background: url(../art/endscreen_a.jpg);
 	top: 0;
 	left: 0;
 }
 
-#p_outerinner #p_endscreen div#person_b {
-	width: 445px;
-	height: 504px;
+#p_outerinner #p_endscreen div#p_person_a {
+	width: 720px;
+	height: 720px;
 	position: absolute;
 	z-index: 1;	
-	background: url(../art/endscreen_b.jpg);
+	background: url(../../art/periphery/endscreen_norm_circ.png);
 	top: 0;
-	left: 445;
+	left: 0;
 }
 
-#p_outerinner #p_endscreen div#people_data {
+#p_outerinner #p_endscreen div#p_person_b {
+	width: 720px;
+	height: 720px;
+	position: absolute;
+	z-index: 1;	
+	background: url(../../art/periphery/endscreen_yeti_circ.png);
+	top: 0;
+	left: 0;
+}
+
+#p_outerinner #p_endscreen div#p_people_data {
 	position: absolute;
 	z-index: 2;	
-	height: 504px;
+	height: 725px;
 	left: 0;
-	width: 890px;
+	width: 725px;
+	background: url(../../art/periphery/semicircle5.png);
+	background-size: 100%;
+	opacity: 0.7;
+	transform-origin: center center;
+	-webkit-transform-origin: center center;
 }
 
-#p_outerinner #p_endscreen div#people_data div {
-	background-color: #000;
-	width: 445px;
+#p_outerinner #p_endscreen div#p_people_data div {
+	/*background-color: #000;*/
+	width: 720px;
 	position: absolute;
 }
 
-#p_outerinner #p_endscreen div#person_overlay {
-	width: 507px;
-	height: 509px;
+#p_outerinner #p_endscreen div#p_person_overlay {
+	width: 720px;
+	height: 720px;
 	z-index: 3;
 	position: absolute;
-	left: 190;
-	height: 90px;
 	cursor: pointer;
-	width: 307px;
 	text-align: center;
-	padding: 199px 100px 218px 100px;
-	font-size: 1.3em;
-	background: url(../art/obscuredots.png);
+	font-size: 1.5em;
+	padding-top: 310px;
+	line-height: 2em;
 }
 
-#p_outerinner #p_endscreen div#person_overlay:hover {
-	color: #eddb58;
+
+#p_outerinner #p_endscreen div#p_person_overlay:hover {
+	color: #d3314a;
+	opacity: 1.0;
 }

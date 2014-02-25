@@ -7,7 +7,7 @@ ol, ul, li { list-style:none }
 caption, th { text-align:left }
 h1, h2, h3, h4, h5, h6 { font-size:100%; font-weight:normal }
 q:before, q:after { content:''}
-body { background: #3d3356; 
+body { /*background: #3d3356;*/ 
 	background-image:  url(../art/e_bg.jpg), url(../art/e_bg_b.jpg); 
 	background-size: 100%;
 	background-position: top left, 0px 800px;
@@ -26,7 +26,7 @@ h2 { font-size: 1.25em; margin-top: 4px; font-style: italic; text-align: left}
 div#container div#titleblock { position: absolute; }
 div#container div#logos { position: absolute; bottom: 20; left: 20; z-index: 5;}
 div#container div#pinchelines { position: absolute; width: 4px; background: url(../art/placeholder_dots.png) repeat-y; }
-div#container div#bodytext { position: absolute; margin-right: 20px; text-align: left; width: 520px; }
+div#container div#bodytext { position: absolute; margin-right: 20px; text-align: left; width: 400px; }
 div#container div#bodytext p { margin: 1em 0; font-size: .9em;}
 div#container div#bodytext p.credits { margin-top: 3em; }
 div#audiodiv { display: none; }
@@ -44,8 +44,18 @@ div#container div#home_button img { width: 40px; height: 35px;}
 */
 div#container #navigation {position: relative; z-index: 5; cursor: pointer;}
 
-div#container div#home_button { position: absolute; bottom: 30; right: 30; z-index: 1; cursor: pointer;}
-div#container div#home_button img { width: 40px; height: 35px;}
+.home_button { position: absolute; bottom: 30; right: 30; z-index: 1; cursor: pointer;}
+.home_button img { width: 40px; height: 35px;}
+
+.returntop_button { 
+	position: absolute;
+	width: 127px; height: 45px;
+	cursor: pointer;
+	z-index: 5;
+	background: url(../../art/f_playbutton.png);
+    pointer-events: all; 
+}
+
 div #canvas_container {
 	width: auto;
 	height: auto;
@@ -88,5 +98,46 @@ div #peripheryContent {
 	pointer-events: none;
 }
 
+div .main_nav_buttons {
+	position: absolute;
+	z-index: 10;
+	opacity: 0.6;
+	bottom: 30;
+	right: 8%;
+}
 
+div .main_nav_buttons_top {
+	position: absolute;
+	z-index: 10;
+	opacity: 0.6;
+	float: left;
+	top: 30;
+	left: 30;
+}
+
+div .nav_button {
+	font-size: 28px;
+	font-style: italic;
+	background-color: #000;
+	border: none;
+	padding-left: 28px;
+	padding-right: 28px;
+	cursor: pointer;
+}
+
+div .main_nav_buttons #cradle_cbutton { color: #ecda50; }
+
+div .main_nav_buttons #legacy_cbutton { color: #fbb03b; }
+
+div .main_nav_buttons #migrants_cbutton { color: #ff5a00; }
+
+div .main_nav_buttons #periphery_cbutton { color: #d3314a; }
+
+div .main_nav_buttons_top #cradle_pbutton { color: #ecda50; }
+
+div .main_nav_buttons_top #legacy_pbutton { color: #fbb03b; }
+
+div .main_nav_buttons_top #migrants_pbutton { color: #ff5a00; }
+
+div .main_nav_buttons_top #periphery_pbutton { color: #d3314a; }
 

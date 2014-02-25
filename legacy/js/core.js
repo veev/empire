@@ -132,7 +132,7 @@ $(document).ready(function () {
 	
 	$.ajax({
 		dataType: "json",
-		url: "connections.json",
+		url: "legacy/connections.json",
 		success: function (data) {
 			connsloaded = true;
 			clipdata = data;
@@ -1165,8 +1165,8 @@ function drawvideo (videoclip) {
 			playeroptions.controlbar = 'none';
 			playeroptions.streamer = _rtmpserver;
 			playeroptions.file = 'legacy/' + videoclip + '_crop.mp4';
-			playeroptions.skin = 'art/bekle.zip';
-			swfobject.embedSWF('art/player.swf',"vidin",w,h,"9.0.115", 'art/expressInstall.swf', playeroptions, { 'wmode':'direct', 'scale':'noscale', 'salign':'tl', 'menu':false, 'allowFullScreen':false, 'allowScriptAccess':'always' }, { id:'vidin',name:'vidin', bgcolor:'#000000' });
+			playeroptions.skin = 'legacy/art/bekle.zip';
+			swfobject.embedSWF('legacy/art/player.swf',"vidin",w,h,"9.0.115", 'art/expressInstall.swf', playeroptions, { 'wmode':'direct', 'scale':'noscale', 'salign':'tl', 'menu':false, 'allowFullScreen':false, 'allowScriptAccess':'always' }, { id:'vidin',name:'vidin', bgcolor:'#000000' });
 			subthis = this;
 			jwplayer("vidin").onTime(function (timobj) {
 				subthis.progressrun(timobj.position);
