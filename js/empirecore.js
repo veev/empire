@@ -97,11 +97,11 @@ $(document).ready(function () {
 	$(".home_button").on('click', function() {
 		if(cradleActive) {
 			c_pauseVids();
-			console.log("[document ready] home_button : c_pauseVids ? " + cradleActive);
+			//console.log("[document ready] home_button : c_pauseVids ? " + cradleActive);
 		}
 		else if (peripheryActive) {
 			p_pauseVids();
-			console.log("[document ready] home_button : p_pauseVids ? " + peripheryActive);
+			//console.log("[document ready] home_button : p_pauseVids ? " + peripheryActive);
 
 		}
 		document.getElementById("video1").currentTime = 0;

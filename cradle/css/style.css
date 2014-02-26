@@ -169,12 +169,12 @@ position: absolute;
 
 #c_outerinner #c_container #leftbutton {
 	z-index: 40;
-	display: block; position: absolute; left: -40; top: 250; height: 31px; width: 23px; background: url(../art/leftar.png);
+	display: block; position: absolute; left: -40; top: 250; height: 31px; width: 23px; background: url(../../art/cradle/leftar.png);
 }
 
 #c_outerinner #c_container #rightbutton {
 	z-index: 40;
-	display: block; position: absolute; left: 970; top: 250; height: 31px; width: 23px; background: url(../art/rightar.png);
+	display: block; position: absolute; left: 970; top: 250; height: 31px; width: 23px; background: url(../../art/cradle/rightar.png);
 }
 
 #c_outerinner #c_container div.buttonoff {

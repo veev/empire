@@ -222,10 +222,10 @@ function cradle_sizer () {
 	// body.css({'background': '#000'});
 	// $("#cradle_top").setHeight()
 	// $("#cradle_top").width() *= window.width;
-	console.log("cradle_top height: " + $("#cradle_top").height() );
+	//console.log("cradle_top height: " + $("#cradle_top").height() );
 
 	$("#c_outerouter").css({ 'padding-top': (($("#cradle_top").height() / 2) - ($("#c_outerinner").height() / 2)) });
-	console.log("padding-top: " + (($("#cradle_top").height() / 2) - ($("#c_outerinner").height() / 2)));
+	//console.log("padding-top: " + (($("#cradle_top").height() / 2) - ($("#c_outerinner").height() / 2)));
 
 	$("#cradle_bottom").css("height",$("#cradle_top").height());
 
