@@ -55,7 +55,7 @@ div.cradle_top div.cradleplay { position: absolute; width: 127px; height: 45px; 
 	cursor: pointer;
 	pointer-events: all;
 }
-#cradlemore { z-index: 5; background: url(../../art/cradle/cradle_more.png);}
+#cradlemore { z-index: 5; background: url(../../art/more_button.png);}
 div.cradle_top div#cradle_line { background: url(../../art/cradle/b_line.png) repeat-y; width: 3px; position: absolute; }
 div.cradle_bottom div#cradle_bottomline { z-index: 1; background: url(../../art/cradle/b_line.png) repeat-y; width: 3px; position: absolute; }
 div.cradle_bottom div#cradle_bottomtitle { z-index: 1; position: absolute; bottom: 25; width: 100%; text-align: center; }
@@ -169,12 +169,23 @@ position: absolute;
 
 #c_outerinner #c_container #leftbutton {
 	z-index: 40;
-	display: block; position: absolute; left: -40; top: 250; height: 31px; width: 23px; background: url(../../art/cradle/leftar.png);
+	display: block; 
+	position: absolute; 
+	left: -60; top: 250; 
+	height: 62px; width: 46px; 
+	background: url(../../art/cradle/leftar.png) no-repeat;
+	background-size: cover;
+
 }
 
 #c_outerinner #c_container #rightbutton {
 	z-index: 40;
-	display: block; position: absolute; left: 970; top: 250; height: 31px; width: 23px; background: url(../../art/cradle/rightar.png);
+	display: block; 
+	position: absolute; 
+	left: 975; top: 250; 
+	height: 62px; width: 46px; 
+	background: url(../../art/cradle/rightar.png) no-repeat;
+	background-size: cover;
 }
 
 #c_outerinner #c_container div.buttonoff {
@@ -212,9 +223,6 @@ position: absolute;
 	-webkit-transform: translateX( -100% ) rotateY( -180deg );
 }
 
-
-
-
 #c_outerinner #c_controls #c_scrubber {
 	width: 900px;
 	float: right;
@@ -248,10 +256,10 @@ position: absolute;
 	cursor: pointer;
 	width: 27px;
 	height: 38px;
-	background-image: url(../../art/cradle/playWhite.png);
+	background-image: url(../../art/cradle/playYellow.png);
 }
 #c_outerinner #c_controls #c_playElement:hover {
-	background-image: url(../../art/cradle/pauseWhite.png);
+	background-image: url(../../art/cradle/pauseYellow.png);
 }
 #c_pauseElement{
 	display: block;

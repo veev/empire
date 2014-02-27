@@ -30,9 +30,11 @@ var config = {
 
 var cradleLoaded = false;
 var legacyLoaded = false;
+var migrantsLoaded = false;
 var peripheryLoaded = false;
 var cradleActive = false;
 var legacyActive = false;
+var migrantsActive = false;
 var peripheryActive = false;
 var menu = [];
 var RIPPLE_ID = ['ripple_c', 'ripple_l', 'ripple_m', 'ripple_p'];
@@ -92,6 +94,8 @@ $(document).ready(function () {
 	addPeripheryListeners();
 
 	attachCradleEvents();
+	attachLegacyEvents();
+	attachMigrantsEvents();
 	attachPeripheryEvents();
 
 	$(".home_button").on('click', function() {
@@ -163,6 +167,12 @@ $(document).ready(function () {
 			var p_marginsize = (p_lazywidth - 960) / 2;
 			p_leftpoint = p_marginsize + 180;
 			p_rightpoint = (p_lazywidth - p_marginsize) - 180;
+		}
+		else if(migrantsActive) {
+			migrants_sizer();
+		}
+		else if(legacyActive) {
+			legacy_sizer();
 		}
 	});
 
@@ -276,21 +286,12 @@ function buildRipples(total) {
 	{
 		//console.log("In build ripples button");
 		button = buildRippleNode(index);
-		// button.
 		menu.unshift(button);
 		button.addClickListener(function() {
 			//call animate function on click
 			animateButton(this.index);
 		});
-		//button.on('click', handleMenu);
 	}
-
-	//set all ripples to !isBig and !isActive
-	// for(var i = 0; i < total; i++) {
-		//console.log(menu[i].id);
-		// menu[i].ripple.isActive = false;
-		// menu[i].ripple.isBig = false;
-	// }
 }
 
 function animateButton(index){
@@ -312,7 +313,7 @@ function animateButton(index){
 
 		if(index === 0) {
 
-			//console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
+			console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
 			
 			$("#cradleContent").fadeIn(2000);
 			
@@ -320,21 +321,23 @@ function animateButton(index){
 
 			 	loadCradle2();
 			 	cradleLoaded = true;
-				//console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
+				console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
 
 			// 	menu[index].ripple.isActive = true;
 			 }
 			 //addCradleListeners();
 			 cradleActive = true;
-			 //console.log("[ animateButton ] cradle is active  ?" + cradleActive);
+			 audioready();
+			 console.log("[ animateButton ] cradle is active  ?" + cradleActive);
 
 			//menu[index].ripple.attr({'cursor' : 'default'});
 		 } else {
 
 		 	$("#cradleContent").fadeOut("fast");
+		 	c_pauseVids();
 		 	//removeCradleListeners();
 		 	cradleActive = false;
-		 	//console.log("[ animateButton ] cradle is active  ?" + cradleActive);
+		 	console.log("[ animateButton ] cradle is active  ?" + cradleActive);
 
 		 }
 
@@ -345,44 +348,72 @@ function animateButton(index){
 		 	$("#legacyContent").fadeIn(2000);
 
 		 	if(legacyLoaded === false){
-		 	 	//loadLegacy();	
+		 	 	loadLegacy();	
 		 	 	legacyLoaded = true;
-		 	 	//console.log("[ animateButton ] legacy was loaded  ?" + legacyLoaded);
+		 	 	console.log("[ animateButton ] legacy was loaded  ?" + legacyLoaded);
 		 	 	
 		 	 	//menu[index].ripple.isActive = true;
 		 	}	
 		 	legacyActive = true;
-		 	//console.log("[ animateButton ] legacy is active  ?" + legacyActive);
+		 	audioready();
+		 	console.log("[ animateButton ] legacy is active  ?" + legacyActive);
 		 } 
 		 else  {
 
 		 	$("#legacyContent").fadeOut("fast");
 		 	legacyActive = false;
-		 	//console.log("[ animateButton ] legacy is active  ?" + legacyActive);
+		 	console.log("[ animateButton ] legacy is active  ?" + legacyActive);
+		 }
+
+		  if(index === 2) {
+
+		 	console.log("[ animateButton ] migrants was loaded ?" + migrantsLoaded);
+
+		 	$("#migrantsContent").fadeIn(2000);
+
+		 	if(migrantsLoaded === false){
+		 	 	
+		 	 	loadMigrants();	
+		 	 	migrantsLoaded = true;
+		 	 	console.log("[ animateButton ] migrants was loaded  ?" + migrantsLoaded);
+		 	 	
+		 	 	//menu[index].ripple.isActive = true;
+		 	}	
+		 	migrantsActive = true;
+		 	audioready();
+		 	console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
+		 } 
+		 else  {
+
+		 	$("#migrantsContent").fadeOut("fast");
+		 	migrantsActive = false;
+		 	console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
 		 }
 
 	 	if(index === 3) {
-	 		//console.log("[ animateButton ] periphery was loaded  ?" + peripheryLoaded);
+	 		console.log("[ animateButton ] periphery was loaded  ?" + peripheryLoaded);
 
 			$("#peripheryContent").fadeIn(2000);
 		 	if(peripheryLoaded === false) {
 
 		 		loadPeriphery2();
 		 		peripheryLoaded = true;
-		 		//console.log("[ animateButton ] periphery was loaded  ?" + peripheryLoaded);
+		 		console.log("[ animateButton ] periphery was loaded  ?" + peripheryLoaded);
 
 		 		//menu[index].ripple.isActive = true;
 		 	}
 		 	//addPeripheryListeners();
 		 	peripheryActive = true;
-		 	//console.log("[ animateButton ] periphery is active  ?" + peripheryActive);
+		 	audioready();
+		 	console.log("[ animateButton ] periphery is active  ?" + peripheryActive);
  	
  		} else {
 		 	//peripheryLoaded = false;
 		 	$("#peripheryContent").fadeOut("fast");
+		 	p_pauseVids();
 		 	//removePeripheryListeners();
 		 	peripheryActive = false;
-		 	//console.log("[ animateButton ] periphery is active  ?" + peripheryActive);
+		 	console.log("[ animateButton ] periphery is active  ?" + peripheryActive);
 		}
 			// });	 			
 			$("#navigation").fadeIn();
@@ -466,6 +497,7 @@ function animateHome() {
 
 	$("#cradleContent").fadeOut();
 	$("#legacyContent").fadeOut();
+	$("#migrantsContent").fadeOut();
 	$("#peripheryContent").fadeOut();
 
 	//cradleLoaded, legacyLoaded, peripheryLoaded = false;
@@ -507,6 +539,10 @@ function animateHomeNode(index) {
  		peripheryActive = false;
  		cradleLoaded = false;
  		peripheryLoaded = false;
+ 		migrantsLoaded = false;
+ 		migrantsActive = false;
+ 		legacyLoaded = false;
+ 		legacyActive = false;
  		//console.log("[ animateHomeNode ] cradleActive ? "+ cradleActive +", peripheryActive ?" + peripheryActive);
  		//console.log("[ animateHomeNode ] cradleLoaded ? "+ cradleLoaded +", peripheryLoaded ?" + peripheryLoaded);
 
@@ -514,6 +550,21 @@ function animateHomeNode(index) {
 	//set menus to not big, not active
 	menu[index].isActive = false;
 	menu[index].isBig = false;
+}
+
+function loadMigrants() {
+
+	$("#migrantsContent").css({ 'width' : '100%', 'height' : '100%' });
+	$(".migrants_top").css({ 'background' : 'none'});
+
+	migrants_sizer();
+}
+
+function loadLegacy() {
+	$("#legacyContent").css({ 'width' : '100%', 'height' : '100%' });
+	$(".legacy_top").css({ 'background' : 'none' });
+
+	legacy_sizer();
 }
 
 function loadCradle2() {
@@ -564,31 +615,68 @@ function attachCradleEvents() {
 		c_restartVids();
 	});
 
-	$("#periphery_cbutton").on('click', function() {
-		console.log("[ attach Cradle Events ] periphery_cbutton - c_pauseVids");
-		c_pauseVids();
-
-		$('html body').animate({ scrollTop: ($('#cradle_top').offset().top) }, 1000,function(){
-		 	animateButton(3);
-		});
-	});
-
-
 	$("#legacy_cbutton").on('click', function() {
 		console.log("[ attach Cradle Events ] legacy_cbutton - c_pauseVids");
 		c_pauseVids();
-		
 		$('html body').animate({ scrollTop: ($('#cradle_top').offset().top) }, 1000, function() {
 			animateButton(1);
-		});
+		}); 
 	});
 
 	$("#migrants_cbutton").on('click', function() {
 		console.log("[ attach Cradle Events ] migrants_cbutton - c_pauseVids");
 		c_pauseVids();
-		
 		$('html body').animate({ scrollTop: ($('#cradle_top').offset().top) }, 1000, function() {
 			animateButton(2);
+		});
+	});
+
+	$("#periphery_cbutton").on('click', function() {
+		console.log("[ attach Cradle Events ] periphery_cbutton - c_pauseVids");
+		c_pauseVids();
+		$('html body').animate({ scrollTop: ($('#cradle_top').offset().top) }, 1000,function(){
+	 		animateButton(3);
+		});
+	});
+}
+
+function attachMigrantsEvents() {
+	$("#cradle_mbutton").on('click', function() {
+		$('html body').animate({ scrollTop: ($('#migrants_top').offset().top) }, 1000, function() {
+			animateButton(0);
+		});
+	});
+
+	$("#legacy_mbutton").on('click', function() {
+		$('html body').animate({ scrollTop: ($('#migrants_top').offset().top) }, 1000, function() {
+			animateButton(1);
+		});
+	});
+
+	$("#periphery_mbutton").on('click', function() {
+		$('html body').animate({ scrollTop: ($('#migrants_top').offset().top) }, 1000, function() {
+			animateButton(3);
+		});
+	});
+}
+
+function attachLegacyEvents() {
+
+	$("#cradle_lbutton").on('click', function() {
+		$('html body').animate({ scrollTop: ($('#legacy_top').offset().top) }, 1000, function() {
+			animateButton(0);
+		});
+	});
+
+	$("#migrants_lbutton").on('click', function() {
+		$('html body').animate({ scrollTop: ($('#legacy_top').offset().top) }, 1000, function() {
+			animateButton(2);
+		});
+	});
+
+	$("#periphery_lbutton").on('click', function() {
+		$('html body').animate({ scrollTop: ($('#legacy_top').offset().top) }, 1000,function(){
+		 	animateButton(3);
 		});
 	});
 }
@@ -665,11 +753,8 @@ function attachPeripheryEvents() {
   	});
 
   	$("#legacy_pbutton").on('click', function() {
-  		//console.log("go to legacy page");
   		//console.log("[ attach Periphery Events ] legacy_pbutton - p_pauseVids");
   		p_pauseVids();
-  		
-
   		//p_playButton();
   		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
   			animateButton(1);
@@ -677,17 +762,13 @@ function attachPeripheryEvents() {
   	});
 
   	$("#migrants_pbutton").on('click', function() {
-  		//console.log("go to migrants page");
   		console.log("[ attach Periphery Events ] migrants_pbutton - p_pauseVids");
   		p_pauseVids();
-  		
   		//p_playButton();
   		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
   			animateButton(2);
   		});
   	});
-  // });
-
 }
 
 function fadeTitleNode(index, opacity) {

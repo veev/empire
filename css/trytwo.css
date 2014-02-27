@@ -60,11 +60,21 @@ div #canvas_container {
 	width: auto;
 	height: auto;
 	position: absolute;
-	z-index: 4;
+	z-index: 10;
 	pointer-events:visible;
 }
 
 div #cradleContent {
+	width: auto;
+	position: absolute;
+	z-index: 10;
+	top: 0px;
+	left: 0px;
+	text-align: right;
+	pointer-events: none;
+}
+
+div #migrantsContent {
 	width: auto;
 	position: absolute;
 	z-index: 10;
@@ -125,19 +135,42 @@ div .nav_button {
 	cursor: pointer;
 }
 
-div .main_nav_buttons #cradle_cbutton { color: #ecda50; }
-
+/*div .main_nav_buttons #cradle_cbutton { color: #ecda50; }
+*/
 div .main_nav_buttons #legacy_cbutton { color: #fbb03b; }
-
 div .main_nav_buttons #migrants_cbutton { color: #ff5a00; }
-
 div .main_nav_buttons #periphery_cbutton { color: #d3314a; }
 
+div .main_nav_buttons_top #cradle_lbutton { color: #ecda50; }
+div .main_nav_buttons #migrants_lbutton { color: #ff5a00; }
+div .main_nav_buttons #periphery_lbutton { color: #d3314a; }
+
+div .main_nav_buttons_top #cradle_mbutton { color: #ecda50; }
+div .main_nav_buttons_top #legacy_mbutton { color: #fbb03b; }
+div .main_nav_buttons #periphery_mbutton { color: #d3314a; }
+
 div .main_nav_buttons_top #cradle_pbutton { color: #ecda50; }
-
 div .main_nav_buttons_top #legacy_pbutton { color: #fbb03b; }
-
 div .main_nav_buttons_top #migrants_pbutton { color: #ff5a00; }
+/*div .main_nav_buttons_top #periphery_pbutton { color: #d3314a; }*/
 
-div .main_nav_buttons_top #periphery_pbutton { color: #d3314a; }
 
+
+.vertical_linewhite {
+	background: url(../../art/periphery/b_linewhite.png) repeat-y;
+	width: 3px;
+	position: absolute;
+/*	height: 924px;
+*/	overflow: hidden;
+	opacity: 0.6;
+}
+
+.coming_soon {
+	background: url(../../art/coming_soon_white.png); 
+	width: 177px;
+	height: 177px;
+	position: relative;
+	z-index: 5;
+	left: 360px;
+	top: 300px;
+}

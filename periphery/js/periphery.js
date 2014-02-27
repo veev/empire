@@ -235,7 +235,7 @@ function periphery_sizer () {
 
 	// var matop = ($("#periphery_top").height() / 2) - 320; // top of the matrix
 	var matop = 0;
-	var padtop = 10; // top of the main title
+	var padtop = 84; // top of the main title
 	var legbottom = 60; //offset of the bottom play button on the open screen
 	var body = $('html body');
 	// if($("#periphery_top").height() < 780){ // if this a wee screen

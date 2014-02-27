@@ -15,7 +15,8 @@
 <link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="../css/trytwo.css" type="text/css" media="screen" />
-<script src="js/core.js"></script>
+<!-- <script src="js/core.js"></script> -->
+<script src="js/legacy.js"></script>
 	<title>Empire: Legacy</title>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -30,7 +31,7 @@
 </head>
 <body>
 <div id="legacy_wrapper">
-	<div class="yellow snap" id="legacy_top">
+	<div class="legacy_top snap" id="legacy_top">
 		<div id="legacy_title">
 			<img src="../art/emp_title.png" width="284" height="43" title="Empire" /><h1>Legacy</h1>
 		</div>
@@ -43,10 +44,33 @@
 			<p id="f">Navigate between these four strands to discover the global web of connections that is the Dutch East India Company's legacy.</p>
 		</div>
 		<div class="play" id="legplay" style="display: none"></div>
+		<div class="more_button" id="legacymore" style="display: none"></div>
 	</div>
-	<div id="legacy_container" class="snap"><div id="debugmsg" style="display: none"></div>
+	<div class="outer snap" id="legacy_main">
+		<div class="main_nav_buttons_top">
+			<button type="button" class="nav_button" class="top" id="cradle_pbutton">C</button>
+		</div>
+		<div class="main_nav_buttons">
+			<button type="button" class="nav_button" id="migrants_cbutton">M</button>
+			<button type="button" class="nav_button" id="periphery_cbutton">P</button>
+		</div>
+		<div class="home_button">
+			<img src="../art/e_nav.png" width="40" height="35" alt="home" />
+		</div>
+		<div id="l_outerouter">
+			<div id="l_outerinner">
+				<div id="l_container">
+					<div class="vertical_linewhite" id="legacy_wline1"></div>
+					<div class="vertical_linewhite" id="legacy_wline2"></div>
+					<div class="coming_soon"></div>
+				</div>
+			</div>
+		</div>
+	</div>
 
- 	<div class="main" id="legacy_containerinner" style="display: none">
+<!-- 	<div id="legacy_container" class="snap"><div id="debugmsg" style="display: none"></div> -->
+
+<!--  	<div class="main" id="legacy_containerinner" style="display: none">
  		<span class="legstarttheme legthemea" style="display: none;" data-theme="a"></span>
  		<span class="legstarttheme legthemeb" style="display: none;" data-theme="b"></span>
  		<span class="legstarttheme legthemec" style="display: none;" data-theme="c"></span>
@@ -117,7 +141,7 @@
 
 		<p>Empire: Legacy was made possible by financial support from the Mondriaan Fund, and in-kind support & exhibition assistance from the following arts institutions: <a href="http://www.hivos.nl/dut./community/partner/10002842" target="_new"> Theertha</a> (Sri Lanka), <a href="http://www.newmuseum.org/artspaces/view/the-houseof-natural-fiber-honf" target="_new">HONF</a> & <a href="http://lifepatch.org/Main_Page" target="_new">, Lifepatch</a> (Indonesia), <a href="http://1shanthiroad.com/" target="_new">1 Shanthi Rd </a>& <a href="http://www.khojworkshop.org/project/11860" target="_new">Khoj</a> (India), <a href="http://www.africacentre.net/" target="_new">Africa Centre</a> & <a href="http://www.stevenson.info/" target="_new"> Stevenson Cape Town</a> (South Africa).</p>
 	</div>
-</div>
+</div> -->
 </div>
 </body>
 </html>

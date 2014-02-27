@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="cradle/css/style.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="periphery/css/style.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="legacy/css/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="migrants/css/style.css" type="text/css" media="screen" />
 <meta property="og:title" content="Empire"/> 
 <meta property="og:type" content="article"/>
 <meta property="og:image" content="http://empireproject.eu/art/shareimage.jpg"/>	
@@ -33,7 +34,9 @@
 
 <script src="js/empirecore.js"></script>
 <script src="cradle/js/cradle.js"></script>
+<script src="migrants/js/migrants.js"></script>
 <script src="periphery/js/periphery.js"></script>
+<script src="legacy/js/legacy.js"></script>
 <!--
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -79,6 +82,7 @@
 			<img src="art/e_nav.png" width="40" height="35" alt="home"/>
 		</div>
 	</div>	
+
 	<div id="cradleContent" style="display:none">
 		<div id="cradle_wrapper">
 			<div class="cradle_top snap" id="cradle_top">
@@ -192,7 +196,92 @@
 			</div>
 		</div>			
 	</div>
-	<div id="legacyContent" style="display:none"></div>
+	<div id="legacyContent" style="display:none">
+		<div id="legacy_wrapper">		
+			<div class="legacy_top snap" id="legacy_top">
+				<div id="legacy_title">
+					<img src="../art/emp_title.png" width="284" height="43" title="Empire" /><h1>Legacy</h1>
+				</div>
+				<div class="mystical" id="mainarea">
+					<p id="a">A Nazi reenactment group in Indonesia.</p>
+					<p id="b">A tombstone factory in India.</p>
+					<p id="c">A whites-only community in South Africa.</p>
+					<p id="d">A living god in Sri Lanka.</p>
+					<p id="e">These are a few of the strands that form the larger narrative of Empire: Legacy.</p>
+					<p id="f">Navigate between these four strands to discover the global web of connections that is the Dutch East India Company's legacy.</p>
+				</div>
+				<div class="play" id="legplay" style="display: none"></div>
+				<div class="more_button" id="legacymore" style="display: none"></div>
+			</div>
+			<div class="outer snap" id="legacy_main">
+				<div class="main_nav_buttons_top">
+					<button type="button" class="nav_button" class="top" id="cradle_lbutton">C</button>
+				</div>
+				<div class="main_nav_buttons">
+					<button type="button" class="nav_button" id="migrants_lbutton">M</button>
+					<button type="button" class="nav_button" id="periphery_lbutton">P</button>
+				</div>
+				<div class="home_button">
+					<img src="../art/e_nav.png" width="40" height="35" alt="home" />
+				</div>
+				<div id="l_outerouter">
+					<div id="l_outerinner">
+						<div id="l_container">
+							<div class="vertical_linewhite" id="legacy_wline1"></div>
+							<div class="vertical_linewhite" id="legacy_wline2"></div>
+							<div class="coming_soon"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="migrantsContent" style="display:none">
+		<div id="migrants_wrapper">
+			<div class="migrants_top snap" id="migrants_top">
+				<div id="migrants_title">
+					<img src="../art/emp_title.png" width="284" height="43" title="Empire" /><h1>Migrants</h1>
+					<div id="migrants_titleline">
+					<img src="../../art/migrants/m_slantedline.png" with="505" height"118" />
+					</div>
+				</div>
+				<!-- <div id="migrants_line"></div> -->
+				<div class="migrants_intro" id="mainarea">
+					<p id="m_a">Explore a trio of intertwined stories shot in three countries that were once of key importance to the Dutch slave trade.</p>
+					<p id="m_b">Suriname</p>
+					<p id="m_c">Ghana</p>
+					<p id="m_d">Brazil</p>
+					<p id="m_e">Empire: Migrants unearths the history of migration - both voluntary and forced - that populated a continent and transformed the world.</p>
+					<div class="vertical_line" id="migrants_line1"></div>
+					<div class="vertical_line" id="migrants_line2"></div>
+					<div class="vertical_line" id="migrants_line3"></div>
+				</div>
+				<div class="more_button" id="migrantsmore" style="display:none"></div>
+			</div>
+			<div class="outer snap" id="migrants_main">
+				<div class="main_nav_buttons_top">
+					<button type="button" class="nav_button" class="top" id="cradle_mbutton">C</button>
+					<button type="button" class="nav_button" class="top" id="legacy_mbutton">L</button>
+				</div>
+				<div class="main_nav_buttons">
+					<button type="button" class="nav_button" id="periphery_mbutton">P</button>
+				</div>
+				<div class="home_button">
+					<img src="../art/e_nav.png" width="40" height="35" alt="home" />
+				</div>
+				<div id="m_outerouter">
+					<div id="m_outerinner">
+						<div id="m_container">
+							<div class="vertical_linewhite" id="migrants_wline1"></div>
+							<div class="vertical_linewhite" id="migrants_wline2"></div>
+							<div class="vertical_linewhite" id="migrants_wline3"></div>
+							<div class="coming_soon"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div id="peripheryContent" style="display:none">
 		<div id="periphery_wrapper">
 			<div class="periphery_top snap" id="periphery_top">
@@ -232,7 +321,7 @@
 								<p id="peri_2" class="right">down for Australia</p>
 								<p id="peri_3">or try to find some common ground</p>
 							</div>
-<!-- 							<div id="leftbutton" class="flipbuttons buttonoff"></div>
+							<!-- <div id="leftbutton" class="flipbuttons buttonoff"></div>
 							<div id="rightbutton" class="flipbuttons buttonon"></div> -->
 							<div id="pcard">
 								<div class="norm">

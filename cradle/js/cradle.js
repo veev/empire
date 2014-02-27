@@ -566,11 +566,12 @@ function c_buildendscreen () {
 		while(c_sidetracker[x] == rightnow){
 			accum++;
 			x++;	
-			if(x > 446){
+			if(x > 445){
 				break;
 			}
 		}
 		outputstring += 'height: ' + (accum * multiplier) + 'px';
+		
 		if(rightnow == false){
 			outputstring += '; left: 445';
 		}

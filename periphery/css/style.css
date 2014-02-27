@@ -15,10 +15,16 @@ div.periphery_top { text-align: center; background: #d3314a url(../../art/p_bg.j
 div.periphery_top div#periphery_line { background: url(../../art/periphery/b_line.png) repeat-y; width: 3px; position: absolute; }
 div#periphery_top h1 { color: #000; padding-top: 8px; font-size: 2.1em; }
 div.periphery_top div.peripheryplay { position: absolute; width: 127px; height: 45px; cursor: pointer; z-index: 5; background: url(../../art/f_playbutton.png); pointer-events: all; }
-div.periphery_top div.peripherymore { position: absolute; width: 127px; height: 45px; cursor: pointer; z-index: 5; background: url(../../art/periphery/periphery_more.png); pointer-events: all; }
+div.periphery_top div.peripherymore { 
+	position: absolute; 
+	width: 127px; height: 45px; 
+	cursor: pointer; 
+	z-index: 5; 
+	background: url(../../art/more_button.png); 
+	pointer-events: all; }
 div.periphery_top div#periphery_structure { width: 731px; height: 392px; padding-top: 80px; text-align: left; position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
-div.periphery_top div#periphery_line { background: url(../../art/periphery/b_line.png) repeat-y; width: 3px; position: absolute; }
-div.periphery_intro { text-align: left; position: relative; margin: auto; width: 790px; height: 500px; overflow: auto; }
+/*div.periphery_top div#periphery_line { background: url(../../art/periphery/b_line.png) repeat-y; width: 3px; position: absolute; }
+*/div.periphery_intro { text-align: left; position: relative; margin: auto; width: 790px; height: 500px; overflow: auto; }
 div.periphery_intro p { position: absolute; color: #000; font-size: 18px; font-style: italic; margin: 0; padding: 0; }
 div.periphery_intro p#p_a { top: 60px; left: 280px; width: 210px; text-align: right; z-index: 1; }
 div.periphery_intro p#p_b { top: 120px; left: 570px; width: 220px; z-index: 2; }
@@ -69,6 +75,7 @@ div.periphery_bottom div#pbottom_structure div p { margin: 1.1em 0; }
 div.periphery_bottom div#pbottom_structure div a { color: 000; }
 div.periphery_bottom div#pbottom_structure div.pbottom_l { color: #000; width: 385px; float: left; margin-right: 40px; }
 div.periphery_bottom div#pbottom_structure div.pbottom_l a { color: #000; }
+
 div#periphery_main div#periphery_linewhite { background: url(../../art/periphery/b_linewhite.png) repeat-y; width: 3px; position: absolute; z-index: 1; }
 #periphery_main div#p_legmore { position: absolute; z-index: 10; bottom: 30; width: 127px; height: 45px; cursor: pointer; background: url(../../art/periphery/leg_more.png); }
 

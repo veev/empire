@@ -10,17 +10,35 @@ q:before, q:after { content:''}
 /*body {  color: #fff; }*/
 div#browserno { background-color: #f00; width: 100%; text-align: center; position: absolute; z-index: 99402; top: 0; left: 0; }
 div#browserno div.padded { padding: 30px 20px 10px 20px; font-size: 1.2em; color: #fff; }
-div#legacy_container { width: 100%; height: 100%;  text-align: center; position: relative; padding: 20px; background: #000; }
-div.yellow { 
+#legacy_wrapper {
+	position: relative;
+	width: auto;
+	height: auto;
+}
+div#legacy_main { 
+	width: 100%; 
+	height: 100%;  
 	text-align: center; 
-	background: #fbb03b url(/legacy/art/l_bg.jpg) repeat-x; 
+	position: relative; 
+/*	padding: 20px; */
+	background: #000;
+	pointer-events: all;  }
+div.legacy_top { 
+	text-align: center; 
+	background: #fbb03b url(../../art/l_bg.jpg) repeat-x; 
 	width: 100%; height: 98%; 
 	position: relative }
-div.yellow_b { text-align: center; background: #fbb03b url(/legacy/art/l_bg_b.jpg) bottom left  repeat-x; width: 100%; position: relative; padding: 50px 0px 50px 0px}
-div.yellow_b div.yellowinner { color: #000; border:1px dashed black; width: 760px; height:420px; padding: 20px 20px 20px 20px; margin: 0 auto}
+div.legacy_bottom { 
+	text-align: center; 
+	background: #fbb03b url(../../art/l_bg_b.jpg) bottom left  repeat-x; 
+	width: 100%; 
+	height: 100%;
+	position: relative; 
+	padding: 50px 0px 50px 0px}
+div.legacy_bottom div.yellowinner { color: #000; border:1px dashed black; width: 760px; height:420px; padding: 20px 20px 20px 20px; margin: 0 auto}
 div#legacy_top h1 { color: #000; padding-top: 8px; font-size: 2.1em; }
-div.yellow_b p { text-align: left; width: 700px; margin: 1em auto; color: #000 }
-div.yellow_b a { color: #000; }
+div.legacy_bottom p { text-align: left; width: 700px; margin: 1em auto; color: #000 }
+div.legacy_bottom a { color: #000; }
 div.mystical { text-align: left; background: url(/legacy/art/leg_overlay.png) no-repeat 220px 8px; position: relative; margin: auto; width: 790px; height: 500px; overflow: auto; }
 div.mystical p { position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
 div.mystical p#a { top: 0px; left: 285px; z-index: 1; }
@@ -29,115 +47,164 @@ div.mystical p#c { top: 355px; left: 240px; }
 div.mystical p#d { top: 170px; left: 55px; z-index: 3; }
 div.mystical p#e { top: 160px; left: 305px; width: 200px; text-align: center; }
 div.mystical p#f { top: 425px; width: 520px; left: 150px; text-align: center; }
-div.yellow div.play { position: absolute; width: 127px; height: 45px; cursor: pointer; background: url(/art/f_playbutton.png); }
-div#legacy_container div.more { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(/legacy/art/leg_more.png); }
-div#legacy_container:-webkit-full-screen { background-color: #000; width: 100%; height: 100%; }
-div#legacy_container:-moz-full-screen { background-color: #000; width: 100%; height: 100%; }
-div#legacy_container:-o-full-screen { background-color: #000; width: 100%; height: 100%; }
-div#legacy_container:full-screen { background-color: #000; width: 100%; height: 100%; }
-div#legacy_container div#debugmsg { background-color: #f00; display: block; position: absolute; top: 0; z-index: 900; font-size: 2em; width: 100%; padding: 5px; color: #fff; }
-div#legacy_container div#legacy_containerinner { height: 100%; position: relative; }
-div#legacy_container div#legacy_containerinner div#lg_fs { position: absolute; z-index: 35; bottom: 20; left: 10; padding: 10px; cursor: pointer; }
-div#legacy_container div#lg_fs:hover { color: #f00; }
-div#legacy_container div#legacy_containerinner div.videoplayer { position: absolute;  z-index: 23 }
-div#legacy_container div#legacy_containerinner div.videoplayer div#legacy_instructions { position: absolute; z-index: 50;  }
-div#legacy_container div#legacy_containerinner div.videoplayer div#legacy_instructions p { font-size: 1.7em }
-div#legacy_container div#legacy_containerinner div#videotransition { position: absolute;  z-index: 26 }
-div#legacy_container div#legacy_containerinner div.blurred { -webkit-transition: 1s; transition: 1s; -moz-filter: blur(4px); -webkit-filter: blur(4px); }
-div#legacy_container div#legacy_containerinner div#icongroup div.icon { pointer-events: auto; position: absolute; display: block; width: 30px; height: 30px; }
-div#legacy_container div#legacy_containerinner div#icongroup div.ga { background: url(../art/iconpanel.png); cursor: pointer; }
-div#legacy_container div#legacy_containerinner div#icongroup div.ga_off { background: url(../art/iconpanel.png) -30 0; }
-div#legacy_container div#legacy_containerinner div#icongroup div.ga:hover, div#legacy_container div#legacy_containerinner div#icongroup div.ga_on { background: url(../art/iconpanel.png) -60 0;  }
-div#legacy_container div#legacy_containerinner div#icongroup div.gb { background: url(../art/iconpanel.png) 0 -48; cursor: pointer; }
-div#legacy_container div#legacy_containerinner div#icongroup div.gb_off { background: url(../art/iconpanel.png) -30 -48; }
-div#legacy_container div#legacy_containerinner div#icongroup div.gb:hover, div#legacy_container div#legacy_containerinner div#icongroup div.gb_on { background: url(../art/iconpanel.png) -62 -48;  }
-div#legacy_container div#legacy_containerinner div#icongroup div.gd { background: url(../art/iconpanel.png) 0 -98; cursor: pointer; }
-div#legacy_container div#legacy_containerinner div#icongroup div.gd_off { background: url(../art/iconpanel.png) -30 -98; }
-div#legacy_container div#legacy_containerinner div#icongroup div.gd:hover, div#legacy_container div#legacy_containerinner div#icongroup div.gd_on { background: url(../art/iconpanel.png) -62 -98;  }
-div#legacy_container div#legacy_containerinner div#icongroup div.gc { background: url(../art/iconpanel.png) 0 -153; cursor: pointer; }
-div#legacy_container div#legacy_containerinner div#icongroup div.gc_off { background: url(../art/iconpanel.png) -30 -153; }
-div#legacy_container div#legacy_containerinner div#icongroup div.gc:hover, div#legacy_container div#legacy_containerinner div#icongroup div.gc_on { background: url(../art/iconpanel.png) -65 -153;  }
-div#legacy_container div#legacy_containerinner div#linegroup { position: absolute; z-index: 23; pointer-events: none; }
-div#legacy_container div#legacy_containerinner div#linegroup_connections { position: absolute; z-index: 25; pointer-events: none; }
-div#legacy_container div#legacy_containerinner div#icongroup { position: absolute; z-index: 27; pointer-events: none; }
-div#legacy_container div#legacy_containerinner div#icongroup span.counter { display: block; position: absolute; z-index: 9; width: 36px; height: 36px; }
-div#legacy_container div#legacy_containerinner div#icongroup span#cnt1 { background: url(../art/countdown_1.gif); }
-div#legacy_container div#legacy_containerinner div#icongroup span#cnt2 { background: url(../art/countdown_2.gif); }
-div#legacy_container div#legacy_containerinner div#icongroup span#cnt3 { background: url(../art/countdown_3.gif); }
-div#legacy_container div#legacy_containerinner div#icongroup span#cnt4 { background: url(../art/countdown_4.gif); }
-div#legacy_container div#legacy_containerinner div#icongroup span#cnt5 { background: url(../art/countdown_5.gif); }
-div#legacy_container div#legacy_containerinner div#icongroup span#cnt6 { background: url(../art/countdown_6.gif); }
-div#legacy_container div#legacy_containerinner div#icongroup span#cnt7 { background: url(../art/countdown_7.gif); }
-div#legacy_container div#legacy_containerinner div#icongroup span#cnt8 { background: url(../art/countdown_8.gif); }
-div#legacy_container div#legacy_containerinner div#icongroup span#cnt9 { background: url(../art/countdown_9.gif); }
-div#legacy_container div#legacy_containerinner div#icongroup span#cnt10 { background: url(../art/countdown_10.gif); }
-div#legacy_container div#legacy_containerinner div#linegroup path.playback {  z-index: 5; stroke: #fbb03b; stroke-width: 2px; }
-div#legacy_container div#legacy_containerinner div#linegroup path.scrubber { z-index: 4; stroke: #fff; stroke-width: 1px; }
-div#legacy_container div#legacy_containerinner div#linegroup path.scrubber_inert { z-index: 4; stroke: #ccc; stroke-width: 1px; }
-div#legacy_container div#legacy_containerinner div#linegroup path.scrubber_seen { z-index: 4; stroke: #fbb03b; stroke-width: 1px; }
-div#legacy_container div#legacy_containerinner div#linegroup path.scrubber_gone { z-index: 4; stroke: #000000; opacity: .01; stroke-width: 1px; }
-div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_unused { z-index: 3; stroke: #555; stroke-width: 1px; }
-div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_unused_superfluous { z-index: 3; stroke: #555; opacity: .1; stroke-width: 1px; }
-div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_hot {  z-index: 3; stroke: #fff; stroke-width: 1px; }
-div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_used { -webkit-transition: 3s; -moz-transition: 3s; z-index: 3; stroke: #fbb03b; stroke-width: 1px; }
-div#legacy_container div#legacy_containerinner div#linegroup_connections path.transition_gone { z-index: 3; stroke: #f00; opacity: 0; stroke-width: 1px; }
-div#legacy_container div#legacy_containerinner span.cname { opacity: .5; font-size: .8em; position: absolute; color: #888; display: block; }
-div#legacy_container div#legacy_containerinner span.cnameon { -webkit-transition: 1s; -moz-transition: 1s; opacity: .8; font-size: .8em; color: #fbb03b; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer { position: absolute; z-index: 22; pointer-events: none; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen { position: absolute; width: 1280px; height: 720px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#group0 { position: absolute; top: 0; left: 0; z-index: 4; -webkit-mask-image: url(../art/ends/mask1280_0.png); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#group1 { position: absolute; top: 0; left: 0; z-index: 5; -webkit-mask-image: url(../art/ends/mask1280_1.png); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#group2 { position: absolute; top: 0; left: 0; z-index: 6; -webkit-mask-image: url(../art/ends/mask1280_2.png); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#group3 { position: absolute; top: 0; left: 0; z-index: 7; -webkit-mask-image: url(../art/ends/mask1280_3.png); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#group0a { position: absolute; top: 0; left: 0; z-index: 8; -webkit-mask-image: url(../art/ends/mask1280_0.png); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#group1a { position: absolute; top: 0; left: 0; z-index: 9; -webkit-mask-image: url(../art/ends/mask1280_1.png); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#group2a { position: absolute; top: 0; left: 0; z-index: 10; -webkit-mask-image: url(../art/ends/mask1280_2.png); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#group3a { position: absolute; top: 0; left: 0; z-index: 11; -webkit-mask-image: url(../art/ends/mask1280_3.png); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreena0 { background: url(../art/ends/a_0.jpg) 0px -191px; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenb0 { background: url(../art/ends/b_0.jpg) 302px -79px; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenc0 { background: url(../art/ends/c_0.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreend0 { background: url(../art/ends/d_0.jpg) -178px 485px; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreena1 { background: url(../art/ends/a_1.jpg) 525px -198px; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenb1 { background: url(../art/ends/b_1.jpg) 564px -43px; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenc1 { background: url(../art/ends/c_1.jpg) 334px -75px; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreend1 { background: url(../art/ends/d_1.jpg) 650px -326px; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreena2 { background: url(../art/ends/a_2.jpg) -33px -128px; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenb2 { background: url(../art/ends/b_2.jpg) -54px 77px; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenc2 { background: url(../art/ends/c_2.jpg) -25px 101px; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreend2 { background: url(../art/ends/d_2.jpg) -272px 873px; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreena3 { background: url(../art/ends/a_3.jpg) -132px -168px; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenb3 { background: url(../art/ends/b_3.jpg) -300px -115px; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenc3 { background: url(../art/ends/c_3.jpg) -464px -211px; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreend3 { background: url(../art/ends/d_3.jpg) -478px -385px; background-size: 1280px 720px; width: 1280px; height: 407px; }
-div#legacy_container div#legacy_containerinner div#endtalk { z-index: 39; position: absolute; top: 0; left: 0; cursor: pointer;   }
-div#legacy_container div#legacy_containerinner div#endtalk div#endtalkinner p { margin: 1em 0; font-size: 1.3em; }
-div#legacy_container div#legacy_containerinner div#endtalk p#legrestart { color: #fbb03b; cursor: pointer; display: block;}
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.grey { -webkit-filter: grayscale(100%); -moz-filter: grayscale(100%); }
-div#legacy_container div#legacy_containerinner div#endscreen_outer div#endscreen div.color { -webkit-filter: grayscale(0%); -webkit-transition: -webkit-filter 500ms linear; }
-div#legacy_container div#legacy_containerinner div#playback { position: absolute; z-index: 1; pointer-events: none; }
-div#legacy_container div#legacy_containerinner div#legacy_startspace { position: absolute; z-index: 24; text-align: center; }
-div#legacy_container div#legacy_containerinner span.legstarttheme { width: 36px; height: 36px; display: block; z-index: 38; position: absolute; }
-div#legacy_container div#legacy_containerinner span.legthemea { background: url(../art/start_a.png) no-repeat; }
-div#legacy_container div#legacy_containerinner span.legthemeb { background: url(../art/start_b.png) no-repeat; }
-div#legacy_container div#legacy_containerinner span.legthemec { background: url(../art/start_c.png) no-repeat; }
-div#legacy_container div#legacy_containerinner span.legthemed { background: url(../art/start_d.png) no-repeat; }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter { position: absolute; z-index: 0; width: 1280px; height: 407px; left: 0; top: 0; }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_0 { position: absolute; top: 0; left: 0; z-index: 4; opacity: .5; background: url(../art/start_0.jpg) 0px -22px; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_0.png); }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_1 { position: absolute; top: 0; left: 0; z-index: 5; opacity: .5; background: url(../art/start_1.jpg) 0px -250px; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_1.png); }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_2 { position: absolute; top: 0; left: 0; z-index: 6; opacity: .5; background: url(../art/start_2.jpg) 25px -140px; width: 1280px; height: 407px;-webkit-mask-image: url(../art/ends/mask1280_2.png);}
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_3 { position: absolute; top: 0; left: 0; z-index: 7; opacity: .5; background: url(../art/start_3.jpg) 0px 0px; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_3.png); }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#legstarter div.grey { -webkit-filter: grayscale(100%); -moz-filter: grayscale(100%); opacity: .3; }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div.leg_text { cursor: pointer; position: absolute; z-index: 1; opacity: .01; top: 0; left: 0; font-size: 1.1em; }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div.leg_text:hover { opacity: 1; }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div.leg_text img { margin-bottom: 5px; }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div.leg_text p { margin: .5em 0; }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_0t { width: 400px; padding: 20px 20px 100px 20px; }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_1t { width: 500px; padding: 20px; text-align: right;  }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_2t { width: 400px; padding: 100px 20px 20px 20px; }
-div#legacy_container div#legacy_containerinner div#legacy_startspace div#vid_3t { width: 400px; padding: 20px; text-align: left;  }
-div#legacy_container div#legacy_containerinner div#legacy_startspace p#legstart { position: absolute; z-index: 5090; pointer-events: none; font-size: 1.7em }
-#legacy_wrapper {
-	position: relative;
-	width: auto;
-	height: auto;
+div.legacy_top div.play { position: absolute; width: 127px; height: 45px; cursor: pointer; background: url(/art/f_playbutton.png); }
+div#legacy_main div.more { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(/legacy/art/leg_more.png); }
+
+#legacy_main .home_button {
+	z-index: 5; opacity: 0.5;
 }
+
+.more_button {
+	position: absolute; 
+	width: 127px; 
+	height: 45px; 
+	cursor: pointer;
+	pointer-events: all;
+}
+#legacymore { z-index: 5; background: url(../../art/more_button.png);}
+
+div#legacy_main div#legacy_wline1 {
+	left: 201px;
+}
+
+div#legacy_main div#legacy_wline2 {
+	left: 700px;
+	top: 445px;
+}
+
+div#legacy_main #l_outerouter {
+	text-align: center;
+	position: absolute;
+	width: 100%;
+	z-index: 4;
+	opacity: 0.9;
+}
+
+div#legacy_main #l_outerouter #l_outerinner {
+	height: 735px;
+	margin: 0 auto;
+	position: relative;
+    transform-style: preserve-3d;
+   -webkit-transform-style: preserve-3d;
+	text-align: left;
+	width:900px;	
+}
+
+#l_outerinner #l_container {
+	position: relative;
+	height: 730px;
+	width: 1280px;
+    transform-style: preserve-3d;
+   -webkit-transform-style: preserve-3d;
+	perspective: 1000;	
+	-webkit-perspective: 1000;	
+	 z-index: 1;
+}
+
+/*
+div#legacy_main:-webkit-full-screen { background-color: #000; width: 100%; height: 100%; }
+div#legacy_main:-moz-full-screen { background-color: #000; width: 100%; height: 100%; }
+div#legacy_main:-o-full-screen { background-color: #000; width: 100%; height: 100%; }
+div#legacy_main:full-screen { background-color: #000; width: 100%; height: 100%; }
+div#legacy_main div#debugmsg { background-color: #f00; display: block; position: absolute; top: 0; z-index: 900; font-size: 2em; width: 100%; padding: 5px; color: #fff; }
+div#legacy_main div#legacy_containerinner { height: 100%; position: relative; }
+div#legacy_main div#legacy_containerinner div#lg_fs { position: absolute; z-index: 35; bottom: 20; left: 10; padding: 10px; cursor: pointer; }
+div#legacy_main div#lg_fs:hover { color: #f00; }
+div#legacy_main div#legacy_containerinner div.videoplayer { position: absolute;  z-index: 23 }
+div#legacy_main div#legacy_containerinner div.videoplayer div#legacy_instructions { position: absolute; z-index: 50;  }
+div#legacy_main div#legacy_containerinner div.videoplayer div#legacy_instructions p { font-size: 1.7em }
+div#legacy_main div#legacy_containerinner div#videotransition { position: absolute;  z-index: 26 }
+div#legacy_main div#legacy_containerinner div.blurred { -webkit-transition: 1s; transition: 1s; -moz-filter: blur(4px); -webkit-filter: blur(4px); }
+div#legacy_main div#legacy_containerinner div#icongroup div.icon { pointer-events: auto; position: absolute; display: block; width: 30px; height: 30px; }
+div#legacy_main div#legacy_containerinner div#icongroup div.ga { background: url(../art/iconpanel.png); cursor: pointer; }
+div#legacy_main div#legacy_containerinner div#icongroup div.ga_off { background: url(../art/iconpanel.png) -30 0; }
+div#legacy_main div#legacy_containerinner div#icongroup div.ga:hover, div#legacy_main div#legacy_containerinner div#icongroup div.ga_on { background: url(../art/iconpanel.png) -60 0;  }
+div#legacy_main div#legacy_containerinner div#icongroup div.gb { background: url(../art/iconpanel.png) 0 -48; cursor: pointer; }
+div#legacy_main div#legacy_containerinner div#icongroup div.gb_off { background: url(../art/iconpanel.png) -30 -48; }
+div#legacy_main div#legacy_containerinner div#icongroup div.gb:hover, div#legacy_main div#legacy_containerinner div#icongroup div.gb_on { background: url(../art/iconpanel.png) -62 -48;  }
+div#legacy_main div#legacy_containerinner div#icongroup div.gd { background: url(../art/iconpanel.png) 0 -98; cursor: pointer; }
+div#legacy_main div#legacy_containerinner div#icongroup div.gd_off { background: url(../art/iconpanel.png) -30 -98; }
+div#legacy_main div#legacy_containerinner div#icongroup div.gd:hover, div#legacy_main div#legacy_containerinner div#icongroup div.gd_on { background: url(../art/iconpanel.png) -62 -98;  }
+div#legacy_main div#legacy_containerinner div#icongroup div.gc { background: url(../art/iconpanel.png) 0 -153; cursor: pointer; }
+div#legacy_main div#legacy_containerinner div#icongroup div.gc_off { background: url(../art/iconpanel.png) -30 -153; }
+div#legacy_main div#legacy_containerinner div#icongroup div.gc:hover, div#legacy_main div#legacy_containerinner div#icongroup div.gc_on { background: url(../art/iconpanel.png) -65 -153;  }
+div#legacy_main div#legacy_containerinner div#linegroup { position: absolute; z-index: 23; pointer-events: none; }
+div#legacy_main div#legacy_containerinner div#linegroup_connections { position: absolute; z-index: 25; pointer-events: none; }
+div#legacy_main div#legacy_containerinner div#icongroup { position: absolute; z-index: 27; pointer-events: none; }
+div#legacy_main div#legacy_containerinner div#icongroup span.counter { display: block; position: absolute; z-index: 9; width: 36px; height: 36px; }
+div#legacy_main div#legacy_containerinner div#icongroup span#cnt1 { background: url(../art/countdown_1.gif); }
+div#legacy_main div#legacy_containerinner div#icongroup span#cnt2 { background: url(../art/countdown_2.gif); }
+div#legacy_main div#legacy_containerinner div#icongroup span#cnt3 { background: url(../art/countdown_3.gif); }
+div#legacy_main div#legacy_containerinner div#icongroup span#cnt4 { background: url(../art/countdown_4.gif); }
+div#legacy_main div#legacy_containerinner div#icongroup span#cnt5 { background: url(../art/countdown_5.gif); }
+div#legacy_main div#legacy_containerinner div#icongroup span#cnt6 { background: url(../art/countdown_6.gif); }
+div#legacy_main div#legacy_containerinner div#icongroup span#cnt7 { background: url(../art/countdown_7.gif); }
+div#legacy_main div#legacy_containerinner div#icongroup span#cnt8 { background: url(../art/countdown_8.gif); }
+div#legacy_main div#legacy_containerinner div#icongroup span#cnt9 { background: url(../art/countdown_9.gif); }
+div#legacy_main div#legacy_containerinner div#icongroup span#cnt10 { background: url(../art/countdown_10.gif); }
+div#legacy_main div#legacy_containerinner div#linegroup path.playback {  z-index: 5; stroke: #fbb03b; stroke-width: 2px; }
+div#legacy_main div#legacy_containerinner div#linegroup path.scrubber { z-index: 4; stroke: #fff; stroke-width: 1px; }
+div#legacy_main div#legacy_containerinner div#linegroup path.scrubber_inert { z-index: 4; stroke: #ccc; stroke-width: 1px; }
+div#legacy_main div#legacy_containerinner div#linegroup path.scrubber_seen { z-index: 4; stroke: #fbb03b; stroke-width: 1px; }
+div#legacy_main div#legacy_containerinner div#linegroup path.scrubber_gone { z-index: 4; stroke: #000000; opacity: .01; stroke-width: 1px; }
+div#legacy_main div#legacy_containerinner div#linegroup_connections path.transition_unused { z-index: 3; stroke: #555; stroke-width: 1px; }
+div#legacy_main div#legacy_containerinner div#linegroup_connections path.transition_unused_superfluous { z-index: 3; stroke: #555; opacity: .1; stroke-width: 1px; }
+div#legacy_main div#legacy_containerinner div#linegroup_connections path.transition_hot {  z-index: 3; stroke: #fff; stroke-width: 1px; }
+div#legacy_main div#legacy_containerinner div#linegroup_connections path.transition_used { -webkit-transition: 3s; -moz-transition: 3s; z-index: 3; stroke: #fbb03b; stroke-width: 1px; }
+div#legacy_main div#legacy_containerinner div#linegroup_connections path.transition_gone { z-index: 3; stroke: #f00; opacity: 0; stroke-width: 1px; }
+div#legacy_main div#legacy_containerinner span.cname { opacity: .5; font-size: .8em; position: absolute; color: #888; display: block; }
+div#legacy_main div#legacy_containerinner span.cnameon { -webkit-transition: 1s; -moz-transition: 1s; opacity: .8; font-size: .8em; color: #fbb03b; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer { position: absolute; z-index: 22; pointer-events: none; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen { position: absolute; width: 1280px; height: 720px; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#group0 { position: absolute; top: 0; left: 0; z-index: 4; -webkit-mask-image: url(../art/ends/mask1280_0.png); }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#group1 { position: absolute; top: 0; left: 0; z-index: 5; -webkit-mask-image: url(../art/ends/mask1280_1.png); }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#group2 { position: absolute; top: 0; left: 0; z-index: 6; -webkit-mask-image: url(../art/ends/mask1280_2.png); }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#group3 { position: absolute; top: 0; left: 0; z-index: 7; -webkit-mask-image: url(../art/ends/mask1280_3.png); }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#group0a { position: absolute; top: 0; left: 0; z-index: 8; -webkit-mask-image: url(../art/ends/mask1280_0.png); }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#group1a { position: absolute; top: 0; left: 0; z-index: 9; -webkit-mask-image: url(../art/ends/mask1280_1.png); }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#group2a { position: absolute; top: 0; left: 0; z-index: 10; -webkit-mask-image: url(../art/ends/mask1280_2.png); }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#group3a { position: absolute; top: 0; left: 0; z-index: 11; -webkit-mask-image: url(../art/ends/mask1280_3.png); }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreena0 { background: url(../art/ends/a_0.jpg) 0px -191px; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenb0 { background: url(../art/ends/b_0.jpg) 302px -79px; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenc0 { background: url(../art/ends/c_0.jpg) center center; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreend0 { background: url(../art/ends/d_0.jpg) -178px 485px; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreena1 { background: url(../art/ends/a_1.jpg) 525px -198px; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenb1 { background: url(../art/ends/b_1.jpg) 564px -43px; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenc1 { background: url(../art/ends/c_1.jpg) 334px -75px; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreend1 { background: url(../art/ends/d_1.jpg) 650px -326px; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreena2 { background: url(../art/ends/a_2.jpg) -33px -128px; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenb2 { background: url(../art/ends/b_2.jpg) -54px 77px; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenc2 { background: url(../art/ends/c_2.jpg) -25px 101px; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreend2 { background: url(../art/ends/d_2.jpg) -272px 873px; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreena3 { background: url(../art/ends/a_3.jpg) -132px -168px; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenb3 { background: url(../art/ends/b_3.jpg) -300px -115px; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreenc3 { background: url(../art/ends/c_3.jpg) -464px -211px; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.endscreend3 { background: url(../art/ends/d_3.jpg) -478px -385px; background-size: 1280px 720px; width: 1280px; height: 407px; }
+div#legacy_main div#legacy_containerinner div#endtalk { z-index: 39; position: absolute; top: 0; left: 0; cursor: pointer;   }
+div#legacy_main div#legacy_containerinner div#endtalk div#endtalkinner p { margin: 1em 0; font-size: 1.3em; }
+div#legacy_main div#legacy_containerinner div#endtalk p#legrestart { color: #fbb03b; cursor: pointer; display: block;}
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.grey { -webkit-filter: grayscale(100%); -moz-filter: grayscale(100%); }
+div#legacy_main div#legacy_containerinner div#endscreen_outer div#endscreen div.color { -webkit-filter: grayscale(0%); -webkit-transition: -webkit-filter 500ms linear; }
+div#legacy_main div#legacy_containerinner div#playback { position: absolute; z-index: 1; pointer-events: none; }
+div#legacy_main div#legacy_containerinner div#legacy_startspace { position: absolute; z-index: 24; text-align: center; }
+div#legacy_main div#legacy_containerinner span.legstarttheme { width: 36px; height: 36px; display: block; z-index: 38; position: absolute; }
+div#legacy_main div#legacy_containerinner span.legthemea { background: url(../art/start_a.png) no-repeat; }
+div#legacy_main div#legacy_containerinner span.legthemeb { background: url(../art/start_b.png) no-repeat; }
+div#legacy_main div#legacy_containerinner span.legthemec { background: url(../art/start_c.png) no-repeat; }
+div#legacy_main div#legacy_containerinner span.legthemed { background: url(../art/start_d.png) no-repeat; }
+div#legacy_main div#legacy_containerinner div#legacy_startspace div#legstarter { position: absolute; z-index: 0; width: 1280px; height: 407px; left: 0; top: 0; }
+div#legacy_main div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_0 { position: absolute; top: 0; left: 0; z-index: 4; opacity: .5; background: url(../art/start_0.jpg) 0px -22px; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_0.png); }
+div#legacy_main div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_1 { position: absolute; top: 0; left: 0; z-index: 5; opacity: .5; background: url(../art/start_1.jpg) 0px -250px; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_1.png); }
+div#legacy_main div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_2 { position: absolute; top: 0; left: 0; z-index: 6; opacity: .5; background: url(../art/start_2.jpg) 25px -140px; width: 1280px; height: 407px;-webkit-mask-image: url(../art/ends/mask1280_2.png);}
+div#legacy_main div#legacy_containerinner div#legacy_startspace div#legstarter div#vid_3 { position: absolute; top: 0; left: 0; z-index: 7; opacity: .5; background: url(../art/start_3.jpg) 0px 0px; width: 1280px; height: 407px; -webkit-mask-image: url(../art/ends/mask1280_3.png); }
+div#legacy_main div#legacy_containerinner div#legacy_startspace div#legstarter div.grey { -webkit-filter: grayscale(100%); -moz-filter: grayscale(100%); opacity: .3; }
+div#legacy_main div#legacy_containerinner div#legacy_startspace div.leg_text { cursor: pointer; position: absolute; z-index: 1; opacity: .01; top: 0; left: 0; font-size: 1.1em; }
+div#legacy_main div#legacy_containerinner div#legacy_startspace div.leg_text:hover { opacity: 1; }
+div#legacy_main div#legacy_containerinner div#legacy_startspace div.leg_text img { margin-bottom: 5px; }
+div#legacy_main div#legacy_containerinner div#legacy_startspace div.leg_text p { margin: .5em 0; }
+div#legacy_main div#legacy_containerinner div#legacy_startspace div#vid_0t { width: 400px; padding: 20px 20px 100px 20px; }
+div#legacy_main div#legacy_containerinner div#legacy_startspace div#vid_1t { width: 500px; padding: 20px; text-align: right;  }
+div#legacy_main div#legacy_containerinner div#legacy_startspace div#vid_2t { width: 400px; padding: 100px 20px 20px 20px; }
+div#legacy_main div#legacy_containerinner div#legacy_startspace div#vid_3t { width: 400px; padding: 20px; text-align: left;  }
+div#legacy_main div#legacy_containerinner div#legacy_startspace p#legstart { position: absolute; z-index: 5090; pointer-events: none; font-size: 1.7em }
+*/
