@@ -174,7 +174,7 @@ position: absolute;
 	left: -60; top: 250; 
 	height: 62px; width: 46px; 
 	background: url(../../art/cradle/left-arrow-big.png) no-repeat;
-	background-size: cover;
+	/*background-size: cover;*/
 
 }
 
