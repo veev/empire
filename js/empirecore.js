@@ -140,8 +140,8 @@ $(document).ready(function () {
 
 		else if (key == 68 || key == 100) {
 			e.preventDefault();
-
-			p_endVids();
+			// p_endVids();
+			c_endVids();
 			//console.log(' [ document on keydown ] : debug p_endVids p_buildscreen');
 		}
 	});

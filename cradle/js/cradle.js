@@ -56,7 +56,7 @@ function mobile_stills (tim) {
 
 function c_playhandler () {
 	// c_playState = 1;
-	// console.log("c_playhandler c_playState: "+ c_playState);
+	// console.log("c_playhandler c_playState: `"+ c_playState);
 	// cradle_closescreen();
 	// document.getElementById("mobileisgreat").controls = false;
 	// if(!c_controls){
@@ -520,6 +520,7 @@ function c_scrubberUpdater (){
 	_curtime = document.getElementById(c_currentvideoid).currentTime;
 
 	$("#c_progress").css({ "width": (930 / ratio) + 'px' });
+
 	c_sidetracker[Math.floor(document.getElementById(c_currentvideoid).currentTime)] = flipside;
 	
 	if(_ammobile && dur > 0){
@@ -546,17 +547,17 @@ function c_buildendscreen () {
 	// now the drawing
 	var outputstring = new String();
 	var nowtop = 0;
-	var multiplier = 1.756;
+	var multiplier = 1.21;
 	
 	for(var x = 0; x < 446; x++){
-
+		Object.keys(c_sidetracker).length;
 		outputstring += '<div style="width: 445px; ';
 		var rightnow = c_sidetracker[x];
 		var accum = 1;
 		while(c_sidetracker[x] == rightnow){
 			accum++;
 			x++;	
-			if(x > 446){
+			if(x > 445){
 				break;
 			}
 		}

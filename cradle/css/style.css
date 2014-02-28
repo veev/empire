@@ -286,6 +286,17 @@ position: absolute;
 	background: url(../../art/cradle/refresh_yellow.png);
 }
 
+#c_play_bg {
+	background: url(../../art/cradle/play_bg.png);
+	width: 155px;
+	height: 155px;
+	position: absolute;
+	z-index: 100;
+	left: 400;
+	top: 200;
+	cursor: pointer;
+}
+
 /*#c_refresh:hover;{
 	display: block;
 	cursor: pointer;

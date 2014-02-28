@@ -262,7 +262,7 @@ div#periphery_main #p_outerouter #p_outerinner {
 	display: block;
 	float: left;
 	cursor: pointer;
-	width: 27px;
+	width: 26px;
 	height: 38px;
 	background-image: url(../../art/periphery/playWhite.png);
 	/*margin-left: 320px;*/
