@@ -779,7 +779,12 @@ function attachPeripheryEvents() {
 	});
 
 	$("#p_play_bg").on('click', function() {
+		console.log("[Attach Periphery Events: p_play_bg ] p_playButton");
 		p_playButton();
+		if($("#p_instructions").is(":visible")) {
+			periphery_closescreen();
+		}
+		
 	}).on('mouseover', function() {
 		if(document.getElementById("target").paused) {
 			$("#p_play_bg").css({'opacity':'1', 'background':'url(../art/periphery/play_bg.png)'})

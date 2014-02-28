@@ -138,15 +138,15 @@ function p_enablecontrols () {
 				//console.log("less than 90");
 				p_flipangle = 0;
 				//set yeti volume to 0, norm to 1
-			document.getElementById("audio_norm").volume = 1;
-			document.getElementById("audio_yeti").volume = 0;
+			// document.getElementById("audio_norm").volume = 1;
+			// document.getElementById("audio_yeti").volume = 0;
 
 			} else if (p_flipangle > 90 ) {
 				// console.log("greater than 90");
 				p_flipangle = 180;
 			//set yeti volume to 1, norm to 0
-			document.getElementById("audio_norm").volume = 0;
-			document.getElementById("audio_yeti").volume = 1;
+			// document.getElementById("audio_norm").volume = 0;
+			// document.getElementById("audio_yeti").volume = 1;
 			}
 			// $("#pcard").css({ '-webkit-transform': 'rotate( ' + p_flipangle + 'deg)', 'transform': 'rotate( ' + p_flipangle + 'deg)' });
 			 p_trackoff();
