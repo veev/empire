@@ -177,7 +177,7 @@ function cradle_openscreen () {
 	if(_ammobile){
 		
 		$("#ctitle").show();
-		$("#c_instructions").css({ 'pointer-events':'none' });
+		// $("#c_instructions").css({ 'pointer-events':'none' });
 	} else {
 		//console.log("[ Cradle: openscreen ] cradle_closescreen on setTimeout 1");
 		openIvl = setTimeout("cradle_closescreen()",10000);
@@ -252,7 +252,15 @@ function cradle_sizer () {
 
 	$("#cradlemore").css({"bottom": legbottom, "margin-left": ($("#cradle_top").width() / 2) - 70 }).fadeIn(4000).on('click', function() {
 		body.animate({scrollTop: ($('#cradle_main').offset().top) }, 1000);
-		cradle_openscreen();
+			console.log("cradle video currentTime = " + document.getElementById("video1").currentTime);
+			if(document.getElementById("video1").currentTime == 0) {
+				cradle_openscreen();
+			} 
+			else {
+			// 	if (document.getElementById("video1").paused)) {
+				c_toggleButtonDisplay();
+			// 	}
+			} 	
 	});
 
 	 $("#cradle_returnTop").css({'margin-top': ((($("#cradle_bottom").height() - 160) / 2) - 330), "margin-left": ($("#cradle_bottom").width() / 2) - 70 }).fadeIn(4000).click(function() {
@@ -422,10 +430,14 @@ function c_playButton(){
 
 		// xMouseTracking = true;
 		if(document.getElementById("video1").paused || document.getElementById("video2").paused){
+		
+		console.log("play");
 			c_playVids();
+
 		}
 		else{
 			c_pauseVids();
+			console.log("pause");
 		}
 	}
 	else {
@@ -446,7 +458,7 @@ function c_playVids(){
 
 	} 
 	else if(vid1Loaded && vid2Loaded ){
-		
+		console.log(c_videoTrackCurrentPosition);
 		document.getElementById("video1").currentTime = c_videoTrackCurrentPosition;
 		document.getElementById("video2").currentTime = c_videoTrackCurrentPosition;
 		document.getElementById("video1").play();

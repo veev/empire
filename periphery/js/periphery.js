@@ -114,6 +114,7 @@ function p_enablecontrols () {
 	// } else {
 	$("#p_outerouter").on('mouseenter', function () {
 		if(mouseYTracking) {
+			//$("#periphery_arrows").css({'z-index': })
 			//trackMouseY();
 			// console.log("[ Periphery : Tracking Mouse]");
 			trackMouseRotation();
@@ -234,7 +235,7 @@ function periphery_closescreen () {
 function periphery_sizer () {
 
 	// var matop = ($("#periphery_top").height() / 2) - 320; // top of the matrix
-	var matop = 0;
+	var matop = 210;
 	var padtop = 84; // top of the main title
 	var legbottom = 60; //offset of the bottom play button on the open screen
 	var body = $('html body');
@@ -248,14 +249,16 @@ function periphery_sizer () {
 	
 	$("#periphery_bottom").css("height",$("#periphery_top").height());
 
-	$('#periphery_line').css({ 'top': matop, 'height': ($("#periphery_top").height() - matop), 'left': (($("#periphery_top").width() / 2) + 140) });
-	$("#periphery_linewhite").css({ 'height': $("#periphery_main").height(), 'left': (($("#periphery_top").width() / 2) + 140) });
-	$('#periphery_bottomline').css({ 'top': 0, 'height': ($("#periphery_bottom").height() - 100), 'left': (($("#periphery_top").width() / 2) + 140) });
+	$('#periphery_line').css({ 'top': matop, 'height': 100, 'left': (($("#periphery_top").width() / 2)) });
+	$('#periphery_line2').css({ 'top': 610, 'height': 300, 'left': (($("#periphery_top").width() / 2)) });
+
+	$("#periphery_linewhite").css({ 'height': $("#periphery_main").height(), 'left': (($("#periphery_top").width() / 2)) });
+	$('#periphery_bottomline').css({ 'top': 0, 'height': 200, 'left': (($("#periphery_top").width() / 2)) });
 	
 	$("#periphery_title").css({ 'padding-top': padtop });
 
 	$("#periphery_structure").css({ 'margin-top': matop, 'left': (($("#periphery_top").width() / 2) - 370) });
-	$("#pbottom_structure").css({ 'margin-top': ((($("#periphery_bottom").height() - 160) / 2) - 330), 'left': (($("#periphery_top").width() / 2) - 465) - 5 });
+	$("#pbottom_structure").css({ 'margin-top': ((($("#periphery_bottom").height() - 160) / 2) - 330), 'left': ($("#periphery_top").width() / 2)-286 });
 
 	$("#p_legmore").css({ "margin-left": ($("#periphery_main").width() / 2) - 70 }).on('click', function() {
 		body.animate({scrollTop: ($("#periphery_bottom").offset().top)}, 1000);
@@ -272,7 +275,14 @@ function periphery_sizer () {
 	$("#peripherymore").css({"bottom": legbottom, "margin-left": ($("#periphery_top").width() / 2) - 70 }).fadeIn(4000).click(function() {
 
 		body.animate({scrollTop: ($('#periphery_main').offset().top) }, 1000);
-		periphery_openscreen();
+		console.log("periphery video currentTime = " + document.getElementById("target").currentTime);
+		if(document.getElementById("target").currentTime == 0 ) {
+			periphery_openscreen();
+
+		}
+		else {
+			p_toggleButtonDisplay();
+		}
 	});
 
 	 $("#periphery_returnTop").css({'margin-top': ((($("#periphery_bottom").height() - 160) / 2) - 330), "margin-left": ($("#cradle_bottom").width() / 2) - 70 }).fadeIn(4000).click(function() {
@@ -468,6 +478,8 @@ function p_trackoff () {
 	$(document).unbind('mousemove');
 	$(document).unbind('mouseenter');
 	$(document).unbind('mouseleave');
+
+	$("#periphery_arrows").css({'z-index': '12'});
 
 	// removePeripheryListeners();
 		

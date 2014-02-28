@@ -140,8 +140,8 @@ $(document).ready(function () {
 
 		else if (key == 68 || key == 100) {
 			e.preventDefault();
-			// p_endVids();
-			c_endVids();
+			 p_endVids();
+			//c_endVids();
 			//console.log(' [ document on keydown ] : debug p_endVids p_buildscreen');
 		}
 	});
@@ -177,47 +177,47 @@ $(document).ready(function () {
 	});
 
 //how do i get scroll snap to work better?
-/*
-	if(cradleActive) {
+
+	// if(cradleActive) {
 		console.log("[ document ready ] cradleActive scrollsnap");
 		$(document).scrollsnap({
 			snaps: '.snap',
-			proximity: 180,
-			handler: cradle_scrollsnaphandle
+			proximity: 200,
+			onSnapEvent: cradle_scrollsnaphandle
 		});
-	} 
-	else if (peripheryActive) {
-		console.log("[ document ready ] peripheryActive scrollsnap");
-		$(document).scrollsnap({
-			snaps: '.snap',
-			proximity: 180,
-			handler: periphery_scrollsnaphandle
-		});
-	}
-*/
+	// } 
+	// else if (peripheryActive) {
+	// 	console.log("[ document ready ] peripheryActive scrollsnap");
+	// 	$(document).scrollsnap({
+	// 		snaps: '.snap',
+	// 		proximity: 180,
+	// 		handler: periphery_scrollsnaphandle
+	// 	});
+	// }
+
 
 });
 
-$(window).bind("scroll", function() {
-	//testing viewport
-	// var viewPortTest = $("div").withinViewportBottom();
-	// console.log(viewPortTest);
+// $(window).bind("scroll", function() {
+// 	//testing viewport
+// 	// var viewPortTest = $("div").withinViewportBottom();
+// 	// console.log(viewPortTest);
 
-	// var videoElem = document.getElementById("video1");
-	// if(cradleActive && !peripheryActive) {
-	// 	if($("#c_container").is(":within-viewport-bottom")) {
-	// 		console.log("[ window scroll ] c_container within-viewport-bottom");
-	// 		cradle_openscreen();
-	// 	}
-	// } else 
-	if (peripheryActive ) {
-		if($("#p_instructions").is("within-viewport-bottom")) {
-			console.log("[ window scroll ] p_container within-viewport-bottom");
-			periphery_openscreen();
-		}
-	}
+// 	// var videoElem = document.getElementById("video1");
+// 	// if(cradleActive && !peripheryActive) {
+// 	// 	if($("#c_container").is(":within-viewport-bottom")) {
+// 	// 		console.log("[ window scroll ] c_container within-viewport-bottom");
+// 	// 		cradle_openscreen();
+// 	// 	}
+// 	// } else 
+// 	if (peripheryActive ) {
+// 		if($("#p_instructions").is("within-viewport-bottom")) {
+// 			console.log("[ window scroll ] p_container within-viewport-bottom");
+// 			periphery_openscreen();
+// 		}
+// 	}
 
-});
+// });
 
 function buildRippleNode(index){
 	var ripple, pattern, title, bottomLetter, topLetter;
@@ -320,6 +320,10 @@ function buildRipples(total) {
 	}
 }
 
+function cradle_scrollsnaphandle(e){
+	console.log(e)
+	console.log("im here")
+}
 function animateButton(index){
 
 	//interactivity for ripple navigation
@@ -346,15 +350,35 @@ function animateButton(index){
 			if(cradleLoaded === false) {
 
 			 	loadCradle2();
+				
 			 	cradleLoaded = true;
 				console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
 
 			// 	menu[index].ripple.isActive = true;
 			 }
+			
+			console.log("[ document ready ] cradleActive scrollsnap");
+			$(document).scrollsnap({
+				snaps: '.snap',
+				proximity: 180,
+				handler: cradle_scrollsnaphandle
+			});		 
+			
 			 //addCradleListeners();
-			 cradleActive = true;
-			 audioready();
-			 console.log("[ animateButton ] cradle is active  ?" + cradleActive);
+			cradleActive = true;
+			audioready();
+			if( document.getElementById("video1") == null ){
+				console.log("wtf? cradle") 
+			}
+			else{
+				if( document.getElementById("video1").currentTime > 0 ) {
+				 	console.log("toggling display");
+				 		c_toggleButtonDisplay();
+				 }
+				 console.log("video1 current time  ?" + document.getElementById("video1").currentTime);	 	
+				
+			}
+			console.log("[ animateButton ] cradle is active  ?" + cradleActive);
 
 			//menu[index].ripple.attr({'cursor' : 'default'});
 		 } else {
@@ -431,6 +455,21 @@ function animateButton(index){
 		 	//addPeripheryListeners();
 		 	peripheryActive = true;
 		 	audioready();
+
+		 	if( document.getElementById("target") == null ){
+				console.log("wtf? periphery") 
+			}
+			else{
+				if( document.getElementById("target").currentTime > 0 ) {
+				 	console.log("toggling periphery display");
+				 		p_toggleButtonDisplay();
+				 }
+				 console.log("target current time  ?" + document.getElementById("target").currentTime);	 	
+				
+			}
+		 	// if( document.getElementById("#target").currentTime != null) {
+			 // 	$("#p_play_bg").css({'opacity':'1'});
+			 // }
 		 	console.log("[ animateButton ] periphery is active  ?" + peripheryActive);
  	
  		} else {
@@ -616,12 +655,43 @@ function loadCradle2() {
 	//cradle_openscreen();
 }
 
+function c_toggleButtonDisplay(){
+
+	if(document.getElementById("video1") != null){
+		if(document.getElementById("video1").paused ){
+			// c_playVids();	
+			console.log("Toggle cradle play button on");
+			$("#c_play_bg").fadeIn();
+		}
+		else{
+			$("#c_play_bg").fadeOut();	
+			console.log("Toggle cradle play button off");			
+		}
+	}
+}
+
+function p_toggleButtonDisplay() {
+	if(document.getElementById("target") != null) {
+		if(document.getElementById("target".paused)) {
+			console.log("Toggle periphery play button on");
+			$("#p_play_bg").fadeIn();
+		} else {
+			$("#p_play_bg").fadeOut();
+			console.log("Toggle periphery play button off");
+		}
+	}
+}
+
 function attachCradleEvents() {
 	//console.log("[ Cradle Events ] Attach Cradle Events")
 
 	$("#c_playElement").on('click', function () {
 		console.log("[Attach Cradle Events: c_playElement ] c_playButton");
 		c_playButton();
+		if( !document.getElementById("video1").paused ){
+			c_toggleButtonDisplay();	
+		}
+		// toggleButtonDisplay();
 
 	}).on('mouseover', function (){
 		if(document.getElementById("video1").paused || document.getElementById("video2").paused){
@@ -646,6 +716,11 @@ function attachCradleEvents() {
 		$("#c_refresh").css({'background':'url(../art/cradle/refresh_yellow.png'});
 	});
 
+	$("#c_play_bg").on('click', function() {
+		console.log("[Attach Cradle Events: c_play_bg ] c_playButton");
+		c_playButton();
+		c_toggleButtonDisplay();
+	});
 	// //testing viewport
 	// var viewPortTest = $("div").withinViewportTop();
 	// console.log(viewPortTest);
@@ -763,6 +838,9 @@ function attachPeripheryEvents() {
 	$("#p_playElement").on('click', function () {
 		console.log("[Attach Periphery Events: p_playElement ] p_playButton");
 		p_playButton();
+		if( !document.getElementById("target").paused ){
+			p_toggleButtonDisplay();	
+		}
 
 	}).on('mouseover', function (){
 		if(document.getElementById("target").paused){
@@ -781,22 +859,24 @@ function attachPeripheryEvents() {
 	$("#p_play_bg").on('click', function() {
 		console.log("[Attach Periphery Events: p_play_bg ] p_playButton");
 		p_playButton();
-		if($("#p_instructions").is(":visible")) {
-			periphery_closescreen();
-		}
+		p_toggleButtonDisplay();
+	// 	if($("#p_instructions").is(":visible")) {
+	// 		periphery_closescreen();
+
+	// 	}
 		
-	}).on('mouseover', function() {
-		if(document.getElementById("target").paused) {
-			$("#p_play_bg").css({'opacity':'1', 'background':'url(../art/periphery/play_bg.png)'})
-		} else {
-			$("#p_play_bg").css({'opacity': '1', 'background': 'url(../art/periphery/pause_bg.png)'})
-		}
-	}).on('mouseout', function() {
-		if(document.getElementById("target").paused) {
-			$("#p_play_bg").css({'opacity':'0', 'background':'url(../art/periphery/play_bg.png)'})
-		} else {
-			$("#p_play_bg").css({'opacity': '0', 'background': 'url(../art/periphery/pause_bg.png)'})
-		}
+	// }).on('mouseover', function() {
+	// 	if(document.getElementById("target").paused) {
+	// 		$("#p_play_bg").css({'opacity':'1', 'background':'url(../art/periphery/play_bg.png)'})
+	// 	} else {
+	// 		$("#p_play_bg").css({'opacity': '1', 'background': 'url(../art/periphery/pause_bg.png)'})
+	// 	}
+	// }).on('mouseout', function() {
+	// 	if(document.getElementById("target").paused) {
+	// 		$("#p_play_bg").css({'opacity':'0', 'background':'url(../art/periphery/play_bg.png)'})
+	// 	} else {
+	// 		$("#p_play_bg").css({'opacity': '0', 'background': 'url(../art/periphery/pause_bg.png)'})
+	// 	}
 	});
 
 	$("#p_refresh").on('click', function() {

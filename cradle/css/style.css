@@ -42,9 +42,9 @@ div#cradle_main div#c_instructions span#ctitle { width: 279px; height: 41px; z-i
 div#cradle_main div#c_instructions span#cradleplay2 { position: absolute; cursor: pointer; z-index: 5; pointer-events: all; bottom: 40; right: 425;}
 div#cradle_main div#c_instructions p { position: relative; font-size: 1.4em; }
 div#cradle_main div#c_instructions p#crad_0 { top: -80; }
-div#cradle_main div#c_instructions p#crad_1 { color: #eddb58; top: 45; left: -220;}
-div#cradle_main div#c_instructions p#crad_2 { color: #eddb58; top: -15; left: 165; }
-div#cradle_main div#c_instructions p#crad_3 { top: 120; }
+div#cradle_main div#c_instructions p#crad_1 { color: #eddb58; top: 70; left: -277;}
+div#cradle_main div#c_instructions p#crad_2 { color: #eddb58; top: 40; left: 230; }
+div#cradle_main div#c_instructions p#crad_3 { top: 180; }
 div#cradle_top h1 { color: #000; padding-top: 8px; font-size: 2.1em; }
 div#cradle_bottom h2 { color: #000; padding-bottom: 8px; font-size: 1.6em; text-align: center; }
 div.cradle_top div.cradleplay { position: absolute; width: 127px; height: 45px; cursor: pointer; z-index: 5; background: url(../../art/f_playbutton.png); pointer-events: all; }
@@ -295,6 +295,16 @@ position: absolute;
 	left: 400;
 	top: 200;
 	cursor: pointer;
+}
+
+#c_play_instructions {
+	background: url(../../art/cradle/play_bg.png);
+	width: 155px;
+	height: 155px;
+	position: absolute;
+	z-index: 10;
+	left: 404;
+	top: 200;
 }
 
 /*#c_refresh:hover;{

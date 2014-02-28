@@ -5,8 +5,10 @@
 <script src="js/raphael-min.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/jquery.min.js" type="text/javascript" charset="utf=8"></script>
 <script src="js/jquery.scrollsnap.js" type="text/javascript" ></script> 
+<script src="js/jquery.easing.min.js"></script>
+<script src="js/jquery.event.special.js"></script>
 <script src="js/withinViewport.js" type="text/javascript"></script>
-<script src="js/jquery.withinViewport.js" type="text/javascript"></script>
+<!-- <script src="js/jquery.withinViewport.js" type="text/javascript"></script> -->
 <script src="js/scaleraphael.js" type="text/javascript" ></script>
 <link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="css/trytwo.css" type="text/css" media="screen" />
@@ -120,16 +122,17 @@
 							<div id="c_instructions" style="display: none">
 								<span id="ctitle" style="display: none"></span>
 								<span id="swifter"></span>
+								<span id="c_play_instructions"></span>
 								<!-- <span id="cradleplay2"><img src="art/cradle/playWhite.png" width="70px" height="70px" title="play" /></span> -->
 								<p id="crad_0">Use your mouse or your touch to flip the video</p>
 								<p id="crad_1" class="left">Drag to the left to spend time in the morgue</p>
-								<p  id="crad_2" class="right">Drag to the right to spot planes</p>
-								<p  id="crad_3">Your choices will be noted</p>
+								<p id="crad_2" class="right">Drag to the right to spot planes</p>
+								<p id="crad_3">Your choices will be noted</p>
 							</div>
 							<div id="leftbutton" class="flipbuttons buttonoff"></div>
 							<div id="rightbutton" class="flipbuttons buttonon"></div>
 							<div id="mobilevideo" style="display: none;"></div>
-							<div id="c_play_bg"></div>
+							<div id="c_play_bg" style="display: none;"></div>
 							<div id="card">
 								<div class="front" id="cradle0" data-clipname="schipol">
 									<video id="video1" width="960" height="540" poster="art/thumbs/full-schipol-1.jpg" preload="auto">
@@ -156,6 +159,7 @@
 						<div id="c_person_b"></div>
 						<div id="c_people_data"></div>
 						<div id="c_person_overlay">
+							<span id="c_play_instructions"></span>
 							<p>This is the path you took.<br />
 							If you could try again, what would you do differently?<br /><br />Try again
 							</p>
@@ -292,6 +296,7 @@
 					<h1>Periphery</h1>
 				</div>
 				<div id="periphery_line"></div>
+				<div id="periphery_line2"></div>
 				<div class="periphery_intro" id="mainarea">
 					<p id="p_a">Two stories play out on opposite sides of the world.</p>
 					<p id="p_b">In the US, a man forsakes his childhood dreams to play the part society has written for him.</p>
@@ -317,12 +322,13 @@
 						<div id="p_container">
 							<div id="p_instructions" style="display: none">
 								<span id="ptitle" style="display: none"></span>
+								<span id="p_play_instructions"></span>
 								<p id="peri_0">Move your mouse to rotate the world</p>
 								<p id="peri_1" class="left">up for the US</p>
 								<p id="peri_2" class="right">down for Australia</p>
 								<p id="peri_3">or try to find some common ground</p>
 							</div>
-							<div id="p_play_bg"></div>
+							<!-- <div id="p_play_bg"></div> -->
 							<div id="p_pause_bg" style="display: none" "cursor: pointer"></div>
 							<div id="periphery_arrows"></div>
 							<!-- <div id="leftbutton" class="flipbuttons buttonoff"></div>
@@ -365,13 +371,14 @@
 				<div id="periphery_bottomline"></div>
 				<div class="inner">
 					<div id="pbottom_structure">
-						<div class="pbottom_l">
-							<p>In 1711, a VOC ship called the Zuytdorp set out on a trading mission to the Dutch East Indies. Nearly a year later, the ship<a href="http://www.abc.net.au/backyard/shipwrecks/wa/zuytdorp.htm" target="_blank"> smashed into a reef off of Western Australia,</a> dislodging a cadre of European sailors into some of the most desolate country in the world. Local legend says that the Zuytdorp surviving crew were taken in and given shelter by the Nhanda, a coastal or "salt water" aboriginal tribe. Today, the Nhanda are known to be taller and lighter skinned than other tribes in the area &#8211; evidence, some say, of interbreeding with the marooned Dutchmen of the Zuytdorp. The story has captured the imagination of the Dutch media: rumors of blond-haired, blue-eyed aborigines appear <a href="http://www.npo.nl/beagle-in-het-kielzog-van-darwin/06-08-2013/VPWON_1201702" target="_blank">on television programs and in newspaper stories.</a></p>
-
+						<div class="pbottom_t">
 							<p>In the late 1940s, a bloody struggle for independence transformed the Dutch East Indies into the independent nation of Indonesia. A sizable portion of the Dutch&#8211;Indonesian minority &#8211; many of whom had enjoyed privileged positions under Dutch colonial rule &#8211; fled to the Netherlands. Some set off from there to Southern California, where they created enclaves in a more familiar climate. Los Angeles and the San Gabriel Valley now hold <a href="http://www.latimesmagazine.com/2011/02/the-long-way-home.html" target="_blank"> three generations of Dutch&#8211;Indonesians,</a> although few outsiders are aware of this ethnic minority's existence. The blended quality of their features defies easy categorization: sometimes they are taken for Southern Europeans, sometimes for Filipinos, and most frequently for Mexicans.</p>
 						</div>
+						<div class="pbottom_b">
+							<p>In 1711, a VOC ship called the Zuytdorp set out on a trading mission to the Dutch East Indies. Nearly a year later, the ship<a href="http://www.abc.net.au/backyard/shipwrecks/wa/zuytdorp.htm" target="_blank"> smashed into a reef off of Western Australia,</a> dislodging a cadre of European sailors into some of the most desolate country in the world. Local legend says that the Zuytdorp surviving crew were taken in and given shelter by the Nhanda, a coastal or "salt water" aboriginal tribe. Today, the Nhanda are known to be taller and lighter skinned than other tribes in the area &#8211; evidence, some say, of interbreeding with the marooned Dutchmen of the Zuytdorp. The story has captured the imagination of the Dutch media: rumors of blond-haired, blue-eyed aborigines appear <a href="http://www.npo.nl/beagle-in-het-kielzog-van-darwin/06-08-2013/VPWON_1201702" target="_blank">on television programs and in newspaper stories.</a></p>
+						</div>
 						<div class="pbottom_r">
-							<p>The original video installation Empire: Periphery was researched and shot between March and August of 2013. The project received public funds from the Netherlands Cultural Services, and support from the Mondriaan Fund and DutchCulture. Matt Dougherty created the music. The installation premiered at <a href=“http://www.latimes.com/entertainment/envelope/moviesnow/la-et-mn-nyff-2013-immersive-documentary-empire-20131008,0,4216044.story”> the Film Society of Lincoln Center's 51st New York Film Festival.</a></p>
+							The original video installation Empire: Periphery was shot between March and August of 2013, and received public funds from the Netherlands Cultural Services, the Mondriaan Fund and DutchCulture. Matt Dougherty created the music. The installation premiered at <a href=“http://www.latimes.com/entertainment/envelope/moviesnow/la-et-mn-nyff-2013-immersive-documentary-empire-20131008,0,4216044.story”>Lincoln Center as part of the 51st New York Film Festival.</a></p>
 						</div>
 					</div>
 					<div id="periphery_bottomtitle">

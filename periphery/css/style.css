@@ -1,3 +1,5 @@
+
+/*
 *, html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, label, fieldset, input, p, th, td { margin:0; padding:0; font-family: "EB Garamond","Helvetica Neue", sans-serif; }
 table { border-collapse:collapse; border-spacing:0 }
 iframe { border: 0; margin: 0; padding: 0; }
@@ -7,29 +9,45 @@ ol, ul, li { list-style:none }
 caption, th { text-align:left }
 h1, h2, h3, h4, h5, h6 { font-size:100%; font-weight:normal }
 q:before, q:after { content:''}
-/*body { background: #000; color: #fff; }*/
+body { background: #000; color: #fff; }*/
 div#browserno { background-color: #f00; width: 100%; text-align: center; position: absolute; z-index: 99402; top: 0; left: 0; }
 div#browserno div.padded { padding: 30px 20px 10px 20px; font-size: 1.2em; color: #fff; }
 
 div.periphery_top { text-align: center; background: #d3314a url(../../art/p_bg.jpg) repeat-x; width: 100%; height: 98%; position: relative; -moz-background-size: 100% 100%; -webkit-background-size: 100% 100%; background-size: 100% 100%; }
 div.periphery_top div#periphery_line { background: url(../../art/periphery/b_line.png) repeat-y; width: 3px; position: absolute; }
+div.periphery_top div#periphery_line2 { background: url(../../art/periphery/b_line.png) repeat-y; width: 3px; position: absolute; }
 div#periphery_top h1 { color: #000; padding-top: 8px; font-size: 2.1em; }
 div.periphery_top div.peripheryplay { position: absolute; width: 127px; height: 45px; cursor: pointer; z-index: 5; background: url(../../art/f_playbutton.png); pointer-events: all; }
 div.periphery_top div.peripherymore { 
 	position: absolute; 
 	width: 127px; height: 45px; 
 	cursor: pointer; 
-	z-index: 5; 
+	z-index: 2; 
 	background: url(../../art/more_button.png); 
 	pointer-events: all; }
-div.periphery_top div#periphery_structure { width: 731px; height: 392px; padding-top: 80px; text-align: left; position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
+div.periphery_top div#periphery_structure { 
+	width: 731px; height: 392px; 
+	padding-top: 80px; text-align: 
+	left; position: absolute; 
+	color: #000; 
+	font-size: 18px; 
+	margin: 0; 
+	padding: 0; 
+	background: url(../../art/periphery/topstructure.png); }
 /*div.periphery_top div#periphery_line { background: url(../../art/periphery/b_line.png) repeat-y; width: 3px; position: absolute; }
-*/div.periphery_intro { text-align: left; position: relative; margin: auto; width: 790px; height: 500px; overflow: auto; }
-div.periphery_intro p { position: absolute; color: #000; font-size: 18px; font-style: italic; margin: 0; padding: 0; }
-div.periphery_intro p#p_a { top: 60px; left: 280px; width: 210px; text-align: right; z-index: 1; }
-div.periphery_intro p#p_b { top: 120px; left: 570px; width: 220px; z-index: 2; }
-div.periphery_intro p#p_c { top: 240px; left: 315px; width: 180px; text-align: right;}
-div.periphery_intro p#p_d { top: 350px; left: 570px; width: 220px;}
+*/div.periphery_intro { 
+	text-align: left; 
+	position: relative; 
+	margin: auto; 
+	width: 790px; height: 560px; 
+	overflow: auto; 
+	background: url(../../art/periphery/topstructure.png) no-repeat;
+	background-position: center; }
+div.periphery_intro p { position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
+div.periphery_intro p#p_a { top: 55; right: 70; width: 300px; text-align: left; z-index: 1; }
+div.periphery_intro p#p_b { top: 178px; left: 276px; width: 235px; z-index: 2; color: #d3314a; text-align: center; }
+div.periphery_intro p#p_c { top: 317px; left: 302px; width: 180px; text-align: center;}
+div.periphery_intro p#p_d { top: 455px; left: 25; width: 337px; text-align: right;}
 div#periphery_main { 
 	position: relative; 
 	width: 100%; height: 100%; 
@@ -69,12 +87,14 @@ div.periphery_bottom div.inner { padding: 30px 0 30px 0; }
 div#periphery_bottom h2 { color: #000; padding-bottom: 8px; font-size: 1.6em; text-align: center; }
 div.periphery_bottom div#periphery_bottomline { z-index: 1; background: url(../../art/periphery/b_line.png) repeat-y; width: 3px; position: absolute; }
 div.periphery_bottom div#periphery_bottomtitle { z-index: 2; position: absolute; bottom: 25; width: 100%; text-align: center; }
-div.periphery_bottom div#pbottom_structure { z-index: 2; position: absolute; width: 930px; height: 465px; /*background: url(../art/bottomstructure.png);*/ }
-div.periphery_bottom div#pbottom_structure div { text-align: left;  padding: 40px;  color: #000; }
+div.periphery_bottom div#pbottom_structure { z-index: 2; position: absolute; width: 572px; height: 572px; background: url(../../art/periphery/bottomstructure.png) no-repeat; }
+div.periphery_bottom div#pbottom_structure div { text-align: left;  padding: 40px;  position:absolute; top:100; width:143; left: 550; color: #000; }
 div.periphery_bottom div#pbottom_structure div p { margin: 1.1em 0; }
 div.periphery_bottom div#pbottom_structure div a { color: 000; }
-div.periphery_bottom div#pbottom_structure div.pbottom_l { color: #000; width: 385px; float: left; margin-right: 40px; }
-div.periphery_bottom div#pbottom_structure div.pbottom_l a { color: #000; }
+div.periphery_bottom div#pbottom_structure div.pbottom_t { color: #d3314a; width: 430px; left: 30; top: -36; position: relative; text-align: left; /*float: left; margin-right: 40px;*/ }
+div.periphery_bottom div#pbottom_structure div.pbottom_t a { color: #d3314a; }
+div.periphery_bottom div#pbottom_structure div.pbottom_b { color: #000; width: 430px; left: 30; top: -80; position: relative; text-align: left; /*float: left; margin-right: 40px;*/ }
+
 
 div#periphery_main div#periphery_linewhite { background: url(../../art/periphery/b_linewhite.png) repeat-y; width: 3px; position: absolute; z-index: 1; }
 #periphery_main div#p_legmore { position: absolute; z-index: 10; bottom: 30; width: 127px; height: 45px; cursor: pointer; background: url(../../art/periphery/leg_more.png); }
@@ -347,6 +367,17 @@ div#periphery_main #p_outerouter #p_outerinner {
 	z-index: 100;
 	left: 564;
 	top: 284;
+	cursor: pointer;
+}
+
+#p_play_instructions {
+	background: url(../../art/periphery/play_bg.png);
+	width: 155px;
+	height: 155px;
+	position: absolute;
+/*	z-index: 100;*/
+	left: 404;
+	top: 283;
 	cursor: pointer;
 }
 
