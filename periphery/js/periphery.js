@@ -237,7 +237,7 @@ function periphery_sizer () {
 	// var matop = ($("#periphery_top").height() / 2) - 320; // top of the matrix
 	var matop = 210;
 	var padtop = 84; // top of the main title
-	var legbottom = 60; //offset of the bottom play button on the open screen
+	var legbottom = 30; //offset of the bottom play button on the open screen
 	var body = $('html body');
 	// if($("#periphery_top").height() < 780){ // if this a wee screen
 	//   padtop = 10;
@@ -246,6 +246,7 @@ function periphery_sizer () {
 	// }
 
 	$("#p_outerouter").css({ 'padding-top': (($("#periphery_top").height() / 2) - ($("#p_outerinner").height() / 2)) });
+	$(".periphery_intro").css({ 'top': -30});
 	
 	$("#periphery_bottom").css("height",$("#periphery_top").height());
 

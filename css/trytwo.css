@@ -21,7 +21,7 @@ div#container {
 	text-align: center; 
 /*	pointer-events: none;
 */	}
-h2 { font-size: 1.25em; margin-top: 4px; font-style: italic; text-align: left}
+h2 { f/*ont-size: 1.5em; */margin-top: 4px; font-style: italic; text-align: left}
 /*div#container div#containerinner {position: absolute; margin-left: 860;}*/
 div#container div#titleblock { position: absolute; }
 div#container div#logos { position: absolute; bottom: 20; left: 20; z-index: 5;}
