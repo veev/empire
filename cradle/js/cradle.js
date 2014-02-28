@@ -252,17 +252,7 @@ function cradle_sizer () {
 
 	$("#cradlemore").css({"bottom": legbottom, "margin-left": ($("#cradle_top").width() / 2) - 70 }).fadeIn(4000).on('click', function() {
 		body.animate({scrollTop: ($('#cradle_main').offset().top) }, 1000);
-		// console.log("cradle_openscreen() in cradlemore");
-		if(!cradleLoaded) {
-			//console.log("[Cradle: cradlemore listener] if not cradleLoaded, cradle openscreen");
-			cradle_openscreen();
-		}
-	
-		// if(!mouseXTracking) {
-		// 	$("#c_instructions").fadeIn('fast');
-		// } else {
-		// 	console.log("already loaded instructions");
-		// }
+		cradle_openscreen();
 	});
 
 	 $("#cradle_returnTop").css({'margin-top': ((($("#cradle_bottom").height() - 160) / 2) - 330), "margin-left": ($("#cradle_bottom").width() / 2) - 70 }).fadeIn(4000).click(function() {
@@ -566,7 +556,7 @@ function c_buildendscreen () {
 		while(c_sidetracker[x] == rightnow){
 			accum++;
 			x++;	
-			if(x > 445){
+			if(x > 446){
 				break;
 			}
 		}

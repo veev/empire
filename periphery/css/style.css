@@ -38,7 +38,7 @@ div#periphery_main {
 	pointer-events: all; }
 div#periphery_main div#p_instructions { 
 	position: absolute; 
-	z-index: 800; 
+	z-index: 80; 
 	cursor: pointer; 
 	background: rgba(0,0,0,.6); 
 	width: 980px; 
@@ -50,10 +50,10 @@ div#periphery_main div#p_instructions span#swifter { width: 187px; height: 720px
 div#periphery_main div#p_instructions span#ptitle { width: 279px; height: 41px; z-index: 2; left: 588; opacity: .5; top: 30; position: absolute; background: url(../art/cradle_title.png); }
 div#periphery_main div#p_instructions span#peripheryplay2 { position: absolute; cursor: pointer; z-index: 5; pointer-events: all; bottom: 350; right: 440;}
 div#periphery_main div#p_instructions p { position: relative; font-size: 1.4em; }
-div#periphery_main div#p_instructions p#peri_0 { top: 180; }
-div#periphery_main div#p_instructions p#peri_1 { color: #d3314a; top: 250; left: -180;}
-div#periphery_main div#p_instructions p#peri_2 { color: #d3314a; top: 260; left: 160; }
-div#periphery_main div#p_instructions p#peri_3 { top: 350; }
+div#periphery_main div#p_instructions p#peri_0 { top: 90; }
+div#periphery_main div#p_instructions p#peri_1 { color: #d3314a; top: 247; left: 260; width: 80;}
+div#periphery_main div#p_instructions p#peri_2 { color: #d3314a; top: 310; left: 620; width: 100; }
+div#periphery_main div#p_instructions p#peri_3 { top: 400; }
 
 div.periphery_bottom { 
 	text-align: center; 
@@ -118,7 +118,7 @@ div#periphery_main #p_outerouter #p_outerinner {
 
 #p_outerinner #p_container {
 	position: relative;
-	height: 730px;
+	height: 720px;
 	width: 1280px;
     transform-style: preserve-3d;
    -webkit-transform-style: preserve-3d;
@@ -132,6 +132,7 @@ div#periphery_main #p_outerouter #p_outerinner {
    	width: 100%;
  	height: 100%;
 	position: absolute;
+	z-index: 10;
   	transform-style: preserve-3d;
   	transition: all .5s linear;
   	transform-origin: center center;
@@ -314,8 +315,50 @@ div#periphery_main #p_outerouter #p_outerinner {
 	cursor: pointer;
 	width: 27px;
 	height: 38px;
-	background-image: url(../../art/periphery/refresh.png);
+	background: url(../../art/periphery/refresh_red.png);
 	margin-left: 320px;
+}
+
+#p_refresh:hover;{
+	display: block;
+	float: left;
+	cursor: pointer;
+	width: 27px;
+	height: 38px;
+	background: url(../../art/periphery/refresh_white.png);
+	margin-left: 320px;
+}
+
+#periphery_arrows {
+	background: url(../../art/periphery/arrows2.png);
+	width: 743px;
+	height: 723px;
+	position: absolute;
+	left: 269;
+	z-index: 85;
+
+}
+
+#p_play_bg {
+	background: url(../../art/periphery/play_bg.png);
+	width: 155px;
+	height: 155px;
+	position: absolute;
+	z-index: 100;
+	left: 564;
+	top: 284;
+	cursor: pointer;
+}
+
+#p_pause_bg {
+	background: url(../../art/periphery/pause_bg.png);
+	width: 155px;
+	height: 155px;
+	position: absolute;
+	z-index: 10;
+	left: 564;
+	top: 284;
+	cursor: pointer;
 }
 
 /*div #pmain_nav_buttons {

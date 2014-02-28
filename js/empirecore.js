@@ -176,7 +176,10 @@ $(document).ready(function () {
 		}
 	});
 
+//how do i get scroll snap to work better?
+/*
 	if(cradleActive) {
+		console.log("[ document ready ] cradleActive scrollsnap");
 		$(document).scrollsnap({
 			snaps: '.snap',
 			proximity: 180,
@@ -184,11 +187,34 @@ $(document).ready(function () {
 		});
 	} 
 	else if (peripheryActive) {
+		console.log("[ document ready ] peripheryActive scrollsnap");
 		$(document).scrollsnap({
 			snaps: '.snap',
 			proximity: 180,
 			handler: periphery_scrollsnaphandle
 		});
+	}
+*/
+
+});
+
+$(window).bind("scroll", function() {
+	//testing viewport
+	// var viewPortTest = $("div").withinViewportBottom();
+	// console.log(viewPortTest);
+
+	// var videoElem = document.getElementById("video1");
+	// if(cradleActive && !peripheryActive) {
+	// 	if($("#c_container").is(":within-viewport-bottom")) {
+	// 		console.log("[ window scroll ] c_container within-viewport-bottom");
+	// 		cradle_openscreen();
+	// 	}
+	// } else 
+	if (peripheryActive ) {
+		if($("#p_instructions").is("within-viewport-bottom")) {
+			console.log("[ window scroll ] p_container within-viewport-bottom");
+			periphery_openscreen();
+		}
 	}
 
 });
@@ -587,7 +613,7 @@ function loadCradle2() {
 	//attachCradleEvents();
 
 	//console.log("[ loadCradle 2 ] cradle_openscreen()");
-	cradle_openscreen();
+	//cradle_openscreen();
 }
 
 function attachCradleEvents() {
@@ -598,22 +624,37 @@ function attachCradleEvents() {
 		c_playButton();
 
 	}).on('mouseover', function (){
-		if(c_playState == 1){
-			$("#c_playElement").css({'background':'url(/cradle/art/pauseWhite.png)'})
+		if(document.getElementById("video1").paused || document.getElementById("video2").paused){
+			$("#c_playElement").css({'background':'url(../art/cradle/playWhite.png)'})
 		} else {				
-			$("#c_playElement").css({'background':'url(/cradle/art/playWhite.png)'})
+			$("#c_playElement").css({'background':'url(../art/cradle/pauseWhite.png)'})
 		}
 	}).on('mouseout', function (){
-		if(c_playState == 1){
-			$("#c_playElement").css({'background':'url(/cradle/art/playWhite.png)'})
+		if(document.getElementById("video1").paused || document.getElementById("video2").paused){
+			$("#c_playElement").css({'background':'url(../art/cradle/playYellow.png)'})
 		} else {				
-			$("#c_playElement").css({'background':'url(/cradle/art/pauseGray.png)'})
+			$("#c_playElement").css({'background':'url(../art/cradle/pauseYellow.png)'})
 		}
 	});
 
 	$("#c_refresh").on('click', function() {
 		c_restartVids();
+	}).on('mouseover', function() {
+		$("#c_refresh").css({'background':'url(../art/cradle/refresh_white.png'});
+			console.log("mouseing over refresh");
+	}).on('mouseout', function() {
+		$("#c_refresh").css({'background':'url(../art/cradle/refresh_yellow.png'});
 	});
+
+	// //testing viewport
+	// var viewPortTest = $("div").withinViewportTop();
+	// console.log(viewPortTest);
+
+	// // var videoElem = document.getElementById("video1");
+	// if($("#c_container").is(":within-viewport-bottom")) {
+	// 	console.log("[ attachCradleEvents ] c_container within-viewport-top");
+	// 	cradle_openscreen();
+	// }
 
 	$("#legacy_cbutton").on('click', function() {
 		console.log("[ attach Cradle Events ] legacy_cbutton - c_pauseVids");
@@ -713,27 +754,43 @@ function loadPeriphery2() {
 
 	// console.log("LOADING PERIPHERY");
 
-	periphery_openscreen();
+	//periphery_openscreen();
 }
 
 function attachPeripheryEvents() {
 	//console.log("[ Periphery Events ] Attach Periphery Events");
 
-  	$("#p_playElement").on('click', function() {
-		// console.log("Playing videos");
-		//console.log("[ loadPeriphery2 ] p_playElement - p_playButton");
+	$("#p_playElement").on('click', function () {
+		console.log("[Attach Periphery Events: p_playElement ] p_playButton");
+		p_playButton();
+
+	}).on('mouseover', function (){
+		if(document.getElementById("target").paused){
+			$("#p_playElement").css({'background':'url(../art/periphery/playWhite.png)'})
+		} else {				
+			$("#p_playElement").css({'background':'url(../art/periphery/pauseWhite.png)'})
+		}
+	}).on('mouseout', function (){
+		if(document.getElementById("target").paused){
+			$("#p_playElement").css({'background':'url(../art/periphery/playYellow.png)'})
+		} else {				
+			$("#p_playElement").css({'background':'url(../art/periphery/pauseYellow.png)'})
+		}
+	});
+
+	$("#p_play_bg").on('click', function() {
 		p_playButton();
 	}).on('mouseover', function() {
-		if(p_playState == 1){
-			$("#p_playElement").css({'background':'url(/periphery/art/pauseWhite.png)'})
-		} else {        
-			$("#p_playElement").css({'background':'url(/periphery/art/playWhite.png)'})
+		if(document.getElementById("target").paused) {
+			$("#p_play_bg").css({'opacity':'1', 'background':'url(../art/periphery/play_bg.png)'})
+		} else {
+			$("#p_play_bg").css({'opacity': '1', 'background': 'url(../art/periphery/pause_bg.png)'})
 		}
 	}).on('mouseout', function() {
-		if(p_playState == 1){
-			$("#p_playElement").css({'background':'url(/periphery/art/playWhite.png)'})
-		} else {        
-			$("#p_playElement").css({'background':'url(/periphery/art/pauseGray.png)'})
+		if(document.getElementById("target").paused) {
+			$("#p_play_bg").css({'opacity':'0', 'background':'url(../art/periphery/play_bg.png)'})
+		} else {
+			$("#p_play_bg").css({'opacity': '0', 'background': 'url(../art/periphery/pause_bg.png)'})
 		}
 	});
 

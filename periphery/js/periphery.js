@@ -272,15 +272,7 @@ function periphery_sizer () {
 	$("#peripherymore").css({"bottom": legbottom, "margin-left": ($("#periphery_top").width() / 2) - 70 }).fadeIn(4000).click(function() {
 
 		body.animate({scrollTop: ($('#periphery_main').offset().top) }, 1000);
-			if(!peripheryLoaded) {
-				periphery_openscreen();
-			}
-			// if(!mouseYTracking) {
-		// 	$("#p_instructions").fadeIn('fast');
-		// } else {
-		// 	console.log("already loaded instructions");
-		// }
-
+		periphery_openscreen();
 	});
 
 	 $("#periphery_returnTop").css({'margin-top': ((($("#periphery_bottom").height() - 160) / 2) - 330), "margin-left": ($("#cradle_bottom").width() / 2) - 70 }).fadeIn(4000).click(function() {
@@ -291,6 +283,7 @@ function periphery_sizer () {
 
 function trackMouseRotation() {
 	p_trackingon = true;
+	$("#periphery_arrows").css({'z-index':'5'});
 	var target = document.getElementById("target");
 	var diag = Math.sqrt(target.width * target.width + target.height * target.height);
 	var halfSide = diag / 2;

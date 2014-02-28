@@ -283,8 +283,16 @@ position: absolute;
 	cursor: pointer;
 	width: 27px;
 	height: 38px;
-	background-image: url(../../art/cradle/refresh.png);
+	background: url(../../art/cradle/refresh_yellow.png);
 }
+
+/*#c_refresh:hover;{
+	display: block;
+	cursor: pointer;
+	width: 27px;
+	height: 38px;
+	background-image: url(../../art/cradle/refresh_white.png);
+}*/
 
 #c_outerinner #c_endscreen {
 	position: relative;
