@@ -185,7 +185,7 @@ position: absolute;
 	left: 975; top: 250; 
 	height: 62px; width: 46px; 
 	background: url(../../art/cradle/right-arrow-big.png) no-repeat;
-	background-size: cover;
+	/*background-size: cover;*/
 }
 
 #c_outerinner #c_container div.buttonoff {
