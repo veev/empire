@@ -24,7 +24,7 @@ div#container {
 h2 { f/*ont-size: 1.5em; */margin-top: 4px; font-style: italic; text-align: left}
 /*div#container div#containerinner {position: absolute; margin-left: 860;}*/
 div#container div#titleblock { position: absolute; }
-div#container div#logos { position: absolute; bottom: 20; left: 20; z-index: 5;}
+div#container div#logos { position: absolute; bottom: 20; left: 20; z-index: 20;}
 div#container div#pinchelines { position: absolute; width: 4px; background: url(../art/placeholder_dots.png) repeat-y; }
 div#container div#bodytext { position: absolute; margin-right: 20px; text-align: left; width: 400px; }
 div#container div#bodytext p { margin: 1em 0; font-size: .9em;}
