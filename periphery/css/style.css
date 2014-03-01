@@ -96,7 +96,7 @@ div.periphery_bottom div#pbottom_structure div.pbottom_r { color: #000; width: 1
 
 
 div#periphery_main div#periphery_linewhite { background: url(../../art/periphery/b_linewhite.png) repeat-y; width: 3px; position: absolute; z-index: 1; }
-#periphery_main div#p_legmore { position: absolute; z-index: 10; bottom: 30; width: 127px; height: 45px; cursor: pointer; background: url(../../art/periphery/periphery_more.png); }
+#periphery_main div#p_legmore { position: absolute; z-index: 10; bottom: 30; width: 127px; height: 45px; cursor: pointer; background: url(../../art/periphery/periphery_more.png) no-repeat; }
 
 div#periphery_main #p_outerouter {
 	text-align: center;
@@ -264,7 +264,7 @@ div#periphery_main #p_outerouter #p_outerinner {
 	height: 45px;
 	cursor: pointer;
 	z-index: 5;
-	background: url(../../art/cradle/cradle_more.png); 
+	background: url(../../art/cradle/cradle_more.png) no-repeat; 
 	pointer-events: all;
 }
 

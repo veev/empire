@@ -105,7 +105,7 @@ div#migrants_main {
 	pointer-events: all; }
 
 div#migrants_main div#migrants_linewhite { background: url(../../art/periphery/b_linewhite.png) repeat-y; width: 3px; position: absolute; z-index: 1; }
-#migrants_main div#m_legmore { position: absolute; z-index: 10; bottom: 30; width: 127px; height: 45px; cursor: pointer; background: url(../../art/periphery/leg_more.png); }
+#migrants_main div#m_legmore { position: absolute; z-index: 10; bottom: 30; width: 127px; height: 45px; cursor: pointer; background: url(../../art/periphery/leg_more.png) no-repeat; }
 
 div#migrants_main #m_outerouter {
 	text-align: center;
@@ -172,7 +172,7 @@ div#migrants_main #m_outerouter #m_outerinner {
 	height: 45px;
 	cursor: pointer;
 	z-index: 5;
-	background: url(../../art/more_button.png); 
+	background: url(../../art/more_button.png) no-repeat; 
 	pointer-events: all;
 }
 

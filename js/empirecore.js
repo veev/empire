@@ -93,18 +93,20 @@ $(document).ready(function () {
 	$(".home_button").on('click', function() {
 		if(cradleActive) {
 			c_pauseVids();
+			document.getElementById("video1").currentTime = 0;
+			document.getElementById("video2").currentTime = 0;
 			//console.log("[document ready] home_button : c_pauseVids ? " + cradleActive);
 		}
 		else if (peripheryActive) {
 			p_pauseVids();
+			document.getElementById("target").currentTime = 0;
+			document.getElementById("audio_norm").currentTime = 0;
+			document.getElementById("audio_yeti").currentTime = 0;
 			//console.log("[document ready] home_button : p_pauseVids ? " + peripheryActive);
 
 		}
-		document.getElementById("video1").currentTime = 0;
-		document.getElementById("video2").currentTime = 0;
-		document.getElementById("target").currentTime = 0;
-		document.getElementById("audio_norm").currentTime = 0;
-		document.getElementById("audio_yeti").currentTime = 0;
+
+
 		//console.log("[ document ready ] home button : animateHome()");
 		animateHome();
 	});
