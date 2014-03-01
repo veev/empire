@@ -53,13 +53,8 @@ $(document).ready(function () {
     if (!isChrome) {
     	$('body:first').append('<div id="browserno"><div class="padded">Sorry, this experiment is only currently working in Google Chrome. Other browsers may encounter problems.  We apologize for the inconvenience.</div></div>');
     	$("#browserno").slideDown();
-    	console.log("BROWSER NOT CHROME");
+    	// console.log("BROWSER NOT CHROME");
     } 
-
-	// if(navigator.userAgent.indexOf('WebKit') == -1 && navigator.userAgent.indexOf('Firefox') == -1){
-	// 	 $('body:first').append('<div id="browserno"><div class="padded">Sorry, this experiment is only currently working in Google Chrome or Apple\'s Safari browser. Other browsers may encounter problems.  We apologize for the inconvenience.</div></div>');
-	// 	 $("#browserno").slideDown();
-	// }
 
 	//load ambient audio
 	if(window.location.href.indexOf("noaudio") != -1) {  //what does this do?
@@ -858,9 +853,9 @@ function attachPeripheryEvents() {
 		}
 	}).on('mouseout', function (){
 		if(document.getElementById("target").paused){
-			$("#p_playElement").css({'background':'url(../art/periphery/playYellow.png)'})
+			$("#p_playElement").css({'background':'url(../art/periphery/playRed.png)'})
 		} else {				
-			$("#p_playElement").css({'background':'url(../art/periphery/pauseYellow.png)'})
+			$("#p_playElement").css({'background':'url(../art/periphery/pauseRed.png)'})
 		}
 	});
 

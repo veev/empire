@@ -284,7 +284,7 @@ div#periphery_main #p_outerouter #p_outerinner {
 	cursor: pointer;
 	width: 26px;
 	height: 38px;
-	background-image: url(../../art/periphery/playWhite.png);
+	background-image: url(../../art/periphery/playRed.png);
 	/*margin-left: 320px;*/
 	position: relative;
 	z-index: 2;
