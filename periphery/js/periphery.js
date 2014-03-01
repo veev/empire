@@ -109,13 +109,8 @@ function p_enablecontrols () {
 
 	p_controls = true;
 
-	// if(_ammobile){
-	//   trackon();  
-	// } else {
 	$("#p_outerouter").on('mouseenter', function () {
 		if(mouseYTracking) {
-			//$("#periphery_arrows").css({'z-index': })
-			//trackMouseY();
 			// console.log("[ Periphery : Tracking Mouse]");
 			trackMouseRotation();
 		} else {
@@ -124,36 +119,25 @@ function p_enablecontrols () {
 		// console.log('mouseenter');
 	});
 
-	// $("#p_outerouter").on('mousemove', function () {
-	//   if(mouseYTracking) {
-	//    // trackMouseY();
-	//		trackMouseRotation();
-	//   } else {
-	//     //console.log("not tracking mouse Y");
-	//   }
-	//   console.log('mousemove');
-	// });
-
 	$("#p_outerouter").on('mouseleave', function () {
 		if(p_flipangle < 90) {
 				//console.log("less than 90");
-				p_flipangle = 0;
+			p_flipangle = 0;
 				//set yeti volume to 0, norm to 1
 			// document.getElementById("audio_norm").volume = 1;
 			// document.getElementById("audio_yeti").volume = 0;
 
-			} else if (p_flipangle > 90 ) {
-				// console.log("greater than 90");
-				p_flipangle = 180;
+		} else if (p_flipangle > 90 ) {
+			// console.log("greater than 90");
+			p_flipangle = 180;
 			//set yeti volume to 1, norm to 0
 			// document.getElementById("audio_norm").volume = 0;
 			// document.getElementById("audio_yeti").volume = 1;
 			}
-			// $("#pcard").css({ '-webkit-transform': 'rotate( ' + p_flipangle + 'deg)', 'transform': 'rotate( ' + p_flipangle + 'deg)' });
-			 p_trackoff();
-			//console.log('mouseleave');
-		}); 
-	// }
+		// $("#pcard").css({ '-webkit-transform': 'rotate( ' + p_flipangle + 'deg)', 'transform': 'rotate( ' + p_flipangle + 'deg)' });
+		 p_trackoff();
+		//console.log('mouseleave');
+	}); 
 	
 	$("#leftbutton").on('click', function () {
 		if(p_flipside){
@@ -194,14 +178,14 @@ function periphery_openscreen () {
 	 if(_ammobile){
 
 	 } else {
-	 	console.log("[Periphery: openscreen ] periphery_closescreen on setTimeout 1");
+	 	//console.log("[Periphery: openscreen ] periphery_closescreen on setTimeout 1");
 		openIvl = setTimeout("periphery_closescreen()",10000);
 		
 	}
 	$("#p_instructions").on('click', function () { 
-		console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
+		//console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
 		periphery_closescreen(); 
-		console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
+		//console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
 	});
 	p_enoughwithinstructions = true;
 }
@@ -253,7 +237,7 @@ function periphery_sizer () {
 	$("#peripherymore").css({"bottom": legbottom, "margin-left": ($("#periphery_top").width() / 2) - 70 }).fadeIn(4000).click(function() {
 
 		body.animate({scrollTop: ($('#periphery_main').offset().top) }, 1000);
-		console.log("periphery video currentTime = " + document.getElementById("target").currentTime);
+		//console.log("periphery video currentTime = " + document.getElementById("target").currentTime);
 		if(document.getElementById("target").currentTime == 0 ) {
 			periphery_openscreen();
 

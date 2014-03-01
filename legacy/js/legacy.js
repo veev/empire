@@ -2,13 +2,6 @@ var legacyLoaded = false;
 var legacyActive = false;
 var _adjuster = 140;
 
-$(document).ready(function() {
-	//legacy_sizer();
-})
-
-
-
-
 function legacy_sizer() {
 
 	var matop = ($("#legacy_top").height() / 2) - 380; // top of the matrix
@@ -54,6 +47,5 @@ function legacy_sizer() {
 		}
 	});
 
-	console.log("legacy_sizer");
-
+	//console.log("legacy_sizer");
 }

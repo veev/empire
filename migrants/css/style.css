@@ -33,8 +33,8 @@ div.migrants_top {
 	background: url(../../art/periphery/b_linewhite.png) repeat-y;
 	width: 3px;
 	position: absolute;
-/*	height: 924px;
-*/	overflow: hidden;
+
+	overflow: hidden;
 	opacity: 0.6;
 }
 

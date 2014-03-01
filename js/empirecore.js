@@ -66,16 +66,6 @@ $(document).ready(function () {
 		document.getElementById('ambientaudio').addEventListener('canplaythrough', audioready);
 	}
 
-	// if(cradleLoaded){
-		//cradleLoaded = false;
-		// console.log("Loaded Cradle 2");
-	// } else if (legacyLoaded) {
-	// 	//legacyLoaded = false;
-	// } else if (peripheryLoaded) {
-	// 	//peripheryLoaded = false;
-	// }
-	// else {
-
 	//console.log("Im in ready ");
 	paperWidth = $('#container').width();
 	paperHeight = $('#container').height();
@@ -84,7 +74,6 @@ $(document).ready(function () {
 	w = paper.w;
 	h = paper.h;
 	//console.log('w: '+w+', h: '+h);
-	// paper.setViewBox(0, 0, w, h, true);
 	paper.canvas.setAttribute('preserveAspectRatio', 'none'); 
 
 	buildRipples(total); //creates four ripples
@@ -224,7 +213,8 @@ $(document).ready(function () {
 
 function buildRippleNode(index){
 	var ripple, pattern, title, bottomLetter, topLetter;
-	var offset = 180;
+	//var offset = 180; //used to be a set opening radius
+	var offset = w * 0.11; //multiplier that works with my aspect ratio
 	var pos = (offset * index) + offset; //radius of Home Button
 	var titleOffset = config.titleOffset;
 	var titleHeight = config.titleHeight;

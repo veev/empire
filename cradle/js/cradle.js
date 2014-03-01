@@ -37,7 +37,6 @@ var currentvideo = 1; // this is only used in mobile
 var c_currentvideoid = 'video1'; // this is only used in mobile
 var hlsvideoprefix = 'http://s3.amazonaws.com/empireproj/hls/1000/'; // in mobile we redraw these and use the stills instead
 var videoprefix = 'http://s3.amazonaws.com/empireproj/cradle/'; // in mobile we redraw these and use the stills instead
-//var videoprefix = 'mp4/'; // in mobile we redraw these and use the stills instead
 
 var _transitiontimer = new Number();
 var _transitiontimerIvl = new Number();
@@ -185,7 +184,7 @@ function cradle_sizer () {
 
 	var matop = ($("#cradle_top").height() / 2) - 220; // top of the matrix
 	var padtop = 84; // top of the main title
-	var legbottom = 60; //offset of the bottom play button on the open screen
+	var legbottom = 30; //offset of the bottom play button on the open screen
 	var body = $('html body');
 
 	// if($("#cradle_top").height() < 780){ // if this a wee screen
@@ -372,13 +371,13 @@ function c_playButton(){
 		// xMouseTracking = true;
 		if(document.getElementById("video1").paused || document.getElementById("video2").paused){
 		
-		console.log("play");
+			//console.log("play");
 			c_playVids();
 
 		}
 		else{
 			c_pauseVids();
-			console.log("pause");
+			//console.log("pause");
 		}
 	}
 	else {
@@ -552,6 +551,6 @@ function c_buildendscreen () {
 		c_playVids();
 
 		$("#c_playElement").css({'background':'url(../../art/cradle/playWhite.png)'})	
-		console.log("c_buildendscreen c_playState: " + c_playState);					
+		//console.log("c_buildendscreen c_playState: " + c_playState);					
 	});
 }
