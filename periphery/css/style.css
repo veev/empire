@@ -94,6 +94,8 @@ div.periphery_bottom div#pbottom_structure div a { color: 000; }
 div.periphery_bottom div#pbottom_structure div.pbottom_t { color: #d3314a; width: 430px; left: 30; top: -36; position: relative; text-align: left; /*float: left; margin-right: 40px;*/ }
 div.periphery_bottom div#pbottom_structure div.pbottom_t a { color: #d3314a; }
 div.periphery_bottom div#pbottom_structure div.pbottom_b { color: #000; width: 430px; left: 30; top: -80; position: relative; text-align: left; /*float: left; margin-right: 40px;*/ }
+div.periphery_bottom div#pbottom_structure div.pbottom_l { color: #000; width: 137px; left: 552; top: 240; position: absolute; text-align: left; /*float: left; margin-right: 40px;*/ }
+div.periphery_bottom div#pbottom_structure div.pbottom_r { color: #000; width: 150px; left: -210; top: 98; position: absolute; text-align: right; /*float: left; margin-right: 40px;*/ }
 
 
 div#periphery_main div#periphery_linewhite { background: url(../../art/periphery/b_linewhite.png) repeat-y; width: 3px; position: absolute; z-index: 1; }
