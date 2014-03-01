@@ -181,12 +181,16 @@ function cradle_closescreen () {
 }
 
 function cradle_sizer () {
-	// var w = $("#cradle_top").width();
-	// var h = $("#cradle_top").height();
-	console.log("w: "+w+ ", h: " + h);
+	var w = $("#cradle_top").width();
+	var h = $("#cradle_top").height();
+	//console.log("w: "+w+ ", h: " + h);
 	var matop = ($("#cradle_top").height() / 2) - 220; // top of the matrix
 	var padtop = h * 0.11; // top of the main title
 	var legbottom = 70; //offset of the bottom play button on the open screen
+	var buffer = h - legbottom;
+	//console.log("buffer = "+ buffer);
+	var centering = (w/2) - 70;
+	//console.log("centering = "+ centering);
 	var body = $('html body');
 
 	// if($("#cradle_top").height() < 780){ // if this a wee screen
@@ -213,7 +217,7 @@ function cradle_sizer () {
 		body.animate({scrollTop: ($("#cradle_bottom").offset().top)}, 1000);
 	});
 
-	$("#cradlemore").css({"top": h - legbottom, "left": (w/2) - 70 }).fadeIn(4000).on('click', function() {
+	$("#cradlemore").css({"top": buffer, "left": centering }).fadeIn(4000).on('click', function() {
 		body.animate({scrollTop: ($('#cradle_main').offset().top) }, 1000);
 			//console.log("cradle video currentTime = " + document.getElementById("video1").currentTime);
 			if(document.getElementById("video1").currentTime == 0) {

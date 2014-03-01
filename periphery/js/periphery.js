@@ -204,12 +204,16 @@ function periphery_closescreen () {
 function periphery_sizer () {
 
 	// var matop = ($("#periphery_top").height() / 2) - 320; // top of the matrix
-	// var w = $("#periphery_top").width();
-	// var h = $("#periphery_top").height();
-	console.log("w: "+w+ ", h: " + h);
+	var w = $("#periphery_top").width();
+	var h = $("#periphery_top").height();
+	//console.log("w: "+w+ ", h: " + h);
 	var matop = 210;
 	var padtop = h * 0.11;  // top of the main title
 	var legbottom = 70; //offset of the bottom play button on the open screen
+	var buffer = h - legbottom;
+	//console.log("buffer = "+ buffer);
+	var centering = (w/2) - 70;
+	//console.log("centering = "+ centering);
 	var body = $('html body');
 	// if($("#periphery_top").height() < 780){ // if this a wee screen
 	//   padtop = 10;
@@ -237,7 +241,7 @@ function periphery_sizer () {
 		body.animate({scrollTop: ($("#periphery_bottom").offset().top)}, 1000);
 	});
 
-	$("#peripherymore").css({"top": h - legbottom, "left": (w/ 2) - 70 }).fadeIn(4000).click(function() {
+	$("#peripherymore").css({"top": buffer, "left": centering }).fadeIn(4000).click(function() {
 
 		body.animate({scrollTop: ($('#periphery_main').offset().top) }, 1000);
 		//console.log("periphery video currentTime = " + document.getElementById("target").currentTime);

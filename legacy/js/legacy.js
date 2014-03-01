@@ -4,17 +4,19 @@ var _adjuster = 140;
 
 function legacy_sizer() {
 
-	// var h = $("#legacy_top").height();
-	// var w = $("legacy_top").width();
-	console.log("w: "+w+ ", h: " + h);
+	var h = $("#legacy_top").height();
+	var w = $("#legacy_top").width();
+	//console.log("w: "+w+ ", h: " + h);
 	var padtop = h * 0.11; // top of the main title
-	console.log("padtop: " + padtop);
-	var matop = padtop + 70;; // top of the matrix
+	//console.log("padtop: " + padtop);
+	var matop = 40; // top of the matrix
 	//var padtop = 84; // top of the main title
 	var legbottom = 70; //offset of the bottom play button on the open screen
 	var body = $('html body');
 	var buffer = h - legbottom;
-	console.log("h - legbottom = "+ buffer);
+	//console.log("buffer = "+ buffer);
+	var centering = (w/2) - 70;
+	//console.log("centering = "+ centering);
 	// if($(".yellow:first").height() < 780){ // if this a wee screen
 	// 	padtop = 10;
 	// 	matop = 20;
@@ -25,7 +27,7 @@ function legacy_sizer() {
 	
 	$("#legacy_title").css({ 'padding-top': padtop });
 
-	$("#mainarea").css({ "margin-top": padtop });	
+	$("#mainarea").css({ "margin-top": matop });	
 
 	$(".vertical_line").css({ 'height' : h });
 	$("#legacy_wline1").css({ 'height': h/2 });
@@ -43,7 +45,7 @@ function legacy_sizer() {
 	// $("#legplay").css({ "bottom": legbottom, "margin-left": ($("#legacy_main").width() / 2) - 50 }).fadeIn(4000);
 	$("#legmore").css({ "margin-left": ($("#legacy_main").width() / 2) - 90 });
 
-	$("#legacymore").css({ "bottom" : legbottom, "left": (w / 2) - 70 }).fadeIn(4000).on('click', function() {
+	$("#legacymore").css({ "top" : buffer, "left": centering }).fadeIn(4000).on('click', function() {
 		body.animate({scrollTop: ($('#legacy_main').offset().top) }, 1000);
 		// console.log("legacy_openscreen() in legacymore");
 		if(!legacyLoaded) {
