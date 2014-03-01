@@ -189,20 +189,10 @@ function periphery_scrollsnaphandle () {
 	}
 }
 
-// $(window).resize(function () {
-// 	periphery_sizer();
-// 	p_lazywidth = $("#p_outerouter").width();
-// 	var marginsize = (p_lazywidth - 960) / 2;
-// 	p_leftpoint = marginsize + 180;
-// 	p_rightpoint = (p_lazywidth - marginsize) - 180;
-// });
-
 function periphery_openscreen () {
 	$("#p_instructions").fadeIn(2000);
 	 if(_ammobile){
 
-		 $("#ptitle").show();
-		 // $("#p_instructions").css({ 'pointer-events':'none' });
 	 } else {
 	 	console.log("[Periphery: openscreen ] periphery_closescreen on setTimeout 1");
 		openIvl = setTimeout("periphery_closescreen()",10000);
@@ -210,14 +200,9 @@ function periphery_openscreen () {
 	}
 	$("#p_instructions").on('click', function () { 
 		console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
-		//p_playButton();
 		periphery_closescreen(); 
 		console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
-		//trackMouseRotation();
 	});
-
-	// openIvl = setTimeout("periphery_closescreen()",10000);
-	// console.log("[Periphery: openscreen ] periphery_closescreen on setTimeout 2");
 	p_enoughwithinstructions = true;
 }
 
@@ -264,14 +249,6 @@ function periphery_sizer () {
 	$("#p_legmore").css({ "margin-left": ($("#periphery_main").width() / 2) - 70 }).on('click', function() {
 		body.animate({scrollTop: ($("#periphery_bottom").offset().top)}, 1000);
 	});
-
-	// $("#peripheryplay").css({ "bottom": legbottom, "margin-left": ($("#periphery_top").width() / 2) - 70 }).fadeIn(4000).click(function () {    
-	//   $('html, body').animate({ scrollTop: ($('#periphery_main').offset().top) }, 1000);
-	//   if(!_ammobile){
-	//     // p_playDecide();
-	//   }
-	//   periphery_openscreen();
-	// });
 
 	$("#peripherymore").css({"bottom": legbottom, "margin-left": ($("#periphery_top").width() / 2) - 70 }).fadeIn(4000).click(function() {
 
@@ -332,20 +309,6 @@ function trackMouseRotation() {
 
 			syncTime();
 
-			//put sticky positions back in
-			//4 positions
-			// if(p_flipangle > 0 && p_flipangle < 45) {
-			// 	p_flipangle = 0;
-			// } else if (p_flipangle >= 45 && p_flipangle <= 135) {
-			// 	p_flipangle = 90;
-			// } else if (p_flipangle > 135 && p_flipangle < 225) {
-			// 	p_flipangle = 180;
-			// } else if (p_flipangle >= 225 && p_flipangle < 315) {
-			// 	p_flipangle = 270;
-			// } else if (p_flipangle >= 315 && p_flipangle < 360) {
-			// 	p_flipangle = 359;
-			// }
-
 			//8 positions
 			if(p_flipangle > 0 && p_flipangle < 35) {
 				p_flipangle = 0;
@@ -376,7 +339,7 @@ function trackMouseRotation() {
 			}
 				
 			p_prevflipangle = p_flipangle;
-			//here
+			
 			p_flipangle = 360*numRotations + p_flipangle ;
 
 			//console.log("after if stat flipangle degrees: " + numRotations);
@@ -404,76 +367,10 @@ function syncTime() {
 	}
 }
 
-// function trackMouseY() {
-// 	p_trackingon = true;
-// 	//console.log("periphery tracking is: " + p_trackingon);
-// 	$(document).on('mousemove', function(e) {
-// 		if(!p_flipblock) {
-// 			var y = e.pageY;
-// 			var x = e.pageX;
-// 			//console.log(y);
-// 			//console.log("leftside = " + leftside);
-// 			//console.log("p_lazywidth = " + p_lazywidth);
-// 			var buffer = 200;
-// 			var newTop = lazyYtop + buffer;
-// 			var newBottom = lazyYbottom - buffer;
-// 			//console.log(y + ", " + newTop + ", " + newBottom);
-
-// 			audioLevelNorm = map(y, newTop, newBottom, 1, 0);
-// 			audioLevelYeti = map(y, newTop, newBottom, 0, 1);
-			
-			
-// 			p_flipangle = map(y, newTop, newBottom, 0, 180);  
-			
-
-// 			if(p_flipangle > 0 && p_flipangle < 35) {
-// 				p_flipangle = 0;
-// 				// audioLevelNorm = 1.0;
-// 				// audioLevelYeti = 0.0;
-// 			}
-
-// 			if(p_flipangle > 35 && p_flipangle < 55){
-// 				p_flipangle = 45;
-// 				// audioLevelNorm = 0.75;
-// 				// audioLevelYeti = 0.25;
-// 			}
-// 			if(p_flipangle > 55 && p_flipangle < 125){
-// 				p_flipangle = 90;
-// 				// audioLevelNorm = 0.5;
-// 				// audioLevelYeti = 0.5;
-
-// 			}
-// 			if(p_flipangle > 125 && p_flipangle < 145){
-// 				p_flipangle = 135;
-// 				// audioLevelNorm = 0.25;
-// 				// audioLevelYeti = 0.75;
-// 			}
-
-// 			if(p_flipangle > 145 && p_flipangle < 180) {
-// 				p_flipangle = 180;
-// 				// audioLevelNorm = 0.0;
-// 				// audioLevelYeti = 1.0;
-// 			}
-
-// 			// console.log("p flip angle: " + p_flipangle + " , p flipped :" + p_flipside) ;
-// 			// console.log("audioLevelNorm: " + audioLevelNorm);
-// 			// console.log("audioLevelYeti: " + audioLevelYeti);
-
-// 			//Is this the best place to set volume?
-// 			document.getElementById("audio_norm").volume = audioLevelNorm;
-// 			document.getElementById("audio_yeti").volume = audioLevelYeti;
-
-// 			$("#pcard").css({ '-webkit-transform': 'rotate( ' + p_flipangle + 'deg)', 'transform': 'rotate( ' + p_flipangle + 'deg)' });
-// 		}
-// 	});
-// }
-
-
-
 function p_trackoff () {
 	//console.log('p_trackoff');
 	p_trackingon = false;
-// mouseYTracking = false;
+	// mouseYTracking = false;
 	$(document).unbind("swipeleft");
 	$(document).unbind("swiperight");
 	$(document).unbind('mousemove');
@@ -482,24 +379,7 @@ function p_trackoff () {
 
 	$("#periphery_arrows").css({'z-index': '12'});
 
-	// removePeripheryListeners();
-		
 	// console.log("Remove Events for periphery");
-}
-
-function p_playDecide(){
-//  document.getElementById("video2").volume = 0;
-		//console.log("Playing periphery videos");
-	
-		// p_playVids();
-
-		// p_playState = 1;
-		// console.log("p_playDecide p_playState: "+ p_playState);
-		// mouseYTracking = true;
-		// console.log("p_playDecide mouseYTracking: "+ mouseYTracking);
-
-		//console.log("Not Playing videos");
-		// setTimeout("p_playDecide()",800);
 }
 
 function p_restartVids() {
@@ -608,7 +488,6 @@ function p_pauseVids(){
 	document.getElementById("audio_norm").pause();
 	document.getElementById("target").pause(); 
 
-	// p_playState = 2;
 	// console.log("p_pauseVids p_playState: " + p_playState);
 }
 
@@ -724,7 +603,6 @@ function p_buildendscreen () {
 		p_playVids();
 
 		$("#p_playElement").css({'background':'url(/periphery/art/playWhite.png)'})
-		// c_playState = 1;  
 		// console.log("p_buildendscreen p_playState: " + p_playState);          
 	});
 }

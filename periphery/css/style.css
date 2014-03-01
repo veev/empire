@@ -1,4 +1,3 @@
-
 /*
 *, html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, label, fieldset, input, p, th, td { margin:0; padding:0; font-family: "EB Garamond","Helvetica Neue", sans-serif; }
 table { border-collapse:collapse; border-spacing:0 }
@@ -61,12 +60,10 @@ div#periphery_main div#p_instructions {
 	background: rgba(0,0,0,.6); 
 	width: 980px; 
 	left: 150;
-/*	padding: 200px 100px 160px 360px; */
 	height: 730px; 
 	text-align: center; }
 div#periphery_main div#p_instructions span#swifter { width: 187px; height: 720px; z-index: 1; left: 665; top: 0; position: absolute; background: url(../../art/periphery/instructions_spin.png); display: none; }
-/*div#periphery_main div#p_instructions span#ptitle { width: 279px; height: 41px; z-index: 2; left: 588; opacity: .5; top: 30; position: absolute; background: url(../art/cradle_title.png); }
-*/div#periphery_main div#p_instructions span#peripheryplay2 { position: absolute; cursor: pointer; z-index: 5; pointer-events: all; bottom: 350; right: 440;}
+div#periphery_main div#p_instructions span#peripheryplay2 { position: absolute; cursor: pointer; z-index: 5; pointer-events: all; bottom: 350; right: 440;}
 div#periphery_main div#p_instructions p { position: relative; font-size: 1.4em; }
 div#periphery_main div#p_instructions p#peri_0 { top: 90; }
 div#periphery_main div#p_instructions p#peri_1 { color: #d3314a; top: 247; left: 260; width: 80;}
@@ -99,7 +96,7 @@ div.periphery_bottom div#pbottom_structure div.pbottom_r { color: #000; width: 1
 
 
 div#periphery_main div#periphery_linewhite { background: url(../../art/periphery/b_linewhite.png) repeat-y; width: 3px; position: absolute; z-index: 1; }
-#periphery_main div#p_legmore { position: absolute; z-index: 10; bottom: 30; width: 127px; height: 45px; cursor: pointer; background: url(../../art/periphery/leg_more.png); }
+#periphery_main div#p_legmore { position: absolute; z-index: 10; bottom: 30; width: 127px; height: 45px; cursor: pointer; background: url(../../art/periphery/periphery_more.png); }
 
 div#periphery_main #p_outerouter {
 	text-align: center;
@@ -116,17 +113,6 @@ div#periphery_main #p_outerouter {
 	z-index: 2; opacity: 1;
 }
 
-/*
-div#periphery_main  #home_button_pmain {
-	position: absolute; bottom: 30; right: 30; z-index: 5; opacity: 0.5; cursor: pointer;
-}
-
-div.periphery_bottom #home_button_pbottom {
-	position: absolute; bottom: 30; right: 30; z-index: 5; opacity: 1; cursor: pointer;
-}
-
-div#periphery_main #p_outerouter div#home_button img { width: 40px; height: 35px;}
-*/
 div#periphery_main #p_outerouter #p_outerinner {
 	height: 735px;
 	margin: 0 auto;
@@ -163,20 +149,6 @@ div#periphery_main #p_outerouter #p_outerinner {
   	-webkit-transform-origin: center center;
 }
 
-
-/*
-#outerinner #container #pcardover {
-	position: absolute;
-/*	z-index: 45;*/
-/*	top: 0;
-	left: 0;
-	background-color: #f00;
-	opacity: .2;
-	width: 1280px;
-	height: 720px;
-}*/
-
-
 #p_outerinner #p_container #leftbutton {
 	z-index: 40;
 	display: block; 
@@ -212,25 +184,6 @@ div#periphery_main #p_outerouter #p_outerinner {
 	opacity: 1;
 }
 
-/*#outerinner #container #pcard div {
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}	*/
-
-#p_outerinner #p_container #pcard div.back {
-/*	transform: rotate(180deg);
-	-webkit-transform: rotate(180deg);*/
-}
-
-#p_outerinner #p_container #pcard.flipped {
-/*	transform: translateX( -100% ) rotate( -180deg );
-	-webkit-transform: translateX( -100% ) rotate( -180deg );*/
-}
-
 #p_outerinner #p_controls #p_scrubber {
 	width: 588px;
 	float: left;
@@ -250,11 +203,6 @@ div#periphery_main #p_outerouter #p_outerinner {
 	background-color: #d3314a;
 	z-index: 2;
 }
-
-
-/*#video1 {
-	-webkit-mask-box-image: url(art/periphery_mask.svg);
-}*/
 
 .norm #target {
     mask: url("mask.svg#c1");
@@ -301,7 +249,6 @@ div#periphery_main #p_outerouter #p_outerinner {
 	width: 27px;
 	height: 38px;
 	background-image: url(images/pauseGray.png);
-	/*margin-left:320px;*/
 	z-index: 2;
 }
 
@@ -393,48 +340,6 @@ div#periphery_main #p_outerouter #p_outerinner {
 	top: 284;
 	cursor: pointer;
 }
-
-/*div #pmain_nav_buttons {
-	float: left;
-	position: absolute;
-	z-index: 10;
-	opacity: 0.6;
-}
-
-div #pmain_nav_buttons #cradle_pbutton {
-	font-size: 28px;
-	font-style: italic;
-	color: #ecda50;
-	background-color: #000;
-	border: none;
-	padding-top: 30px;
-	padding-left: 50px;
-	padding-right: 25px;
-	cursor: pointer;
-}
-
-div #pmain_nav_buttons #legacy_pbutton {
-	font-size: 28px;
-	font-style: italic;
-	color: #fbb03b;
-	background-color: #000;
-	border: none;
-	padding-top: 30px;
-	padding-left: 25px;
-	padding-right: 25px;
-	cursor: pointer;
-}
-div #pmain_nav_buttons #migrants_pbutton {
-	font-size: 28px;
-	font-style: italic;
-	color: #ff5a00;
-	background-color: #000;
-	border: none;
-	padding-top: 30px;
-	padding-left: 25px;
-	padding-right: 25px;
-	cursor: pointer;
-}*/
 
 #p_outerinner #p_endscreen {
 	position: relative;

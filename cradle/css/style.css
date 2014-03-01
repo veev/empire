@@ -96,7 +96,6 @@ div.cradle_top div#cradle_structure div#c_a {  }
 	height: 45px;
 	cursor: pointer;
 	z-index: 5;
-	/*background: url(../art/cradle_more.png);*/ 
 	pointer-events: all;
 }
 
@@ -174,7 +173,6 @@ position: absolute;
 	left: -60; top: 250; 
 	height: 62px; width: 46px; 
 	background: url(../../art/cradle/left-arrow-big.png) no-repeat;
-	/*background-size: cover;*/
 
 }
 
@@ -185,7 +183,6 @@ position: absolute;
 	left: 975; top: 250; 
 	height: 62px; width: 46px; 
 	background: url(../../art/cradle/right-arrow-big.png) no-repeat;
-	/*background-size: cover;*/
 }
 
 #c_outerinner #c_container div.buttonoff {
@@ -307,14 +304,6 @@ position: absolute;
 	top: 200;
 }
 
-/*#c_refresh:hover;{
-	display: block;
-	cursor: pointer;
-	width: 27px;
-	height: 38px;
-	background-image: url(../../art/cradle/refresh_white.png);
-}*/
-
 #c_outerinner #c_endscreen {
 	position: relative;
 	height: 504px;
@@ -387,37 +376,3 @@ position: absolute;
 #cradle_main .home_button {
 	z-index: 5; opacity: 0.5;
 }
-
-/*div .main_nav_buttons {
-	position: absolute;
-	z-index: 10;
-	opacity: 0.6;
-	bottom: 30;
-	right: 8%;
-}
-
-div .nav_button {
-	font-size: 28px;
-	font-style: italic;
-	background-color: #000;
-	border: none;
-	padding-left: 28px;
-	padding-right: 28px;
-	cursor: pointer;
-}
-
-div .main_nav_buttons #cradle_button {
-	color: #ecda50;
-}
-
-div .main_nav_buttons #legacy_button {
-	color: #fbb03b;
-}
-
-div .main_nav_buttons #migrants_button {
-	color: #ff5a00;
-}
-
-div .main_nav_buttons #periphery_button {
-	color: #cc3333;
-}*/

@@ -54,16 +54,6 @@ function mobile_stills (tim) {
 	}
 }
 
-function c_playhandler () {
-	// c_playState = 1;
-	// console.log("c_playhandler c_playState: `"+ c_playState);
-	// cradle_closescreen();
-	// document.getElementById("mobileisgreat").controls = false;
-	// if(!c_controls){
-	// 	c_enablecontrols();
-	// }
-}
-
 function c_loadVideo() {
 	//console.log("[ Cradle : c_loadVideo ] Loaded Video1 Callback fired");
 	vid1Loaded = true;
@@ -162,35 +152,20 @@ function cradle_scrollsnaphandle () {
 	}
 }
 
-// $(window).resize(function () {
-
-// 	cradle_sizer();
-// 	lazywidth = $("#c_outerouter").width();
-// 	var marginsize = (lazywidth - 960) / 2;
-// 	c_leftpoint = marginsize + 180;
-// 	c_rightpoint = (lazywidth - marginsize) - 180;
-// });
-
 function cradle_openscreen () {
 
 	$("#c_instructions").fadeIn(2000);
 	if(_ammobile){
-		
-		// $("#ctitle").show();
-		// $("#c_instructions").css({ 'pointer-events':'none' });
 	} else {
 		//console.log("[ Cradle: openscreen ] cradle_closescreen on setTimeout 1");
 		openIvl = setTimeout("cradle_closescreen()",10000);
 	}
 	$("#c_instructions").on('click', function () { 
 		//console.log("[ instructions ] Calling play button")
-		//c_playButton();
 		cradle_closescreen();
 		//console.log("[Cradle: cradle_openscreen] cradle_closescreen on instructions click");
 		trackon();
 	});
-	// openIvl = setTimeout("cradle_closescreen()",10000);
-	// console.log("[Cradle: openscreen ] cradle_closescreen on setTimeout 2");
 	c_enoughwithinstructions = true;
 }
 
@@ -219,11 +194,6 @@ function cradle_sizer () {
 	// 	legbottom = 20;
 	// }
 
-	// body.css({'background': '#000'});
-	// $("#cradle_top").setHeight()
-	// $("#cradle_top").width() *= window.width;
-	//console.log("cradle_top height: " + $("#cradle_top").height() );
-
 	$("#c_outerouter").css({ 'padding-top': (($("#cradle_top").height() / 2) - ($("#c_outerinner").height() / 2)) });
 	//console.log("padding-top: " + (($("#cradle_top").height() / 2) - ($("#c_outerinner").height() / 2)));
 
@@ -242,24 +212,14 @@ function cradle_sizer () {
 		body.animate({scrollTop: ($("#cradle_bottom").offset().top)}, 1000);
 	});
 
-	// $("#cradleplay").css({ "bottom": legbottom, "margin-left": ($("#cradle_top").width() / 2) - 70 }).fadeIn(4000).click(function () {
-	// 	$('html, body').animate({ scrollTop: ($('#cradle_main').offset().top) }, 1000);
-	// 	if(!_ammobile){
-	// 		c_playDecide();
-	// 	}
-	// 	cradle_openscreen();
-	// });
-
 	$("#cradlemore").css({"bottom": legbottom, "margin-left": ($("#cradle_top").width() / 2) - 70 }).fadeIn(4000).on('click', function() {
 		body.animate({scrollTop: ($('#cradle_main').offset().top) }, 1000);
-			console.log("cradle video currentTime = " + document.getElementById("video1").currentTime);
+			//console.log("cradle video currentTime = " + document.getElementById("video1").currentTime);
 			if(document.getElementById("video1").currentTime == 0) {
 				cradle_openscreen();
 			} 
 			else {
-			// 	if (document.getElementById("video1").paused)) {
 				c_toggleButtonDisplay();
-			// 	}
 			} 	
 	});
 
@@ -364,26 +324,7 @@ function flipmobile (doplay) {
 	}
 }
 
-function c_playDecide(){
-//	document.getElementById("video2").volume = 0;
-	//console.log("Playing cradle videos");
-  // if(p_vidLoaded){
-	// if(vid1Loaded && vid2Loaded){
-	// 	c_playVids();
-	// 	c_playState = 1;
-	// 	// console.log("c_playDecide c_playState: "+ c_playState);
-	// 	xMouseTracking = true;
-	// 	// console.log("c_playDecide xMouseTracking: " + xMouseTracking);
-	// 	trackon();
-	// } else {
-	// 	//console.log("Not Playing videos");
-	// 	setTimeout("c_playDecide()",800);
-	// }
-}
-
 function c_restartVids() {	
-	//c_playDecide();
-	// c_playState = 1;
 	//console.log("Restarting cradle videos");
 	document.getElementById("video1").currentTime = 0;
 	document.getElementById("video2").currentTime = 0;
@@ -488,7 +429,6 @@ function c_pauseVids(){
 		//console.log("cradle paused");
 		//console.log(document.getElementById("video1").pause);		
 	}
-	// c_playState = 2;
 	// console.log("c_pauseVids c_playState: " + c_playState);
 }
 
@@ -611,8 +551,7 @@ function c_buildendscreen () {
 
 		c_playVids();
 
-		$("#c_playElement").css({'background':'url(../../art/cradle/playWhite.png)'})
-		//c_playState = 1;	
+		$("#c_playElement").css({'background':'url(../../art/cradle/playWhite.png)'})	
 		console.log("c_buildendscreen c_playState: " + c_playState);					
 	});
 }

@@ -182,7 +182,7 @@ $(document).ready(function () {
 //how do i get scroll snap to work better?
 
 	// if(cradleActive) {
-		console.log("[ document ready ] cradleActive scrollsnap");
+		//console.log("[ document ready ] cradleActive scrollsnap");
 		$(document).scrollsnap({
 			snaps: '.snap',
 			proximity: 200,
@@ -346,7 +346,7 @@ function animateButton(index){
 
 		if(index === 0) {
 
-			console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
+			//console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
 			
 			$("#cradleContent").fadeIn(2000);
 			
@@ -355,12 +355,10 @@ function animateButton(index){
 			 	loadCradle2();
 				
 			 	cradleLoaded = true;
-				console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
-
-			// 	menu[index].ripple.isActive = true;
+				//console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
 			 }
 			
-			console.log("[ document ready ] cradleActive scrollsnap");
+			//console.log("[ document ready ] cradleActive scrollsnap");
 			$(document).scrollsnap({
 				snaps: '.snap',
 				proximity: 180,
@@ -371,56 +369,53 @@ function animateButton(index){
 			cradleActive = true;
 			audioready();
 			if( document.getElementById("video1") == null ){
-				console.log("wtf? cradle") 
+				//console.log("wtf? cradle") 
 			}
 			else{
 				if( document.getElementById("video1").currentTime > 0 ) {
-				 	console.log("toggling display");
+				 	//console.log("toggling display");
 				 		c_toggleButtonDisplay();
 				 }
-				 console.log("video1 current time  ?" + document.getElementById("video1").currentTime);	 	
+				 //console.log("video1 current time  ?" + document.getElementById("video1").currentTime);	 	
 				
 			}
-			console.log("[ animateButton ] cradle is active  ?" + cradleActive);
+			//console.log("[ animateButton ] cradle is active  ?" + cradleActive);
 
-			//menu[index].ripple.attr({'cursor' : 'default'});
 		 } else {
 
 		 	$("#cradleContent").fadeOut("fast");
 		 	c_pauseVids();
-		 	//removeCradleListeners();
 		 	cradleActive = false;
-		 	console.log("[ animateButton ] cradle is active  ?" + cradleActive);
+		 	//console.log("[ animateButton ] cradle is active  ?" + cradleActive);
 
 		 }
 
 		 if(index === 1) {
 
-		 	console.log("[ animateButton ] legacy was loaded ?" + legacyLoaded);
+		 	//console.log("[ animateButton ] legacy was loaded ?" + legacyLoaded);
 
 		 	$("#legacyContent").fadeIn(2000);
 
 		 	if(legacyLoaded === false){
 		 	 	loadLegacy();	
 		 	 	legacyLoaded = true;
-		 	 	console.log("[ animateButton ] legacy was loaded  ?" + legacyLoaded);
+		 	 	//console.log("[ animateButton ] legacy was loaded  ?" + legacyLoaded);
 		 	 	
-		 	 	//menu[index].ripple.isActive = true;
 		 	}	
 		 	legacyActive = true;
 		 	audioready();
-		 	console.log("[ animateButton ] legacy is active  ?" + legacyActive);
+		 	//console.log("[ animateButton ] legacy is active  ?" + legacyActive);
 		 } 
 		 else  {
 
 		 	$("#legacyContent").fadeOut("fast");
 		 	legacyActive = false;
-		 	console.log("[ animateButton ] legacy is active  ?" + legacyActive);
+		 	//console.log("[ animateButton ] legacy is active  ?" + legacyActive);
 		 }
 
 		  if(index === 2) {
 
-		 	console.log("[ animateButton ] migrants was loaded ?" + migrantsLoaded);
+		 	//console.log("[ animateButton ] migrants was loaded ?" + migrantsLoaded);
 
 		 	$("#migrantsContent").fadeIn(2000);
 
@@ -428,62 +423,54 @@ function animateButton(index){
 		 	 	
 		 	 	loadMigrants();	
 		 	 	migrantsLoaded = true;
-		 	 	console.log("[ animateButton ] migrants was loaded  ?" + migrantsLoaded);
+		 	 	//console.log("[ animateButton ] migrants was loaded  ?" + migrantsLoaded);
 		 	 	
-		 	 	//menu[index].ripple.isActive = true;
 		 	}	
 		 	migrantsActive = true;
 		 	audioready();
-		 	console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
+		 	//console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
 		 } 
 		 else  {
 
 		 	$("#migrantsContent").fadeOut("fast");
 		 	migrantsActive = false;
-		 	console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
+		 	//console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
 		 }
 
 	 	if(index === 3) {
-	 		console.log("[ animateButton ] periphery was loaded  ?" + peripheryLoaded);
+	 		//console.log("[ animateButton ] periphery was loaded  ?" + peripheryLoaded);
 
 			$("#peripheryContent").fadeIn(2000);
 		 	if(peripheryLoaded === false) {
 
 		 		loadPeriphery2();
 		 		peripheryLoaded = true;
-		 		console.log("[ animateButton ] periphery was loaded  ?" + peripheryLoaded);
+		 		//console.log("[ animateButton ] periphery was loaded  ?" + peripheryLoaded);
 
-		 		//menu[index].ripple.isActive = true;
 		 	}
-		 	//addPeripheryListeners();
 		 	peripheryActive = true;
 		 	audioready();
 
 		 	if( document.getElementById("target") == null ){
-				console.log("wtf? periphery") 
+				//console.log("wtf? periphery") 
 			}
 			else{
 				if( document.getElementById("target").currentTime > 0 ) {
-				 	console.log("toggling periphery display");
+				 	//console.log("toggling periphery display");
 				 	p_toggleButtonDisplay();
 				 }
-				 console.log("target current time  ? " + document.getElementById("target").currentTime);	 	
+				 //console.log("target current time  ? " + document.getElementById("target").currentTime);	 	
 				
 			}
-		 	// if( document.getElementById("#target").currentTime != null) {
-			 // 	$("#p_play_bg").css({'opacity':'1'});
-			 // }
-		 	console.log("[ animateButton ] periphery is active  ?" + peripheryActive);
+		 	//console.log("[ animateButton ] periphery is active  ?" + peripheryActive);
  	
  		} else {
-		 	//peripheryLoaded = false;
+
 		 	$("#peripheryContent").fadeOut("fast");
 		 	p_pauseVids();
-		 	//removePeripheryListeners();
 		 	peripheryActive = false;
-		 	console.log("[ animateButton ] periphery is active  ?" + peripheryActive);
-		}
-			// });	 			
+		 	//console.log("[ animateButton ] periphery is active  ?" + peripheryActive);
+		} 			
 			$("#navigation").fadeIn();
 	 		$("#containerinner").fadeOut(function() {
 	 			//console.log("faded out containerinner");
@@ -567,9 +554,6 @@ function animateHome() {
 	$("#legacyContent").fadeOut();
 	$("#migrantsContent").fadeOut();
 	$("#peripheryContent").fadeOut();
-
-	//cradleLoaded, legacyLoaded, peripheryLoaded = false;
-	//cradleActive, legacyActive, periphyActive = false;
 	
 	for( var i = 0; i < menu.length; i++) {
 		animateHomeNode(i);
@@ -602,7 +586,7 @@ function animateHomeNode(index) {
 		fadeTitles(1);
 		$("#navigation").fadeOut();
  		$("#containerinner").fadeIn();
- 		console.log("In animate home");
+ 		//console.log("In animate home");
  		cradleActive = false;
  		peripheryActive = false;
  		cradleLoaded = false;
@@ -663,12 +647,12 @@ function c_toggleButtonDisplay(){
 	if(document.getElementById("video1") != null){
 		if(document.getElementById("video1").paused ){
 			// c_playVids();	
-			console.log("Toggle cradle play button on");
+			//console.log("Toggle cradle play button on");
 			$("#c_play_bg").fadeIn();
 		}
 		else{
 			$("#c_play_bg").fadeOut();	
-			console.log("Toggle cradle play button off");			
+			//console.log("Toggle cradle play button off");			
 		}
 	}
 }
@@ -676,11 +660,11 @@ function c_toggleButtonDisplay(){
 function p_toggleButtonDisplay() {
 	if(document.getElementById("target") != null) {
 		if(document.getElementById("target").paused) {
-			console.log("Toggle periphery play button on");
+			//console.log("Toggle periphery play button on");
 			$("#p_play_bg").fadeIn();
 		} else {
 			$("#p_play_bg").fadeOut();
-			console.log("Toggle periphery play button off");
+			//console.log("Toggle periphery play button off");
 		}
 	}
 }
@@ -689,7 +673,7 @@ function attachCradleEvents() {
 	//console.log("[ Cradle Events ] Attach Cradle Events")
 
 	$("#c_playElement").on('click', function () {
-		console.log("[Attach Cradle Events: c_playElement ] c_playButton");
+		//console.log("[Attach Cradle Events: c_playElement ] c_playButton");
 		c_playButton();
 		if( !document.getElementById("video1").paused ){
 			c_toggleButtonDisplay();	
@@ -714,13 +698,13 @@ function attachCradleEvents() {
 		c_restartVids();
 	}).on('mouseover', function() {
 		$("#c_refresh").css({'background':'url(../art/cradle/refresh_white.png'});
-			console.log("mouseing over refresh");
+			//console.log("mouseing over refresh");
 	}).on('mouseout', function() {
 		$("#c_refresh").css({'background':'url(../art/cradle/refresh_yellow.png'});
 	});
 
 	$("#c_play_bg").on('click', function() {
-		console.log("[Attach Cradle Events: c_play_bg ] c_playButton");
+		//console.log("[Attach Cradle Events: c_play_bg ] c_playButton");
 		c_playButton();
 		c_toggleButtonDisplay();
 	});
@@ -735,7 +719,7 @@ function attachCradleEvents() {
 	// }
 
 	$("#legacy_cbutton").on('click', function() {
-		console.log("[ attach Cradle Events ] legacy_cbutton - c_pauseVids");
+		//console.log("[ attach Cradle Events ] legacy_cbutton - c_pauseVids");
 		c_pauseVids();
 		$('html body').animate({ scrollTop: ($('#cradle_top').offset().top) }, 1000, function() {
 			animateButton(1);
@@ -743,7 +727,7 @@ function attachCradleEvents() {
 	});
 
 	$("#migrants_cbutton").on('click', function() {
-		console.log("[ attach Cradle Events ] migrants_cbutton - c_pauseVids");
+		//console.log("[ attach Cradle Events ] migrants_cbutton - c_pauseVids");
 		c_pauseVids();
 		$('html body').animate({ scrollTop: ($('#cradle_top').offset().top) }, 1000, function() {
 			animateButton(2);
@@ -751,7 +735,7 @@ function attachCradleEvents() {
 	});
 
 	$("#periphery_cbutton").on('click', function() {
-		console.log("[ attach Cradle Events ] periphery_cbutton - c_pauseVids");
+		//console.log("[ attach Cradle Events ] periphery_cbutton - c_pauseVids");
 		c_pauseVids();
 		$('html body').animate({ scrollTop: ($('#cradle_top').offset().top) }, 1000,function(){
 	 		animateButton(3);
@@ -804,7 +788,6 @@ function loadPeriphery2() {
 
 	$("#peripheryContent").css({'width': '100%', 'height': '100%'});
     $(".periphery_top").css({'background': 'none'});
-	//p_lazywidth = $("#p_outerouter").width();
 	periphery_sizer();
 
 	lazyYtop = $("#periphery_top").height();
@@ -816,11 +799,6 @@ function loadPeriphery2() {
 	//console.log("Im in ready ");
 	w = $("#container").width();
 	h = $("#container").height();
-	
-	// //load audio
-	// if(window.location.href.indexOf("noaudio") != -1) {
-	// 	dontannoysam = true;
-	// }
 
 	p_currentvideoid = 'target';
 	
@@ -828,18 +806,14 @@ function loadPeriphery2() {
 
 	//console.log("[ loadPeriphery2 ] mouseYTracking = " + mouseYTracking);
 
-	// attachPeripheryEvents();
-
 	// console.log("LOADING PERIPHERY");
-
-	//periphery_openscreen();
 }
 
 function attachPeripheryEvents() {
 	//console.log("[ Periphery Events ] Attach Periphery Events");
 
 	$("#p_playElement").on('click', function () {
-		console.log("[Attach Periphery Events: p_playElement ] p_playButton");
+		//console.log("[Attach Periphery Events: p_playElement ] p_playButton");
 		p_playButton();
 		if( !document.getElementById("target").paused ){
 			p_toggleButtonDisplay();	
@@ -860,26 +834,9 @@ function attachPeripheryEvents() {
 	});
 
 	$("#p_play_bg").on('click', function() {
-		console.log("[Attach Periphery Events: p_play_bg ] p_playButton");
+		//console.log("[Attach Periphery Events: p_play_bg ] p_playButton");
 		p_playButton();
 		p_toggleButtonDisplay();
-	// 	if($("#p_instructions").is(":visible")) {
-	// 		periphery_closescreen();
-
-	// 	}
-		
-	// }).on('mouseover', function() {
-	// 	if(document.getElementById("target").paused) {
-	// 		$("#p_play_bg").css({'opacity':'1', 'background':'url(../art/periphery/play_bg.png)'})
-	// 	} else {
-	// 		$("#p_play_bg").css({'opacity': '1', 'background': 'url(../art/periphery/pause_bg.png)'})
-	// 	}
-	// }).on('mouseout', function() {
-	// 	if(document.getElementById("target").paused) {
-	// 		$("#p_play_bg").css({'opacity':'0', 'background':'url(../art/periphery/play_bg.png)'})
-	// 	} else {
-	// 		$("#p_play_bg").css({'opacity': '0', 'background': 'url(../art/periphery/pause_bg.png)'})
-	// 	}
 	});
 
 	$("#p_refresh").on('click', function() {
@@ -889,9 +846,7 @@ function attachPeripheryEvents() {
   	$("#cradle_pbutton").on('click', function() {
   		//console.log("[ attach Periphery Events ] cradle_pbutton - p_pauseVids");
   		p_pauseVids();
-  		//p_playButton();
-  		// xMouseTracking = true;
-  		//animateButton(0);
+
   		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000,function() {
   			animateButton(0);
   		});
@@ -900,16 +855,14 @@ function attachPeripheryEvents() {
   	$("#legacy_pbutton").on('click', function() {
   		//console.log("[ attach Periphery Events ] legacy_pbutton - p_pauseVids");
   		p_pauseVids();
-  		//p_playButton();
   		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
   			animateButton(1);
   		});
   	});
 
   	$("#migrants_pbutton").on('click', function() {
-  		console.log("[ attach Periphery Events ] migrants_pbutton - p_pauseVids");
+  		//console.log("[ attach Periphery Events ] migrants_pbutton - p_pauseVids");
   		p_pauseVids();
-  		//p_playButton();
   		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
   			animateButton(2);
   		});
@@ -936,11 +889,6 @@ function fadeBottomLetters(index, opacity) {
 	// console.log(opacity);
 	// console.log(bottom);
 	bottom.animate({'opacity': opacity}, speed);
-	// if(opacity === 0) {
-	// 	bottom.hide();
-	// } else if (opacity === 1){
-	// 	bottom.show();
-	// }
 }
 
 function fadeTopLetters(index, opacity) {
@@ -955,21 +903,10 @@ function fadeTopLetters(index, opacity) {
 }
 
 function drawer () {
-	// var _w = $(window).width();
-	// var _h = $(window).height();
 	var _w = $("#container").width();
 	var _h = $("#container").height();
 	var rMargin = 300;
 	var rMargin_alt = 100;
-	
-	// $("#titleblock").css({ 'left': ((_w/2)+ rMargin), 'top': (86)});
-	// $("#pinchelines").css({ 'height': (_h-(86+80)), 'left': ((_w/2) + (rMargin + 418)), 'top': 150 });
-	// $("#preaching").css({ 'left': ((_w / 2) + rMargin + 260), 'top': ( _h - 70) });
-	// $("#legacy").css({ 'top': ((_h/2) - 280), left: ((_w/4) - 230) });
-	// $("#cradle").css({ 'top': ((_h/2) + 20), left: ((_w/4) - 230) });
-
-	// $("#bodytext").css( { 'left': ((_w/2) + rMargin), 'top': 220 });
-
 
 	$("#titleblock").css({ 'right': rMargin_alt, 'top': (86)});
 	$("#pinchelines").css({ 'height': (_h-(86+80)), 'right': rMargin_alt, 'top': 150 });
@@ -978,8 +915,6 @@ function drawer () {
 	$("#cradle").css({ 'top': ((_h/2) + 20), right: rMargin_alt });
 
 	$("#bodytext").css( { 'right': rMargin_alt, 'top': 220 });
-
-	//paper.changeSize(w, h, true, false);
 }
 
 function audioready () {
