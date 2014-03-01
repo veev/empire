@@ -92,7 +92,7 @@ div.migrants_intro {
 	background-repeat: no-repeat;
 	background-position-x: center;
 	background-position-y: 80;}
-div.migrants_intro p { position: absolute; color: #000; font-size: 18px; font-style: italic; margin: 0; padding: 0; }
+div.migrants_intro p { position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
 div.migrants_intro p#m_a { 
 /*	top: 60px; 
 	left: 280px; 
