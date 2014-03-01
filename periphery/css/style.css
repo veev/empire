@@ -356,7 +356,7 @@ div#periphery_main #p_outerouter #p_outerinner {
 	position: absolute;
 	left: 269;
 	z-index: 85;
-
+	pointer-events: all;
 }
 
 #p_play_bg {
