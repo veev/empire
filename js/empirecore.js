@@ -48,18 +48,18 @@ var URL_BOTTOM = ['url(art/c_bg_b.jpg)', 'url(art/l_bg_b.jpg)', 'url(art/m_bg_b.
 $(document).ready(function () {
 
 	var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-    var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+    // var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
     
-    if (!isChrome && !isSafari) {
-    	$('body:first').append('<div id="browserno"><div class="padded">Sorry, this experiment is only currently working in Google Chrome or Apple\'s Safari browser. Other browsers may encounter problems.  We apologize for the inconvenience.</div></div>');
+    if (!isChrome) {
+    	$('body:first').append('<div id="browserno"><div class="padded">Sorry, this experiment is only currently working in Google Chrome. Other browsers may encounter problems.  We apologize for the inconvenience.</div></div>');
     	$("#browserno").slideDown();
     	console.log("BROWSER NOT CHROME");
     } 
 
-	if(navigator.userAgent.indexOf('WebKit') == -1 && navigator.userAgent.indexOf('Firefox') == -1){
-		 $('body:first').append('<div id="browserno"><div class="padded">Sorry, this experiment is only currently working in Google Chrome or Apple\'s Safari browser. Other browsers may encounter problems.  We apologize for the inconvenience.</div></div>');
-		 $("#browserno").slideDown();
-	}
+	// if(navigator.userAgent.indexOf('WebKit') == -1 && navigator.userAgent.indexOf('Firefox') == -1){
+	// 	 $('body:first').append('<div id="browserno"><div class="padded">Sorry, this experiment is only currently working in Google Chrome or Apple\'s Safari browser. Other browsers may encounter problems.  We apologize for the inconvenience.</div></div>');
+	// 	 $("#browserno").slideDown();
+	// }
 
 	//load ambient audio
 	if(window.location.href.indexOf("noaudio") != -1) {  //what does this do?
