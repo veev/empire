@@ -65,8 +65,8 @@ div#periphery_main div#p_instructions {
 	height: 730px; 
 	text-align: center; }
 div#periphery_main div#p_instructions span#swifter { width: 187px; height: 720px; z-index: 1; left: 665; top: 0; position: absolute; background: url(../../art/periphery/instructions_spin.png); display: none; }
-div#periphery_main div#p_instructions span#ptitle { width: 279px; height: 41px; z-index: 2; left: 588; opacity: .5; top: 30; position: absolute; background: url(../art/cradle_title.png); }
-div#periphery_main div#p_instructions span#peripheryplay2 { position: absolute; cursor: pointer; z-index: 5; pointer-events: all; bottom: 350; right: 440;}
+/*div#periphery_main div#p_instructions span#ptitle { width: 279px; height: 41px; z-index: 2; left: 588; opacity: .5; top: 30; position: absolute; background: url(../art/cradle_title.png); }
+*/div#periphery_main div#p_instructions span#peripheryplay2 { position: absolute; cursor: pointer; z-index: 5; pointer-events: all; bottom: 350; right: 440;}
 div#periphery_main div#p_instructions p { position: relative; font-size: 1.4em; }
 div#periphery_main div#p_instructions p#peri_0 { top: 90; }
 div#periphery_main div#p_instructions p#peri_1 { color: #d3314a; top: 247; left: 260; width: 80;}
