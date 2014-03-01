@@ -60,7 +60,7 @@ div #canvas_container {
 	width: auto;
 	height: auto;
 	position: absolute;
-	z-index: 10;
+	z-index: 5;
 	pointer-events:visible;
 }
 
