@@ -48,7 +48,7 @@ div.mystical p#d { top: 170px; left: 55px; z-index: 3; }
 div.mystical p#e { top: 160px; left: 305px; width: 200px; text-align: center; }
 div.mystical p#f { top: 425px; width: 520px; left: 150px; text-align: center; }
 div.legacy_top div.play { position: absolute; width: 127px; height: 45px; cursor: pointer; background: url(/art/f_playbutton.png); }
-div#legacy_main div.more { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(/legacy/art/leg_more.png); }
+div#legacy_main div.more { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(/legacy/art/leg_more.png) no-repeat; }
 
 #legacy_main .home_button {
 	z-index: 5; opacity: 0.5;

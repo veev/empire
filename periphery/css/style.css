@@ -22,7 +22,7 @@ div.periphery_top div.peripherymore {
 	width: 127px; height: 45px; 
 	cursor: pointer; 
 	z-index: 2; 
-	background: url(../../art/more_button.png); 
+	background: url(../../art/more_button.png) no-repeat; 
 	pointer-events: all; }
 div.periphery_top div#periphery_structure { 
 	width: 731px; height: 392px; 

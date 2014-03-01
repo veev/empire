@@ -68,7 +68,7 @@ div #migrants_titleline {
 
 div#migrants_top h1 { color: #000; padding-top: 8px; font-size: 2.1em; }
 
-div.migrants_top div.migrantsmore { position: absolute; width: 127px; height: 45px; cursor: pointer; z-index: 5; background: url(../../art/migrants/migrants_more.png); pointer-events: all; }
+div.migrants_top div.migrantsmore { position: absolute; width: 127px; height: 45px; cursor: pointer; z-index: 5; background: url(../../art/migrants/migrants_more.png) no-repeat; pointer-events: all; }
 div.migrants_top div#migrants_structure { 
 	width: 731px; height: 392px; 
 	padding-top: 80px; 
