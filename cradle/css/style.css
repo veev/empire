@@ -38,8 +38,8 @@ div.cradle_bottom {
 div.cradle_bottom div.inner { padding: 30px 0 30px 0; }
 div#cradle_main div#c_instructions { position: absolute; z-index: 800; cursor: pointer; background: rgba(0,0,0,.6); width: 760px; padding: 150px 100px 160px 100px; height: 230px; text-align: center; }
 div#cradle_main div#c_instructions span#swifter { width: 187px; height: 540px; z-index: 1; left: 388; top: 0; position: absolute; background: url(../../art/cradle/instructions_spin.png); }
-div#cradle_main div#c_instructions span#ctitle { width: 279px; height: 41px; z-index: 2; left: 338; opacity: .5; top: 30; position: absolute; background: url(../../art/cradle/cradle_title.png); }
-div#cradle_main div#c_instructions span#cradleplay2 { position: absolute; cursor: pointer; z-index: 5; pointer-events: all; bottom: 40; right: 425;}
+/*div#cradle_main div#c_instructions span#ctitle { width: 279px; height: 41px; z-index: 2; left: 338; opacity: .5; top: 30; position: absolute; background: url(../../art/cradle/cradle_title.png); }
+*/div#cradle_main div#c_instructions span#cradleplay2 { position: absolute; cursor: pointer; z-index: 5; pointer-events: all; bottom: 40; right: 425;}
 div#cradle_main div#c_instructions p { position: relative; font-size: 1.4em; }
 div#cradle_main div#c_instructions p#crad_0 { top: -80; }
 div#cradle_main div#c_instructions p#crad_1 { color: #eddb58; top: 70; left: -277;}
