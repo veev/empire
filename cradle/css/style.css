@@ -67,14 +67,14 @@ div.cradle_bottom div#cbottom_structure div.cbottom_l a { color: #ead84e; }
 div#cradle_main div#cradle_linewhite { background: url(../../art/cradle/b_linewhite.png) repeat-y; width: 3px; position: absolute; z-index: 1; }
 div.cradle_top div#cradle_structure { 
 	width: 731px; 
-	height: 392px; 
+	height: 463px; 
 	padding-top: 80px; 
 	text-align: left; 
 	position: absolute; 
 	top: 0; left: 25%; 
 	z-index: 3; 
 	color: #ecda50; 
-	background: url(../../art/cradle/structurebg.png); }
+	background: url(../../art/cradle/structurebg.png) no-repeat ; }
 div.cradle_top div#cradle_structure div { width: 306px; height: 89px; padding: 20px 30px 20px 30px; position: absolute; }
 div.cradle_top div#cradle_structure div#c_c { left: 366; top: 235; } 
 div.cradle_top div#cradle_structure div#c_d { top: 355; }
