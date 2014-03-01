@@ -204,9 +204,12 @@ function periphery_closescreen () {
 function periphery_sizer () {
 
 	// var matop = ($("#periphery_top").height() / 2) - 320; // top of the matrix
+	// var w = $("#periphery_top").width();
+	// var h = $("#periphery_top").height();
+	console.log("w: "+w+ ", h: " + h);
 	var matop = 210;
-	var padtop = 84; // top of the main title
-	var legbottom = 30; //offset of the bottom play button on the open screen
+	var padtop = h * 0.11;  // top of the main title
+	var legbottom = 70; //offset of the bottom play button on the open screen
 	var body = $('html body');
 	// if($("#periphery_top").height() < 780){ // if this a wee screen
 	//   padtop = 10;
@@ -219,22 +222,22 @@ function periphery_sizer () {
 	
 	$("#periphery_bottom").css("height",$("#periphery_top").height());
 
-	$('#periphery_line').css({ 'top': matop, 'height': 100, 'left': (($("#periphery_top").width() / 2)) });
-	$('#periphery_line2').css({ 'top': 610, 'height': 300, 'left': (($("#periphery_top").width() / 2)) });
+	$('#periphery_line').css({ 'top': matop, 'height': 100, 'left': (($("#periphery_top").width() / 2) - 7) });
+	$('#periphery_line2').css({ 'top': 610, 'height': 300, 'left': (($("#periphery_top").width() / 2) - 7) });
 
-	$("#periphery_linewhite").css({ 'height': $("#periphery_main").height(), 'left': (($("#periphery_top").width() / 2)) });
-	$('#periphery_bottomline').css({ 'top': 0, 'height': 200, 'left': (($("#periphery_top").width() / 2)) });
+	$("#periphery_linewhite").css({ 'height': $("#periphery_main").height(), 'left': (($("#periphery_top").width() / 2) - 7) });
+	$('#periphery_bottomline').css({ 'top': 0, 'height': 200, 'left': (($("#periphery_top").width() / 2) - 7) });
 	
 	$("#periphery_title").css({ 'padding-top': padtop });
 
 	$("#periphery_structure").css({ 'margin-top': matop, 'left': (($("#periphery_top").width() / 2) - 370) });
-	$("#pbottom_structure").css({ 'margin-top': ((($("#periphery_bottom").height() - 160) / 2) - 330), 'left': ($("#periphery_top").width() / 2)-286 });
+	$("#pbottom_structure").css({ 'margin-top': ((($("#periphery_bottom").height() - 160) / 2) - 300), 'left': ($("#periphery_top").width() / 2)-286 });
 
 	$("#p_legmore").css({ "margin-left": ($("#periphery_main").width() / 2) - 70 }).on('click', function() {
 		body.animate({scrollTop: ($("#periphery_bottom").offset().top)}, 1000);
 	});
 
-	$("#peripherymore").css({"bottom": legbottom, "margin-left": ($("#periphery_top").width() / 2) - 70 }).fadeIn(4000).click(function() {
+	$("#peripherymore").css({"top": h - legbottom, "left": (w/ 2) - 70 }).fadeIn(4000).click(function() {
 
 		body.animate({scrollTop: ($('#periphery_main').offset().top) }, 1000);
 		//console.log("periphery video currentTime = " + document.getElementById("target").currentTime);

@@ -373,5 +373,5 @@ position: absolute;
 }
 
 #cradle_main .home_button {
-	z-index: 5; opacity: 0.5;
+	z-index: 10; opacity: 0.5;
 }

@@ -73,7 +73,7 @@ $(document).ready(function () {
 	//console.log('paperWidth: '+paperWidth+', paperHeight: '+paperHeight);
 	w = paper.w;
 	h = paper.h;
-	//console.log('w: '+w+', h: '+h);
+	console.log('w: '+w+', h: '+h);
 	paper.canvas.setAttribute('preserveAspectRatio', 'none'); 
 
 	buildRipples(total); //creates four ripples
@@ -132,9 +132,13 @@ $(document).ready(function () {
 
 		else if (key == 68 || key == 100) {
 			e.preventDefault();
-			 p_endVids();
-			//c_endVids();
+			p_endVids();
 			//console.log(' [ document on keydown ] : debug p_endVids p_buildscreen');
+		}
+
+		else if (key == 67 || key == 99) {
+			c_endVids();
+
 		}
 	});
 
@@ -160,12 +164,13 @@ $(document).ready(function () {
 			p_leftpoint = p_marginsize + 180;
 			p_rightpoint = (p_lazywidth - p_marginsize) - 180;
 		}
-		else if(migrantsActive) {
-			migrants_sizer();
-		}
 		else if(legacyActive) {
 			legacy_sizer();
 		}
+		else if(migrantsActive) {
+			migrants_sizer();
+		}
+
 	});
 
 //how do i get scroll snap to work better?
