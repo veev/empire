@@ -465,7 +465,7 @@ function animateButton(index){
 			else{
 				if( document.getElementById("target").currentTime > 0 ) {
 				 	console.log("toggling periphery display");
-				 		p_toggleButtonDisplay();
+				 	p_toggleButtonDisplay();
 				 }
 				 console.log("target current time  ? " + document.getElementById("target").currentTime);	 	
 				
@@ -675,7 +675,7 @@ function c_toggleButtonDisplay(){
 
 function p_toggleButtonDisplay() {
 	if(document.getElementById("target") != null) {
-		if(document.getElementById("target".paused)) {
+		if(document.getElementById("target").paused) {
 			console.log("Toggle periphery play button on");
 			$("#p_play_bg").fadeIn();
 		} else {
