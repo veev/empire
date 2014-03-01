@@ -557,7 +557,7 @@ function animateHome() {
 function animateHomeNode(index) {
 	//take ripples back to original state - home page
 	var speed = config.rippleGrowSpeed;
-	var offset = 180;
+	var offset = w * 0.11;
 	var pos = (offset * index) + offset; //radius of Home Button
 	var titleOffset = config.titleOffset;
 	var titleHeight = config.titleHeight;
