@@ -176,7 +176,7 @@ function cradle_openscreen () {
 	$("#c_instructions").fadeIn(2000);
 	if(_ammobile){
 		
-		$("#ctitle").show();
+		// $("#ctitle").show();
 		// $("#c_instructions").css({ 'pointer-events':'none' });
 	} else {
 		//console.log("[ Cradle: openscreen ] cradle_closescreen on setTimeout 1");

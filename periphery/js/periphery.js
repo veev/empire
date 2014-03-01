@@ -202,18 +202,18 @@ function periphery_openscreen () {
 	 if(_ammobile){
 
 		 $("#ptitle").show();
-		 $("#p_instructions").css({ 'pointer-events':'none' });
+		 // $("#p_instructions").css({ 'pointer-events':'none' });
 	 } else {
-	 	//console.log("[Periphery: openscreen ] periphery_closescreen on setTimeout 1");
+	 	console.log("[Periphery: openscreen ] periphery_closescreen on setTimeout 1");
 		openIvl = setTimeout("periphery_closescreen()",10000);
 		
 	}
 	$("#p_instructions").on('click', function () { 
-		// console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
-		// p_playButton();
+		console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
+		//p_playButton();
 		periphery_closescreen(); 
-		//console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
-		trackMouseRotation();
+		console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
+		//trackMouseRotation();
 	});
 
 	// openIvl = setTimeout("periphery_closescreen()",10000);
