@@ -193,11 +193,11 @@ function cradle_sizer () {
 	//console.log("centering = "+ centering);
 	var body = $('html body');
 
-	// if($("#cradle_top").height() < 780){ // if this a wee screen
-	// 	padtop = 10;
-	// 	matop = 120;
-	// 	legbottom = 20;
-	// }
+	if($("#cradle_top").height() < 780){ // if this a wee screen
+		padtop = 20;
+		matop = 120;
+		legbottom = 20;
+	}
 
 	$("#c_outerouter").css({ 'padding-top': (($("#cradle_top").height() / 2) - ($("#c_outerinner").height() / 2)) });
 	//console.log("padding-top: " + (($("#cradle_top").height() / 2) - ($("#c_outerinner").height() / 2)));

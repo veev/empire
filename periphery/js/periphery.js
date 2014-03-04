@@ -215,11 +215,11 @@ function periphery_sizer () {
 	var centering = (w/2) - 70;
 	//console.log("centering = "+ centering);
 	var body = $('html body');
-	// if($("#periphery_top").height() < 780){ // if this a wee screen
-	//   padtop = 10;
-	//   matop = 120;
-	//   legbottom = 20;
-	// }
+	if($("#periphery_top").height() < 780){ // if this a wee screen
+	  padtop = 20;
+	  matop = 120;
+	  legbottom = 20;
+	}
 
 	$("#p_outerouter").css({ 'padding-top': (($("#periphery_top").height() / 2) - ($("#p_outerinner").height() / 2)) });
 	$(".periphery_intro").css({ 'top': -30});

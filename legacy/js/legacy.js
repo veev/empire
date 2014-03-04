@@ -17,11 +17,11 @@ function legacy_sizer() {
 	//console.log("buffer = "+ buffer);
 	var centering = (w/2) - 70;
 	//console.log("centering = "+ centering);
-	// if($(".yellow:first").height() < 780){ // if this a wee screen
-	// 	padtop = 10;
-	// 	matop = 20;
-	// 	legbottom = 20;
-	// }
+	if($(".legacy_top:first").height() < 780){ // if this a wee screen
+		padtop = 20;
+		matop = 20;
+		legbottom = 20;
+	}
 	
 	$(".legacy_bottom").css("height",$(".legacy_top:first").height());
 	

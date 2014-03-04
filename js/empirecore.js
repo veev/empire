@@ -256,11 +256,11 @@ function buildRippleNode(index){
 	bottomLetter = paper.text(botLetX, botLetY, LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0, 'cursor': 'pointer'});
 
 	//for debugging bottom letter placement
-	for(var i=0; i< 360; i++){
-		botLetX =  posX * Math.cos(i * rad);
-		botLetY =  posY * Math.sin(i * rad);
-		paper.text(botLetX, botLetY, i).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0.2});
-	}    
+	// for(var i=0; i< 360; i++){
+	// 	botLetX =  posX * Math.cos(i * rad);
+	// 	botLetY =  posY * Math.sin(i * rad);
+	// 	paper.text(botLetX, botLetY, i).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0.2});
+	// }    
     var btn = new Button(ripple, title, topLetter, bottomLetter, false, false);
     btn.id = RIPPLE_ID[index];
     btn.index = index;

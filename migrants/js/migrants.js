@@ -15,15 +15,15 @@ function migrants_sizer() {
 	var centering = (w/2) - 62;
 	//console.log("centering = "+ centering);
 	var body = $('html body');
-	// if($(".yellow:first").height() < 780){ // if this a wee screen
-	// 	padtop = 10;
-	// 	matop = 20;
-	// 	legbottom = 20;
-	// }
+	if($(".migrants_top:first").height() < 780){ // if this a wee screen
+		padtop = 20;
+		matop = 140;
+		legbottom = 20;
+	}
 	
 	$("#migrants_title").css({ 'padding-top': padtop, 'height' : matop });
 
-	$("#mainarea").css({ "margin-top": 0 });
+	$("#mainarea").css({ "margin-top": 20 });
 	
 	// var vtop = (($("#legacy_main").height() - h) / 2) - 50;
 	
