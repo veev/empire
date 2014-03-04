@@ -61,7 +61,7 @@ div#legacy_main div.more { position: absolute; bottom: 60; width: 127px; height:
 	cursor: pointer;
 	pointer-events: all;
 }
-#legacymore { z-index: 5; background: url(../../art/more_button.png);}
+#legacymore { z-index: 5; background: url(../../art/more_button.png) no-repeat;}
 
 div#legacy_main div#legacy_wline1 {
 	left: 201px;

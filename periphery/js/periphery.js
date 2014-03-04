@@ -213,12 +213,14 @@ function periphery_sizer () {
 	var buffer = h - legbottom;
 	//console.log("buffer = "+ buffer);
 	var centering = (w/2) - 70;
+	var linetop = 610;
 	//console.log("centering = "+ centering);
 	var body = $('html body');
 	if($("#periphery_top").height() < 780){ // if this a wee screen
 	  padtop = 20;
 	  matop = 120;
 	  legbottom = 20;
+	  linetop = 525;
 	}
 
 	$("#p_outerouter").css({ 'padding-top': (($("#periphery_top").height() / 2) - ($("#p_outerinner").height() / 2)) });
@@ -227,7 +229,7 @@ function periphery_sizer () {
 	$("#periphery_bottom").css("height",$("#periphery_top").height());
 
 	$('#periphery_line').css({ 'top': matop, 'height': 100, 'left': (($("#periphery_top").width() / 2) - 7) });
-	$('#periphery_line2').css({ 'top': 610, 'height': 300, 'left': (($("#periphery_top").width() / 2) - 7) });
+	$('#periphery_line2').css({ 'top': linetop, 'height': 300, 'left': (($("#periphery_top").width() / 2) - 7) });
 
 	$("#periphery_linewhite").css({ 'height': $("#periphery_main").height(), 'left': (($("#periphery_top").width() / 2) - 7) });
 	$('#periphery_bottomline').css({ 'top': 0, 'height': 200, 'left': (($("#periphery_top").width() / 2) - 7) });
