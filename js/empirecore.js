@@ -223,7 +223,8 @@ function buildRippleNode(index){
 	//var offset = 180; //used to be a set opening radius
 	var offset = w * 0.11; //multiplier that works with my aspect ratio
 	var pos = (offset * index) + offset; //radius of Home Button
-	var titleOffset = config.titleOffset;
+	//var titleOffset = config.titleOffset;
+	var titleOffset = offset/2;
 	var titleHeight = config.titleHeight;
 	var aspectRatio = h/w;
 	//topLetter variables
@@ -255,11 +256,11 @@ function buildRippleNode(index){
 	bottomLetter = paper.text(botLetX, botLetY, LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0, 'cursor': 'pointer'});
 
 	//for debugging bottom letter placement
-	// for(var i=0; i< 360; i++){
-	// 	botLetX =  posX * Math.cos(i * rad);
-	// 	botLetY =  posY * Math.sin(i * rad);
-	// 	bottomLetter = paper.text(botLetX, botLetY, i).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0.1});
-	// }    
+	for(var i=0; i< 360; i++){
+		botLetX =  posX * Math.cos(i * rad);
+		botLetY =  posY * Math.sin(i * rad);
+		paper.text(botLetX, botLetY, i).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0.2});
+	}    
     var btn = new Button(ripple, title, topLetter, bottomLetter, false, false);
     btn.id = RIPPLE_ID[index];
     btn.index = index;
