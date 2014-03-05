@@ -66,6 +66,8 @@ $(document).ready(function () {
 		document.getElementById('ambientaudio').addEventListener('canplaythrough', audioready);
 	}
 
+	$("#loading_screen").delay(4000).fadeOut(400);
+	// setTimeout(10000,fadeLoading);
 	//console.log("Im in ready ");
 	paperWidth = $('#container').width();
 	paperHeight = $('#container').height();
@@ -78,8 +80,10 @@ $(document).ready(function () {
 
 	buildRipples(total); //creates four ripples
 
+
 	drawer();
 	$("#containerinner").fadeIn();
+	$("#canvas_container").fadeIn();
 
 	//loadMedia();
 	addCradleListeners();
