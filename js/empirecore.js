@@ -197,11 +197,16 @@ $(document).ready(function () {
 	
 	console.log(path);
 	// console.log(loc[loc.length -1])
-	if (path == "#Cradle" ) {
-
+	if (path == "#cradle" ) {
 		animateButton(0);
-	};
-d
+	} else if (path == "#legacy") {
+		animateButton(1);
+	} else if (path == "#migrants") {
+		animateButton(2);
+	} else if (path == "#periphery") {
+		animateButton(3);
+	}
+
 });
 
 // $(window).bind("scroll", function() {
@@ -354,7 +359,7 @@ function animateButton(index){
 
 		if(index === 0) {
 			//console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
-			location.hash = "Cradle";
+			location.hash = "cradle";
 			$("#cradleContent").fadeIn(2000);
 			
 			if(cradleLoaded === false) {
@@ -394,7 +399,7 @@ function animateButton(index){
 		 }
 
 		 if(index === 1) {
-			location.hash = "Legacy";
+			location.hash = "legacy";
 		 	//console.log("[ animateButton ] legacy was loaded ?" + legacyLoaded);
 
 		 	$("#legacyContent").fadeIn(2000);
@@ -417,7 +422,7 @@ function animateButton(index){
 		 }
 
 		  if(index === 2) {
-			location.hash = "Migrants";
+			location.hash = "migrants";
 		 	//console.log("[ animateButton ] migrants was loaded ?" + migrantsLoaded);
 
 		 	$("#migrantsContent").fadeIn(2000);
@@ -441,7 +446,7 @@ function animateButton(index){
 		 }
 
 	 	if(index === 3) {
-	 		location.hash = "Periphery";
+	 		location.hash = "periphery";
 	 		//console.log("[ animateButton ] periphery was loaded  ?" + peripheryLoaded);
 
 			$("#peripheryContent").fadeIn(2000);
