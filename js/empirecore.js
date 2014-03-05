@@ -15,7 +15,7 @@ var w, h, paperHeight, paperWidth;
 var config = {
 	titleOffset:90,
 	animationSpeed:1000,
-	titleHeight:40,
+	titleHeight:30,
 	bigRadiusOffset: 60,
 	bigRadHeightShift: 200,
 	smCradleRadius: 100,
@@ -242,6 +242,8 @@ function buildRippleNode(index){
 	//var titleOffset = config.titleOffset;
 	var titleOffset = offset/2;
 	var titleHeight = config.titleHeight;
+	// var titleHeight = offset/4;
+	console.log("titleHeight: "+titleHeight);
 	var aspectRatio = h/w;
 	//topLetter variables
 	var smCradleR = config.smCradleRadius;
@@ -272,11 +274,11 @@ function buildRippleNode(index){
 	bottomLetter = paper.text(botLetX, botLetY, LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0, 'cursor': 'pointer'});
 
 	//for debugging bottom letter placement
-	// for(var i=0; i< 360; i++){
-	// 	botLetX =  posX * Math.cos(i * rad);
-	// 	botLetY =  posY * Math.sin(i * rad);
-	// 	paper.text(botLetX, botLetY, i).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0.2});
-	// }    
+	for(var i=0; i< 360; i++){
+		botLetX =  posX * Math.cos(i * rad);
+		botLetY =  posY * Math.sin(i * rad);
+		paper.text(botLetX, botLetY, i).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0.2});
+	}    
     var btn = new Button(ripple, title, topLetter, bottomLetter, false, false);
     btn.id = RIPPLE_ID[index];
     btn.index = index;
