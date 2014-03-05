@@ -201,7 +201,7 @@ $(document).ready(function () {
 
 		animateButton(0);
 	};
-
+d
 });
 
 // $(window).bind("scroll", function() {
@@ -364,14 +364,12 @@ function animateButton(index){
 			 	cradleLoaded = true;
 				//console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
 			 }
-			
 			//console.log("[ document ready ] cradleActive scrollsnap");
 			$(document).scrollsnap({
 				snaps: '.snap',
 				proximity: 180,
 				handler: cradle_scrollsnaphandle
 			});		 
-			
 			 //addCradleListeners();
 			cradleActive = true;
 			audioready();
@@ -384,10 +382,8 @@ function animateButton(index){
 				 		c_toggleButtonDisplay();
 				 }
 				 //console.log("video1 current time  ?" + document.getElementById("video1").currentTime);	 	
-				
 			}
 			//console.log("[ animateButton ] cradle is active  ?" + cradleActive);
-
 		 } else {
 
 		 	$("#cradleContent").fadeOut("fast");
@@ -445,6 +441,7 @@ function animateButton(index){
 		 }
 
 	 	if(index === 3) {
+	 		location.hash = "Periphery";
 	 		//console.log("[ animateButton ] periphery was loaded  ?" + peripheryLoaded);
 
 			$("#peripheryContent").fadeIn(2000);
