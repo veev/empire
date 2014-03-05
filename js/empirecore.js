@@ -89,7 +89,7 @@ $(document).ready(function () {
 	attachLegacyEvents();
 	attachMigrantsEvents();
 	attachPeripheryEvents();
-
+	window.addEventListener("hashchange", hashEvent, false);
 	$(".home_button").on('click', function() {
 		if(cradleActive) {
 			c_pauseVids();
@@ -175,7 +175,7 @@ $(document).ready(function () {
 
 	});
 
-//how do i get scroll snap to work better?
+	//how do i get scroll snap to work better?
 
 	// if(cradleActive) {
 		//console.log("[ document ready ] cradleActive scrollsnap");
@@ -193,7 +193,14 @@ $(document).ready(function () {
 	// 		handler: periphery_scrollsnaphandle
 	// 	});
 	// }
+	var path = window.location.hash;
+	
+	console.log(path);
+	// console.log(loc[loc.length -1])
+	if (path == "#Cradle" ) {
 
+		animateButton(0);
+	};
 
 });
 
@@ -248,7 +255,7 @@ function buildRippleNode(index){
 	var botLetY =  posY_ * Math.sin(thetaY * rad);
 
 	ripple = paper.path("M0,0 L"+pos+",0 A"+pos+","+pos+" 0 0,1 0,"+pos+"z")
-	ripple.attr({'fill': COLORS[index], 'fill': URL[index], 'stroke': COLORS[index], 'cursor': 'pointer', 'overflow':'hidden'})
+	ripple.attr({'fill': COLORS[index], 'fill': URL[index], 'stroke': COLORS[index], 'cursor': 'pointer', 'position':'absolute'})
 		  .data('name_', RIPPLE_ID[index]);
 
 	title = paper.text(pos - titleOffset, titleHeight, LABELS[index]).attr({'font-size': '24px', 'font-style': 'italic', 'opacity': 1, 'cursor': 'pointer'});
@@ -325,6 +332,9 @@ function cradle_scrollsnaphandle(e){
 	console.log(e)
 	console.log("im here")
 }
+function hashEvent(){
+	console.log(window.location.hash)
+}
 function animateButton(index){
 
 	//interactivity for ripple navigation
@@ -343,9 +353,8 @@ function animateButton(index){
  		growRippleNode(index);
 
 		if(index === 0) {
-
 			//console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
-			
+			location.hash = "Cradle";
 			$("#cradleContent").fadeIn(2000);
 			
 			if(cradleLoaded === false) {
@@ -389,7 +398,7 @@ function animateButton(index){
 		 }
 
 		 if(index === 1) {
-
+			location.hash = "Legacy";
 		 	//console.log("[ animateButton ] legacy was loaded ?" + legacyLoaded);
 
 		 	$("#legacyContent").fadeIn(2000);
@@ -412,7 +421,7 @@ function animateButton(index){
 		 }
 
 		  if(index === 2) {
-
+			location.hash = "Migrants";
 		 	//console.log("[ animateButton ] migrants was loaded ?" + migrantsLoaded);
 
 		 	$("#migrantsContent").fadeIn(2000);
