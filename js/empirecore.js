@@ -73,7 +73,7 @@ $(document).ready(function () {
 	//console.log('paperWidth: '+paperWidth+', paperHeight: '+paperHeight);
 	w = paper.w;
 	h = paper.h;
-	console.log('w: '+w+', h: '+h);
+	//console.log('w: '+w+', h: '+h);
 	paper.canvas.setAttribute('preserveAspectRatio', 'none'); 
 
 	buildRipples(total); //creates four ripples
@@ -195,7 +195,7 @@ $(document).ready(function () {
 	// }
 	var path = window.location.hash;
 	
-	console.log(path);
+	//console.log(path);
 	// console.log(loc[loc.length -1])
 	if (path == "#cradle" ) {
 		animateButton(0);
@@ -334,11 +334,11 @@ function buildRipples(total) {
 }
 
 function cradle_scrollsnaphandle(e){
-	console.log(e)
-	console.log("im here")
+	//console.log(e)
+	//console.log("im here")
 }
 function hashEvent(){
-	console.log(window.location.hash)
+	//console.log(window.location.hash)
 }
 function animateButton(index){
 
