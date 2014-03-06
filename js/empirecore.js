@@ -202,7 +202,7 @@ $(document).ready(function () {
 	$("#c_instructions").scrollspy({
 		min: $("#c_instructions").offset().top,
 		onEnter: function(element, position) {
-			console.log("entering c_instructions");
+			//console.log("entering c_instructions");
 			if(document.getElementById("video1").currentTime == 0) {
 				cradle_openscreen();
 			} 
@@ -211,7 +211,7 @@ $(document).ready(function () {
 			} 	
 		},
 		onLeave: function(element, position) {
-			console.log("leaving c_instructions");
+			//console.log("leaving c_instructions");
 			$("#c_instructions").fadeOut();
 		}
 	});
@@ -219,7 +219,7 @@ $(document).ready(function () {
 	$("#p_instructions").scrollspy({
 		min: $("#p_instructions").offset().top,
 		onEnter: function(element, position) {
-			console.log("entering p_instructions");
+			//console.log("entering p_instructions");
 			if(document.getElementById("target").currentTime == 0) {
 				periphery_openscreen();
 			} 
@@ -228,7 +228,7 @@ $(document).ready(function () {
 			} 	
 		},
 		onLeave: function(element, position) {
-			console.log("leaving p_instructions");
+			//console.log("leaving p_instructions");
 			$("#p_instructions").fadeOut();
 		}
 	});
@@ -280,7 +280,7 @@ function buildRippleNode(index){
 	var titleOffset = offset/2;
 	var titleHeight = config.titleHeight;
 	// var titleHeight = offset/4;
-	console.log("titleHeight: "+titleHeight);
+	//console.log("titleHeight: "+titleHeight);
 	var aspectRatio = h/w;
 	//topLetter variables
 	var smCradleR = config.smCradleRadius;
