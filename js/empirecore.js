@@ -849,8 +849,8 @@ function loadPeriphery2() {
 	// console.log("lazyYtop: "+ lazyYtop);
 	// console.log("lazyYbottom: "+ lazyYbottom);
 	//console.log("Im in ready ");
-	w = $("#container").width();
-	h = $("#container").height();
+	// w = $("#container").width();
+	// h = $("#container").height();
 
 	p_currentvideoid = 'target';
 	
