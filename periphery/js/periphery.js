@@ -206,7 +206,7 @@ function periphery_sizer () {
 	// var matop = ($("#periphery_top").height() / 2) - 320; // top of the matrix
 	var w = $("#periphery_top").width();
 	var h = $("#periphery_top").height();
-	//console.log("w: "+w+ ", h: " + h);
+	console.log("w: "+w+ ", h: " + h);
 	var matop = 210;
 	var padtop = h * 0.11;  // top of the main title
 	var legbottom = 70; //offset of the bottom play button on the open screen
