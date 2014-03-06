@@ -94,25 +94,26 @@ $(document).ready(function () {
 	attachMigrantsEvents();
 	attachPeripheryEvents();
 	window.addEventListener("hashchange", hashEvent, false);
-	$(".home_button").on('click', function() {
-		if(cradleActive) {
+
+	$(".home_button").on('click', function(e) {
+		if(!document.getElementById("video1").paused || !document.getElementById("video2").paused) {
 			c_pauseVids();
 			document.getElementById("video1").currentTime = 0;
 			document.getElementById("video2").currentTime = 0;
 			//console.log("[document ready] home_button : c_pauseVids ? " + cradleActive);
 		}
-		else if (peripheryActive) {
+		else if (!document.getElementById("target").paused) {
 			p_pauseVids();
 			document.getElementById("target").currentTime = 0;
 			document.getElementById("audio_norm").currentTime = 0;
 			document.getElementById("audio_yeti").currentTime = 0;
 			//console.log("[document ready] home_button : p_pauseVids ? " + peripheryActive);
-
 		}
-
-
 		//console.log("[ document ready ] home button : animateHome()");
 		animateHome();
+		window.location.hash = "";
+		history.pushState('', document.title, window.location.pathname); // nice and clean
+    	e.preventDefault();
 	});
 
 	$(document).on('keydown',function (e) {
@@ -197,6 +198,42 @@ $(document).ready(function () {
 	// 		handler: periphery_scrollsnaphandle
 	// 	});
 	// }
+
+	$("#c_instructions").scrollspy({
+		min: $("#c_instructions").offset().top,
+		onEnter: function(element, position) {
+			console.log("entering c_instructions");
+			if(document.getElementById("video1").currentTime == 0) {
+				cradle_openscreen();
+			} 
+			else {
+				c_toggleButtonDisplay();
+			} 	
+		},
+		onLeave: function(element, position) {
+			console.log("leaving c_instructions");
+			$("#c_instructions").fadeOut();
+		}
+	});
+
+	$("#p_instructions").scrollspy({
+		min: $("#p_instructions").offset().top,
+		onEnter: function(element, position) {
+			console.log("entering p_instructions");
+			if(document.getElementById("target").currentTime == 0) {
+				periphery_openscreen();
+			} 
+			else {
+				p_toggleButtonDisplay();
+			} 	
+		},
+		onLeave: function(element, position) {
+			console.log("leaving p_instructions");
+			$("#p_instructions").fadeOut();
+		}
+	});
+
+
 	var path = window.location.hash;
 	
 	//console.log(path);
@@ -274,11 +311,11 @@ function buildRippleNode(index){
 	bottomLetter = paper.text(botLetX, botLetY, LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0, 'cursor': 'pointer'});
 
 	//for debugging bottom letter placement
-	for(var i=0; i< 360; i++){
-		botLetX =  posX * Math.cos(i * rad);
-		botLetY =  posY * Math.sin(i * rad);
-		paper.text(botLetX, botLetY, i).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0.2});
-	}    
+	// for(var i=0; i< 360; i++){
+	// 	botLetX =  posX * Math.cos(i * rad);
+	// 	botLetY =  posY * Math.sin(i * rad);
+	// 	paper.text(botLetX, botLetY, i).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0.2});
+	// }    
     var btn = new Button(ripple, title, topLetter, bottomLetter, false, false);
     btn.id = RIPPLE_ID[index];
     btn.index = index;

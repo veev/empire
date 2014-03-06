@@ -76,8 +76,10 @@ div#legacy_main #l_outerouter {
 	text-align: center;
 	position: absolute;
 	width: 100%;
+	height: 100%;
 	z-index: 4;
 	opacity: 0.9;
+	overflow: hidden;
 }
 
 div#legacy_main #l_outerouter #l_outerinner {

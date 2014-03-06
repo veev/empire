@@ -1,5 +1,7 @@
 #loading_screen {
-	background:  url(../art/e_bg.jpg), url(../art/e_bg_b.jpg); 
+/*	background:  url(../art/e_bg.jpg), url(../art/e_bg_b.jpg); 
+*/	
+	background: #000;
 	background-size: 100%;
 	background-position: top left, 0px 800px;
 	background-repeat: repeat-x, repeat-x;
