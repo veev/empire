@@ -239,7 +239,7 @@ function periphery_sizer () {
 	$("#periphery_structure").css({ 'margin-top': matop, 'left': (($("#periphery_top").width() / 2) - 370) });
 	$("#pbottom_structure").css({ 'margin-top': ((($("#periphery_bottom").height() - 160) / 2) - 300), 'left': ($("#periphery_top").width() / 2)-286 });
 
-	$("#p_legmore").css({ "margin-left": ($("#periphery_main").width() / 2) - 70 }).on('click', function() {
+	$("#p_leg	").css({ "margin-left": ($("#periphery_main").width() / 2) - 70 }).on('click', function() {
 		body.animate({scrollTop: ($("#periphery_bottom").offset().top)}, 1000);
 	});
 
@@ -501,6 +501,7 @@ function p_scrubberUpdater (){
 	p_curtime = document.getElementById("target").currentTime;
 
 	$("#p_progress").css({ "width": (640 / ratio) + 'px' });
+	
 	if(document.getElementById("audio_yeti").volume > document.getElementById("audio_norm").volume ){
 		p_sidetracker[Math.floor(document.getElementById("target").currentTime)] = 1;
 		//console.log("yeti louder than norm");

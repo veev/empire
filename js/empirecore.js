@@ -43,6 +43,8 @@ var LETTERS = ['C', 'L', 'M', 'P'];
 var COLORS = ['#ecda50', '#fbb03b', '#ff5a00', '#cc3333'];
 var URL = ['url(art/c_bg.jpg)', 'url(art/l_bg.jpg)', 'url(art/m_bg.jpg)', 'url(art/p_bg.jpg)' ];
 var URL_BOTTOM = ['url(art/c_bg_b.jpg)', 'url(art/l_bg_b.jpg)', 'url(art/m_bg_b.jpg)', 'url(art/p_bg_b.jpg)' ];
+//var m_url = 'migrants/css/timecode.json';
+var m_url = 'http://empire.genevievehoffman.com/migrants/css/timecode.json';
 
 
 $(document).ready(function () {
@@ -85,9 +87,16 @@ $(document).ready(function () {
 	$("#containerinner").fadeIn();
 	$("#canvas_container").fadeIn();
 
+	
+
+	//add Migrants JSON file
+	var data = m_jsonCall();
+	timecodeArray = loadTimecodeData(data);
+	
 	//loadMedia();
 	addCradleListeners();
 	addPeripheryListeners();
+	addMigrantsListeners();
 
 	attachCradleEvents();
 	attachLegacyEvents();
@@ -108,6 +117,9 @@ $(document).ready(function () {
 			document.getElementById("audio_norm").currentTime = 0;
 			document.getElementById("audio_yeti").currentTime = 0;
 			//console.log("[document ready] home_button : p_pauseVids ? " + peripheryActive);
+		}
+		else if (!document.getElementById("migrants_video").paused) {
+			m_pauseVids();
 		}
 		//console.log("[ document ready ] home button : animateHome()");
 		animateHome();
@@ -137,15 +149,19 @@ $(document).ready(function () {
 			}
 		}
 
-		else if (key == 68 || key == 100) {
+		else if (key == 68 || key == 100) { //press 'D' or 'd'
 			e.preventDefault();
 			p_endVids();
 			//console.log(' [ document on keydown ] : debug p_endVids p_buildscreen');
 		}
 
-		else if (key == 67 || key == 99) {
+		else if (key == 67 || key == 99) { //press 'C' or 'c'
 			c_endVids();
 
+		}
+
+		else if (key == 69 || key == 101) { // press 'E' or 'e'
+			m_audioToggle();
 		}
 	});
 
@@ -466,7 +482,7 @@ function animateButton(index){
 
 		  if(index === 2) {
 			location.hash = "migrants";
-		 	//console.log("[ animateButton ] migrants was loaded ?" + migrantsLoaded);
+		 	console.log("[ animateButton ] migrants was loaded ?" + migrantsLoaded);
 
 		 	$("#migrantsContent").fadeIn(2000);
 
@@ -474,18 +490,19 @@ function animateButton(index){
 		 	 	
 		 	 	loadMigrants();	
 		 	 	migrantsLoaded = true;
-		 	 	//console.log("[ animateButton ] migrants was loaded  ?" + migrantsLoaded);
+		 	 	console.log("[ animateButton ] migrants was loaded  ?" + migrantsLoaded);
 		 	 	
 		 	}	
 		 	migrantsActive = true;
 		 	audioready();
-		 	//console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
+		 	console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
 		 } 
 		 else  {
 
 		 	$("#migrantsContent").fadeOut("fast");
+		 	m_pauseVids();
 		 	migrantsActive = false;
-		 	//console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
+		 	console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
 		 }
 
 	 	if(index === 3) {
@@ -662,6 +679,10 @@ function loadMigrants() {
 	$(".migrants_top").css({ 'background' : 'none'});
 
 	migrants_sizer();
+	m_init();
+	m_circleScrubber();
+	// m_instructionFills();
+	// m_actFillsLabels();
 }
 
 function loadLegacy() {
