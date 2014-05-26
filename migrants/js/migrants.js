@@ -428,7 +428,7 @@ function migrants_openscreen () {
 	// m_playVids();
 
 	$("#migrants_video").fadeIn(4000, function() {
-		console.log("[migrants_openscreen] migrants_vide fadeIn");
+		console.log("[migrants_openscreen] migrants_video fadeIn");
 		
 		// if(migrantsActive && document.getElementById("migrants_video").paused) {
 		// 	m_playButton();
@@ -512,6 +512,8 @@ function m_loadVideo () {
 	if(migrantsActive && document.getElementById("migrants_video").paused) {
 		m_playButton();
 		document.getElementById("migrants_video").volume = 0;
+	} else {
+		console.log("[m_loadVideo] video is not paused");
 	}
 }
 
