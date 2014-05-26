@@ -27,11 +27,7 @@ var progrssCircle; //= rsr.circle(0, 0, 0).attr({fill: 'none',stroke: '#FFFFFF',
 var initPathPos = 0;
 var vennMap;	 
 //var ratio;
-// function getCurrentXY(xloc, yloc, value, total, R){
-	
 
-
-// }
 function progressArcInitPos(){
 	var initPos;
 	var initDur = m_getCurrentTime();
@@ -271,11 +267,11 @@ function migrants_sizer() {
 	$("#m_legmore").css({ "margin-left": ($("#migrants_main").width() / 2) - 90 });
 
 	if (h < 700) {
-		$("#minst_2").css({"top": '-50%'});
-		$("#minst_3").css({"top": '125%'});
+		$("#minst_2").css({"top": '-16%'});
+		$("#minst_3").css({"top": '48%'});
 	} else {
-		$("#minst_2").css({"top": '-70%'});
-		$("#minst_3").css({ "top": '150%'});
+		$("#minst_2").css({"top": '-21%'});
+		$("#minst_3").css({ "top": '45%'});
 	}
 	// $("#holder").css({"margin-left": ($("#m_outerouter").width() /2) - 400 });
 	// $("#minst_2").css({"margin-left": w/2 - 115, "top": h/2 - 200});
@@ -286,7 +282,7 @@ function migrants_sizer() {
 		body.animate({scrollTop: ($('#migrants_main').offset().top) }, 1000);
 		 console.log("migrants_openscreen() in migrantsmore");
 		 $("#migrants_video").fadeIn(4000);
-		  $("#holder").fadeIn(4000);
+		 $("#holder").fadeIn(4000);
 		 //m_instructionFills();
 		 // m_playVids();
 		 // m_arrayActFills();
@@ -301,38 +297,21 @@ function migrants_sizer() {
 	$("#m_container").on('mouseenter', function() {
 		//console.log("[migrants video : mouse enter]");
 		if(instructionsOff) {
-			$("#migrants_video").css({"opacity": 0.5});
-			// $("#rsr").fadeIn(100,function(){});
-			// $("#holder").show();
-			$("#holder").css({"opacity": 1.0});
-			// var vidZ =  $("#migrants_video").zIndex();
-			// var vidR =  $("#rsr").zIndex();
-			$("#migrants_video").css("z-index" , "10");
-			$("#holder").css("z-index","20");
-			// $("#migrants_video").css({"z-index":1});
-			// $("#rsr").css({"z-index":10});
-			//console.log("Migrants map fadeIn");
+			m_vennMapOn();
 		}
 
 	});
 
+	// if(instructionsOff) {
+	// 	$("#m_container").on('mouseleave', 'm_vennMapOff');
+	// } else {
+	// 	$("#m_container").unbind('mouseleave', 'm_vennMapOff');
+	// }
+
 	$("#m_container").on('mouseleave', function() {
 		//console.log("[migrants video : mouse leave]");
 		if(instructionsOff) {
-			$("#migrants_video").css({"opacity": 1});
-			// $("#holder").hide();
-			// $("#rsr").fadeOut(100,function(){});
-			// $("#rsr").fadeOut();
-			$("#migrants_video").css("z-index" , "20");
-			$("#holder").css("z-index","10");
-			$("#holder").css({"opacity": 0});
-
-			// var vidZ =  $("#migrants_video").zIndex();
-			// var vidR =  $("#rsr").zIndex();
-			// $("#rsr").css({"z-index" : vidR});
-			// $("#migrants_video").css({"z-index":vidZ});
-			// $("#rsr").css({"z-index":1});
-			//console.log("Migrants map fadeOut");
+			m_vennMapOff();
 		}
 
 	});
@@ -340,11 +319,20 @@ function migrants_sizer() {
 	console.log("migrants_sizer");
 }
 
-function m_rolloverOn() {
+function m_vennMapOn() {
 	$("#migrants_video").css({"opacity": 0.5});
 	$("#holder").css({"opacity": 1.0});
 	$("#migrants_video").css("z-index" , "10");
 	$("#holder").css("z-index","20");
+}
+
+function m_vennMapOff() {
+	$("#migrants_video").css({"opacity": 1});
+	$("#holder").css({"opacity": 0});
+	$("#migrants_video").css("z-index" , "20");
+	$("#holder").css("z-index","10");
+
+
 }
 
 function m_audioToggle() {
@@ -418,7 +406,7 @@ function m_jsonCall() {
 function migrants_openscreen () {
 	instructionsOff = false;
 	
-	$("#holder").fadeIn(4000);
+	$("#holder").css({'pointer-events' : 'none'}).fadeIn(4000);
 	// $("#rsr_instructions").css({"z-index":100}).fadeIn(2000);
 	$("#m_instructions").fadeIn(4000, function() {
 		if(migrantsActive && document.getElementById("migrants_video").paused) {
@@ -429,11 +417,11 @@ function migrants_openscreen () {
 	});	 
 	 //console.log("[Periphery: openscreen ] periphery_closescreen on setTimeout 1");
 	//insructIvl = setTimeout("migrants_closescreen()",10000);
-	$("#holder").on('click', function() {
-		migrants_closescreen();
-		console.log("[ holder click: migrants_closescreen ] instructionsOff ? " + instructionsOff );
-		$("#holder").css({'cursor': 'default' , 'pointer-events' : 'none'});
-	});
+	// $("#holder").on('click', function() {
+	// 	migrants_closescreen();
+	// 	console.log("[ holder click: migrants_closescreen ] instructionsOff ? " + instructionsOff );
+	// 	$("#holder").css({'cursor': 'default' , 'pointer-events' : 'none'});
+	// });
 		
 	$("#m_instructions").on('click', function () { 
 		//console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
@@ -447,10 +435,15 @@ function migrants_openscreen () {
 function migrants_closescreen () {
 	clearInterval(insructIvl);
 	instructionsOff = true;
+
+	if (audioactive) {
+		audiostop();
+	}
 	
 	$("#m_instructions").fadeOut(1000, function() {
 		console.log("[Migrants: migrants_closescreen ] m_playButton");
 		document.getElementById("migrants_video").volume = 1;
+		$("#holder").css({'cursor': 'default'});
 		// $("#rsr_instructions").css({"z-index":1}).fadeOut();
 		//trackMouseRotation(); REPLACE WITH SOMETHING FOR MIGRANTS INTERACTION
 		
@@ -524,9 +517,9 @@ function m_playButton() {
 }
 
 function m_playVids() {
-	if (audioactive) {
-		audiostop();
-	}
+	// if (audioactive) {
+	// 	audiostop();
+	// }
 
 	if(m_vidLoaded){
 		//console.log("[ Migrants : playVids ] videoTrackCurrentPosition = " + videoTrackCurrentPosition);
