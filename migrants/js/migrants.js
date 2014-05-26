@@ -430,10 +430,10 @@ function migrants_openscreen () {
 	$("#migrants_video").fadeIn(4000, function() {
 		console.log("[migrants_openscreen] migrants_video fadeIn");
 		
-		// if(migrantsActive && document.getElementById("migrants_video").paused) {
-		// 	m_playButton();
-		// 	document.getElementById("migrants_video").volume = 0;
-		// }
+		if(migrantsActive && document.getElementById("migrants_video").paused) {
+			m_playButton();
+			document.getElementById("migrants_video").volume = 0;
+		}
 	});
 	
 	$("#holder").fadeIn(4000, function() {
@@ -507,8 +507,10 @@ function removeMigrantsListeners() {
 
 function m_loadVideo () {
 	console.log("[ Migrants : Canplaythrough Event ] Video ");
+		m_vidLoaded = true;
+	console.log("Video loaded ? " + m_vidLoaded);
 	progressArcInitPos();
-	m_vidLoaded = true;
+
 	if(migrantsActive && document.getElementById("migrants_video").paused) {
 		m_playButton();
 		document.getElementById("migrants_video").volume = 0;
