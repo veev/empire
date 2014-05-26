@@ -427,7 +427,7 @@ function migrants_openscreen () {
 	instructionsOff = false;
 	// m_playVids();
 
-	$("migrants_video").fadeIn(4000, function() {
+	$("#migrants_video").fadeIn(4000, function() {
 		console.log("[migrants_openscreen] migrants_vide fadeIn");
 		
 		// if(migrantsActive && document.getElementById("migrants_video").paused) {
