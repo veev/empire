@@ -268,7 +268,7 @@ function migrants_sizer() {
 
 	if (h < 700) {
 		$("#minst_2").css({"top": '-16%'});
-		$("#minst_3").css({"top": '48%'});
+		$("#minst_3").css({"top": '40%'});
 	} else {
 		$("#minst_2").css({"top": '-21%'});
 		$("#minst_3").css({ "top": '45%'});
