@@ -267,18 +267,18 @@ function migrants_sizer() {
 	$("#m_legmore").css({ "margin-left": ($("#migrants_main").width() / 2) - 90 });
 
 	if (h < 700) {
-		$("#minst_2").css({"top": '-16%'});
-		$("#minst_3").css({"top": '40%'});
+		$("#minst_2").css({"top": '14%'});
+		$("#minst_3").css({"top": '70%'});
 	} else {
-		$("#minst_2").css({"top": '-21%'});
-		$("#minst_3").css({ "top": '45%'});
+		$("#minst_2").css({"top": '13%'});
+		$("#minst_3").css({ "top": '80%'});
 	}
 	// $("#holder").css({"margin-left": ($("#m_outerouter").width() /2) - 400 });
 	// $("#minst_2").css({"margin-left": w/2 - 115, "top": h/2 - 200});
 	// $("#minst_3").css({"margin-left": w/2 - 105, "top": h/2 + 200});
 
 
-	$("#migrantsmore").css({"top": buffer, "left":centering }).fadeIn(4000).on('click', function() {
+	$("#migrantsmore").css({"top": buffer, "left": centering }).fadeIn(4000).on('click', function() {
 		body.animate({scrollTop: ($('#migrants_main').offset().top) }, 1000);
 		 console.log("migrants_openscreen() in migrantsmore");
 		 $("#migrants_video").fadeIn(4000);
@@ -331,8 +331,6 @@ function m_vennMapOff() {
 	$("#holder").css({"opacity": 0});
 	$("#migrants_video").css("z-index" , "20");
 	$("#holder").css("z-index","10");
-
-
 }
 
 function m_audioToggle() {
