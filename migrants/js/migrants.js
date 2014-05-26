@@ -277,12 +277,16 @@ function migrants_sizer() {
 	// $("#minst_2").css({"margin-left": w/2 - 115, "top": h/2 - 200});
 	// $("#minst_3").css({"margin-left": w/2 - 105, "top": h/2 + 200});
 
+	//This is how I did things in periphery, but not sure I'm calling it in the right place
+	// $("#m_outerouter").on('mouseleave', function() {
+	// 	m_trackoff();
+	// });
 
 	$("#migrantsmore").css({"top": buffer, "left": centering }).fadeIn(4000).on('click', function() {
 		body.animate({scrollTop: ($('#migrants_main').offset().top) }, 1000);
 		 console.log("migrants_openscreen() in migrantsmore");
-		 $("#migrants_video").fadeIn(4000);
-		 $("#holder").fadeIn(4000);
+		 // $("#migrants_video").fadeIn(4000);
+		 // $("#holder").fadeIn(4000);
 		 //m_instructionFills();
 		 // m_playVids();
 		 // m_arrayActFills();
@@ -294,44 +298,61 @@ function migrants_sizer() {
 		}
 	});
 
-	$("#m_container").on('mouseenter', function() {
-		//console.log("[migrants video : mouse enter]");
-		if(instructionsOff) {
-			m_vennMapOn();
-		}
 
-	});
 
 	// if(instructionsOff) {
-	// 	$("#m_container").on('mouseleave', 'm_vennMapOff');
+	// 	$("#m_container").on('mouseleave', m_vennMapOff);
+	// 	$("#m_container").on('mouseenter', m_vennMapOn);
 	// } else {
-	// 	$("#m_container").unbind('mouseleave', 'm_vennMapOff');
+	// 	$("#m_container").unbind('mouseleave', m_vennMapOff);
+	// 	$("#m_container").unbind('mouseenter', m_vennMapOn);
 	// }
 
-	$("#m_container").on('mouseleave', function() {
-		//console.log("[migrants video : mouse leave]");
-		if(instructionsOff) {
-			m_vennMapOff();
-		}
 
-	});
 
 	console.log("migrants_sizer");
 }
 
-function m_vennMapOn() {
+function m_vennTracking() {
+	$("#m_container").on('mouseleave', function() {
+		//console.log("[migrants video : mouse leave]");
+		if(instructionsOff) {
+			m_vennMapOff();
+		} else {
+			console.log("[mouseleave] migrants instructionsOff is false");
+		}
+	});
+
+	$("#m_container").on('mouseenter', function() {
+		//console.log("[migrants video : mouse enter]");
+		if(instructionsOff) {
+			m_vennMapOn();
+		} else {
+			console.log("[mouseenter] migrants instructionsOff is false");
+		}
+	});
+
+	$("#m_instructions").on('click', function () { 
+		//console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
+		migrants_closescreen(); 
+		console.log("[ m_instructions click: migrants_closescreen ] instructionsOff ? " + instructionsOff );
+		//console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
+	});
+}
+
+var m_vennMapOn = function() {
 	$("#migrants_video").css({"opacity": 0.5});
 	$("#holder").css({"opacity": 1.0});
 	$("#migrants_video").css("z-index" , "10");
 	$("#holder").css("z-index","20");
-}
+};
 
-function m_vennMapOff() {
+var m_vennMapOff = function() {
 	$("#migrants_video").css({"opacity": 1});
 	$("#holder").css({"opacity": 0});
 	$("#migrants_video").css("z-index" , "20");
 	$("#holder").css("z-index","10");
-}
+};
 
 function m_audioToggle() {
 	if(migrantsActive) {
@@ -402,9 +423,12 @@ function m_jsonCall() {
 // }
 
 function migrants_openscreen () {
+	console.log("in migrants openscreen");
 	instructionsOff = false;
 	
-	$("#holder").css({'pointer-events' : 'none'}).fadeIn(4000);
+	$("#holder").fadeIn(4000, function() {
+		$("#holder").css({'pointer-events' : 'none', 'opacity': 1.0, 'z-index': 100});
+	});
 	// $("#rsr_instructions").css({"z-index":100}).fadeIn(2000);
 	$("#m_instructions").fadeIn(4000, function() {
 		if(migrantsActive && document.getElementById("migrants_video").paused) {
@@ -421,12 +445,12 @@ function migrants_openscreen () {
 	// 	$("#holder").css({'cursor': 'default' , 'pointer-events' : 'none'});
 	// });
 		
-	$("#m_instructions").on('click', function () { 
-		//console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
-		migrants_closescreen(); 
-		console.log("[ m_instructions click: migrants_closescreen ] instructionsOff ? " + instructionsOff );
-		//console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
-	});
+	// $("#m_instructions").on('click', function () { 
+	// 	//console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
+	// 	migrants_closescreen(); 
+	// 	console.log("[ m_instructions click: migrants_closescreen ] instructionsOff ? " + instructionsOff );
+	// 	//console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
+	// });
 	// m_enoughwithinstructions = true;
 }
 
@@ -446,6 +470,14 @@ function migrants_closescreen () {
 		//trackMouseRotation(); REPLACE WITH SOMETHING FOR MIGRANTS INTERACTION
 		
 	});
+}
+
+function m_trackoff() {
+	$("#m_instructions").unbind('click');
+	//not sure whether to turn this off
+	// $("#migrantsmore").unbind('click');
+	$("#m_container").unbind('mouseenter');
+	$("#m_container").unbind('mouseleave');
 }
 
 function addMigrantsListeners() {
@@ -707,6 +739,11 @@ function m_arrayActFills() {
 	// 	group_g_b_s.push( ghana_label, brazil_label, suriname_label );
 	var fill_6 = new Fill(ghan_braz_suri, 6);
 	actFillArray.push(fill_6);
+
+	var ghan_braz_suri_off = archtype.path("M102.974,103.196c53.163-30.742,99.005-1.572,99.005-1.572c-2.126,62.971-49.312,86.066-49.312,86.066C102.952,158.226,102.974,103.196,102.974,103.196z"); 
+		ghan_braz_suri_off.attr({opacity: '0.0',fill: 'none',stroke: 'none',"stroke-miterlimit": '10','stroke-width': '0','stroke-opacity': '0', 'opacity': '0'}).data('id', '7'); 
+	var fill_7 = new Fill(ghan_braz_suri_off, 7);
+	actFillArray.push(fill_7);
 
 	console.log(actFillArray);
 	

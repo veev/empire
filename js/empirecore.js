@@ -249,6 +249,21 @@ $(document).ready(function () {
 		}
 	});
 
+	$("#m_instructions").scrollspy({
+		min: $("#m_instructions").offset().top,
+		onEnter: function(element, position) {
+			console.log("entering m_instructions");
+			migrants_openscreen();
+			m_vennTracking();
+	
+		},
+		onLeave: function(element, position) {
+			console.log("leaving m_instructions");
+			$("#m_instructions").fadeOut();
+			m_trackoff();
+		}
+	});
+
 
 	var path = window.location.hash;
 	
@@ -681,6 +696,7 @@ function loadMigrants() {
 	migrants_sizer();
 	m_init();
 	m_circleScrubber();
+	// migrants_openscreen();
 	// m_instructionFills();
 	// m_actFillsLabels();
 }
