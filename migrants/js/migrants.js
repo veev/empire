@@ -382,7 +382,7 @@ function loadTimecodeData(data){
     }
 	
 	for (var i = 0; i < localArray.length; i++) {
-		console.log(localArray[i].Venn);
+		//console.log(localArray[i].Venn);
 	}
 	return localArray;
 
@@ -397,7 +397,7 @@ function m_jsonCall() {
         async: false
     }).responseText);
     
-    console.log(data);
+    //console.log(data);
     return data;
     // loadTimecodeData(data);
 	//  $.ajax({
@@ -423,20 +423,24 @@ function m_jsonCall() {
 // }
 
 function migrants_openscreen () {
-	console.log("in migrants openscreen");
+	// console.log("in migrants openscreen");
 	instructionsOff = false;
+	// m_playVids();
+
+	$("migrants_video").fadeIn(4000, function() {
+		console.log("[migrants_openscreen] migrants_vide fadeIn");
+		
+		// if(migrantsActive && document.getElementById("migrants_video").paused) {
+		// 	m_playButton();
+		// 	document.getElementById("migrants_video").volume = 0;
+		// }
+	});
 	
 	$("#holder").fadeIn(4000, function() {
 		$("#holder").css({'pointer-events' : 'none', 'opacity': 1.0, 'z-index': 100});
 	});
 	// $("#rsr_instructions").css({"z-index":100}).fadeIn(2000);
-	$("#m_instructions").fadeIn(4000, function() {
-		if(migrantsActive && document.getElementById("migrants_video").paused) {
-			m_playButton();
-			document.getElementById("migrants_video").volume = 0;
-
-		}
-	});	 
+	$("#m_instructions").fadeIn(4000);	 
 	 //console.log("[Periphery: openscreen ] periphery_closescreen on setTimeout 1");
 	//insructIvl = setTimeout("migrants_closescreen()",10000);
 	// $("#holder").on('click', function() {
@@ -505,7 +509,10 @@ function m_loadVideo () {
 	console.log("[ Migrants : Canplaythrough Event ] Video ");
 	progressArcInitPos();
 	m_vidLoaded = true;
-
+	if(migrantsActive && document.getElementById("migrants_video").paused) {
+		m_playButton();
+		document.getElementById("migrants_video").volume = 0;
+	}
 }
 
 function m_playButton() {
