@@ -22,9 +22,11 @@ var progress_arc;
 var progress_arc_gray;
 var time_arc;
 var time_progress_arc;
+var test_arcseg;
 var instructionsOff = false;
 var progrssCircle; //= rsr.circle(0, 0, 0).attr({fill: 'none',stroke: '#FFFFFF',"stroke-width": '2',"stroke-miterlimit": '10',"stroke-dasharray": '.', parent: 'group_a','stroke-opacity': '1'}).data('id', 'circle_u'); 
 var initPathPos = 0;
+var initPathNewPos = 0;
 var vennMap;	 
 //var ratio;
 
@@ -34,10 +36,11 @@ function progressArcInitPos(){
 	height = $("#migrants_top").height();
 	if(initDur > 0){
 		initPos = ( initDur / document.getElementById("migrants_video").duration);
-		
+		initPathNewPos = initPos*360;
 		initPos *= 100;
 
 		initPathPos = initPos;
+
 		console.log(initPos);
 		// progress_arc.attr({
 	 //    	"stroke": "#ff5a00",
@@ -54,15 +57,18 @@ function progressArcInitPos(){
 }
 function m_init(){
 	height = $("#migrants_top").height();
-	
+	// 0.556 is ratio for holderWidth/ScreenWidth
+	var holderWidth = $("#migrants_top").width() * 0.556;
 	radius = height - 40;
-	archtype = Raphael("holder", 800, height);
+	archtype = Raphael("holder", holderWidth, height);
 	width = $("#holder").width();
 	total_arc = archtype.path();
 	progress_arc = archtype.path();
 	time_arc = archtype.path();
 	time_progress_arc = archtype.path();
 	progress_arc_gray = archtype.path();
+	test_arcseg = archtype.path();
+	test_arcseg1 = archtype.path();
 	progrssCircle = archtype.circle(0, 0, 0).attr({fill: '#FFFFFF',stroke: '#FFFFFF',"stroke-width": '1','stroke-opacity': '1'}).data('id', 'circle_u'); 
 	timeCircle = archtype.circle(0,0,0).attr({fill: '#FFFFFF',stroke: '#FFFFFF',"stroke-width": '1','stroke-opacity': '1'}).data('id', 'circle_u');
 	var startLine = archtype.path("M400 40 L400 60").attr({stroke: '#fff', "stroke-width": '1','stroke-opacity': '0.6'});
@@ -74,6 +80,24 @@ function m_init(){
 	var twelveDot = archtype.circle(400, radius + 20, 1).attr({fill: '#FFFFFF', stroke: '#fff','opacity': '0.6'});
 	var eighteenDot = archtype.circle(width/2 - radius/2, height/2, 1).attr({fill: '#FFFFFF', stroke: '#fff', 'opacity': '0.6'});
 
+	archtype.customAttributes.arcseg = function( cx, cy, radius, start_r, finish_r ) {
+    var start_x = cx + Math.cos( start_r ) * radius,
+        start_y = cy + Math.sin( start_r ) * radius,
+        finish_x = cx + Math.cos( finish_r ) * radius,
+        finish_y = cy + Math.sin( finish_r ) * radius,
+        path;
+
+        path =
+        [
+            [ "M", start_x, start_y ],
+            [ "A", radius, radius, finish_r - start_r,
+                    finish_r - start_r > Raphael.rad( 180 ) ? 1 : 0,    /* large-arc-flag */
+                    finish_r > start_r ? 1 : 0,         /* sweep-flag */
+                    finish_x, finish_y ],               /* target coordinates */
+        ];
+
+        return { path: path };
+    };
 
 	archtype.customAttributes.arc = function (xloc, yloc, value, total, R) {
 	var alpha = 360 / total * value,
@@ -116,16 +140,35 @@ function m_init(){
 	// 	//console.log("[ Migrants: m_scrubberUpdater ] ratio = " + Math.floor(ration));
 	// }
 
-	progress_arc.attr({
-    	"stroke": "#fff",
-    	"stroke-width": 1,
-    	arc: [width/2, height/2, 0, 100, height/2 - 50]
+	test_arcseg.attr({ 
+		stroke: "#f00", 
+		'stroke-width': 2,
+		arcseg: [ width/2, height/2, height/2 - 50, Raphael.rad( initPathNewPos ), Raphael.rad( initPathNewPos) ] 
 	});
-	progress_arc_gray.attr({
-    	"stroke": "#fff",
-    	"stroke-width": 1,
-    	arc: [width/2, height/2, initPathPos, 100, height/2 - 50]
-	});
+
+	var transformArc = "r-90,"+(width/2)+","+(height/2);
+	test_arcseg.transform(transformArc);
+
+
+
+	// test_arcseg1.attr({ 
+	// 	stroke: "#f00", 
+	// 	'stroke-width': 14,
+	// 	arcseg: [ width/2, height/2, height/2 - 50, Raphael.rad( 0 ), Raphael.rad( 90) ] 
+	// });
+
+	// test_arcseg.animate( { arcseg: 300, 200, 150, Raphael.rad( 0 ), Raphael.rad( -180 ) }, 2500, 'bounce' );
+
+	// progress_arc.attr({
+ //    	"stroke": "#fff",
+ //    	"stroke-width": 1,
+ //    	arc: [width/2, height/2, 0, 100, height/2 - 50]
+	// });
+	// progress_arc_gray.attr({
+ //    	"stroke": "#fff",
+ //    	"stroke-width": 1,
+ //    	arc: [width/2, height/2, initPathPos, 100, height/2 - 50]
+	// });
 
 	total_arc.attr({
 		"stroke": "#fff",
@@ -165,8 +208,11 @@ function m_circleScrubber() {
 
 	var timeProgress = map(currentTimeOfDay, 0, maxTimeOfDay, 0, 100);
 
-
-
+	if(document.getElementById("migrants_video").currentTime >= document.getElementById("migrants_video").duration ){
+		initPathNewPos = 0;
+		initPathPos = 0;
+	}
+	
 	time_progress_arc.attr({
     	"stroke": "#fff",
     	"stroke-width": 2,
@@ -189,33 +235,26 @@ function m_circleScrubber() {
 
 	timeCircle.animate({cx:x_,cy:y_,r:4},100);
 
-	// console.log(timeProgress);
+	var ration;
+	var raionNew;
+	var dur = Math.floor(document.getElementById("migrants_video").currentTime);
 
-// var progress_arc = archtype.path().attr({
-//     "stroke": "#ff5a00",
-//     "stroke-width": 2,
-//     arc: [400, height/2, 50, 100, height/2 - 10]
-// });	
-
-var ration;
-var dur = Math.floor(document.getElementById("migrants_video").currentTime);
 	if(dur > 0){
 		ration = ( dur / document.getElementById("migrants_video").duration);
-		
+		rationNew = ration*360;
 		ration *= 100;
+		
 		// console.log(ration);
 
 		//console.log("[ Migrants: m_scrubberUpdater ] ratio = " + Math.floor(ration));
 	}
 	if(ration > 0){
-		
-		progress_arc.attr({
-		    "stroke": "#ff5a00",
-		    "stroke-width": 1,
-		    arc: [width/2, height/2, ration, 100, height/2 - 50]
+
+		test_arcseg.attr({ 
+			stroke: "#ff5a00",
+			'stroke-width': 2,
+			arcseg: [ width/2, height/2, height/2 - 50, Raphael.rad( initPathNewPos ), Raphael.rad( rationNew) ] 
 		});
-
-
 
 		var xloc = width/2;
 		var yloc = height/2;
@@ -314,23 +353,121 @@ function migrants_sizer() {
 }
 
 function m_vennTracking() {
-	$("#m_container").on('mouseleave', function() {
-		//console.log("[migrants video : mouse leave]");
-		if(instructionsOff) {
-			m_vennMapOff();
-		} else {
-			console.log("[mouseleave] migrants instructionsOff is false");
-		}
-	});
 
-	$("#m_container").on('mouseenter', function() {
-		//console.log("[migrants video : mouse enter]");
-		if(instructionsOff) {
+	// var tOut;
+	// $("#m_container").hover(function(){
+ //       	tOut = setTimeout(function(){
+ //        $(this).find("#holder").fadeIn('fast');
+	// }, 5000);
+ //   		 },function(){
+	// 		clearTimeout(tOut);
+ //        	$(this).find("#holder").fadeOut('fast');
+ //    	});
+
+var timer;
+
+$("#m_container").on({
+    'mouseover': function () {
+    	if(instructionsOff) {
 			m_vennMapOn();
+		} else {
+				console.log("[mouseleave] migrants instructionsOff is false");
+			}
+        timer = setTimeout(function () {
+			if(instructionsOff) {
+				m_vennMapOff();
+			} else {
+				console.log("[mouseenter] migrants instructionsOff is false");
+			}
+        }, 3000);
+    },
+    'mouseout' : function () {
+    	if(instructionsOff) {
+			m_vennMapOff();
 		} else {
 			console.log("[mouseenter] migrants instructionsOff is false");
 		}
-	});
+        clearTimeout(timer);
+    }
+});
+
+// var timer2;
+
+//     $("#m_container").on('mousemove', function() {
+//         if (timer2) {
+//             clearTimeout(timer);            
+//             timer2 = 0;
+//         } 
+//         if(instructionsOff) { 
+//             m_vennMapOn();
+// 		} else {
+// 				console.log("[mouseleave] migrants instructionsOff is false");
+// 			}
+//         timer2 = setTimeout(function() {
+//            if(instructionsOff) {
+// 				m_vennMapOff();
+// 			} else {
+// 				console.log("[mouseenter] migrants instructionsOff is false");
+// 			}
+//         }, 3000);
+
+//     });
+
+// var timer2;
+
+// $("#m_container").on({
+//     'mousemove': function () {
+//     	if(instructionsOff) {
+// 			m_vennMapOn();
+// 		} else {
+// 				console.log("[mouseleave] migrants instructionsOff is false");
+// 			}
+//         timer2 = setTimeout(function () {
+// 			if(instructionsOff) {
+// 				m_vennMapOff();
+// 			} else {
+// 				console.log("[mouseenter] migrants instructionsOff is false");
+// 			}
+//         }, 3000);
+//     },
+//     'mouseout' : function () {
+//     	if(instructionsOff) {
+// 			m_vennMapOff();
+// 		} else {
+// 			console.log("[mouseenter] migrants instructionsOff is false");
+// 		}
+//         clearTimeout(timer2);
+//     }
+// });
+
+	// $("#m_container").on('mouseleave', function() {
+	// 	console.log("[migrants video : mouse leave]");
+	// 	if(instructionsOff) {
+	// 		m_vennMapOff();
+	// 	} else {
+	// 		console.log("[mouseleave] migrants instructionsOff is false");
+	// 	}
+	// });
+
+	// $("#m_container").on('mouseenter', function() {
+	// 	console.log("[migrants video : mouse enter]");
+	// 	if(instructionsOff) {
+	// 		m_vennMapOn();
+	// 	} else {
+	// 		console.log("[mouseenter] migrants instructionsOff is false");
+	// 	}
+	// });
+
+
+
+	// $("#m_container").on('mousemove', function() {
+	// 	console.log("[migrants video : mouse move]");
+	// 	if(instructionsOff) {
+	// 		m_vennMapOn();
+	// 	} else {
+	// 		console.log("[mouseenter] migrants instructionsOff is false");
+	// 	}
+	// });
 
 	$("#m_instructions").on('click', function () { 
 		//console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
@@ -341,17 +478,39 @@ function m_vennTracking() {
 }
 
 var m_vennMapOn = function() {
-	$("#migrants_video").css({"opacity": 0.5});
-	$("#holder").css({"opacity": 1.0});
-	$("#migrants_video").css("z-index" , "10");
-	$("#holder").css("z-index","20");
+
+	
+
+	$("#migrants_video").animate({
+		opacity: 0.5,
+		'z-index': 10
+	}, 800);
+
+	// $("#migrants_video").css("z-index" , "10");
+
+	$("#holder").animate({
+		opacity: 1.0,
+		'z-index': 20
+	}, 800, function() {
+	// 	$("#holder").animate({
+	// 	opacity: 0.0
+	// }, 500);
+	});
+
+	// $("#holder").css("z-index","20");
 };
 
 var m_vennMapOff = function() {
-	$("#migrants_video").css({"opacity": 1});
-	$("#holder").css({"opacity": 0});
-	$("#migrants_video").css("z-index" , "20");
-	$("#holder").css("z-index","10");
+	$("#migrants_video").animate({
+		opacity: 1.0,
+		'z-index': 20
+	}, 800);
+	$("#holder").animate({
+		opacity: 0.0,
+		'z-index': 10
+	}, 800);
+	// $("#migrants_video").css("z-index" , "20");
+	// $("#holder").css("z-index","10");
 };
 
 function m_audioToggle() {
@@ -587,6 +746,7 @@ function m_pauseVidsCallback() {
 }
 
 function m_endVids() {
+
 	m_pauseVids();
 }
 
