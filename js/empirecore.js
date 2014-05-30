@@ -68,7 +68,10 @@ $(document).ready(function () {
 		document.getElementById('ambientaudio').addEventListener('canplaythrough', audioready);
 	}
 
-	$("#loading_screen").delay(4000).fadeOut(400);
+	$("#loading_content").delay(4000).fadeOut(1000, function() {
+		$("#loading_screen").fadeOut(1000);
+
+	});
 	// setTimeout(10000,fadeLoading);
 	//console.log("Im in ready ");
 	paperWidth = $('#container').width();
@@ -81,11 +84,12 @@ $(document).ready(function () {
 	paper.canvas.setAttribute('preserveAspectRatio', 'none'); 
 
 	buildRipples(total); //creates four ripples
-
+	
+	$("#canvas_container").fadeIn(2000);
+	$("#containerinner").fadeIn(2000);
 
 	drawer();
-	$("#containerinner").fadeIn();
-	$("#canvas_container").fadeIn();
+
 
 	
 

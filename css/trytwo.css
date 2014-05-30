@@ -5,7 +5,7 @@ fieldset, img { border:0 }
 address, caption, cite, code, dfn, em, strong, th, var { font-style:normal; font-weight:normal }
 ol, ul, li { list-style:none }
 caption, th { text-align:left }
-h1, h2, h3, h4, h5, h6 { font-size:100%; font-weight:normal }
+h2, h3, h4, h5, h6 { font-size:100%; font-weight:normal }
 q:before, q:after { content:''}
 body { /*background: #3d3356;*/ 
 	background-image:  url(../art/e_bg.jpg), url(../art/e_bg_b.jpg); 
@@ -19,6 +19,7 @@ div#container {
 	height: 100%; 
 	text-align: center; 
 	}
+h7 { font-size: 2em;}
 h2 { margin-top: 4px; font-style: italic; text-align: left}
 /*div#container div#containerinner {position: absolute; margin-left: 860;}*/
 div#container div#titleblock { position: absolute; }
@@ -30,6 +31,10 @@ div#container div#bodytext p.credits { margin-top: 3em; }
 div#container div#bodytext a {
 	color: #fff;
 	text-decoration: none;
+}
+div#logo {
+	position:relative;
+	margin-top: 200px;
 }
 div#audiodiv { display: none; }
 div#container div#preaching { position: absolute; text-align: left; }

@@ -482,33 +482,36 @@ var m_vennMapOn = function() {
 	
 
 	$("#migrants_video").animate({
-		opacity: 0.5,
+		// opacity: 0.5,
 		'z-index': 10
 	}, 800);
 
 	// $("#migrants_video").css("z-index" , "10");
 
-	$("#holder").animate({
-		opacity: 1.0,
-		'z-index': 20
-	}, 800, function() {
-	// 	$("#holder").animate({
-	// 	opacity: 0.0
-	// }, 500);
-	});
+	// $("#holder").animate({
+	// 	opacity: 1.0,
+	// 	'z-index': 20
+	// }, 800, function() {
+	// // 	$("#holder").animate({
+	// // 	opacity: 0.0
+	// // }, 500);
+	// });
+
+	$("#holder").fadeIn(800).css({'z-index': 20});
 
 	// $("#holder").css("z-index","20");
 };
 
 var m_vennMapOff = function() {
 	$("#migrants_video").animate({
-		opacity: 1.0,
+		// opacity: 1.0,
 		'z-index': 20
 	}, 800);
-	$("#holder").animate({
-		opacity: 0.0,
-		'z-index': 10
-	}, 800);
+	$("#holder").fadeOut(800).css({'z-index': 10});
+	// $("#holder").animate({
+	// 	opacity: 0.0,
+	// 	'z-index': 10
+	// }, 800);
 	// $("#migrants_video").css("z-index" , "20");
 	// $("#holder").css("z-index","10");
 };
@@ -600,8 +603,8 @@ function migrants_openscreen () {
 	});
 	// $("#rsr_instructions").css({"z-index":100}).fadeIn(2000);
 	$("#m_instructions").fadeIn(4000);	 
-	 //console.log("[Periphery: openscreen ] periphery_closescreen on setTimeout 1");
-	//insructIvl = setTimeout("migrants_closescreen()",10000);
+	console.log("[Migrants: openscreen ] migrants_closescreen on setTimeout 1");
+	insructIvl = setTimeout("migrants_closescreen()",10000);
 	// $("#holder").on('click', function() {
 	// 	migrants_closescreen();
 	// 	console.log("[ holder click: migrants_closescreen ] instructionsOff ? " + instructionsOff );
@@ -619,7 +622,6 @@ function migrants_openscreen () {
 
 function migrants_closescreen () {
 	clearInterval(insructIvl);
-	instructionsOff = true;
 
 	if (audioactive) {
 		audiostop();
@@ -628,11 +630,16 @@ function migrants_closescreen () {
 	$("#m_instructions").fadeOut(1000, function() {
 		console.log("[Migrants: migrants_closescreen ] m_playButton");
 		document.getElementById("migrants_video").volume = 1;
-		$("#holder").css({'cursor': 'default'});
+		$("#holder").fadeOut(800, function() {
+
+		}).css({'cursor': 'default'});
+		instructionsOff = true;
 		// $("#rsr_instructions").css({"z-index":1}).fadeOut();
 		//trackMouseRotation(); REPLACE WITH SOMETHING FOR MIGRANTS INTERACTION
 		
 	});
+
+
 }
 
 function m_trackoff() {
