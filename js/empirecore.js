@@ -43,8 +43,8 @@ var LETTERS = ['C', 'L', 'M', 'P'];
 var COLORS = ['#ecda50', '#fbb03b', '#ff5a00', '#cc3333'];
 var URL = ['url(art/c_bg.jpg)', 'url(art/l_bg.jpg)', 'url(art/m_bg.jpg)', 'url(art/p_bg.jpg)' ];
 var URL_BOTTOM = ['url(art/c_bg_b.jpg)', 'url(art/l_bg_b.jpg)', 'url(art/m_bg_b.jpg)', 'url(art/p_bg_b.jpg)' ];
-//var m_url = 'migrants/css/timecode.json';
-var m_url = 'http://empire.genevievehoffman.com/migrants/css/timecode.json';
+var m_url = 'migrants/css/timecode.json';
+// var m_url = 'http://empire.genevievehoffman.com/migrants/css/timecode.json';
 
 
 $(document).ready(function () {
@@ -89,9 +89,6 @@ $(document).ready(function () {
 	$("#containerinner").fadeIn(2000);
 
 	drawer();
-
-
-	
 
 	//add Migrants JSON file
 	var data = m_jsonCall();
@@ -512,15 +509,56 @@ function animateButton(index){
 		 	 	console.log("[ animateButton ] migrants was loaded  ?" + migrantsLoaded);
 		 	 	
 		 	}	
+
 		 	migrantsActive = true;
+		 	// 
+		 	//keeping track of tracking session
+		 	if(mTrackerArray.length >0){
+		 		if(mTrackerArray[mTrackerArray.length-1].isActive === true){
+					mTrackerArray[mTrackerArray.length-1].endPos = getMigrantsVideoCurrentPos();
+					mTrackerArray[mTrackerArray.length-1].isActive = false;
+		 		}
+		 		else{
+		 			var mTracker = new Object();
+		 			mTracker.isActive = true;
+		 			mTracker.startPos = getMigrantsVideoCurrentPos();
+		 			mTracker.endPos = getMigrantsVideoCurrentPos();
+		 			mTracker.arcSegment = null;
+		 			mTrackerArray.push(mTracker);
+
+		 		}
+		 	}
+			else{
+				 	var mTracker = new Object();
+		 			mTracker.isActive = true;
+		 			mTracker.startPos = initPathNewPos;
+		 			mTracker.endPos = initPathNewPos;
+		 			mTracker.arcSegment = null
+		 			mTrackerArray.push(mTracker);
+			 }	
+			loadArcSegs();
 		 	audioready();
 		 	console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
-		 } 
-		 else  {
+		 }
+		 else{
 
 		 	$("#migrantsContent").fadeOut("fast");
 		 	m_pauseVids();
 		 	migrantsActive = false;
+		 	if(mTrackerArray.length <= 0){
+		 		console.log("Fading out migrants" + mTrackerArray);
+		 	}
+		 	else{
+			 	if(mTrackerArray[mTrackerArray.length-1].isActive === true){
+
+			 			// console.log("Current Migrants Tracker Index : "+mTrackerArray.length-1 +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
+						
+						mTrackerArray[mTrackerArray.length-1].endPos = getMigrantsVideoCurrentPos();
+						mTrackerArray[mTrackerArray.length-1].isActive = false;
+						// console.log("Start Pos : "+mTrackerArray[mTrackerArray.length-1].startPos +" End Pos" +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
+			 	}	
+		 	}
+		 	
 		 	console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
 		 }
 
@@ -1016,38 +1054,71 @@ function audioready () {
 	if(!audioactive){
 		document.getElementById('ambientaudio').volume = 0;
 		document.getElementById('ambientaudio').play();
-		vIvl = setInterval(_volfade,100);
+		vIvl = setInterval(_volfade('ambientaudio'),100);
 		audioactive = true;
 	}
 	
 }
 
-function _volfade () {
+// function _volfade () {
+
+// 	// internal function to fade in
+	
+// 	document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;
+// 	_currentaudiovolume += 5;
+// 	if(_currentaudiovolume > audiovolume){
+// 		clearInterval(vIvl);
+// 	}
+// }
+
+function _volfade( filename ) {
 
 	// internal function to fade in
 
-	document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;
+	if(document.getElementById(filename) == null) {
+		console.log("[volfade] error cant find : "+ filename);
+		return;
+	}
+
+	document.getElementById(filename).volume = _currentaudiovolume / 100;
 	_currentaudiovolume += 5;
-	if(_currentaudiovolume > audiovolume){
+	if(_currentaudiovolume > audiovolume) {
 		clearInterval(vIvl);
 	}
 }
 
-function _volfadeout () {
+// function _volfadeout () {
+
+// 	// internal function to fade out
+
+// 	document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;
+// 	_currentaudiovolume -= 1;
+// 	if(_currentaudiovolume == 0){
+// 		clearInterval(vIvl);
+// 		document.getElementById('ambientaudio').pause();
+// 	}
+// }
+
+function _volfadeout ( filename ) {
 
 	// internal function to fade out
 
-	document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;
+	if(document.getElementById(filename) == null) {
+		console.log("[volfadeout] error cant find : "+ filename);
+		return;
+	}
+
+	document.getElementById(filename).volume = _currentaudiovolume / 100;
 	_currentaudiovolume -= 1;
 	if(_currentaudiovolume == 0){
 		clearInterval(vIvl);
-		document.getElementById('ambientaudio').pause();
+		document.getElementById(filename).pause();
 	}
 }
 
 function audiostop () {
 	clearInterval(vIvl);
-	vIvl = setInterval(_volfadeout,100);
+	vIvl = setInterval(_volfadeout('ambientaudio'),100);
 	audioactive = false;	
 }
 

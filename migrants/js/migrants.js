@@ -19,15 +19,17 @@ var radius;
 var archtype;
 var total_arc;
 var progress_arc;
-var progress_arc_gray;
 var time_arc;
-var time_progress_arc;
+var time_progress_arc = null;
 var test_arcseg;
 var instructionsOff = false;
 var progrssCircle; //= rsr.circle(0, 0, 0).attr({fill: 'none',stroke: '#FFFFFF',"stroke-width": '2',"stroke-miterlimit": '10',"stroke-dasharray": '.', parent: 'group_a','stroke-opacity': '1'}).data('id', 'circle_u'); 
 var initPathPos = 0;
 var initPathNewPos = 0;
-var vennMap;	 
+var vennMap;
+var timeCircle = null;
+
+var mTrackerArray = new Array();
 //var ratio;
 
 function progressArcInitPos(){
@@ -42,34 +44,41 @@ function progressArcInitPos(){
 		initPathPos = initPos;
 
 		console.log(initPos);
-		// progress_arc.attr({
-	 //    	"stroke": "#ff5a00",
-	 //    	"stroke-width": 2,
-	 //    	arc: [400, height/2, initPos, 100, height/2 - 20]
-		// });
-		progress_arc_gray.attr({
-	    	"stroke": "#888",
-	    	"stroke-width": 2,
-	    	arc: [400, height/2, initPathPos, 100, height/2 - 50]
-		});
 	}
 
 }
+function loadArcSegs(){
+	for (var i = 0; i < mTrackerArray.length; i++) {
+		if(mTrackerArray[i].arcSegment == null){
+			mTrackerArray[i].arcSegment = archtype.path();
+			var transformArc = "r-90,"+(width/2)+","+(height/2);
+			mTrackerArray[i].arcSegment.transform(transformArc);
+			console.log("New Arc segment added");
+			console.log( mTrackerArray[i]);
+		}
+	}
+}
+
 function m_init(){
 	height = $("#migrants_top").height();
 	// 0.556 is ratio for holderWidth/ScreenWidth
+	console.log("Migrants Init()");
+
 	var holderWidth = $("#migrants_top").width() * 0.556;
+	if (holderWidth < height) {
+		holderWidth = height;
+	}
 	radius = height - 40;
 	archtype = Raphael("holder", holderWidth, height);
 	width = $("#holder").width();
+	
 	total_arc = archtype.path();
 	progress_arc = archtype.path();
 	time_arc = archtype.path();
 	time_progress_arc = archtype.path();
-	progress_arc_gray = archtype.path();
 	test_arcseg = archtype.path();
-	test_arcseg1 = archtype.path();
-	progrssCircle = archtype.circle(0, 0, 0).attr({fill: '#FFFFFF',stroke: '#FFFFFF',"stroke-width": '1','stroke-opacity': '1'}).data('id', 'circle_u'); 
+	
+
 	timeCircle = archtype.circle(0,0,0).attr({fill: '#FFFFFF',stroke: '#FFFFFF',"stroke-width": '1','stroke-opacity': '1'}).data('id', 'circle_u');
 	var startLine = archtype.path("M400 40 L400 60").attr({stroke: '#fff', "stroke-width": '1','stroke-opacity': '0.6'});
 	var twentyfour = archtype.text(400, 10, '24h');
@@ -118,27 +127,12 @@ function m_init(){
 	}
 	return {
 	    path: path
-	};
+		};
 	};
 
-	// progress_arc.attr({
- //    	"stroke": "#ff5a00",
- //    	"stroke-width": 2,
- //    	arc: [400, height/2, 0, 100, height/2 - 10]
-	// });
 	var d = new Date();
 	var currentTimeOfDay = d.getHours()*60*60 + d.getMinutes()*60 + d.getSeconds();
 	var timeProgress = map(currentTimeOfDay, 0, maxTimeOfDay, 0, 100);
-	// var initPos;
-	// var initDur = Math.floor(document.getElementById("migrants_video").currentTime);
-	// if(initDur > 0){
-	// 	initPos = ( initDur / document.getElementById("migrants_video").duration);
-		
-	// 	initPos *= 100;
-	// 	// console.log(ration);
-
-	// 	//console.log("[ Migrants: m_scrubberUpdater ] ratio = " + Math.floor(ration));
-	// }
 
 	test_arcseg.attr({ 
 		stroke: "#f00", 
@@ -148,27 +142,6 @@ function m_init(){
 
 	var transformArc = "r-90,"+(width/2)+","+(height/2);
 	test_arcseg.transform(transformArc);
-
-
-
-	// test_arcseg1.attr({ 
-	// 	stroke: "#f00", 
-	// 	'stroke-width': 14,
-	// 	arcseg: [ width/2, height/2, height/2 - 50, Raphael.rad( 0 ), Raphael.rad( 90) ] 
-	// });
-
-	// test_arcseg.animate( { arcseg: 300, 200, 150, Raphael.rad( 0 ), Raphael.rad( -180 ) }, 2500, 'bounce' );
-
-	// progress_arc.attr({
- //    	"stroke": "#fff",
- //    	"stroke-width": 1,
- //    	arc: [width/2, height/2, 0, 100, height/2 - 50]
-	// });
-	// progress_arc_gray.attr({
- //    	"stroke": "#fff",
- //    	"stroke-width": 1,
- //    	arc: [width/2, height/2, initPathPos, 100, height/2 - 50]
-	// });
 
 	total_arc.attr({
 		"stroke": "#fff",
@@ -198,10 +171,15 @@ function m_init(){
 
 	m_arrayActFills();
 
+	progrssCircle = archtype.circle(0, 0, 0).attr({fill: '#FFFFFF',stroke: '#FFFFFF',"stroke-width": '1','stroke-opacity': '1'}).data('id', 'circle_u'); 
+
 }
-//LOOK AT THIS FUNCTION
+
 function m_circleScrubber() {
 
+	if(! migrantsActive){
+		return;
+	}
 	var d = new Date();
 	var currentTimeOfDay = d.getHours()*60*60 + d.getMinutes()*60 + d.getSeconds();
 	var maxTimeOfDay = 24*60*60;
@@ -211,18 +189,56 @@ function m_circleScrubber() {
 	if(document.getElementById("migrants_video").currentTime >= document.getElementById("migrants_video").duration ){
 		initPathNewPos = 0;
 		initPathPos = 0;
+
+		//is this where we call the transform again?
+		// loadArcSegs();
+		mTracker.isActive = true;
+		mTracker.startPos = getMigrantsVideoCurrentPos();
+		mTracker.endPos = getMigrantsVideoCurrentPos();
+		mTracker.arcSegment = null;
+		
+		var transformArc = "r-90,"+(width/2)+","+(height/2);
+		mTracker.arcSegment.transform(transformArc);
+
+		mTrackerArray.push(mTracker);
+
 	}
 	
-	time_progress_arc.attr({
-    	"stroke": "#fff",
-    	"stroke-width": 2,
-    	arc: [width/2, height/2, timeProgress, 100, height/2 -30]
-	});
-	progress_arc_gray.attr({
-		"stroke": "#fff",
-		"stroke-width": 1,
-		arc: [width/2, height/2, initPathPos, 100, height/2 - 50]
-	});
+	if(time_progress_arc !== null){
+		// console.log(time_progress_arc);
+		time_progress_arc.attr({
+			"stroke": "#fff",
+			"stroke-width": 2,
+			arc: [width/2, height/2, timeProgress, 100, height/2 - 30]
+		});
+	}
+	
+	var circleStartPos = 0;
+	var circleFinishPos = 0;
+	// var circleStartPosY = 0;
+	for (var i = 0; i < mTrackerArray.length; i++) {
+		if(mTrackerArray[i].arcSegment !== null){
+			if(mTrackerArray[i].isActive){
+				// console.log(mTrackerArray[i].startPos);
+				// console.log(getMigrantsVideoCurrentPos());
+				 mTrackerArray[i].arcSegment.attr({
+					"stroke": "#ff5a00",
+					"stroke-width": 2,
+					arcseg: [ width/2, height/2, height/2 - 50, Raphael.rad( mTrackerArray[i].startPos ), Raphael.rad( getMigrantsVideoCurrentPos()) ] 
+				})
+				 circleStartPos = mTrackerArray[i].startPos;
+				 circleFinishPos  = getMigrantsVideoCurrentPos();
+			}
+			else{
+				mTrackerArray[i].arcSegment.attr({
+					"stroke": "#ff5a00",
+					"stroke-width": 2,
+					arcseg: [ width/2, height/2, height/2 - 50, Raphael.rad( mTrackerArray[i].startPos ), Raphael.rad( mTrackerArray[i].endPos) ] 
+				});				
+			}
+
+		}
+	}
 
 	var xloc_ = width/2;
 	var yloc_ = height/2;
@@ -233,45 +249,56 @@ function m_circleScrubber() {
 	var x_ = xloc_ + R_ * Math.cos(a_);
 	var y_ = yloc_ - R_ * Math.sin(a_);		
 
-	timeCircle.animate({cx:x_,cy:y_,r:4},100);
+	if(timeCircle !== null){
+	 timeCircle.animate({cx:x_,cy:y_,r:4},100);	
+	}
+	
 
-	var ration;
-	var raionNew;
-	var dur = Math.floor(document.getElementById("migrants_video").currentTime);
+	// var ration;
+	// var dur = Math.floor(document.getElementById("migrants_video").currentTime);
 
-	if(dur > 0){
-		ration = ( dur / document.getElementById("migrants_video").duration);
-		rationNew = ration*360;
-		ration *= 100;
+	// if(dur > 0){
+	// 	ration = ( dur / document.getElementById("migrants_video").duration);
+	// 	ration *= 100;
 		
-		// console.log(ration);
+	// 	// console.log(ration);
 
-		//console.log("[ Migrants: m_scrubberUpdater ] ratio = " + Math.floor(ration));
-	}
+	// 	// console.log("[ Migrants: m_scrubberUpdater ] ratio = " + Math.floor(ration));
+	// }
+
+	var ration = getMigrantsVideoCurrentPos();
+
 	if(ration > 0){
+		// console.log("[ Migrants: m_scrubberUpdater ] curRation = " + Math.floor(rationNew) + " initPathNewPos : "+ initPathNewPos );
+		// var xloc = width/2;
+		// var yloc = height/2;
+		// var R = height/2 - 50;
 
-		test_arcseg.attr({ 
-			stroke: "#ff5a00",
-			'stroke-width': 2,
-			arcseg: [ width/2, height/2, height/2 - 50, Raphael.rad( initPathNewPos ), Raphael.rad( rationNew) ] 
-		});
+		// var alpha = 360 / 100 * ration;
+		// var a = (90 - alpha) * Math.PI / 180;
+		// var x = xloc + R * Math.cos(a);
+		// var y = yloc - R * Math.sin(a);		
 
-		var xloc = width/2;
-		var yloc = height/2;
-		var R = height/2 - 50;
+		var _cx = width/2;
+		var _cy =  height/2;
+		var _r =  height/2 - 50;
 
-		var alpha = 360 / 100 * ration;
-		var a = (90 - alpha) * Math.PI / 180;
-		var x = xloc + R * Math.cos(a);
-		var y = yloc - R * Math.sin(a);		
+		var cur_x = _cx + Math.cos( Raphael.rad(circleFinishPos -90 ))  * _r;
+        var cur_y = _cy + Math.sin( Raphael.rad( circleFinishPos -90 ))	 * _r;
 
-		progrssCircle.animate({cx:x,cy:y,r:6},100);
+		progrssCircle.animate({cx:cur_x,cy:cur_y,r:6}, 10);
 	}
 }
 
-function m_dayScrubber() {
+function getMigrantsVideoCurrentPos(){
+	var initPos;
+	var initDur = m_getCurrentTime();
+	height = $("#migrants_top").height();
 
-}
+	ration = ( initDur / document.getElementById("migrants_video").duration);
+	ration *= 360;
+	return ration;
+} 
 
 function migrants_sizer() {
 	var w = $("#migrants_top").width();
@@ -312,14 +339,6 @@ function migrants_sizer() {
 		$("#minst_2").css({"top": '13%'});
 		$("#minst_3").css({ "top": '80%'});
 	}
-	// $("#holder").css({"margin-left": ($("#m_outerouter").width() /2) - 400 });
-	// $("#minst_2").css({"margin-left": w/2 - 115, "top": h/2 - 200});
-	// $("#minst_3").css({"margin-left": w/2 - 105, "top": h/2 + 200});
-
-	//This is how I did things in periphery, but not sure I'm calling it in the right place
-	// $("#m_outerouter").on('mouseleave', function() {
-	// 	m_trackoff();
-	// });
 
 	$("#migrantsmore").css({"top": buffer, "left": centering }).fadeIn(4000).on('click', function() {
 		body.animate({scrollTop: ($('#migrants_main').offset().top) }, 1000);
@@ -333,36 +352,14 @@ function migrants_sizer() {
 		 console.log("[ more button click: migrants_openscreen ] instructionsOff ? " + instructionsOff );
 		if(!migrantsLoaded) {
 			console.log("[Migrants: migrantsmore listener] if not migrantsLoaded, migrants openscreen");
-			migrants_openscreen();
+			//migrants_openscreen();
 		}
 	});
-
-
-
-	// if(instructionsOff) {
-	// 	$("#m_container").on('mouseleave', m_vennMapOff);
-	// 	$("#m_container").on('mouseenter', m_vennMapOn);
-	// } else {
-	// 	$("#m_container").unbind('mouseleave', m_vennMapOff);
-	// 	$("#m_container").unbind('mouseenter', m_vennMapOn);
-	// }
-
-
 
 	console.log("migrants_sizer");
 }
 
 function m_vennTracking() {
-
-	// var tOut;
-	// $("#m_container").hover(function(){
- //       	tOut = setTimeout(function(){
- //        $(this).find("#holder").fadeIn('fast');
-	// }, 5000);
- //   		 },function(){
-	// 		clearTimeout(tOut);
- //        	$(this).find("#holder").fadeOut('fast');
- //    	});
 
 var timer;
 
@@ -379,7 +376,7 @@ $("#m_container").on({
 			} else {
 				console.log("[mouseenter] migrants instructionsOff is false");
 			}
-        }, 3000);
+        }, 5000);
     },
     'mouseout' : function () {
     	if(instructionsOff) {
@@ -479,23 +476,10 @@ $("#m_container").on({
 
 var m_vennMapOn = function() {
 
-	
-
 	$("#migrants_video").animate({
 		// opacity: 0.5,
 		'z-index': 10
 	}, 800);
-
-	// $("#migrants_video").css("z-index" , "10");
-
-	// $("#holder").animate({
-	// 	opacity: 1.0,
-	// 	'z-index': 20
-	// }, 800, function() {
-	// // 	$("#holder").animate({
-	// // 	opacity: 0.0
-	// // }, 500);
-	// });
 
 	$("#holder").fadeIn(800).css({'z-index': 20});
 
@@ -561,28 +545,7 @@ function m_jsonCall() {
     
     //console.log(data);
     return data;
-    // loadTimecodeData(data);
-	//  $.ajax({
-	// 	url: m_url,
-	// 	// jsonp: "jsoncallback",
-	// 	// jsonpCallback:"foo"
-	// 	// type: 'GET',
-	// 	success: function(response) {
-	// 			//function to put Json into Object
-	// 			console.log(response);
-	// 			loadTimecodeData(response);
-	// 		},
-
-	// 		error: function(err) {
-	// 			console.log("GET failed ");
-	// 			console.log(err);
-	// 		}
-	// });
 }
-
-// function migrants_openscreen() {
-// 	m_playButton();
-// }
 
 function migrants_openscreen () {
 	// console.log("in migrants openscreen");
@@ -604,20 +567,7 @@ function migrants_openscreen () {
 	// $("#rsr_instructions").css({"z-index":100}).fadeIn(2000);
 	$("#m_instructions").fadeIn(4000);	 
 	console.log("[Migrants: openscreen ] migrants_closescreen on setTimeout 1");
-	insructIvl = setTimeout("migrants_closescreen()",10000);
-	// $("#holder").on('click', function() {
-	// 	migrants_closescreen();
-	// 	console.log("[ holder click: migrants_closescreen ] instructionsOff ? " + instructionsOff );
-	// 	$("#holder").css({'cursor': 'default' , 'pointer-events' : 'none'});
-	// });
-		
-	// $("#m_instructions").on('click', function () { 
-	// 	//console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
-	// 	migrants_closescreen(); 
-	// 	console.log("[ m_instructions click: migrants_closescreen ] instructionsOff ? " + instructionsOff );
-	// 	//console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
-	// });
-	// m_enoughwithinstructions = true;
+	insructIvl = setTimeout("migrants_closescreen()",7000);
 }
 
 function migrants_closescreen () {
@@ -627,19 +577,20 @@ function migrants_closescreen () {
 		audiostop();
 	}
 	
-	$("#m_instructions").fadeOut(1000, function() {
-		console.log("[Migrants: migrants_closescreen ] m_playButton");
-		document.getElementById("migrants_video").volume = 1;
-		$("#holder").fadeOut(800, function() {
+	// $("#m_instructions").fadeOut(1000, function() {
+	$("#m_instructions").fadeOut(1000);
 
-		}).css({'cursor': 'default'});
+	$("#holder").css({'cursor': 'default'}).fadeOut(800, function() {
+
+
+
+		console.log("[Migrants: migrants_closescreen ] m_instructions fadeOut");
+		// document.getElementById("migrants_video").volume = 1;
+		_volfade('migrants_video');
+
 		instructionsOff = true;
-		// $("#rsr_instructions").css({"z-index":1}).fadeOut();
-		//trackMouseRotation(); REPLACE WITH SOMETHING FOR MIGRANTS INTERACTION
 		
 	});
-
-
 }
 
 function m_trackoff() {
@@ -654,6 +605,7 @@ function addMigrantsListeners() {
 	//console.log(timecodeArray);
 	document.getElementById("migrants_video").addEventListener("canplay", m_loadVideo, true);
 	document.getElementById("migrants_video").addEventListener("ended", m_endVids, true);
+	document.getElementById("migrants_video").addEventListener("seeked", m_hasLooped, true);
 	document.getElementById("migrants_video").addEventListener("timeupdate", m_scrubberUpdater, true);
 	document.getElementById("migrants_video").addEventListener("play", m_playVidsCallback, true);
 	document.getElementById("migrants_video").addEventListener("pause", m_pauseVidsCallback, true);
@@ -664,11 +616,17 @@ function addMigrantsListeners() {
 function removeMigrantsListeners() {
 	document.getElementById("migrants_video").removeEventListener("canplay", m_loadVideo, true);
 	document.getElementById("migrants_video").removeEventListener("ended", m_endVids, true);
+	document.getElementById("migrants_video").removeEventListener("seeked", m_hasLooped, true);
+
 	// document.getElementById("migrants_video").removeEventListener("timeupdate", m_scrubberUpdater, true);
 	document.getElementById("migrants_video").removeEventListener("play", m_playVidsCallback, true);
 	document.getElementById("migrants_video").removeEventListener("pause", m_pauseVidsCallback, true);
 	document.getElementById("migrants_video").removeEventListener("loadedmetadata", function() {
 	}, false);
+}
+
+function m_hasLooped() {
+	console.log("migrants has played and restarted");
 }
 
 function m_loadVideo () {
@@ -779,7 +737,7 @@ var m_scrubberUpdater = function () {
 
 				    	if(actFillArray[j].vennID === timecodeArray[i].Venn){
 				    		//Turn on act Fill
-				    		actFillArray[j].actFill.attr({opacity: '1.0'});
+				    		actFillArray[j].actFill.animate({opacity: '1.0'}, 800);
 				    		//Ghana Label
 				    		if(actFillArray[j].vennID === 0) {
 				    			vennMap[10].attr({fill: '#000'});
@@ -808,15 +766,15 @@ var m_scrubberUpdater = function () {
 				    		}
 				    		
 				    		prevVenID = timecodeArray[i].Venn;
-				    		console.log(m_curtime + " : " + timecodeArray[i].Maxtime + " : " + timecodeArray[i].Venn + " : " + prevVenID);
+				    		// console.log(m_curtime + " : " + timecodeArray[i].Maxtime + " : " + timecodeArray[i].Venn + " : " + prevVenID);
 				    		
 				    	}
 				    	else{
 				    		//Turn off Act Fill
-							actFillArray[j].actFill.attr({opacity: '0.0'});
+							actFillArray[j].actFill.animate({opacity: '0.0'}, 400);
 				    	}
 
-					 }
+					}
 					
 				}
 				// console.log(m_curtime + " : " + timecodeArray[i].Maxtime + " : " + timecodeArray[i].Venn);
@@ -902,13 +860,13 @@ function m_arrayActFills() {
 
 	//console.log(actFillArray);
 	
-	var circle_u = archtype.circle(102.349, 101.852, 100.51).attr({fill: 'none',stroke: '#FFFFFF',"stroke-width": '2',"stroke-miterlimit": '1',"stroke-dasharray": '.', parent: 'vennMap','stroke-opacity': '1'}).data('id', 'circle_u'); 
+	var circle_u = archtype.circle(102.349, 101.852, 100.51).attr({fill: 'none',stroke: '#FFFFFF',"stroke-width": '1.35',"stroke-miterlimit": '1',"stroke-dasharray": '.', parent: 'vennMap','stroke-opacity': '1'}).data('id', 'circle_u'); 
 	vennMap.attr({'name': 'vennMap'}); 
 	var group_b = archtype.set(); 
-	var circle_v = archtype.circle(202.858, 101.852, 100.51).attr({fill: 'none',stroke: '#FFFFFF',"stroke-width": '2',"stroke-miterlimit": '1',"stroke-dasharray": '.', parent: 'group_b','stroke-opacity': '1'}).data('id', 'circle_v'); 
+	var circle_v = archtype.circle(202.858, 101.852, 100.51).attr({fill: 'none',stroke: '#FFFFFF',"stroke-width": '1.35',"stroke-miterlimit": '1',"stroke-dasharray": '.', parent: 'group_b','stroke-opacity': '1'}).data('id', 'circle_v'); 
 	group_b.attr({'name': 'group_b'}); 
 	var group_c = archtype.set(); 
-	var circle_w = archtype.circle(153.553, 188.729, 100.51).attr({fill: 'none',stroke: '#FFFFFF',"stroke-width": '2',"stroke-miterlimit": '1',"stroke-dasharray": '.',parent: 'group_c','stroke-opacity': '1'}).data('id', 'circle_w'); 
+	var circle_w = archtype.circle(153.553, 188.729, 100.51).attr({fill: 'none',stroke: '#FFFFFF',"stroke-width": '1.35',"stroke-miterlimit": '1',"stroke-dasharray": '.',parent: 'group_c','stroke-opacity': '1'}).data('id', 'circle_w'); 
 	group_c.attr({'name': 'group_c'}); 
 	var holderGroups = [vennMap, group_b, group_c]; 
 	
