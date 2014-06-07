@@ -1078,7 +1078,10 @@ var fadeInAmbientAudio = function () {
 var fadeOutAmbientAudio = function () {
 
 	// internal function to fade outaudio 
-	document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;
+	if(_currentaudiovolume>=0){
+		document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;	
+	}
+	
 	_currentaudiovolume -= 1;
 	//console.log("Fade Vol down " + _currentaudiovolume);
 	if(_currentaudiovolume == 0){
