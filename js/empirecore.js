@@ -254,7 +254,7 @@ $(document).ready(function () {
 		min: $("#m_instructions").offset().top,
 		onEnter: function(element, position) {
 			console.log("entering m_instructions");
-			migrants_openscreen();
+			migrants_openinstructions();
 			m_vennTracking();
 	
 		},
@@ -738,7 +738,7 @@ function loadMigrants() {
 	migrants_sizer();
 	m_init();
 	m_circleScrubber();
-	// migrants_openscreen();
+	// migrants_openinstructions();
 	// m_instructionFills();
 	// m_actFillsLabels();
 }
@@ -1050,76 +1050,44 @@ function drawer () {
 
 function audioready () {
 	// audio has loaded, let's do this
-
 	if(!audioactive){
 		document.getElementById('ambientaudio').volume = 0;
 		document.getElementById('ambientaudio').play();
-		vIvl = setInterval(_volfade('ambientaudio'),100);
+		vIvl = setInterval(fadeInAmbientAudio,100);
 		audioactive = true;
-	}
-	
-}
-
-// function _volfade () {
-
-// 	// internal function to fade in
-	
-// 	document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;
-// 	_currentaudiovolume += 5;
-// 	if(_currentaudiovolume > audiovolume){
-// 		clearInterval(vIvl);
-// 	}
-// }
-
-function _volfade( filename ) {
-
-	// internal function to fade in
-
-	if(document.getElementById(filename) == null) {
-		console.log("[volfade] error cant find : "+ filename);
-		return;
-	}
-
-	document.getElementById(filename).volume = _currentaudiovolume / 100;
-	_currentaudiovolume += 5;
-	if(_currentaudiovolume > audiovolume) {
-		clearInterval(vIvl);
-	}
-}
-
-// function _volfadeout () {
-
-// 	// internal function to fade out
-
-// 	document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;
-// 	_currentaudiovolume -= 1;
-// 	if(_currentaudiovolume == 0){
-// 		clearInterval(vIvl);
-// 		document.getElementById('ambientaudio').pause();
-// 	}
-// }
-
-function _volfadeout ( filename ) {
-
-	// internal function to fade out
-
-	if(document.getElementById(filename) == null) {
-		console.log("[volfadeout] error cant find : "+ filename);
-		return;
-	}
-
-	document.getElementById(filename).volume = _currentaudiovolume / 100;
-	_currentaudiovolume -= 1;
-	if(_currentaudiovolume == 0){
-		clearInterval(vIvl);
-		document.getElementById(filename).pause();
 	}
 }
 
 function audiostop () {
 	clearInterval(vIvl);
-	vIvl = setInterval(_volfadeout('ambientaudio'),100);
+	vIvl = setInterval(fadeOutAmbientAudio,100);
 	audioactive = false;	
 }
+
+var fadeInAmbientAudio = function () {
+
+	// internal function to fade in
+	document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;
+	_currentaudiovolume += 5;
+	//console.log("Fade Vol up " + _currentaudiovolume);
+	if(_currentaudiovolume > audiovolume){
+		clearInterval(vIvl);
+	}
+}
+
+var fadeOutAmbientAudio = function () {
+
+	// internal function to fade outaudio 
+	document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;
+	_currentaudiovolume -= 1;
+	//console.log("Fade Vol down " + _currentaudiovolume);
+	if(_currentaudiovolume == 0){
+		clearInterval(vIvl);
+		document.getElementById('ambientaudio').pause();
+	}
+}
+
+// 
+
 
 

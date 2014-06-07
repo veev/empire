@@ -1,8 +1,12 @@
 var migrantsLoaded = false;
 var migrantsActive = false;
+var migrantsshowprogress = false;
 var m_vidLoaded = false;
 var m_videoTrackCurrentPosition = 0;
 var m_curtime = 0;
+var m_maxVolume = 20;
+var m_currentVolume = 0;
+var m_intervalID = 0;
 var amount = 0;
 var insructIvl = new Number();
 // var m_enoughwithinstructions = false;
@@ -35,6 +39,7 @@ var mTrackerArray = new Array();
 function progressArcInitPos(){
 	var initPos;
 	var initDur = m_getCurrentTime();
+	// var initDur = document.getElementById("migrants_video").duration -20;
 	height = $("#migrants_top").height();
 	if(initDur > 0){
 		initPos = ( initDur / document.getElementById("migrants_video").duration);
@@ -96,15 +101,22 @@ function m_init(){
         finish_y = cy + Math.sin( finish_r ) * radius,
         path;
 
+        // path =
+        // [
+        //     [ "M", start_x, start_y ],
+        //     [ "A", radius, radius, finish_r - start_r,
+        //             finish_r - start_r > Raphael.rad( 180 ) ? 1 : 0,    /* large-arc-flag */
+        //             finish_r > start_r ? 1 : 0,         /* sweep-flag */
+        //             finish_x, finish_y ],               /* target coordinates */
+        // ];
         path =
         [
             [ "M", start_x, start_y ],
             [ "A", radius, radius, finish_r - start_r,
                     finish_r - start_r > Raphael.rad( 180 ) ? 1 : 0,    /* large-arc-flag */
-                    finish_r > start_r ? 1 : 0,         /* sweep-flag */
+                     1 ,         /* SM Hack. sweep-flag is always set to 1. */
                     finish_x, finish_y ],               /* target coordinates */
         ];
-
         return { path: path };
     };
 
@@ -252,33 +264,10 @@ function m_circleScrubber() {
 	if(timeCircle !== null){
 	 timeCircle.animate({cx:x_,cy:y_,r:4},100);	
 	}
-	
-
-	// var ration;
-	// var dur = Math.floor(document.getElementById("migrants_video").currentTime);
-
-	// if(dur > 0){
-	// 	ration = ( dur / document.getElementById("migrants_video").duration);
-	// 	ration *= 100;
-		
-	// 	// console.log(ration);
-
-	// 	// console.log("[ Migrants: m_scrubberUpdater ] ratio = " + Math.floor(ration));
-	// }
 
 	var ration = getMigrantsVideoCurrentPos();
 
 	if(ration > 0){
-		// console.log("[ Migrants: m_scrubberUpdater ] curRation = " + Math.floor(rationNew) + " initPathNewPos : "+ initPathNewPos );
-		// var xloc = width/2;
-		// var yloc = height/2;
-		// var R = height/2 - 50;
-
-		// var alpha = 360 / 100 * ration;
-		// var a = (90 - alpha) * Math.PI / 180;
-		// var x = xloc + R * Math.cos(a);
-		// var y = yloc - R * Math.sin(a);		
-
 		var _cx = width/2;
 		var _cy =  height/2;
 		var _r =  height/2 - 50;
@@ -287,6 +276,7 @@ function m_circleScrubber() {
         var cur_y = _cy + Math.sin( Raphael.rad( circleFinishPos -90 ))	 * _r;
 
 		progrssCircle.animate({cx:cur_x,cy:cur_y,r:6}, 10);
+		progrssCircle.toFront();
 	}
 }
 
@@ -342,17 +332,17 @@ function migrants_sizer() {
 
 	$("#migrantsmore").css({"top": buffer, "left": centering }).fadeIn(4000).on('click', function() {
 		body.animate({scrollTop: ($('#migrants_main').offset().top) }, 1000);
-		 console.log("migrants_openscreen() in migrantsmore");
+		 console.log("migrants_openinstructions() in migrantsmore");
 		 // $("#migrants_video").fadeIn(4000);
 		 // $("#holder").fadeIn(4000);
 		 //m_instructionFills();
 		 // m_playVids();
 		 // m_arrayActFills();
-		 migrants_openscreen();
-		 console.log("[ more button click: migrants_openscreen ] instructionsOff ? " + instructionsOff );
+		 migrants_openinstructions();
+		 console.log("[ more button click: migrants_openinstructions ] instructionsOff ? " + instructionsOff );
 		if(!migrantsLoaded) {
 			console.log("[Migrants: migrantsmore listener] if not migrantsLoaded, migrants openscreen");
-			//migrants_openscreen();
+			//migrants_openinstructions();
 		}
 	});
 
@@ -361,115 +351,46 @@ function migrants_sizer() {
 
 function m_vennTracking() {
 
-var timer;
+	var timer;
 
-$("#m_container").on({
-    'mouseover': function () {
-    	if(instructionsOff) {
-			m_vennMapOn();
-		} else {
-				console.log("[mouseleave] migrants instructionsOff is false");
+	$("#m_container").on({
+	    'mousemove': function () {
+	    	if(instructionsOff) {
+				m_vennMapOn();
+			} 
+			else {
+					console.log("[mouseleave] migrants instructionsOff is false");
 			}
-        timer = setTimeout(function () {
-			if(instructionsOff) {
+			clearTimeout(timer);
+	        timer = setTimeout(function () {
+				if(instructionsOff) {
+					m_vennMapOff();
+				} else {
+					console.log("[mouseenter] migrants instructionsOff is false");
+				}
+	        }, 5000);
+	    },
+	    'mouseout' : function () {
+	    	if(instructionsOff) {
 				m_vennMapOff();
 			} else {
 				console.log("[mouseenter] migrants instructionsOff is false");
 			}
-        }, 5000);
-    },
-    'mouseout' : function () {
-    	if(instructionsOff) {
-			m_vennMapOff();
-		} else {
-			console.log("[mouseenter] migrants instructionsOff is false");
-		}
-        clearTimeout(timer);
-    }
-});
-
-// var timer2;
-
-//     $("#m_container").on('mousemove', function() {
-//         if (timer2) {
-//             clearTimeout(timer);            
-//             timer2 = 0;
-//         } 
-//         if(instructionsOff) { 
-//             m_vennMapOn();
-// 		} else {
-// 				console.log("[mouseleave] migrants instructionsOff is false");
-// 			}
-//         timer2 = setTimeout(function() {
-//            if(instructionsOff) {
-// 				m_vennMapOff();
-// 			} else {
-// 				console.log("[mouseenter] migrants instructionsOff is false");
-// 			}
-//         }, 3000);
-
-//     });
-
-// var timer2;
-
-// $("#m_container").on({
-//     'mousemove': function () {
-//     	if(instructionsOff) {
-// 			m_vennMapOn();
-// 		} else {
-// 				console.log("[mouseleave] migrants instructionsOff is false");
-// 			}
-//         timer2 = setTimeout(function () {
-// 			if(instructionsOff) {
-// 				m_vennMapOff();
-// 			} else {
-// 				console.log("[mouseenter] migrants instructionsOff is false");
-// 			}
-//         }, 3000);
-//     },
-//     'mouseout' : function () {
-//     	if(instructionsOff) {
-// 			m_vennMapOff();
-// 		} else {
-// 			console.log("[mouseenter] migrants instructionsOff is false");
-// 		}
-//         clearTimeout(timer2);
-//     }
-// });
-
-	// $("#m_container").on('mouseleave', function() {
-	// 	console.log("[migrants video : mouse leave]");
-	// 	if(instructionsOff) {
-	// 		m_vennMapOff();
-	// 	} else {
-	// 		console.log("[mouseleave] migrants instructionsOff is false");
-	// 	}
-	// });
-
-	// $("#m_container").on('mouseenter', function() {
-	// 	console.log("[migrants video : mouse enter]");
-	// 	if(instructionsOff) {
-	// 		m_vennMapOn();
-	// 	} else {
-	// 		console.log("[mouseenter] migrants instructionsOff is false");
-	// 	}
-	// });
-
-
-
-	// $("#m_container").on('mousemove', function() {
-	// 	console.log("[migrants video : mouse move]");
-	// 	if(instructionsOff) {
-	// 		m_vennMapOn();
-	// 	} else {
-	// 		console.log("[mouseenter] migrants instructionsOff is false");
-	// 	}
-	// });
+	        clearTimeout(timer);
+	    }
+	});
 
 	$("#m_instructions").on('click', function () { 
 		//console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
-		migrants_closescreen(); 
-		console.log("[ m_instructions click: migrants_closescreen ] instructionsOff ? " + instructionsOff );
+		migrants_closeinstructions(); 
+		console.log("[ m_instructions click: migrants_closeinstructions ] instructionsOff ? " + instructionsOff );
+		//console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
+	});
+
+	$("#holder").on('click', function () { 
+		//console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
+		// migrants_closeinstructions(); 
+		console.log("[ holder click: migrants_closeinstructions ] instructionsOff ? " + instructionsOff );
 		//console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
 	});
 }
@@ -547,18 +468,13 @@ function m_jsonCall() {
     return data;
 }
 
-function migrants_openscreen () {
+function migrants_openinstructions () {
 	// console.log("in migrants openscreen");
 	instructionsOff = false;
 	// m_playVids();
 
 	$("#migrants_video").fadeIn(4000, function() {
-		console.log("[migrants_openscreen] migrants_video fadeIn");
-		
-		if(migrantsActive && document.getElementById("migrants_video").paused) {
-			m_playButton();
-			document.getElementById("migrants_video").volume = 0;
-		}
+		console.log("[migrants_openinstructions] migrants_video fadeIn");
 	});
 	
 	$("#holder").fadeIn(4000, function() {
@@ -566,35 +482,87 @@ function migrants_openscreen () {
 	});
 	// $("#rsr_instructions").css({"z-index":100}).fadeIn(2000);
 	$("#m_instructions").fadeIn(4000);	 
-	console.log("[Migrants: openscreen ] migrants_closescreen on setTimeout 1");
-	insructIvl = setTimeout("migrants_closescreen()",7000);
+	console.log("[Migrants: openscreen ] migrants_closeinstructions on setTimeout 1");
+	insructIvl = setTimeout(migrants_closeinstructions,5000);
 }
 
-function migrants_closescreen () {
+var migrants_closeinstructions = function () {
+	m_playButton();
+	if(instructionsOff){
+		console.log("Instructions already off")
+		return;
+	}
+
 	clearInterval(insructIvl);
 
 	if (audioactive) {
 		audiostop();
 	}
 	
+	
+	document.getElementById("migrants_video").volume = 0;
+	migrantsshowprogress = true;
 	// $("#m_instructions").fadeOut(1000, function() {
 	$("#m_instructions").fadeOut(1000);
 
 	$("#holder").css({'cursor': 'default'}).fadeOut(800, function() {
-
-
-
-		console.log("[Migrants: migrants_closescreen ] m_instructions fadeOut");
+		
+		console.log("[Migrants: migrants_closeinstructions ] m_instructions fadeOut");
 		// document.getElementById("migrants_video").volume = 1;
-		_volfade('migrants_video');
+		//_volfade('migrants_video');
+		document.getElementById('migrants_video').volume = 0;
+
+		if(m_intervalID !== 0 ){
+			clearInterval(m_intervalID);	
+		}
+		
+		m_intervalID = setInterval(fadeInMigrantsAudio,100);
+		console.log("SETTING ID TO : " + m_intervalID);
 
 		instructionsOff = true;
 		
 	});
 }
 
+// function migrants_audioready () {
+// 	// audio has loaded, let's do this
+// 		document.getElementById('migrants_video').volume = 0;
+// 		m_intervalID = setInterval(fadeInMigrantsAudio,100);
+// }
+
+function migrants_audiostop () {
+	clearInterval(m_intervalID);
+	m_intervalID = setInterval(fadeOutMigrantsAudio,100);
+	audioactive = false;	
+}
+
+var fadeInMigrantsAudio = function () {
+
+	// internal function to fade in
+	document.getElementById('migrants_video').volume = m_currentVolume / 100;
+	m_currentVolume += 5;
+	//console.log("Fade Migrants Vol up " + m_currentVolume);
+	if(m_currentVolume > m_maxVolume){
+		console.log("CLEARING ID : " + m_intervalID);
+		clearInterval(m_intervalID);
+	}
+}
+
+var fadeOutMigrantsAudio = function () {
+
+	// internal function to fade outaudio 
+	document.getElementById('migrants_video').volume = m_currentVolume / 100;
+	m_currentVolume -= 1;
+	//console.log("Fade Migrants Vol down " + m_currentVolume);
+	if(_currentaudiovolume == 0){
+		clearInterval(m_intervalID);
+		document.getElementById('ambientaudio').pause();
+	}
+}
+
 function m_trackoff() {
 	$("#m_instructions").unbind('click');
+	$("#holder").unbind('click');
 	//not sure whether to turn this off
 	// $("#migrantsmore").unbind('click');
 	$("#m_container").unbind('mouseenter');
@@ -650,7 +618,8 @@ function m_playButton() {
 			m_playVids();  
 		}
 		else{
-			m_pauseVids();
+			//m_pauseVids();
+			console.log("[m_playButton] video is already playing");
 		}
 	} else {
 		console.log("[ Migrants: m_playButton ] migrantsActive ? : " + migrantsActive);
@@ -659,17 +628,14 @@ function m_playButton() {
 }
 
 function m_playVids() {
-	// if (audioactive) {
-	// 	audiostop();
-	// }
 
 	if(m_vidLoaded){
 		//console.log("[ Migrants : playVids ] videoTrackCurrentPosition = " + videoTrackCurrentPosition);
-		// currentTime =  ;
-			var test = m_getCurrentTime();
-			document.getElementById("migrants_video").currentTime = test ;
+			var cTime = m_getCurrentTime();
+			document.getElementById("migrants_video").currentTime =cTime;
+			// document.getElementById("migrants_video").currentTime = document.getElementById("migrants_video").duration -20; ;
 			console.log("Video loaded ? " + m_vidLoaded);
-			console.log(test + " : " + document.getElementById("migrants_video").currentTime);
+			// console.log(test + " : " + document.getElementById("migrants_video").currentTime);
 			document.getElementById("migrants_video").play();
 			
 			m_circleScrubber();
@@ -685,7 +651,7 @@ function m_getCurrentTime(){
 	var currentTimeOfDay = d.getHours()*60*60 + d.getMinutes()*60 + d.getSeconds();
 
 	var currentTimeForVideo = currentTimeOfDay % document.getElementById("migrants_video").duration;
-
+	
 	//console.log("Current time of Day : " + currentTimeOfDay + " Current time for video : "+ currentTimeForVideo);
 	return currentTimeForVideo;
 
@@ -724,7 +690,10 @@ var m_scrubberUpdater = function () {
 	if(dur > 0){
 		var ratio = (document.getElementById("migrants_video").duration / dur);
 	}
-	m_circleScrubber();
+	if(migrantsshowprogress){
+	 m_circleScrubber();	
+	}
+	
 	
 	m_curtime = document.getElementById("migrants_video").currentTime;
 	if(instructionsOff) {
