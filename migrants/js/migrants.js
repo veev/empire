@@ -70,7 +70,7 @@ function m_init(){
 	// 0.556 is ratio for holderWidth/ScreenWidth
 	console.log("Migrants Init()");
 
-	var holderWidth = $("#migrants_top").width() * 0.556;
+	var holderWidth = $("#migrants_top").width() * 0.595;
 	if (holderWidth < height) {
 		holderWidth = height;
 	}
