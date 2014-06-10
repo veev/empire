@@ -32,6 +32,7 @@ var initPathPos = 0;
 var initPathNewPos = 0;
 var vennMap;
 var timeCircle = null;
+var watchedFullMigrants = false;
 
 var mTrackerArray = new Array();
 //var ratio;
@@ -85,6 +86,7 @@ function m_init(){
 	
 
 	timeCircle = archtype.circle(0,0,0).attr({fill: '#FFFFFF',stroke: '#FFFFFF',"stroke-width": '1','stroke-opacity': '1'}).data('id', 'circle_u');
+	
 	var startLine = archtype.path("M400 40 L400 60").attr({stroke: '#fff', "stroke-width": '1','stroke-opacity': '0.6'});
 	var twentyfour = archtype.text(400, 10, '24h');
 		twentyfour.attr({fill: '#FFFFFF',"font-family": 'AGaramond-Italic',"font-size": '18','stroke-width': '0','stroke-opacity': '0.6', 'opacity': '0.6'}); 
@@ -168,9 +170,32 @@ function m_init(){
 		"stroke-width": 2,
 		"stroke-miterlimit": 10,
 		"stroke-dasharray": '.',
-		arc: [width/2, height/2, 100, 100, height/2-30 ]
+		//arc: [width/2, height/2, 100, 100, height/2-30 ]
+		arcseg: [width/2, height/2,  height/2-30,Raphael.rad(0), Raphael.rad(359) ]
 	});
 
+	//DO MATH HERE 
+	var spacing = 70;
+	for (var i=0; i < spacing; i++) {
+			var xloc_ = width/2;
+			var yloc_ = height/2;
+			// var R_ = radius;	
+			var circleSegment = map(i, 0, spacing, 0, 360);
+
+			var _cx = width/2;
+			var _cy =  height/2;
+			var _r =  height/2 - 30;
+
+			var cur_x = _cx + Math.cos( Raphael.rad( circleSegment - 90  ))  * _r;
+			var cur_y = _cy + Math.sin( Raphael.rad( circleSegment - 90  ))  * _r;			
+
+			var testSeg= archtype.circle(cur_x , cur_y, 2.5).attr({fill: '#ff5a00', stroke: 'none', 'opacity': '0.9'});
+	};
+	
+
+
+
+// 	progrssCircle.animate({cx:cur_x,cy:cur_y,r:6}, 10);
 	time_progress_arc.attr({
     	"stroke": "#fff",
     	"stroke-width": 2,
@@ -228,6 +253,7 @@ function m_circleScrubber() {
 	var circleStartPos = 0;
 	var circleFinishPos = 0;
 	// var circleStartPosY = 0;
+	var totalArcLength = 0;
 	for (var i = 0; i < mTrackerArray.length; i++) {
 		if(mTrackerArray[i].arcSegment !== null){
 			if(mTrackerArray[i].isActive){
@@ -238,6 +264,7 @@ function m_circleScrubber() {
 					"stroke-width": 2,
 					arcseg: [ width/2, height/2, height/2 - 50, Raphael.rad( mTrackerArray[i].startPos ), Raphael.rad( getMigrantsVideoCurrentPos()) ] 
 				})
+				 totalArcLength += Math.abs(getMigrantsVideoCurrentPos()- mTrackerArray[i].startPos);
 				 circleStartPos = mTrackerArray[i].startPos;
 				 circleFinishPos  = getMigrantsVideoCurrentPos();
 			}
@@ -246,12 +273,31 @@ function m_circleScrubber() {
 					"stroke": "#ff5a00",
 					"stroke-width": 2,
 					arcseg: [ width/2, height/2, height/2 - 50, Raphael.rad( mTrackerArray[i].startPos ), Raphael.rad( mTrackerArray[i].endPos) ] 
+					
 				});				
+
+				totalArcLength += Math.abs( mTrackerArray[i].endPos - mTrackerArray[i].startPos);
 			}
 
 		}
 	}
 
+	if(totalArcLength >80 && totalArcLength < 90 ){
+		console.log("total arc length : "+ totalArcLength);	
+	}
+
+	if(totalArcLength >170 && totalArcLength < 190 ){
+		console.log("total arc length : "+ totalArcLength);	
+	}
+
+	if(totalArcLength >260 && totalArcLength < 280 ){
+		console.log("total arc length : "+ totalArcLength);	
+	}
+
+	if(totalArcLength >350 && totalArcLength < 370 ){
+		console.log("total arc length : "+ totalArcLength);	
+	}
+	
 	var xloc_ = width/2;
 	var yloc_ = height/2;
 	var R_ = height/2 - 30;
@@ -272,8 +318,8 @@ function m_circleScrubber() {
 		var _cy =  height/2;
 		var _r =  height/2 - 50;
 
-		var cur_x = _cx + Math.cos( Raphael.rad(circleFinishPos -90 ))  * _r;
-        var cur_y = _cy + Math.sin( Raphael.rad( circleFinishPos -90 ))	 * _r;
+		var cur_x = _cx + Math.cos( Raphael.rad( circleFinishPos - 90 ))  * _r;
+        var cur_y = _cy + Math.sin( Raphael.rad( circleFinishPos - 90 ))  * _r;
 
 		progrssCircle.animate({cx:cur_x,cy:cur_y,r:6}, 10);
 		progrssCircle.toFront();
