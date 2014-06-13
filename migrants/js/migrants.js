@@ -85,12 +85,13 @@ function m_init(){
 	test_arcseg = archtype.path();
 	
 
-	timeCircle = archtype.circle(0,0,0).attr({fill: '#FFFFFF',stroke: '#FFFFFF',"stroke-width": '1','stroke-opacity': '1'}).data('id', 'circle_u');
-	
+	timeCircle = archtype.circle(width/2,0,0).attr({fill: '#FFFFFF',stroke: '#FFFFFF',"stroke-width": '1','stroke-opacity': '1'}).data('id', 'circle_u');
+	progrssCircle = archtype.circle(width/2, 0, 0).attr({fill: '#FFFFFF',stroke: '#FFFFFF',"stroke-width": '1','stroke-opacity': '1'}).data('id', 'circle_u'); 
+
 	var startLine = archtype.path("M400 40 L400 60").attr({stroke: '#fff', "stroke-width": '1','stroke-opacity': '0.6'});
 	var twentyfour = archtype.text(400, 10, '24h');
 		twentyfour.attr({fill: '#FFFFFF',"font-family": 'AGaramond-Italic',"font-size": '18','stroke-width': '0','stroke-opacity': '0.6', 'opacity': '0.6'}); 
-	var durationTime = archtype.text(400, 38, '22m:06s');
+	var durationTime = archtype.text(400, 38, '20m:50s');
 		durationTime.attr({fill: '#FFFFFF',"font-family": 'AGaramond-Italic',"font-size": '18','stroke-width': '0','stroke-opacity': '0.6', 'opacity': '0.6'}); 
 	var sixDot = archtype.circle(width/2 + radius/2, height/2, 1).attr({fill: '#FFFFFF', stroke: '#fff', 'opacity': '0.6'});
 	var twelveDot = archtype.circle(400, radius + 20, 1).attr({fill: '#FFFFFF', stroke: '#fff','opacity': '0.6'});
@@ -103,22 +104,22 @@ function m_init(){
         finish_y = cy + Math.sin( finish_r ) * radius,
         path;
 
-        // path =
-        // [
-        //     [ "M", start_x, start_y ],
-        //     [ "A", radius, radius, finish_r - start_r,
-        //             finish_r - start_r > Raphael.rad( 180 ) ? 1 : 0,    /* large-arc-flag */
-        //             finish_r > start_r ? 1 : 0,         /* sweep-flag */
-        //             finish_x, finish_y ],               /* target coordinates */
-        // ];
         path =
         [
             [ "M", start_x, start_y ],
             [ "A", radius, radius, finish_r - start_r,
                     finish_r - start_r > Raphael.rad( 180 ) ? 1 : 0,    /* large-arc-flag */
-                     1 ,         /* SM Hack. sweep-flag is always set to 1. */
+                    finish_r > start_r ? 1 : 0,         /* sweep-flag */
                     finish_x, finish_y ],               /* target coordinates */
         ];
+        // path =
+        // [
+        //     [ "M", start_x, start_y ],
+        //     [ "A", radius, radius, finish_r - start_r,
+        //             finish_r - start_r > Raphael.rad( 180 ) ? 1 : 0,     large-arc-flag 
+        //              1 ,         /* SM Hack. sweep-flag is always set to 1. */
+        //             finish_x, finish_y ],               /* target coordinates */
+        // ];
         return { path: path };
     };
 
@@ -174,13 +175,14 @@ function m_init(){
 		arcseg: [width/2, height/2,  height/2-30,Raphael.rad(0), Raphael.rad(359) ]
 	});
 
+	//orange time marks = amount of screenings per day
 	//DO MATH HERE 
-	var spacing = 70;
+	var spacing = 69;
 	for (var i=0; i < spacing; i++) {
 			var xloc_ = width/2;
 			var yloc_ = height/2;
 			// var R_ = radius;	
-			var circleSegment = map(i, 0, spacing, 0, 360);
+			var circleSegment = map(i, 0, spacing, 0, 359.6);
 
 			var _cx = width/2;
 			var _cy =  height/2;
@@ -192,9 +194,6 @@ function m_init(){
 			var testSeg= archtype.circle(cur_x , cur_y, 2.5).attr({fill: '#ff5a00', stroke: 'none', 'opacity': '0.9'});
 	};
 	
-
-
-
 // 	progrssCircle.animate({cx:cur_x,cy:cur_y,r:6}, 10);
 	time_progress_arc.attr({
     	"stroke": "#fff",
@@ -208,7 +207,6 @@ function m_init(){
 
 	m_arrayActFills();
 
-	progrssCircle = archtype.circle(0, 0, 0).attr({fill: '#FFFFFF',stroke: '#FFFFFF',"stroke-width": '1','stroke-opacity': '1'}).data('id', 'circle_u'); 
 
 }
 
@@ -282,21 +280,21 @@ function m_circleScrubber() {
 		}
 	}
 
-	if(totalArcLength >80 && totalArcLength < 90 ){
-		console.log("total arc length : "+ totalArcLength);	
-	}
+	// if(totalArcLength >80 && totalArcLength < 90 ){
+	// 	console.log("total arc length : "+ totalArcLength);	
+	// }
 
-	if(totalArcLength >170 && totalArcLength < 190 ){
-		console.log("total arc length : "+ totalArcLength);	
-	}
+	// if(totalArcLength >170 && totalArcLength < 190 ){
+	// 	console.log("total arc length : "+ totalArcLength);	
+	// }
 
-	if(totalArcLength >260 && totalArcLength < 280 ){
-		console.log("total arc length : "+ totalArcLength);	
-	}
+	// if(totalArcLength >260 && totalArcLength < 280 ){
+	// 	console.log("total arc length : "+ totalArcLength);	
+	// }
 
-	if(totalArcLength >350 && totalArcLength < 370 ){
-		console.log("total arc length : "+ totalArcLength);	
-	}
+	// if(totalArcLength >350 && totalArcLength < 370 ){
+	// 	console.log("total arc length : "+ totalArcLength);	
+	// }
 	
 	var xloc_ = width/2;
 	var yloc_ = height/2;
@@ -341,9 +339,8 @@ function migrants_sizer() {
 	var h = $("#migrants_top").height();
 	//console.log("w: "+w+ ", h: " + h);
 	var padtop = h * 0.11; // top of the main title
-	var matop = padtop + 70; // top of the matrix
-
-	var legbottom = 70; //offset of the bottom play button on the open screen
+	var matop = padtop + 20; // top of the matrix
+	var legbottom = 50; //offset of the bottom play button on the open screen
 	var buffer = h - legbottom;
 	//console.log("buffer = "+ buffer);
 	var centering = (w/2) - 62;
@@ -351,7 +348,7 @@ function migrants_sizer() {
 	var body = $('html body');
 	if($(".migrants_top:first").height() < 780){ // if this a wee screen
 		padtop = 20;
-		matop = 140;
+		matop = 100;
 		legbottom = 20;
 	}
 	
@@ -368,7 +365,7 @@ function migrants_sizer() {
 
 	$("#m_legmore").css({ "margin-left": ($("#migrants_main").width() / 2) - 90 });
 
-	if (h < 700) {
+	if (h < 710) {
 		$("#minst_2").css({"top": '14%'});
 		$("#minst_3").css({"top": '70%'});
 	} else {
