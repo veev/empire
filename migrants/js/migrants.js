@@ -21,6 +21,7 @@ var width;
 var height;
 var radius;
 var archtype;
+var holderWidth;
 var total_arc;
 var progress_arc;
 var time_arc;
@@ -65,19 +66,21 @@ function loadArcSegs(){
 	}
 }
 
-function m_init(){
+function m_getDimensions() {
 	height = $("#migrants_top").height();
 	// 0.556 is ratio for holderWidth/ScreenWidth
 	console.log("Migrants Init()");
 
-	var holderWidth = $("#migrants_top").width() * 0.595;
+	holderWidth = $("#migrants_top").width() * 0.595;
 	if (holderWidth < height) {
 		holderWidth = height;
 	}
 	radius = height - 40;
 	archtype = Raphael("holder", holderWidth, height);
 	width = $("#holder").width();
-	
+}
+
+function m_initPaths() {
 	total_arc = archtype.path();
 	progress_arc = archtype.path();
 	time_arc = archtype.path();
@@ -96,6 +99,13 @@ function m_init(){
 	var sixDot = archtype.circle(width/2 + radius/2, height/2, 1).attr({fill: '#FFFFFF', stroke: '#fff', 'opacity': '0.6'});
 	var twelveDot = archtype.circle(400, radius + 20, 1).attr({fill: '#FFFFFF', stroke: '#fff','opacity': '0.6'});
 	var eighteenDot = archtype.circle(width/2 - radius/2, height/2, 1).attr({fill: '#FFFFFF', stroke: '#fff', 'opacity': '0.6'});
+}
+
+function m_init(){
+
+	m_getDimensions();
+	m_initPaths();
+
 
 	archtype.customAttributes.arcseg = function( cx, cy, radius, start_r, finish_r ) {
     var start_x = cx + Math.cos( start_r ) * radius,
@@ -423,19 +433,19 @@ function m_vennTracking() {
 	    }
 	});
 
-	$("#m_instructions").on('click', function () { 
-		//console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
-		migrants_closeinstructions(); 
-		console.log("[ m_instructions click: migrants_closeinstructions ] instructionsOff ? " + instructionsOff );
-		//console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
-	});
+	// $("#m_instructions").on('click', function () { 
+	// 	//console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
+	// 	migrants_closeinstructions(); 
+	// 	console.log("[ m_instructions click: migrants_closeinstructions ] instructionsOff ? " + instructionsOff );
+	// 	//console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
+	// });
 
-	$("#holder").on('click', function () { 
-		//console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
-		// migrants_closeinstructions(); 
-		console.log("[ holder click: migrants_closeinstructions ] instructionsOff ? " + instructionsOff );
-		//console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
-	});
+	// $("#holder").on('click', function () { 
+	// 	//console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
+	// 	// migrants_closeinstructions(); 
+	// 	console.log("[ holder click: migrants_closeinstructions ] instructionsOff ? " + instructionsOff );
+	// 	//console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
+	// });
 }
 
 var m_vennMapOn = function() {
@@ -514,23 +524,25 @@ function m_jsonCall() {
 function migrants_openinstructions () {
 	// console.log("in migrants openscreen");
 	instructionsOff = false;
-	// m_playVids();
+	m_playButton();
 
 	$("#migrants_video").fadeIn(4000, function() {
 		console.log("[migrants_openinstructions] migrants_video fadeIn");
+		document.getElementById('migrants_video').volume = 0;
+
 	});
 	
 	$("#holder").fadeIn(4000, function() {
-		$("#holder").css({'pointer-events' : 'none', 'opacity': 1.0, 'z-index': 100});
+		$("#holder").css({'cursor' : 'default', 'pointer-events' : 'none', 'opacity': 1.0, 'z-index': 100});
 	});
 	// $("#rsr_instructions").css({"z-index":100}).fadeIn(2000);
-	$("#m_instructions").fadeIn(4000);	 
+	$("#m_instructions").fadeIn(4000).css({'cursor' : 'default'});	 
 	console.log("[Migrants: openscreen ] migrants_closeinstructions on setTimeout 1");
-	insructIvl = setTimeout(migrants_closeinstructions,5000);
+	insructIvl = setTimeout(migrants_closeinstructions,10000);
 }
 
 var migrants_closeinstructions = function () {
-	m_playButton();
+	//m_playButton();
 	if(instructionsOff){
 		console.log("Instructions already off")
 		return;
@@ -546,9 +558,9 @@ var migrants_closeinstructions = function () {
 	document.getElementById("migrants_video").volume = 0;
 	migrantsshowprogress = true;
 	// $("#m_instructions").fadeOut(1000, function() {
-	$("#m_instructions").fadeOut(1000);
+	$("#m_instructions").fadeOut(2000);
 
-	$("#holder").css({'cursor': 'default'}).fadeOut(800, function() {
+	$("#holder").css({'cursor': 'default'}).fadeOut(2000, function() {
 		
 		console.log("[Migrants: migrants_closeinstructions ] m_instructions fadeOut");
 		// document.getElementById("migrants_video").volume = 1;
@@ -583,7 +595,7 @@ var fadeInMigrantsAudio = function () {
 
 	// internal function to fade in
 	document.getElementById('migrants_video').volume = m_currentVolume / 100;
-	m_currentVolume += 5;
+	m_currentVolume += 3;
 	//console.log("Fade Migrants Vol up " + m_currentVolume);
 	if(m_currentVolume > m_maxVolume){
 		console.log("CLEARING ID : " + m_intervalID);

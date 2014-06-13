@@ -1050,6 +1050,7 @@ function drawer () {
 
 function audioready () {
 	// audio has loaded, let's do this
+	console.log("ambient audio has loaded and playing")
 	if(!audioactive){
 		document.getElementById('ambientaudio').volume = 0;
 		document.getElementById('ambientaudio').play();
@@ -1059,6 +1060,8 @@ function audioready () {
 }
 
 function audiostop () {
+	console.log("ambient audio is stopping")
+
 	clearInterval(vIvl);
 	vIvl = setInterval(fadeOutAmbientAudio,100);
 	audioactive = false;	
@@ -1069,7 +1072,7 @@ var fadeInAmbientAudio = function () {
 	// internal function to fade in
 	document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;
 	_currentaudiovolume += 5;
-	//console.log("Fade Vol up " + _currentaudiovolume);
+	console.log("Fade Vol up " + _currentaudiovolume);
 	if(_currentaudiovolume > audiovolume){
 		clearInterval(vIvl);
 	}
@@ -1083,7 +1086,7 @@ var fadeOutAmbientAudio = function () {
 	}
 	
 	_currentaudiovolume -= 1;
-	//console.log("Fade Vol down " + _currentaudiovolume);
+	console.log("Fade Vol down " + _currentaudiovolume);
 	if(_currentaudiovolume == 0){
 		clearInterval(vIvl);
 		document.getElementById('ambientaudio').pause();

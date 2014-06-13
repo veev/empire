@@ -90,13 +90,13 @@ div.migrants_intro {
 	background-position-y: 24;}
 div.migrants_intro p { position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
 div.migrants_intro p#m_a { 
-	text-align: center; 
+	text-align: left; 
 	padding-left: 153px;
 	top: -8;
 	width: 271;
 	z-index: 1; }
 div.migrants_intro p#m_a2 { 
-	text-align: center; 
+	text-align: right; 
 	padding-left: 474px;
 	top: -8;
 	width: 262;
@@ -121,7 +121,7 @@ div#migrants_main {
 div#m_instructions { 
 	position: absolute; 
 	z-index: 80; 
-	cursor: pointer; 
+/*	cursor: pointer; */
 	background: rgba(0,0,0,.6); 
 	height: 800px; 
 	width: 1280px; 
@@ -134,8 +134,8 @@ div#m_instructions {
 
 div#m_instructions p.minst_0 { /*top: 90;*/ width: 130; float: left; /*clear:both;*/}
 div#m_instructions p.minst_1 { color: #ff5a00; float: right; /*clear:both;*/ width: 150;}
-div#m_instructions p#minst_2 { color: #fff; font-size: 1.2em; position: absolute; /*top: -50%; */ left: 42%;width: 230; }
-div#m_instructions p#minst_3 { position: absolute; font-size: 1.2em; /*top: 125%; */ left: 42%; width: 210;}
+div#m_instructions p#minst_2 { color: #fff; font-size: 1.1em; position: absolute; /*top: -50%; */ left: 40%;width: 263; }
+div#m_instructions p#minst_3 { position: absolute; font-size: 1.1em; /*top: 125%; */ left: 42%; width: 210;}
 
 div#migrants_main div#migrants_linewhite { background: url(../../art/periphery/b_linewhite.png) repeat-y; width: 3px; position: absolute; z-index: 1; }
 #migrants_main div#m_legmore { position: absolute; z-index: 10; bottom: 30; width: 127px; height: 45px; cursor: pointer; background: url(../../art/periphery/leg_more.png) no-repeat; }
