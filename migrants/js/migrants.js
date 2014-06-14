@@ -34,7 +34,7 @@ var initPathNewPos = 0;
 var vennMap;
 var timeCircle = null;
 var watchedFullMigrants = false;
-
+var shouldShowVideo = false;
 var mTrackerArray = new Array();
 //var ratio;
 
@@ -488,7 +488,11 @@ function m_audioToggle() {
 
 	}
 }
-
+function fadeInMigrantsVideo(){
+	document.getElementById('migrants_video').volume = 0;
+	m_playButton();
+	$("#migrants_video").animate({opacity: "0.5"},4000);
+}
 function loadTimecodeData(data){
 	var localArray = new Array();
 	for (var i = 0; i < data.length; i++) {
@@ -522,27 +526,36 @@ function m_jsonCall() {
 }
 
 function migrants_openinstructions () {
-	// console.log("in migrants openscreen");
+	var d = new Date();
+	console.log("in migrants openscreen " + d.getSeconds());
 	instructionsOff = false;
-	m_playButton();
 
-	$("#migrants_video").fadeIn(4000, function() {
-		console.log("[migrants_openinstructions] migrants_video fadeIn");
-		document.getElementById('migrants_video').volume = 0;
-
-	});
+	if(m_vidLoaded){
+		fadeInMigrantsVideo();
+	}
+	else{
+		shouldShowVideo = true;
+	}
+	// $("#migrants_video").animate({'opacity': 0.6},5000,function(){
+	// 	var t = new Date();
+	// 	console.log("[migrants_openinstructions] migrants_video fadeIn " + t.getSeconds() );
+	// 	document.getElementById('migrants_video').volume = 0;
+	// 	m_playButton();
+	// });
 	
 	$("#holder").fadeIn(4000, function() {
 		$("#holder").css({'cursor' : 'default', 'pointer-events' : 'none', 'opacity': 1.0, 'z-index': 100});
+		$("#m_instructions").fadeIn(4000).css({'cursor' : 'default'});	
 	});
 	// $("#rsr_instructions").css({"z-index":100}).fadeIn(2000);
-	$("#m_instructions").fadeIn(4000).css({'cursor' : 'default'});	 
+ 
 	console.log("[Migrants: openscreen ] migrants_closeinstructions on setTimeout 1");
 	insructIvl = setTimeout(migrants_closeinstructions,10000);
 }
 
 var migrants_closeinstructions = function () {
 	//m_playButton();
+	$("#migrants_video").animate({opacity: "1"},1000);
 	if(instructionsOff){
 		console.log("Instructions already off")
 		return;
@@ -560,19 +573,20 @@ var migrants_closeinstructions = function () {
 	// $("#m_instructions").fadeOut(1000, function() {
 	$("#m_instructions").fadeOut(2000);
 
-	$("#holder").css({'cursor': 'default'}).fadeOut(2000, function() {
+	$("#holder").css({'cursor': 'default'}).fadeOut(3000, function() {
 		
 		console.log("[Migrants: migrants_closeinstructions ] m_instructions fadeOut");
 		// document.getElementById("migrants_video").volume = 1;
 		//_volfade('migrants_video');
 		document.getElementById('migrants_video').volume = 0;
-
 		if(m_intervalID !== 0 ){
 			clearInterval(m_intervalID);	
 		}
 		
 		m_intervalID = setInterval(fadeInMigrantsAudio,100);
 		console.log("SETTING ID TO : " + m_intervalID);
+
+		// $("#migrants_video").css({'opacity': 1});
 
 		instructionsOff = true;
 		
@@ -662,8 +676,17 @@ function m_loadVideo () {
 		m_playButton();
 		document.getElementById("migrants_video").volume = 0;
 	} else {
-		console.log("[m_loadVideo] video is not paused");
+		console.log("[m_loadVideo] migrants page not active but video loaded");
 	}
+
+	// if(! videoFadeInComplete){
+		// fadeInMigrantsVideo();
+	// }
+	if($("#migrants_video").css("opacity") == "0" && shouldShowVideo){
+		console.log("Video loaded and should be seen. Fading in ");	
+		fadeInMigrantsVideo();
+	}
+	
 }
 
 function m_playButton() {
@@ -746,6 +769,18 @@ var m_scrubberUpdater = function () {
 		var ratio = (document.getElementById("migrants_video").duration / dur);
 	}
 	if(migrantsshowprogress){
+
+	if(mTrackerArray.length === 0){
+		var mTracker = new Object();
+			mTracker.isActive = true;
+			mTracker.startPos = getMigrantsVideoCurrentPos;
+			mTracker.endPos = getMigrantsVideoCurrentPos;
+			mTracker.arcSegment = null
+			mTracker.firstTime = true;
+			mTrackerArray.push(mTracker);
+			loadArcSegs();
+	}
+		
 	 m_circleScrubber();	
 	}
 	
@@ -807,7 +842,7 @@ var m_scrubberUpdater = function () {
 			}
 		};
 	} else {
-		console.log("still in migrants instructions");
+		console.log("Instrcutions are off. No fills");
 	}
 
 	//console.log("[ Migrants: m_scrubberUpdater ] m_curtime = " + m_curtime);

@@ -28,6 +28,7 @@ var config = {
 	theta: 39
 };
 
+var firstTimeLoadMigrants = false;
 var cradleLoaded = false;
 var legacyLoaded = false;
 var migrantsLoaded = false;
@@ -534,6 +535,7 @@ function animateButton(index){
 		 			mTracker.startPos = initPathNewPos;
 		 			mTracker.endPos = initPathNewPos;
 		 			mTracker.arcSegment = null
+		 			mTracker.firstTime = true;
 		 			mTrackerArray.push(mTracker);
 			 }	
 			loadArcSegs();
@@ -543,6 +545,7 @@ function animateButton(index){
 		 else{
 
 		 	$("#migrantsContent").fadeOut("fast");
+		 	$("#migrants_video").css({opacity: "0.0"});
 		 	m_pauseVids();
 		 	migrantsActive = false;
 		 	if(mTrackerArray.length <= 0){
@@ -1072,7 +1075,7 @@ var fadeInAmbientAudio = function () {
 	// internal function to fade in
 	document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;
 	_currentaudiovolume += 5;
-	console.log("Fade Vol up " + _currentaudiovolume);
+	// console.log("Fade Vol up " + _currentaudiovolume);
 	if(_currentaudiovolume > audiovolume){
 		clearInterval(vIvl);
 	}
@@ -1086,7 +1089,7 @@ var fadeOutAmbientAudio = function () {
 	}
 	
 	_currentaudiovolume -= 1;
-	console.log("Fade Vol down " + _currentaudiovolume);
+	// console.log("Fade Vol down " + _currentaudiovolume);
 	if(_currentaudiovolume == 0){
 		clearInterval(vIvl);
 		document.getElementById('ambientaudio').pause();
