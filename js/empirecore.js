@@ -165,6 +165,18 @@ $(document).ready(function () {
 		else if (key == 69 || key == 101) { // press 'E' or 'e'
 			m_audioToggle();
 		}
+
+		else if (key == 70 || key == 102 ) { // press 'F' or 'f'
+			//downloadMigrants = !downloadMigrants;
+			downloadMigrants = true;
+			console.log("You Can Now Download Migrants");
+		}
+
+		else if (key == 71 || key == 103 ) { // press 'G' or 'g'
+			downloadMigrants = false;
+			returnMigrants = true;
+			console.log("Returning to Migrants Cycle");
+		}
 	});
 
 	resizePaper();
@@ -194,6 +206,8 @@ $(document).ready(function () {
 		}
 		else if(migrantsActive) {
 			migrants_sizer();
+			m_getDimensions();
+			m_init();
 		}
 
 	});
@@ -517,6 +531,8 @@ function animateButton(index){
 		 	if(mTrackerArray.length >0){
 		 		if(mTrackerArray[mTrackerArray.length-1].isActive === true){
 					mTrackerArray[mTrackerArray.length-1].endPos = getMigrantsVideoCurrentPos();
+					//mTrackerArray[mTrackerArray.length-1].endPos = fakeProgress;
+
 					mTrackerArray[mTrackerArray.length-1].isActive = false;
 		 		}
 		 		else{
@@ -524,21 +540,26 @@ function animateButton(index){
 		 			mTracker.isActive = true;
 		 			mTracker.startPos = getMigrantsVideoCurrentPos();
 		 			mTracker.endPos = getMigrantsVideoCurrentPos();
+		 			// mTracker.startPos = 300;
+		 			// mTracker.endPos = fakeProgress;
 		 			mTracker.arcSegment = null;
 		 			mTrackerArray.push(mTracker);
 
 		 		}
+		 		loadArcSegs();
 		 	}
-			else{
-				 	var mTracker = new Object();
-		 			mTracker.isActive = true;
-		 			mTracker.startPos = initPathNewPos;
-		 			mTracker.endPos = initPathNewPos;
-		 			mTracker.arcSegment = null
-		 			mTracker.firstTime = true;
-		 			mTrackerArray.push(mTracker);
-			 }	
-			loadArcSegs();
+			// else{
+			// 	 	// var mTracker = new Object();
+		 // 			// mTracker.isActive = true;
+		 // 			// mTracker.startPos = initPathNewPos;
+		 // 			// mTracker.endPos = initPathNewPos;
+		 // 			// mTracker.arcSegment = null
+		 // 			// mTracker.firstTime = true;
+		 // 			// mTrackerArray.push(mTracker);
+		 // 			// console.log("Made first arc");
+		 // 			// console.log(mTrackerArray);
+			//  }	
+			
 		 	audioready();
 		 	console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
 		 }
