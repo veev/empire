@@ -542,6 +542,7 @@ function animateButton(index){
 		 			mTracker.endPos = getMigrantsVideoCurrentPos();
 		 			// mTracker.startPos = 300;
 		 			// mTracker.endPos = fakeProgress;
+		 			mTracker.isCrossOriginArc = false;
 		 			mTracker.arcSegment = null;
 		 			mTrackerArray.push(mTracker);
 

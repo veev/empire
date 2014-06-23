@@ -10,7 +10,7 @@ var m_intervalID = 0;
 var amount = 0;
 var insructIvl = new Number();
 // var m_enoughwithinstructions = false;
-var prevVenID = 7;
+var prevVenID = -1;
 var timecodeArray = new Array();
 var testTimecode =  new Array();
 var actFillArray = new Array();
@@ -40,7 +40,10 @@ var downloadMigrants = false;
 var returnMigrants = false;
 //var ratio;
 var fakeProgress = 300;
-var loopComplete = false;
+var originCrossed = false;
+var previousPos = 0;
+
+// var offsetOn =   true;
 
 function progressArcInitPos(){
 	var initPos;
@@ -289,7 +292,12 @@ function m_circleScrubber() {
 				
 				//mTrackerArray[i].endPos = fakeProgress; //for testing faster progress
 				// console.log("isActive i "+ i);
+
 				mTrackerArray[i].endPos = getMigrantsVideoCurrentPos();
+				// if(originCrossed){
+				// 	console.log("Active tracker end pos");
+				// 	console.log(mTrackerArray[i].endPos);
+				// }
 				
 				// if ((getMigrantsVideoCurrentPos() - mTrackerArray[i].startPos) > 359 ){
 				// 	console.log("Full circle complete ressting start pos of ");
@@ -297,29 +305,53 @@ function m_circleScrubber() {
 				// 	console.log(" to 0");	
 				// 	mTrackerArray[i].startPos = 0;
 				// }
-				console.log("endPos: "+ mTrackerArray[i].endPos +" "+i);
-				if (mTrackerArray[i].endPos > 359.6 && mTrackerArray[i].endPos < 360.3 && loopComplete === false) {
-					loopComplete = true;
+
+				// console.log("prevPos: "+ previousPos);
+				// console.log("endPos: "+ mTrackerArray[i].endPos +" "+i);
+
+				// if (mTrackerArray[i].endPos >359.8 && mTrackerArray[i].endPos < 360) {
+				if (previousPos >359.7 && mTrackerArray[i].endPos < 0.5) {
+					// offsetOn = false;
+					
+
 					console.log("Arc passed the origin ");
 					// console.log(mTrackerArray.length);
-					mTrackerArray[i].endPos = 359.9;
-					mTrackerArray[i].isActive = false;
+					if(mTrackerArray[i].isCrossOriginArc ===false){
+						mTrackerArray[i].endPos = 359.9;
+						mTrackerArray[i].isActive = false;	
+						
+					}
+
+					
 
 					// fakeProgress = 0;
+					var zeroPos = false;
 
-					var mTracker = new Object();
-		 			mTracker.isActive = true;
-		 			mTracker.startPos = 0;
-		 			// mTracker.endPos = fakeProgress; //for testing faster progress
-		 			//mTracker.endPos = getMigrantsVideoCurrentPos();
-		 			mTracker.endPos = 0;
+					for (var j=0; j<mTrackerArray.length; j++) {
+						if(mTrackerArray[j].startPos === 0){
+							zeroPos = true;
+						}	
+					};
 
-		 			mTracker.arcSegment = null;
-		 			mTrackerArray.push(mTracker);
-		 			console.log(mTrackerArray.length);
-		 			loadArcSegs();
-		 			console.log(totalArcLength);
-		 			break;
+					if(! zeroPos){
+						console.log("Creating new arc starting at 0");
+						// originCrossed = true;
+						var mTracker = new Object();
+			 			mTracker.isActive = true;
+			 			mTracker.startPos = 0;
+			 			// mTracker.endPos = fakeProgress; //for testing faster progress
+			 			//mTracker.endPos = getMigrantsVideoCurrentPos();
+			 			mTracker.endPos = 0;
+			 			mTracker.isCrossOriginArc = true;
+
+			 			mTracker.arcSegment = null;
+			 			mTrackerArray.push(mTracker);
+			 			//console.log(mTrackerArray.length);
+			 			loadArcSegs();
+			 			//console.log(totalArcLength);
+			 			// break;	
+					}
+					
 				} 
 				else {
 					mTrackerArray[i].arcSegment.attr({
@@ -332,9 +364,10 @@ function m_circleScrubber() {
 					totalArcLength += Math.abs(mTrackerArray[i].endPos- mTrackerArray[i].startPos);
 					circleStartPos = mTrackerArray[i].startPos;
 					circleFinishPos  = getMigrantsVideoCurrentPos();
-					 console.log("totalArcLength: " + totalArcLength);
-					}
+					//console.log("totalArcLength: " + totalArcLength);
 				}
+				previousPos = mTrackerArray[i].endPos;
+			}
 				// else{
 				// 	//console.log(getMigrantsVideoCurrentPos() - mTrackerArray[i].startPos);
 				// 	//console.log(mTrackerArray[i]);
@@ -356,7 +389,7 @@ function m_circleScrubber() {
 			// 	 circleFinishPos  = getMigrantsVideoCurrentPos();
 			// }
 			else{
-				 console.log("is Not Active i "+ i);
+				 // console.log("is Not Active i "+ i);
 				// console.log("radians startPos: " +  mTrackerArray[i].startPos + "endPos: " +  mTrackerArray[i].endPos );
 				mTrackerArray[i].arcSegment.attr({
 					"stroke": "#ff5a00",
@@ -367,12 +400,12 @@ function m_circleScrubber() {
 				});				
 				// console.log(mTrackerArray[0].arcSegment);
 				totalArcLength += Math.abs( mTrackerArray[i].endPos - mTrackerArray[i].startPos);
-			    console.log("totalArcLength: " + totalArcLength);
+			    // console.log("totalArcLength: " + totalArcLength);
 			}
 
 		}
 	}
-
+	
 	// if(totalArcLength >80 && totalArcLength < 90 ){
 	// 	console.log("total arc length : "+ totalArcLength);	
 	// }
@@ -479,12 +512,24 @@ function migrants_sizer() {
 
 	$("#m_legmore").css({ "margin-left": ($("#migrants_main").width() / 2) - 90 });
 
+	$("#minst_2").css({"top": h*0.15});
+	$("#minst_3").css({"top": h*0.8});
+
 	if (h < 710) {
-		$("#minst_2").css({"top": '14%'});
-		$("#minst_3").css({"top": '70%'});
+		// $("#minst_2").css({"top": '11%'});
+		// $("#minst_3").css({"top": '62%'});
+		$("#m_a").css({"padding-left": 66, "top": -8});
+		$("#m_a2").css({"padding-left": 474, "top": -8});
+	} else if (h >= 710 && h < 800) {
+		// $("#minst_2").css({"top": '13%'});
+		// $("#minst_3").css({ "top": '78%'});
+		$("#m_a").css({"padding-left": 110, "top": -24});
+		$("#m_a2").css({"padding-left": 467, "top": -24});
 	} else {
-		$("#minst_2").css({"top": '13%'});
-		$("#minst_3").css({ "top": '78%'});
+		// $("#minst_2").css({"top": '13%'});
+		// $("#minst_3").css({ "top": '87%'});
+		$("#m_a").css({"padding-left": 110, "top": -24});
+		$("#m_a2").css({"padding-left": 467, "top": -24});
 	}
 
 	var tempHolderWidth
@@ -496,6 +541,8 @@ function migrants_sizer() {
 	tempHolderWidth = Math.ceil(tempHolderWidth);
 
 	$("#holder").css({"width" : tempHolderWidth});
+
+	$("#m_download").css({"left": (w/2) - 105 , "top" : (h/2) - 46 });
 
 	$("#migrantsmore").css({"top": buffer, "left": centering }).fadeIn(4000).on('click', function() {
 		body.animate({scrollTop: ($('#migrants_main').offset().top) }, 1000);
@@ -851,7 +898,8 @@ function m_getCurrentTime(){
 	var currentTimeOfDay = d.getHours()*60*60 + (d.getMinutes())*60 + d.getSeconds();
 
 	var currentTimeForVideo = currentTimeOfDay % document.getElementById("migrants_video").duration;
-	 // currentTimeForVideo +=800;
+	 // currentTimeForVideo +=400;
+	// }	fgetCurr
 	
 	//console.log("Current time of Day : " + currentTimeOfDay + " Current time for video : "+ currentTimeForVideo);
 	return currentTimeForVideo;
@@ -925,6 +973,7 @@ var m_scrubberUpdater = function () {
 			// mTracker.endPos = fakeProgress; //for testing faster progress
 			mTracker.arcSegment = null
 			// mTracker.firstTime = true;
+			mTracker.isCrossOriginArc = false;
 			mTrackerArray.push(mTracker);
 			// console.log("Made first arc");
 			// console.log(mTrackerArray);	
@@ -943,14 +992,22 @@ var m_scrubberUpdater = function () {
 
 	if(instructionsOff) {
 		for (var i = 0; i < timecodeArray.length; i++) {
+			
 			if( m_curtime < timecodeArray[i].Maxtime ){
-
+			// console.log(" ");
+			// console.log(m_curtime);
+			// console.log(timecodeArray[i].Maxtime);
+			// console.log(timecodeArray[i].Venn);
+			// console.log(prevVenID);
+			// console.log(" ");
 				if( timecodeArray[i].Venn !== prevVenID){
 				
-					console.log(timecodeArray[i].Venn);
+					
 				    for(var j=0; j<actFillArray.length; j++){
-
+						// console.log(timecodeArray[i].Venn);
+						// console.log(actFillArray[j].vennID);
 				    	if(actFillArray[j].vennID === timecodeArray[i].Venn){
+				    		// console.log(timecodeArray[i].Venn);
 				    		//Turn on act Fill
 				    		actFillArray[j].actFill.animate({opacity: '1.0'}, 800);
 				    		vennMap[10].attr({'opacity': '1'});
@@ -983,8 +1040,19 @@ var m_scrubberUpdater = function () {
 				    		} else {
 				    			vennMap[12].attr({fill: '#fff'});
 				    		}
-				    		
-				    		prevVenID = timecodeArray[i].Venn;
+
+				    		if (actFillArray[j].vennID === 7) {
+				    			// console.log("Im in state 7");
+								vennMap[10].attr({'opacity': '1'});
+								vennMap[11].attr({'opacity': '1'});
+								vennMap[12].attr({'opacity': '1'});
+								vennMap[10].attr({fill: '#fff'});
+								vennMap[11].attr({fill: '#fff'});
+				    			vennMap[12].attr({fill: '#fff'});
+
+				    		}
+				    	
+				    		 // prevVenID = timecodeArray[i].Venn;	
 				    		// console.log(m_curtime + " : " + timecodeArray[i].Maxtime + " : " + timecodeArray[i].Venn + " : " + prevVenID);
 				    		
 				    	}else{
@@ -993,7 +1061,7 @@ var m_scrubberUpdater = function () {
 				    	}
 
 					}
-					
+				 	prevVenID = timecodeArray[i].Venn;	
 				}
 				// console.log(m_curtime + " : " + timecodeArray[i].Maxtime + " : " + timecodeArray[i].Venn);
 				break;	
@@ -1018,7 +1086,16 @@ var m_scrubberUpdater = function () {
 		returnToMigrants();
 	}
 
-
+	// if(originCrossed) {
+		// originCrossed = false;
+		// prevVenID = -1;
+		// vennMap[10].attr({fill: '#fff'});
+		// vennMap[11].attr({fill: '#fff'});
+		// vennMap[12].attr({fill: '#fff'});
+		// vennMap[10].attr({'opacity': '1'});
+		// vennMap[11].attr({'opacity': '1'});
+		// vennMap[12].attr({'opacity': '1'});
+	// }
 
 	//console.log("[ Migrants: m_scrubberUpdater ] m_curtime = " + m_curtime);
 	//$("#m_progress").css({ "width": (1280 / ratio) + 'px' });
@@ -1054,7 +1131,7 @@ function m_arrayActFills() {
 
 	var suri = archtype.path("M54.016,190.624c2.112,48.932,38.661,96.314,98.65,97.459c60.5,1.154,100.263-50.859,100.263-97.834c0,0-46.332,29.789-100.241-0.4l0,0C98.39,220.228,54.016,190.624,54.016,190.624z"); 
 		suri.attr({opacity: '1.0',fill: '#ff5a00', stroke: '#231F20',"stroke-miterlimit": '10','stroke-width': '0','stroke-opacity': '1', 'opacity': '0'}).data('id', '2'); 
-	var suriname_label = archtype.text(150, 125, 'Suriname'); 
+	var suriname_label = archtype.text(150, 130, 'Suriname'); 
 		suriname_label.attr({fill: '#FFFFFF',"font-family": 'AGaramond',"font-size": '12','stroke-width': '0','stroke-opacity': '1', 'opacity': '0'}); 
 	var fill_2 = new Fill(suri, 2);
 	actFillArray.push(fill_2);
@@ -1087,10 +1164,10 @@ function m_arrayActFills() {
 	var fill_6 = new Fill(ghan_braz_suri, 6);
 	actFillArray.push(fill_6);
 
-	// var ghan_braz_suri_off = archtype.path("M102.974,103.196c53.163-30.742,99.005-1.572,99.005-1.572c-2.126,62.971-49.312,86.066-49.312,86.066C102.952,158.226,102.974,103.196,102.974,103.196z"); 
-	// 	ghan_braz_suri_off.attr({opacity: '0.0',fill: 'none',stroke: 'none',"stroke-miterlimit": '10','stroke-width': '0','stroke-opacity': '0', 'opacity': '0'}).data('id', '7'); 
-	// var fill_7 = new Fill(ghan_braz_suri_off, 7);
-	// actFillArray.push(fill_7);
+	var ghan_braz_suri_off = archtype.path("M102.974,103.196c53.163-30.742,99.005-1.572,99.005-1.572c-2.126,62.971-49.312,86.066-49.312,86.066C102.952,158.226,102.974,103.196,102.974,103.196z"); 
+		ghan_braz_suri_off.attr({opacity: '0.0',fill: 'none',stroke: 'none',"stroke-miterlimit": '10','stroke-width': '0','stroke-opacity': '0', 'opacity': '0'}).data('id', '7'); 
+	var fill_7 = new Fill(ghan_braz_suri_off, 7);
+	actFillArray.push(fill_7);
 
 	//console.log(actFillArray);
 	
@@ -1104,19 +1181,42 @@ function m_arrayActFills() {
 	group_c.attr({'name': 'group_c'}); 
 	var holderGroups = [vennMap, group_b, group_c]; 
 	
-	vennMap.push( circle_u, circle_v, circle_w, ghan, braz, suri, braz_suri, ghan_suri, ghan_braz, ghan_braz_suri, ghana_label, brazil_label, suriname_label ); 
+	vennMap.push( circle_u, circle_v, circle_w, ghan, braz, suri, braz_suri, ghan_suri, ghan_braz, ghan_braz_suri, ghana_label, brazil_label, suriname_label, ghan_braz_suri_off ); 
 	// group_b.push( circle_v ); 
 	// group_c.push( circle_w );
-	var centerW;
-	var centerH;
-	if (height < 700) {
-		centerW = width/2 * 0.535;
-		centerH = height/2 * 0.525;
-		vennMap.transform("T " + centerW + " " + centerH + "S1.2,1.2," + centerW + "," + centerH);
-	} else {
-		centerW = width/2 * 0.45;
-		centerH = height/2 * 0.45;
-		vennMap.transform("T " + centerW + " " + centerH + "S1.5,1.5," + centerW + "," + centerH);
+	var centerW = width/4;
+	var centerH = height/4;
+	var holderRatio = height/width;
+
+	var mapCenter;
+	var mapScalar = map(height, 600, 1200, 1.15, 2.0);
+	console.log("[Scaling] holderRatio: " + holderRatio);
+	if ( holderRatio >= 0.9) {
+		// centerW = width/2 * 0.535;
+		// centerH = height/2 * 0.525;
+		centerW = width/4 * 1;
+		centerH = height/4 * 1;
+		console.log("Scaling the Venn Diagram - width: "+ width + ", height: "+ height);
+		vennMap.transform("T " + centerW + " " + centerH + "S" + mapScalar + ","+ mapScalar +"," + centerW + "," + centerH);
+	} else if (height < 710 && holderRatio < 0.9) {
+		// centerW = width/4 + ((width/4)*(1-holderRatio));
+		// centerH = height/4 + ((height/4)*(1-holderRatio));
+		mapCenter = map(holderRatio, 0.6, 0.9, 1.3, 1.0);
+
+		centerW = width/4 * mapCenter;
+		centerH = height/4 * 1;
+		console.log("Scaling the Venn Diagram - width: "+ width + ", height: "+ height);
+		console.log("width/4: "+ width/4 + " height/4: "+ height/4);
+		console.log("centerW: "+ centerW + ", centerH: "+ centerH);
+		vennMap.transform("T " + centerW + " " + centerH + "S" + mapScalar + ","+ mapScalar +"," + centerW + "," + centerH);
+	}else if (height >= 710 && holderRatio < 0.9) {
+
+		mapCenter = map(holderRatio, 0.6, 0.9, 1.4, 1.0);
+
+		centerW = width/4 * mapCenter;
+		centerH = height/4 * 1;
+		console.log("Scaling the Venn Diagram - width: "+ width + ", height: "+ height);
+		vennMap.transform("T " + centerW + " " + centerH + "S" + mapScalar + ","+ mapScalar +"," + centerW + "," + centerH);
 	}
 	
 }
