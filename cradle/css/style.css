@@ -61,7 +61,7 @@ div.cradle_bottom div#cradle_bottomtitle { z-index: 1; position: absolute; botto
 div.cradle_bottom div#cbottom_structure { z-index: 2; position: absolute; width: 930px; height: 465px; background: url(../../art/cradle/bottomstructure.png) }
 div.cradle_bottom div#cbottom_structure div { text-align: left;  padding: 40px;  color: #000; }
 div.cradle_bottom div#cbottom_structure div p { margin: 1.1em 0; }
-div.cradle_bottom div#cbottom_structure div a { color: 000; }
+div.cradle_bottom div#cbottom_structure div a { color: #000; }
 div.cradle_bottom div#cbottom_structure div.cbottom_l { color: #ead84e; width: 385px; float: left; margin-right: 40px; }
 div.cradle_bottom div#cbottom_structure div.cbottom_l a { color: #ead84e; }
 div#cradle_main div#cradle_linewhite { background: url(../../art/cradle/b_linewhite.png) repeat-y; width: 3px; position: absolute; z-index: 1; }
