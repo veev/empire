@@ -91,15 +91,15 @@ div.migrants_intro {
 div.migrants_intro p { position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
 div.migrants_intro p#m_a { 
 	text-align: center; 
-	padding-left: 66px;
+	padding-left: 235px;
 	top: -8;
-	width: 358;
+	width: 171;
 	z-index: 1; }
 div.migrants_intro p#m_a2 { 
 	text-align: center; 
 	padding-left: 474px;
 	top: -8;
-	width: 323;
+	width: 279;
 	z-index: 1; }
 div.migrants_intro p#m_b { top: 190px; left: 260px; width: 220px; z-index: 2; }
 div.migrants_intro p#m_c { top: 310px; left: 302px; width: 180px; text-align: right;}
@@ -244,8 +244,20 @@ div#migrants_main #m_outerouter #m_outerinner {
 	background-color: #ff5a00;
 }
 
-#m_endscreen #m_download a {
-	color: #000;
+#m_endscreen #m_complete {
+	position: absolute;
+	z-index: 20;
+	text-align: center;
+	top: 15%;
+	left: 45%;
+		color: #ff5a00;
+	font-style: normal;
+	font-size: 1.1em;
+}
+
+
+#m_endscreen #m_complete p {
+	color: #ff5a00;
 	font-style: normal;
 	font-size: 1.1em;
 }
@@ -254,7 +266,7 @@ div#migrants_main #m_outerouter #m_outerinner {
 	position: absolute;
 	z-index: 20;
 	top: 47%;
-	left: 47%;
+	left: 46.25%;
 	width: 100;
 	text-align: center;
 }

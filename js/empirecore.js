@@ -106,6 +106,8 @@ $(document).ready(function () {
 	attachPeripheryEvents();
 	window.addEventListener("hashchange", hashEvent, false);
 
+	migrants_blockMenu();
+
 	$(".home_button").on('click', function(e) {
 		if(!document.getElementById("video1").paused || !document.getElementById("video2").paused) {
 			c_pauseVids();

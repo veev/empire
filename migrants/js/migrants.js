@@ -43,6 +43,15 @@ var fakeProgress = 300;
 var originCrossed = false;
 var previousPos = 0;
 
+//DEBUG
+// var mTracker = new Object();
+// mTracker.isActive = true;
+// mTracker.startPos = 0;
+// mTracker.endPos = getMigrantsVideoCurrentPos();
+// mTracker.isCrossOriginArc = false;
+// mTracker.arcSegment = null;
+// mTrackerArray.push(mTracker);
+
 // var offsetOn =   true;
 
 function progressArcInitPos(){
@@ -77,7 +86,6 @@ function loadArcSegs(){
 
 function m_getDimensions() {
 	height = $("#migrants_top").height();
-	// 0.556 is ratio for holderWidth/ScreenWidth
 	console.log("Migrants Init()");
 
 	holderWidth = $("#migrants_top").width() * 0.595;
@@ -107,6 +115,12 @@ function m_initPaths() {
 	var startLine = archtype.path("M"+ width/2 +" 40 L"+width/2+" 60").attr({stroke: '#fff', "stroke-width": '1','stroke-opacity': '0.6'});
 	var twentyfour = archtype.text(width/2, 10, '24h');
 		twentyfour.attr({fill: '#FFFFFF',"font-family": 'AGaramond-Italic',"font-size": '18','stroke-width': '0','stroke-opacity': '0.6', 'opacity': '0.6'}); 
+	var six = archtype.text(width/2 + radius/2 + 17, height/4 + 2, '6h');
+		six.attr({fill: '#FFFFFF',"font-family": 'AGaramond-Italic',"font-size": '18','stroke-width': '0','stroke-opacity': '0.6', 'opacity': '0.6'}); 
+	var twelve = archtype.text(width/2, height/2 -1, '12h');
+		twelve.attr({fill: '#FFFFFF',"font-family": 'AGaramond-Italic',"font-size": '18','stroke-width': '0','stroke-opacity': '0.6', 'opacity': '0.6'}); 
+	var eighteen = archtype.text(width/2 - radius/2 - 17, height/4 + 2 , '18h');
+		eighteen.attr({fill: '#FFFFFF',"font-family": 'AGaramond-Italic',"font-size": '18','stroke-width': '0','stroke-opacity': '0.6', 'opacity': '0.6'}); 
 	var durationTime = archtype.text(width/2, 38, '20m:50s');
 		durationTime.attr({fill: '#FFFFFF',"font-family": 'AGaramond-Italic',"font-size": '18','stroke-width': '0','stroke-opacity': '0.6', 'opacity': '0.6'}); 
 	var sixDot = archtype.circle(width/2 + radius/2, height/2, 1).attr({fill: '#FFFFFF', stroke: '#fff', 'opacity': '0.6'});
@@ -135,14 +149,6 @@ function m_init(){
                     finish_r > start_r ? 1 : 0,         /* sweep-flag */
                     finish_x, finish_y ],               /* target coordinates */
         ];
-        // path =
-        // [
-        //     [ "M", start_x, start_y ],
-        //     [ "A", radius, radius, finish_r - start_r,
-        //             finish_r - start_r > Raphael.rad( 180 ) ? 1 : 0,     //large-arc-flag 
-        //              1 ,         /* SM Hack. sweep-flag is always set to 1. */
-        //             finish_x, finish_y ],               /* target coordinates */
-        // ];
         return { path: path };
      };
 
@@ -199,23 +205,22 @@ function m_init(){
 	});
 
 	//orange time marks = amount of screenings per day
-	//DO MATH HERE 
-	var spacing = 69;
-	for (var i=0; i < spacing; i++) {
-			var xloc_ = width/2;
-			var yloc_ = height/2;
-			// var R_ = radius;	
-			var circleSegment = map(i, 0, spacing, 0, 359.6);
+	// var spacing = 69;
+	// for (var i=0; i < spacing; i++) {
+	// 		var xloc_ = width/2;
+	// 		var yloc_ = height/2;
+	// 		// var R_ = radius;	
+	// 		var circleSegment = map(i, 0, spacing, 0, 359.6);
 
-			var _cx = width/2;
-			var _cy =  height/2;
-			var _r =  height/2 - 30;
+	// 		var _cx = width/2;
+	// 		var _cy =  height/2;
+	// 		var _r =  height/2 - 30;
 
-			var cur_x = _cx + Math.cos( Raphael.rad( circleSegment - 90  ))  * _r;
-			var cur_y = _cy + Math.sin( Raphael.rad( circleSegment - 90  ))  * _r;			
+	// 		var cur_x = _cx + Math.cos( Raphael.rad( circleSegment - 90  ))  * _r;
+	// 		var cur_y = _cy + Math.sin( Raphael.rad( circleSegment - 90  ))  * _r;			
 
-			var testSeg= archtype.circle(cur_x , cur_y, 2.5).attr({fill: '#ff5a00', stroke: 'none', 'opacity': '0.9'});
-	};
+	// 		var testSeg= archtype.circle(cur_x , cur_y, 2.5).attr({fill: '#ff5a00', stroke: 'none', 'opacity': '0.9'});
+	// };
 	
 // 	progrssCircle.animate({cx:cur_x,cy:cur_y,r:6}, 10);
 	time_progress_arc.attr({
@@ -243,24 +248,6 @@ function m_circleScrubber() {
 	var maxTimeOfDay = 24*60*60;
 
 	var timeProgress = map(currentTimeOfDay, 0, maxTimeOfDay, 0, 100);
-
-	// if(document.getElementById("migrants_video").currentTime >= document.getElementById("migrants_video").duration ){
-	// 	initPathNewPos = 0;
-	// 	initPathPos = 0;
-
-	// 	//is this where we call the transform again?
-	// 	// loadArcSegs();
-	// 	mTracker.isActive = true;
-	// 	mTracker.startPos = getMigrantsVideoCurrentPos();
-	// 	mTracker.endPos = getMigrantsVideoCurrentPos();
-	// 	mTracker.arcSegment = null;
-		
-	// 	var transformArc = "r-90,"+(width/2)+","+(height/2);
-	// 	mTracker.arcSegment.transform(transformArc);
-
-	// 	mTrackerArray.push(mTracker);
-
-	// }
 	
 	if(time_progress_arc !== null){
 		// console.log(time_progress_arc);
@@ -279,12 +266,17 @@ function m_circleScrubber() {
 	var circleFinishPos = 0;
 	// var circleStartPosY = 0;
 	var totalArcLength = 0;
+	var activeArcs = false;
+	
+	checkArcLength();
+
 
 	for (var i = 0; i < mTrackerArray.length; i++) {
 		if(mTrackerArray[i].arcSegment !== null){
 
 			if(mTrackerArray[i].isActive){
-				
+				activeArcs = true;
+				//console.log("activeArcs : " + activeArcs);
 				//try setting fake values here
 				// if(mTrackerArray[0].isActive){
 				// 	mTrackerArray[0].startPos = 300;	
@@ -294,22 +286,7 @@ function m_circleScrubber() {
 				// console.log("isActive i "+ i);
 
 				mTrackerArray[i].endPos = getMigrantsVideoCurrentPos();
-				// if(originCrossed){
-				// 	console.log("Active tracker end pos");
-				// 	console.log(mTrackerArray[i].endPos);
-				// }
-				
-				// if ((getMigrantsVideoCurrentPos() - mTrackerArray[i].startPos) > 359 ){
-				// 	console.log("Full circle complete ressting start pos of ");
-				// 	console.log(mTrackerArray[i]);
-				// 	console.log(" to 0");	
-				// 	mTrackerArray[i].startPos = 0;
-				// }
-
-				// console.log("prevPos: "+ previousPos);
-				// console.log("endPos: "+ mTrackerArray[i].endPos +" "+i);
-
-				// if (mTrackerArray[i].endPos >359.8 && mTrackerArray[i].endPos < 360) {
+	
 				if (previousPos >359.7 && mTrackerArray[i].endPos < 0.5) {
 					// offsetOn = false;
 					
@@ -320,20 +297,7 @@ function m_circleScrubber() {
 						mTrackerArray[i].endPos = 359.9;
 						mTrackerArray[i].isActive = false;	
 						
-					}
 
-					
-
-					// fakeProgress = 0;
-					var zeroPos = false;
-
-					for (var j=0; j<mTrackerArray.length; j++) {
-						if(mTrackerArray[j].startPos === 0){
-							zeroPos = true;
-						}	
-					};
-
-					if(! zeroPos){
 						console.log("Creating new arc starting at 0");
 						// originCrossed = true;
 						var mTracker = new Object();
@@ -348,9 +312,36 @@ function m_circleScrubber() {
 			 			mTrackerArray.push(mTracker);
 			 			//console.log(mTrackerArray.length);
 			 			loadArcSegs();
-			 			//console.log(totalArcLength);
-			 			// break;	
+						
 					}
+
+
+					// fakeProgress = 0;
+					// var zeroPos = false;
+
+					// for (var j=0; j<mTrackerArray.length; j++) {
+					// 	if(mTrackerArray[j].startPos === 0){
+					// 		zeroPos = true;
+					// 	}	
+					// };
+
+					// if(! zeroPos){
+					// 	console.log("Creating new arc starting at 0");
+					// 	// originCrossed = true;
+					// 	var mTracker = new Object();
+			 	// 		mTracker.isActive = true;
+			 	// 		mTracker.startPos = 0;
+			 	// 		// mTracker.endPos = fakeProgress; //for testing faster progress
+			 	// 		//mTracker.endPos = getMigrantsVideoCurrentPos();
+			 	// 		mTracker.endPos = 0;
+			 	// 		mTracker.isCrossOriginArc = true;
+
+			 	// 		mTracker.arcSegment = null;
+			 	// 		mTrackerArray.push(mTracker);
+			 	// 		//console.log(mTrackerArray.length);
+			 	// 		loadArcSegs();
+			 	// 		//console.log(totalArcLength);	
+					// }
 					
 				} 
 				else {
@@ -361,33 +352,13 @@ function m_circleScrubber() {
 					arcseg: [ width/2, height/2, height/2 - 50, Raphael.rad( mTrackerArray[i].startPos ), Raphael.rad(mTrackerArray[i].endPos) ]
 					});
 
-					totalArcLength += Math.abs(mTrackerArray[i].endPos- mTrackerArray[i].startPos);
-					circleStartPos = mTrackerArray[i].startPos;
-					circleFinishPos  = getMigrantsVideoCurrentPos();
+					//totalArcLength += Math.abs(mTrackerArray[i].endPos- mTrackerArray[i].startPos);
+					//circleStartPos = mTrackerArray[i].startPos;
+					// circleFinishPos  = getMigrantsVideoCurrentPos();
 					//console.log("totalArcLength: " + totalArcLength);
 				}
 				previousPos = mTrackerArray[i].endPos;
 			}
-				// else{
-				// 	//console.log(getMigrantsVideoCurrentPos() - mTrackerArray[i].startPos);
-				// 	//console.log(mTrackerArray[i]);
-				// 	// console.log(mTrackerArray[0].arcSegment);
-				// }
-				// console.log(mTrackerArray[i].startPos);
-				// console.log(getMigrantsVideoCurrentPos());
-
-				//SM MOD: I changed i to 0 and it works! Sorry I know i told you to do that but i think its because 
-				//it was still setting the 0 array value even after it became inactive
-				//  mTrackerArray[i].arcSegment.attr({
-				// 	"stroke": "#ff5a00",
-				// 	"stroke-width": 2,
-				// 	// arcseg: [ width/2, height/2, height/2 - 50, Raphael.rad( mTrackerArray[i].startPos ), Raphael.rad( getMigrantsVideoCurrentPos()) ] 
-				// 	arcseg: [ width/2, height/2, height/2 - 50, Raphael.rad( mTrackerArray[i].startPos ), Raphael.rad(mTrackerArray[i].endPos) ]
-				// });
-			// 	 totalArcLength += Math.abs(mTrackerArray[i].endPos- mTrackerArray[i].startPos);
-			// 	 circleStartPos = mTrackerArray[i].startPos;
-			// 	 circleFinishPos  = getMigrantsVideoCurrentPos();
-			// }
 			else{
 				 // console.log("is Not Active i "+ i);
 				// console.log("radians startPos: " +  mTrackerArray[i].startPos + "endPos: " +  mTrackerArray[i].endPos );
@@ -399,29 +370,40 @@ function m_circleScrubber() {
 					
 				});				
 				// console.log(mTrackerArray[0].arcSegment);
-				totalArcLength += Math.abs( mTrackerArray[i].endPos - mTrackerArray[i].startPos);
+				//totalArcLength += Math.abs( mTrackerArray[i].endPos - mTrackerArray[i].startPos);
 			    // console.log("totalArcLength: " + totalArcLength);
 			}
 
 		}
 	}
 	
-	// if(totalArcLength >80 && totalArcLength < 90 ){
-	// 	console.log("total arc length : "+ totalArcLength);	
-	// }
+	if(!activeArcs){
+		console.log("activeArcs : " + activeArcs);
+		var currentPos =  getMigrantsVideoCurrentPos();
+		for (var i = 0; i < mTrackerArray.length; i++) {
+			console.log("mTrackerArray[i].startPos: " + mTrackerArray[i].startPos);
+			console.log("mTrackerArray[i].endPos: " + mTrackerArray[i].endPos);
+			console.log("currentPos: " + currentPos);
+			if( currentPos > mTrackerArray[i].startPos && currentPos < mTrackerArray[i].endPos ) {
+				console.log("Drawing over another inactive arc");
+			} else {
+				//create an arc to "fill in the gap in the session"
+				var mTracker = new Object();
+			 	mTracker.isActive = true;
+			 	mTracker.startPos = getMigrantsVideoCurrentPos();
+		 		mTracker.endPos = getMigrantsVideoCurrentPos();
+		 		mTracker.isCrossOriginArc = false;
+		 		mTracker.arcSegment = null;
+		 		mTrackerArray.push(mTracker);
+		 		break;
+			}
+		}
 
-	// if(totalArcLength >170 && totalArcLength < 190 ){
-	// 	console.log("total arc length : "+ totalArcLength);	
-	// }
+	}
 
-	// if(totalArcLength >260 && totalArcLength < 280 ){
-	// 	console.log("total arc length : "+ totalArcLength);	
-	// }
-
-	if(totalArcLength > 359.9 && totalArcLength < 360.3 ){
+	if (checkArcLength()) {
 		downloadMigrants = true;
 		console.log("You Can Now Download Migrants" );	
-		//console.log("totalArcLength: " + totalArcLength);
 	}
 	
 	var xloc_ = width/2;
@@ -432,6 +414,8 @@ function m_circleScrubber() {
 	var a_ = (90 - alpha_) * Math.PI / 180;
 	var x_ = xloc_ + R_ * Math.cos(a_);
 	var y_ = yloc_ - R_ * Math.sin(a_);		
+
+	circleFinishPos  = getMigrantsVideoCurrentPos();
 
 	if(timeCircle !== null){
 	 timeCircle.animate({cx:x_,cy:y_,r:4},100);	
@@ -516,20 +500,14 @@ function migrants_sizer() {
 	$("#minst_3").css({"top": h*0.8});
 
 	if (h < 710) {
-		// $("#minst_2").css({"top": '11%'});
-		// $("#minst_3").css({"top": '62%'});
-		$("#m_a").css({"padding-left": 66, "top": -8});
+		$("#m_a").css({"padding-left": 212, "top": -8});
 		$("#m_a2").css({"padding-left": 474, "top": -8});
 	} else if (h >= 710 && h < 800) {
-		// $("#minst_2").css({"top": '13%'});
-		// $("#minst_3").css({ "top": '78%'});
-		$("#m_a").css({"padding-left": 110, "top": -24});
-		$("#m_a2").css({"padding-left": 467, "top": -24});
+		$("#m_a").css({"padding-left": 212, "top": -24});
+		$("#m_a2").css({"padding-left": 474, "top": -24});
 	} else {
-		// $("#minst_2").css({"top": '13%'});
-		// $("#minst_3").css({ "top": '87%'});
-		$("#m_a").css({"padding-left": 110, "top": -24});
-		$("#m_a2").css({"padding-left": 467, "top": -24});
+		$("#m_a").css({"padding-left": 212, "top": -24});
+		$("#m_a2").css({"padding-left": 474, "top": -24});
 	}
 
 	var tempHolderWidth
@@ -542,16 +520,11 @@ function migrants_sizer() {
 
 	$("#holder").css({"width" : tempHolderWidth});
 
-	$("#m_download").css({"left": (w/2) - 105 , "top" : (h/2) - 46 });
+	$("#m_download").css({"left": ($("#m_outerinner").width()*0.465) , "top" : (h/2) - 44 });
 
 	$("#migrantsmore").css({"top": buffer, "left": centering }).fadeIn(4000).on('click', function() {
 		body.animate({scrollTop: ($('#migrants_main').offset().top) }, 1000);
 		 console.log("migrants_openinstructions() in migrantsmore");
-		 // $("#migrants_video").fadeIn(4000);
-		 // $("#holder").fadeIn(4000);
-		 //m_instructionFills();
-		 // m_playVids();
-		 // m_arrayActFills();
 		 migrants_openinstructions();
 		 console.log("[ more button click: migrants_openinstructions ] instructionsOff ? " + instructionsOff );
 		if(!migrantsLoaded) {
@@ -573,9 +546,10 @@ function m_vennTracking() {
 				m_vennMapOn();
 			} 
 			else {
-					console.log("[mouseleave] migrants instructionsOff is false");
+					console.log("[mousemove] migrants instructionsOff is false");
 			}
 			clearTimeout(timer);
+			// console.log("[mousemove] timer clear: " + timer);
 	        timer = setTimeout(function () {
 				if(instructionsOff && !downloadMigrants) {
 					m_vennMapOff();
@@ -585,56 +559,34 @@ function m_vennTracking() {
 					console.log("[mouseenter] migrants instructionsOff is false");
 				}
 	        }, 5000);
+	        // console.log("[mousemove] timer set: " + timer);
 	    },
 	    'mouseout' : function () {
 	    	if(instructionsOff && !downloadMigrants) {
 				m_vennMapOff();
 			} else {
-				console.log("[mouseenter] migrants instructionsOff is false");
+				console.log("[mouseout] migrants instructionsOff is false");
 			}
 	        clearTimeout(timer);
+	        // console.log("[mouseout] timer clear: " + timer);
 	    }
 	});
-
-	// $("#m_instructions").on('click', function () { 
-	// 	//console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
-	// 	migrants_closeinstructions(); 
-	// 	console.log("[ m_instructions click: migrants_closeinstructions ] instructionsOff ? " + instructionsOff );
-	// 	//console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
-	// });
-
-	// $("#holder").on('click', function () { 
-	// 	//console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
-	// 	// migrants_closeinstructions(); 
-	// 	console.log("[ holder click: migrants_closeinstructions ] instructionsOff ? " + instructionsOff );
-	// 	//console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
-	// });
 }
 
 var m_vennMapOn = function() {
 
 	$("#migrants_video").animate({
-		// opacity: 0.5,
 		'z-index': 10
 	}, 800);
 
 	$("#holder").fadeIn(800).css({'z-index': 20});
-
-	// $("#holder").css("z-index","20");
 };
 
 var m_vennMapOff = function() {
 	$("#migrants_video").animate({
-		// opacity: 1.0,
 		'z-index': 20
 	}, 800);
 	$("#holder").fadeOut(800).css({'z-index': 10});
-	// $("#holder").animate({
-	// 	opacity: 0.0,
-	// 	'z-index': 10
-	// }, 800);
-	// $("#migrants_video").css("z-index" , "20");
-	// $("#holder").css("z-index","10");
 };
 
 function m_audioToggle() {
@@ -695,6 +647,11 @@ function migrants_openinstructions () {
 	console.log("in migrants openscreen " + d.getSeconds());
 	instructionsOff = false;
 
+	if (!audioactive) {
+		audioready();
+	}
+
+
 	if(m_vidLoaded){
 		fadeInMigrantsVideo();
 	}
@@ -707,8 +664,7 @@ function migrants_openinstructions () {
 	// 	document.getElementById('migrants_video').volume = 0;
 	// 	m_playButton();
 	// });
-	
-	
+		
 	$("#holder").fadeIn(4000, function() {
 		$("#holder").css({'cursor' : 'default', 'pointer-events' : 'none', 'opacity': 1.0, 'z-index': 100});
 		$("#m_instructions").fadeIn(4000).css({'cursor' : 'default'});	
@@ -899,7 +855,6 @@ function m_getCurrentTime(){
 
 	var currentTimeForVideo = currentTimeOfDay % document.getElementById("migrants_video").duration;
 	 // currentTimeForVideo +=400;
-	// }	fgetCurr
 	
 	//console.log("Current time of Day : " + currentTimeOfDay + " Current time for video : "+ currentTimeForVideo);
 	return currentTimeForVideo;
@@ -983,12 +938,8 @@ var m_scrubberUpdater = function () {
 	// console.log(mTrackerArray.length);	
 	 m_circleScrubber();	
 	}
-	
-	
 
 	m_curtime = document.getElementById("migrants_video").currentTime;
-
-
 
 	if(instructionsOff) {
 		for (var i = 0; i < timecodeArray.length; i++) {
@@ -1040,19 +991,8 @@ var m_scrubberUpdater = function () {
 				    		} else {
 				    			vennMap[12].attr({fill: '#fff'});
 				    		}
-
-				    		if (actFillArray[j].vennID === 7) {
-				    			// console.log("Im in state 7");
-								vennMap[10].attr({'opacity': '1'});
-								vennMap[11].attr({'opacity': '1'});
-								vennMap[12].attr({'opacity': '1'});
-								vennMap[10].attr({fill: '#fff'});
-								vennMap[11].attr({fill: '#fff'});
-				    			vennMap[12].attr({fill: '#fff'});
-
-				    		}
 				    	
-				    		 // prevVenID = timecodeArray[i].Venn;	
+				    		// prevVenID = timecodeArray[i].Venn;	
 				    		// console.log(m_curtime + " : " + timecodeArray[i].Maxtime + " : " + timecodeArray[i].Venn + " : " + prevVenID);
 				    		
 				    	}else{
@@ -1065,7 +1005,6 @@ var m_scrubberUpdater = function () {
 				}
 				// console.log(m_curtime + " : " + timecodeArray[i].Maxtime + " : " + timecodeArray[i].Venn);
 				break;	
-
 			}
 		};
 
@@ -1085,24 +1024,7 @@ var m_scrubberUpdater = function () {
 		prevVenID = -1;
 		returnToMigrants();
 	}
-
-	// if(originCrossed) {
-		// originCrossed = false;
-		// prevVenID = -1;
-		// vennMap[10].attr({fill: '#fff'});
-		// vennMap[11].attr({fill: '#fff'});
-		// vennMap[12].attr({fill: '#fff'});
-		// vennMap[10].attr({'opacity': '1'});
-		// vennMap[11].attr({'opacity': '1'});
-		// vennMap[12].attr({'opacity': '1'});
-	// }
-
 	//console.log("[ Migrants: m_scrubberUpdater ] m_curtime = " + m_curtime);
-	//$("#m_progress").css({ "width": (1280 / ratio) + 'px' });
-
-	//amount = ratio * 100;
-
-	//m_circleScrubber();
 }
 
 function Fill(_actFill, _vennID) {
@@ -1219,4 +1141,52 @@ function m_arrayActFills() {
 		vennMap.transform("T " + centerW + " " + centerH + "S" + mapScalar + ","+ mapScalar +"," + centerW + "," + centerH);
 	}
 	
+}
+
+function checkArcLength(){
+
+	var fullRange = new Array();
+	
+	//treating the movie like it consists of 360 steps.
+	for (var i = 0; i < mTrackerArray.length; i++) {
+
+		//find the range that has been watched in arc [i] and add it to the full range
+		//i.e is startPos is 10 and endPos is 20
+		// curRange [10,11,12,13,14,15,16,17,18,19,20]
+		
+		var curRange   = _.range(Math.ceil(mTrackerArray[i].startPos), Math.ceil(mTrackerArray[i].endPos), 1); 
+
+		//i think max value is 64620
+
+		//append curRange to the fullRange i.e range of all arcs combined
+		fullRange.push(curRange);
+	};
+	
+	
+	//remove duplicate steps that have been watched. This removes overlap
+	fullRange = _.flatten(fullRange);
+	fullRange = _.uniq(fullRange);
+	//console.log(fullRange);
+	
+	//add them all up to see how much has been watched
+	var totalAmtWatched = _.reduce(fullRange, function(memo, num){ return memo + num; }, 0);
+
+	//console.log("totalAmtWatched: " + totalAmtWatched);
+	
+	if (totalAmtWatched >= 64620) {
+		return true;
+	} else {
+		return false;
+	}
+
+}
+
+function migrants_blockMenu() {
+  var blockContextMenu;
+
+  blockContextMenu = function (evt) {
+    evt.preventDefault();
+  };
+  document.getElementById("migrants_video").addEventListener('contextmenu', blockContextMenu);
+  console.log("context mexnu block");
 }
