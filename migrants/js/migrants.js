@@ -219,12 +219,12 @@ function m_init(){
 		arcseg: [width/2, height/2,  height/2-30,Raphael.rad(0), Raphael.rad(359) ]
 	});
 
-	//orange time marks = amount of screenings per day
+	//white time marks = amount of screenings per day
 	 	var spacing = 69;
 		var beta = 2 * Math.PI / spacing;
 		// var width = 1,
          var r1 = radius/2 - 14,
-            r2 = radius/2 - 2,
+            r2 = radius/2 - 4,
             cx = width/2,
             cy = height/2;
            
