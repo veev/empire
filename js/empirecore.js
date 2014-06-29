@@ -208,8 +208,13 @@ $(document).ready(function () {
 		}
 		else if(migrantsActive) {
 			migrants_sizer();
-			m_getDimensions();
+			//being callied in init
+			// m_getDimensions();
 			m_init();
+			// loadArcSegs();
+			refreshArcSegs();
+			prevVenID = -1;
+			m_arrayActFills();
 		}
 
 	});
@@ -272,13 +277,13 @@ $(document).ready(function () {
 		onEnter: function(element, position) {
 			console.log("entering m_instructions");
 			migrants_openinstructions();
-			m_vennTracking();
+			//m_vennTracking();
 	
 		},
 		onLeave: function(element, position) {
 			console.log("leaving m_instructions");
 			$("#m_instructions").fadeOut();
-			m_trackoff();
+			//m_trackoff();
 		}
 	});
 
@@ -528,6 +533,7 @@ function animateButton(index){
 		 	}	
 
 		 	migrantsActive = true;
+
 		 	// 
 		 	//keeping track of tracking session
 		 	if(mTrackerArray.length >0){
@@ -564,6 +570,7 @@ function animateButton(index){
 			//  }	
 			
 		 	audioready();
+		 	m_vennTracking();
 		 	console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
 		 }
 		 else{
@@ -571,6 +578,7 @@ function animateButton(index){
 		 	$("#migrantsContent").fadeOut("fast");
 		 	$("#migrants_video").css({opacity: "0.0"});
 		 	m_pauseVids();
+		 	m_trackoff();
 		 	migrantsActive = false;
 		 	if(mTrackerArray.length <= 0){
 		 		console.log("Fading out migrants" + mTrackerArray);
@@ -918,6 +926,18 @@ function attachMigrantsEvents() {
 		$('html body').animate({ scrollTop: ($('#migrants_top').offset().top) }, 1000, function() {
 			animateButton(3);
 		});
+	});
+
+	var body = $('html body');
+	$("#migrantsmore").fadeIn(4000).on('click', function() {
+		body.animate({scrollTop: ($('#migrants_main').offset().top) }, 1000);
+		 console.log("migrants_openinstructions() in migrantsmore");
+		 migrants_openinstructions();
+		 console.log("[ more button click: migrants_openinstructions ] instructionsOff ? " + instructionsOff );
+		if(!migrantsLoaded) {
+			console.log("[Migrants: migrantsmore listener] if not migrantsLoaded, migrants openscreen");
+			//migrants_openinstructions();
+		}
 	});
 }
 

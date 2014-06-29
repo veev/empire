@@ -14,8 +14,6 @@ var prevVenID = -1;
 var timecodeArray = new Array();
 var testTimecode =  new Array();
 var actFillArray = new Array();
-var rsr;
-var rsr_instructions;
 var maxTimeOfDay = 24*60*60;
 var width;
 var height;
@@ -39,7 +37,7 @@ var mTrackerArray = new Array();
 var downloadMigrants = false;
 var returnMigrants = false;
 //var ratio;
-var fakeProgress = 300;
+var fakeProgress = 30;
 var originCrossed = false;
 var previousPos = 0;
 
@@ -66,14 +64,14 @@ function progressArcInitPos(){
 
 		initPathPos = initPos;
 
-		console.log(initPos);
+		//console.log(initPos);
 	}
 
 }
 function loadArcSegs(){
 	for (var i = 0; i < mTrackerArray.length; i++) {
 		// console.log(mTrackerArray[i]);	
-		if(mTrackerArray[i].arcSegment == null){
+		if(mTrackerArray[i].arcSegment === null){
 			
 			mTrackerArray[i].arcSegment = archtype.path();
 			var transformArc = "r-90,"+(width/2)+","+(height/2);
@@ -84,9 +82,24 @@ function loadArcSegs(){
 	}
 }
 
+function refreshArcSegs(){
+	for (var i = 0; i < mTrackerArray.length; i++) {
+		// console.log(mTrackerArray[i]);	
+		// if(mTrackerArray[i].arcSegment !== null){
+			
+			mTrackerArray[i].arcSegment = archtype.path();
+			// mTrackerArray[i].arcSegment.transform("");
+			var transformArc = "r-90,"+(width/2)+","+(height/2);
+			mTrackerArray[i].arcSegment.transform(transformArc);
+			// console.log("New Arc segment added");
+			// console.log( mTrackerArray[i]);
+		// }
+	}
+}
+
 function m_getDimensions() {
 	height = $("#migrants_top").height();
-	console.log("Migrants Init()");
+	//console.log("Migrants Init()");
 
 	holderWidth = $("#migrants_top").width() * 0.595;
 	if (holderWidth < height) {
@@ -96,7 +109,9 @@ function m_getDimensions() {
 	archtype = Raphael("holder", holderWidth, height);
 	// width = $("#holder").width();
 	width = holderWidth;
-	console.log("holder width: " + width);
+	// console.log("holder width: " + width);
+	// console.log("holder height: " + height);
+	// console.log("circle radius: " + radius);
 }
 
 function m_initPaths() {
@@ -117,7 +132,7 @@ function m_initPaths() {
 		twentyfour.attr({fill: '#FFFFFF',"font-family": 'AGaramond-Italic',"font-size": '18','stroke-width': '0','stroke-opacity': '0.6', 'opacity': '0.6'}); 
 	var six = archtype.text(width/2 + radius/2 + 17, height/4 + 2, '6h');
 		six.attr({fill: '#FFFFFF',"font-family": 'AGaramond-Italic',"font-size": '18','stroke-width': '0','stroke-opacity': '0.6', 'opacity': '0.6'}); 
-	var twelve = archtype.text(width/2, height/2 -1, '12h');
+	var twelve = archtype.text(width/2, height/2, '12h');
 		twelve.attr({fill: '#FFFFFF',"font-family": 'AGaramond-Italic',"font-size": '18','stroke-width': '0','stroke-opacity': '0.6', 'opacity': '0.6'}); 
 	var eighteen = archtype.text(width/2 - radius/2 - 17, height/4 + 2 , '18h');
 		eighteen.attr({fill: '#FFFFFF',"font-family": 'AGaramond-Italic',"font-size": '18','stroke-width': '0','stroke-opacity': '0.6', 'opacity': '0.6'}); 
@@ -205,8 +220,15 @@ function m_init(){
 	});
 
 	//orange time marks = amount of screenings per day
-	// var spacing = 69;
-	// for (var i=0; i < spacing; i++) {
+	 	var spacing = 69;
+		var beta = 2 * Math.PI / spacing;
+		// var width = 1,
+         var r1 = radius/2 - 14,
+            r2 = radius/2 - 2,
+            cx = width/2,
+            cy = height/2;
+           
+	for (var i=0; i < spacing; i++) {
 	// 		var xloc_ = width/2;
 	// 		var yloc_ = height/2;
 	// 		// var R_ = radius;	
@@ -220,8 +242,15 @@ function m_init(){
 	// 		var cur_y = _cy + Math.sin( Raphael.rad( circleSegment - 90  ))  * _r;			
 
 	// 		var testSeg= archtype.circle(cur_x , cur_y, 2.5).attr({fill: '#ff5a00', stroke: 'none', 'opacity': '0.9'});
-	// };
-	
+			
+			var alpha = beta * i - Math.PI / 2,
+                cos = Math.cos(alpha),
+                sin = Math.sin(alpha);
+      		var sector = archtype.path([["M", cx + r1 * cos, cy + r1 * sin], ["L", cx + r2 * cos, cy + r2 * sin]])
+      			.attr({stroke: '#fff', 'opacity': '0.9',  'stroke-width': '0.6'});
+
+	 }
+
 // 	progrssCircle.animate({cx:cur_x,cy:cur_y,r:6}, 10);
 	time_progress_arc.attr({
     	"stroke": "#fff",
@@ -345,6 +374,8 @@ function m_circleScrubber() {
 					
 				} 
 				else {
+					// console.log(width);
+					// console.log(height);
 					mTrackerArray[i].arcSegment.attr({
 					"stroke": "#ff5a00",
 					"stroke-width": 2,
@@ -378,12 +409,12 @@ function m_circleScrubber() {
 	}
 	
 	if(!activeArcs){
-		console.log("activeArcs : " + activeArcs);
+		// console.log("activeArcs : " + activeArcs);
 		var currentPos =  getMigrantsVideoCurrentPos();
 		for (var i = 0; i < mTrackerArray.length; i++) {
-			console.log("mTrackerArray[i].startPos: " + mTrackerArray[i].startPos);
-			console.log("mTrackerArray[i].endPos: " + mTrackerArray[i].endPos);
-			console.log("currentPos: " + currentPos);
+			// console.log("mTrackerArray[i].startPos: " + mTrackerArray[i].startPos);
+			// console.log("mTrackerArray[i].endPos: " + mTrackerArray[i].endPos);
+			// console.log("currentPos: " + currentPos);
 			if( currentPos > mTrackerArray[i].startPos && currentPos < mTrackerArray[i].endPos ) {
 				console.log("Drawing over another inactive arc");
 			} else {
@@ -476,7 +507,7 @@ function migrants_sizer() {
 	//console.log("buffer = "+ buffer);
 	var centering = (w/2) - 62;
 	//console.log("centering = "+ centering);
-	var body = $('html body');
+	// var body = $('html body');
 	if($(".migrants_top:first").height() < 780){ // if this a wee screen
 		padtop = 20;
 		matop = h * 0.15;
@@ -500,14 +531,14 @@ function migrants_sizer() {
 	$("#minst_3").css({"top": h*0.8});
 
 	if (h < 710) {
-		$("#m_a").css({"padding-left": 212, "top": -8});
-		$("#m_a2").css({"padding-left": 474, "top": -8});
+		$("#m_a").css({"padding-left": 134, "top": -8});
+		$("#m_a2").css({"padding-left": 507, "top": -8});
 	} else if (h >= 710 && h < 800) {
-		$("#m_a").css({"padding-left": 212, "top": -24});
-		$("#m_a2").css({"padding-left": 474, "top": -24});
+		$("#m_a").css({"padding-left": 134, "top": -24});
+		$("#m_a2").css({"padding-left": 507, "top": -24});
 	} else {
-		$("#m_a").css({"padding-left": 212, "top": -24});
-		$("#m_a2").css({"padding-left": 474, "top": -24});
+		$("#m_a").css({"padding-left": 134, "top": -24});
+		$("#m_a2").css({"padding-left": 507, "top": -24});
 	}
 
 	var tempHolderWidth
@@ -521,40 +552,42 @@ function migrants_sizer() {
 	$("#holder").css({"width" : tempHolderWidth});
 
 	$("#m_download").css({"left": ($("#m_outerinner").width()*0.465) , "top" : (h/2) - 44 });
-
-	$("#migrantsmore").css({"top": buffer, "left": centering }).fadeIn(4000).on('click', function() {
-		body.animate({scrollTop: ($('#migrants_main').offset().top) }, 1000);
-		 console.log("migrants_openinstructions() in migrantsmore");
-		 migrants_openinstructions();
-		 console.log("[ more button click: migrants_openinstructions ] instructionsOff ? " + instructionsOff );
-		if(!migrantsLoaded) {
-			console.log("[Migrants: migrantsmore listener] if not migrantsLoaded, migrants openscreen");
-			//migrants_openinstructions();
-		}
-	});
+	
+	$("#migrantsmore").css({"top": buffer, "left": centering });
 
 	console.log("migrants_sizer");
+}
+
+function loadInstructions(){
+	
 }
 
 function m_vennTracking() {
 
 	var timer;
+	//var vennMapIsOn = false;
 
 	$("#m_container").on({
 	    'mousemove': function () {
 	    	if(instructionsOff && !downloadMigrants) {
+	    		
 				m_vennMapOn();
+				//$("#m_container").unbind('mousemove');
+				console.log("[mousemove] turn venn map on");
+				vennMapIsOn = true;
 			} 
 			else {
-					console.log("[mousemove] migrants instructionsOff is false");
+					//console.log("[mousemove] migrants instructionsOff is false");
 			}
 			clearTimeout(timer);
-			// console.log("[mousemove] timer clear: " + timer);
+			console.log("[mousemove] timer clear: " + timer);
 	        timer = setTimeout(function () {
 				if(instructionsOff && !downloadMigrants) {
+					
 					m_vennMapOff();
-					console.log("[mouseenter] migrants instructionsOff is TRUE");
-
+					//m_vennTracking_mouseMove();
+					console.log("[mousemove] timeout venn map off " + timer);
+					vennMapIsOn = false;
 				} else {
 					console.log("[mouseenter] migrants instructionsOff is false");
 				}
@@ -563,9 +596,13 @@ function m_vennTracking() {
 	    },
 	    'mouseout' : function () {
 	    	if(instructionsOff && !downloadMigrants) {
+				
 				m_vennMapOff();
+				//m_vennTracking_mouseMove();
+				console.log("[mouseout] timeout venn map off");
+				vennMapIsOn = false;
 			} else {
-				console.log("[mouseout] migrants instructionsOff is false");
+				// console.log("[mouseout] migrants instructionsOff is false");
 			}
 	        clearTimeout(timer);
 	        // console.log("[mouseout] timer clear: " + timer);
@@ -573,33 +610,77 @@ function m_vennTracking() {
 	});
 }
 
+
+function m_vennTracking_mouseMove() {
+
+	var timer2;
+
+	$("#m_container").on({
+	    'mousemove': function () {
+	    	if(instructionsOff && !downloadMigrants) {
+				m_vennMapOn();
+				$("#m_container").unbind('mousemove');
+				console.log("[mousemove] turn venn map on");
+
+			} 
+			else {
+					//console.log("[mousemove] migrants instructionsOff is false");
+			}
+			clearTimeout(timer2);
+			// console.log("[mousemove] timer clear: " + timer);
+	        timer2 = setTimeout(function () {
+				if(instructionsOff && !downloadMigrants) {
+					m_vennMapOff();
+					m_vennTracking();
+					console.log("[mousemove] timeout venn map off");
+
+				} else {
+					//console.log("[mouseenter] migrants instructionsOff is false");
+				}
+	        }, 5000);
+	        // console.log("[mousemove] timer set: " + timer);
+	    }
+	});
+}
+
 var m_vennMapOn = function() {
 
+	if ( $("#holder").is(":visible") ===false){
 	$("#migrants_video").animate({
 		'z-index': 10
 	}, 800);
 
 	$("#holder").fadeIn(800).css({'z-index': 20});
+	}
+	
 };
 
 var m_vennMapOff = function() {
-	$("#migrants_video").animate({
-		'z-index': 20
-	}, 800);
-	$("#holder").fadeOut(800).css({'z-index': 10});
+	
+	if ( $("#holder").is(":visible") ===true){
+		//$('selector').css('display')
+		console.log("[m_vennMapOff]");
+		$("#migrants_video").animate({
+			'z-index': 20
+		}, 800);
+		$("#holder").fadeOut(800).css({'z-index': 10});	
+	}
+	
 };
 
 function m_audioToggle() {
 	if(migrantsActive) {
 		 console.log("[ AudioToggle ] Audio Volume is: "+ document.getElementById("migrants_video").volume);
 		if(document.getElementById("migrants_video").volume > 0){
-			document.getElementById("migrants_video").volume = 0; 
+			document.getElementById("migrants_video").volume = 0;
+			//fadeOutMigrantsAudio(); 
 		}
 		else{
-			document.getElementById("migrants_video").volume = 1;
+			document.getElementById("migrants_video").volume = 0.25;
+			//fadeInMigrantsAudio();
 		}
 	} else {
-		console.log("[ Migrants: m_audioToggle ] migrantsActive ? : " + migrantsActive);
+		//console.log("[ Migrants: m_audioToggle ] migrantsActive ? : " + migrantsActive);
 
 	}
 }
@@ -669,9 +750,8 @@ function migrants_openinstructions () {
 		$("#holder").css({'cursor' : 'default', 'pointer-events' : 'none', 'opacity': 1.0, 'z-index': 100});
 		$("#m_instructions").fadeIn(4000).css({'cursor' : 'default'});	
 	});
-	// $("#rsr_instructions").css({"z-index":100}).fadeIn(2000);
  
-	console.log("[Migrants: openscreen ] migrants_closeinstructions on setTimeout 1");
+	//console.log("[Migrants: openscreen ] migrants_closeinstructions on setTimeout 1");
 	insructIvl = setTimeout(migrants_closeinstructions,10000);
 }
 
@@ -679,7 +759,7 @@ var migrants_closeinstructions = function () {
 	//m_playButton();
 	$("#migrants_video").animate({opacity: "1"},1000);
 	if(instructionsOff){
-		console.log("Instructions already off")
+		//console.log("Instructions already off")
 		return;
 	}
 
@@ -697,7 +777,7 @@ var migrants_closeinstructions = function () {
 
 	$("#holder").css({'cursor': 'default'}).fadeOut(3000, function() {
 		
-		console.log("[Migrants: migrants_closeinstructions ] m_instructions fadeOut");
+		//console.log("[Migrants: migrants_closeinstructions ] m_instructions fadeOut");
 		// document.getElementById("migrants_video").volume = 1;
 		//_volfade('migrants_video');
 		document.getElementById('migrants_video').volume = 0;
@@ -706,12 +786,12 @@ var migrants_closeinstructions = function () {
 		}
 		
 		m_intervalID = setInterval(fadeInMigrantsAudio,100);
-		console.log("SETTING ID TO : " + m_intervalID);
+		//console.log("SETTING ID TO : " + m_intervalID);
 
 		// $("#migrants_video").css({'opacity': 1});
 
 		migrantsshowprogress = true;
-		console.log("migrantsshowprogress is TRUE");
+		//console.log("migrantsshowprogress is TRUE");
 
 		instructionsOff = true;
 		
@@ -759,8 +839,8 @@ function m_trackoff() {
 	$("#holder").unbind('click');
 	//not sure whether to turn this off
 	// $("#migrantsmore").unbind('click');
-	$("#m_container").unbind('mouseenter');
-	$("#m_container").unbind('mouseleave');
+	$("#m_container").unbind('mousemove');
+	$("#m_container").unbind('mouseout');
 }
 
 function addMigrantsListeners() {
@@ -792,23 +872,23 @@ function m_hasLooped() {
 }
 
 function m_loadVideo () {
-	console.log("[ Migrants : Canplaythrough Event ] Video ");
+	//console.log("[ Migrants : Canplaythrough Event ] Video ");
 		m_vidLoaded = true;
-	console.log("Video loaded ? " + m_vidLoaded);
+	//console.log("Video loaded ? " + m_vidLoaded);
 	progressArcInitPos();
 
 	if(migrantsActive && document.getElementById("migrants_video").paused) {
 		m_playButton();
 		document.getElementById("migrants_video").volume = 0;
 	} else {
-		console.log("[m_loadVideo] migrants page not active but video loaded");
+		//console.log("[m_loadVideo] migrants page not active but video loaded");
 	}
 
 	// if(! videoFadeInComplete){	
 		// fadeInMigrantsVideo();
 	// }
 	if($("#migrants_video").css("display") == "none" && shouldShowVideo){
-		console.log("Video loaded and should be seen. Fading in ");	
+		//console.log("Video loaded and should be seen. Fading in ");	
 		fadeInMigrantsVideo();
 	}
 	
@@ -816,16 +896,16 @@ function m_loadVideo () {
 
 function m_playButton() {
 	if(migrantsActive) {
-		 console.log("[ Play Button ] Is Video paused ? "+ document.getElementById("migrants_video").paused);
+		// console.log("[ Play Button ] Is Video paused ? "+ document.getElementById("migrants_video").paused);
 		if(document.getElementById("migrants_video").paused){
 			m_playVids();  
 		}
 		else{
 			//m_pauseVids();
-			console.log("[m_playButton] video is already playing");
+			//console.log("[m_playButton] video is already playing");
 		}
 	} else {
-		console.log("[ Migrants: m_playButton ] migrantsActive ? : " + migrantsActive);
+		//console.log("[ Migrants: m_playButton ] migrantsActive ? : " + migrantsActive);
 
 	}
 }
@@ -837,7 +917,7 @@ function m_playVids() {
 			var cTime = m_getCurrentTime();
 			document.getElementById("migrants_video").currentTime =cTime;
 			// document.getElementById("migrants_video").currentTime = document.getElementById("migrants_video").duration -20; ;
-			console.log("Video loaded ? " + m_vidLoaded);
+			//console.log("Video loaded ? " + m_vidLoaded);
 			// console.log(test + " : " + document.getElementById("migrants_video").currentTime);
 			document.getElementById("migrants_video").play();
 			
@@ -845,7 +925,7 @@ function m_playVids() {
 	 }
 	 else{
 		// console.log("[ Migrants ] Not playing media because? ");
-		 console.log("Video loaded ? " + m_vidLoaded);
+		 //console.log("Video loaded ? " + m_vidLoaded);
 	 }  
 }
 
@@ -1010,7 +1090,7 @@ var m_scrubberUpdater = function () {
 
 
 	} else {
-		console.log("Instructions are on. No fills");
+		//console.log("Instructions are on. No fills");
 	}
 
 	if(downloadMigrants) {
@@ -1118,7 +1198,7 @@ function m_arrayActFills() {
 		// centerH = height/2 * 0.525;
 		centerW = width/4 * 1;
 		centerH = height/4 * 1;
-		console.log("Scaling the Venn Diagram - width: "+ width + ", height: "+ height);
+		//console.log("Scaling the Venn Diagram - width: "+ width + ", height: "+ height);
 		vennMap.transform("T " + centerW + " " + centerH + "S" + mapScalar + ","+ mapScalar +"," + centerW + "," + centerH);
 	} else if (height < 710 && holderRatio < 0.9) {
 		// centerW = width/4 + ((width/4)*(1-holderRatio));
@@ -1127,9 +1207,9 @@ function m_arrayActFills() {
 
 		centerW = width/4 * mapCenter;
 		centerH = height/4 * 1;
-		console.log("Scaling the Venn Diagram - width: "+ width + ", height: "+ height);
-		console.log("width/4: "+ width/4 + " height/4: "+ height/4);
-		console.log("centerW: "+ centerW + ", centerH: "+ centerH);
+		// console.log("Scaling the Venn Diagram - width: "+ width + ", height: "+ height);
+		// console.log("width/4: "+ width/4 + " height/4: "+ height/4);
+		// console.log("centerW: "+ centerW + ", centerH: "+ centerH);
 		vennMap.transform("T " + centerW + " " + centerH + "S" + mapScalar + ","+ mapScalar +"," + centerW + "," + centerH);
 	}else if (height >= 710 && holderRatio < 0.9) {
 
@@ -1137,7 +1217,7 @@ function m_arrayActFills() {
 
 		centerW = width/4 * mapCenter;
 		centerH = height/4 * 1;
-		console.log("Scaling the Venn Diagram - width: "+ width + ", height: "+ height);
+		//console.log("Scaling the Venn Diagram - width: "+ width + ", height: "+ height);
 		vennMap.transform("T " + centerW + " " + centerH + "S" + mapScalar + ","+ mapScalar +"," + centerW + "," + centerH);
 	}
 	
@@ -1188,5 +1268,5 @@ function migrants_blockMenu() {
     evt.preventDefault();
   };
   document.getElementById("migrants_video").addEventListener('contextmenu', blockContextMenu);
-  console.log("context mexnu block");
+  //console.log("context menu block");
 }

@@ -111,12 +111,12 @@ function c_enablecontrols () {
 	c_controls = true;
 
 	if(_ammobile){
-		trackon();	
+		//trackon();	
 	} else {
 		//console.log('bbbbbzzz');
 		$("#c_outerouter").on('mouseenter', function () {
 			if(mouseXTracking && ($('#c_container').isOnScreen())) {
-				console.log("Cradle Track on");
+				console.log("[c_enablecontrols] Cradle Track on");
 				trackon();
 			} else {
 				//console.log('mouseenter');
@@ -181,6 +181,9 @@ function cradle_openscreen () {
 		cradle_closescreen();
 		//console.log("[Cradle: cradle_openscreen] cradle_closescreen on instructions click");
 		trackon();
+		console.log("[cradle_openscreen] Cradle Track on");
+
+
 	});
 	c_enoughwithinstructions = true;
 }
@@ -189,11 +192,15 @@ function cradle_closescreen () {
 	clearInterval(openIvl);
 	$("#c_instructions").fadeOut(1000, function() {
 		//console.log("[ Cradle : cradle_closescreen ] close instructions");
-		if(cradleActive && document.getElementById("video1").paused){
-		 c_playButton();	
+		if(cradleActive) {
+			if (document.getElementById("video1").paused){
+		 		c_playButton();	
+			} 
+
+			trackon();
+			console.log("[cradle_closescreen] Cradle Track on");
+
 		}
-		
-		trackon();
 	});
 }
 
