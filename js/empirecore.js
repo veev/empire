@@ -125,7 +125,7 @@ $(document).ready(function () {
 		else if (!document.getElementById("migrants_video").paused) {
 			m_pauseVids();
 		}
-		//console.log("[ document ready ] home button : animateHome()");
+		console.log("[ document ready ] home button : animateHome()");
 		animateHome();
 		window.location.hash = "";
 		history.pushState('', document.title, window.location.pathname); // nice and clean
@@ -516,9 +516,9 @@ function animateButton(index){
 		 	$("#legacyContent").fadeOut("fast");
 		 	legacyActive = false;
 		 	//console.log("[ animateButton ] legacy is active  ?" + legacyActive);
-		 }
+		}
 
-		  if(index === 2) {
+		if(index === 2) {
 			location.hash = "migrants";
 		 	console.log("[ animateButton ] migrants was loaded ?" + migrantsLoaded);
 
@@ -536,7 +536,7 @@ function animateButton(index){
 
 		 	// 
 		 	//keeping track of tracking session
-		 	if(mTrackerArray.length >0){
+		 	if(mTrackerArray.length > 0){
 		 		if(mTrackerArray[mTrackerArray.length-1].isActive === true){
 					mTrackerArray[mTrackerArray.length-1].endPos = getMigrantsVideoCurrentPos();
 					//mTrackerArray[mTrackerArray.length-1].endPos = fakeProgress;
@@ -586,11 +586,10 @@ function animateButton(index){
 		 	else{
 			 	if(mTrackerArray[mTrackerArray.length-1].isActive === true){
 
-			 			// console.log("Current Migrants Tracker Index : "+mTrackerArray.length-1 +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
-						
-						mTrackerArray[mTrackerArray.length-1].endPos = getMigrantsVideoCurrentPos();
-						mTrackerArray[mTrackerArray.length-1].isActive = false;
-						// console.log("Start Pos : "+mTrackerArray[mTrackerArray.length-1].startPos +" End Pos" +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
+			 		//console.log("Current Migrants Tracker Index : "+mTrackerArray.length-1 +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
+					mTrackerArray[mTrackerArray.length-1].endPos = getMigrantsVideoCurrentPos();
+					mTrackerArray[mTrackerArray.length-1].isActive = false;
+					// console.log("Start Pos : "+mTrackerArray[mTrackerArray.length-1].startPos +" End Pos" +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
 			 	}	
 		 	}
 		 	
@@ -711,10 +710,9 @@ function shrinkRippleNode(index) {
 
 function animateHome() {
 
-	$("#cradleContent").fadeOut();
-	$("#legacyContent").fadeOut();
-	$("#migrantsContent").fadeOut();
-	$("#peripheryContent").fadeOut();
+
+
+
 	
 	for( var i = 0; i < menu.length; i++) {
 		animateHomeNode(i);
@@ -722,7 +720,35 @@ function animateHome() {
 
 	//audioactive = false;
 	//console.log("[ animateHome ] : audioready");
+	$("#cradleContent").fadeOut();
+	$("#legacyContent").fadeOut();
+	$("#migrantsContent").fadeOut();
+	$("#peripheryContent").fadeOut();
 	audioready();
+
+	//$("#migrantsContent").fadeOut("fast");
+	$("#migrants_video").css({opacity: "0.0"});
+	m_pauseVids();
+	m_trackoff();
+	migrantsActive = false;
+
+
+	//added this to try and fix home page bug, it doesn't fix it. Doesn't draw arcs on return to migrants
+	if(mTrackerArray.length <= 0){
+	 		console.log("[animateHome] Fading out migrants" + mTrackerArray);
+	 }
+	 else{
+	 	if(mTrackerArray[mTrackerArray.length-1].isActive === true){
+	 		console.log("In mTrackerArray.length > 0");
+	 		//console.log("Current Migrants Tracker Index : " + mTrackerArray.length-1 +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
+			mTrackerArray[mTrackerArray.length-1].endPos = getMigrantsVideoCurrentPos();
+			mTrackerArray[mTrackerArray.length-1].isActive = false;
+			// console.log("Start Pos : "+mTrackerArray[mTrackerArray.length-1].startPos +" End Pos" +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
+	 	}	
+ 	}
+
+
+	
 }
 
 function animateHomeNode(index) {
@@ -749,13 +775,14 @@ function animateHomeNode(index) {
  		$("#containerinner").fadeIn();
  		//console.log("In animate home");
  		cradleActive = false;
- 		peripheryActive = false;
  		cradleLoaded = false;
+ 		peripheryActive = false;
  		peripheryLoaded = false;
- 		migrantsLoaded = false;
- 		migrantsActive = false;
- 		legacyLoaded = false;
+ 	 	migrantsActive = false;
+ 		//migrantsLoaded = false;
  		legacyActive = false;
+ 		legacyLoaded = false;
+
  		//console.log("[ animateHomeNode ] cradleActive ? "+ cradleActive +", peripheryActive ?" + peripheryActive);
  		//console.log("[ animateHomeNode ] cradleLoaded ? "+ cradleLoaded +", peripheryLoaded ?" + peripheryLoaded);
 

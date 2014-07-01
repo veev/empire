@@ -76,8 +76,8 @@ function loadArcSegs(){
 			mTrackerArray[i].arcSegment = archtype.path();
 			var transformArc = "r-90,"+(width/2)+","+(height/2);
 			mTrackerArray[i].arcSegment.transform(transformArc);
-			// console.log("New Arc segment added");
-			// console.log( mTrackerArray[i]);
+			console.log("New Arc segment added");
+			console.log( mTrackerArray[i]);
 		}
 	}
 }
@@ -221,18 +221,13 @@ function m_init(){
 
 	//white time marks = amount of screenings per day
 	 	var spacing = 69;
-		var beta = 2 * Math.PI / spacing;
-		// var width = 1,
-         var r1 = radius/2 - 14,
+        var r1 = radius/2 - 14,
             r2 = radius/2 - 4,
             cx = width/2,
             cy = height/2;
            
 	for (var i=0; i < spacing; i++) {
-	// 		var xloc_ = width/2;
-	// 		var yloc_ = height/2;
-	// 		// var R_ = radius;	
-	// 		var circleSegment = map(i, 0, spacing, 0, 359.6);
+	 		var circleSegment = map(i, 0, spacing, 0, 359.6);
 
 	// 		var _cx = width/2;
 	// 		var _cy =  height/2;
@@ -242,12 +237,10 @@ function m_init(){
 	// 		var cur_y = _cy + Math.sin( Raphael.rad( circleSegment - 90  ))  * _r;			
 
 	// 		var testSeg= archtype.circle(cur_x , cur_y, 2.5).attr({fill: '#ff5a00', stroke: 'none', 'opacity': '0.9'});
-			
-			var alpha = beta * i - Math.PI / 2,
-                cos = Math.cos(alpha),
-                sin = Math.sin(alpha);
+            cos = Math.cos( Raphael.rad (circleSegment - 90));
+            sin = Math.sin(Raphael.rad (circleSegment - 90));
       		var sector = archtype.path([["M", cx + r1 * cos, cy + r1 * sin], ["L", cx + r2 * cos, cy + r2 * sin]])
-      			.attr({stroke: '#fff', 'opacity': '0.9',  'stroke-width': '0.6'});
+      			.attr({stroke: '#fff', 'opacity': '0.9',  'stroke-width': '0.8'});
 
 	 }
 
@@ -296,7 +289,7 @@ function m_circleScrubber() {
 	// var circleStartPosY = 0;
 	var totalArcLength = 0;
 	var activeArcs = false;
-	
+	//console.log("activeArcs : " + activeArcs);
 	checkArcLength();
 
 
@@ -321,8 +314,8 @@ function m_circleScrubber() {
 					
 
 					console.log("Arc passed the origin ");
-					// console.log(mTrackerArray.length);
-					if(mTrackerArray[i].isCrossOriginArc ===false){
+				    console.log(mTrackerArray.length);
+					if(mTrackerArray[i].isCrossOriginArc === false){
 						mTrackerArray[i].endPos = 359.9;
 						mTrackerArray[i].isActive = false;	
 						
@@ -409,12 +402,12 @@ function m_circleScrubber() {
 	}
 	
 	if(!activeArcs){
-		// console.log("activeArcs : " + activeArcs);
+		console.log("activeArcs : " + activeArcs);
 		var currentPos =  getMigrantsVideoCurrentPos();
 		for (var i = 0; i < mTrackerArray.length; i++) {
-			// console.log("mTrackerArray[i].startPos: " + mTrackerArray[i].startPos);
-			// console.log("mTrackerArray[i].endPos: " + mTrackerArray[i].endPos);
-			// console.log("currentPos: " + currentPos);
+			 console.log("mTrackerArray[i].startPos: " + mTrackerArray[i].startPos);
+			 console.log("mTrackerArray[i].endPos: " + mTrackerArray[i].endPos);
+			 console.log("currentPos: " + currentPos);
 			if( currentPos > mTrackerArray[i].startPos && currentPos < mTrackerArray[i].endPos ) {
 				console.log("Drawing over another inactive arc");
 			} else {
@@ -493,7 +486,7 @@ function m_getDimensions() {
 	archtype = Raphael("holder", holderWidth, height);
 	// width = $("#holder").width();
 	width = holderWidth;
-	console.log("holder width: " + width);
+	//console.log("holder width: " + width);
 }
 
 function migrants_sizer() {
@@ -528,17 +521,17 @@ function migrants_sizer() {
 	$("#m_legmore").css({ "margin-left": ($("#migrants_main").width() / 2) - 90 });
 
 	$("#minst_2").css({"top": h*0.15});
-	$("#minst_3").css({"top": h*0.8});
+	$("#minst_3").css({"top": h*0.84});
 
 	if (h < 710) {
-		$("#m_a").css({"padding-left": 134, "top": -8});
-		$("#m_a2").css({"padding-left": 507, "top": -8});
+		$("#m_a").css({"padding-left": 144, "top": -8});
+		$("#m_a2").css({"padding-left": 520, "top": -8});
 	} else if (h >= 710 && h < 800) {
-		$("#m_a").css({"padding-left": 134, "top": -24});
-		$("#m_a2").css({"padding-left": 507, "top": -24});
+		$("#m_a").css({"padding-left": 144, "top": -24});
+		$("#m_a2").css({"padding-left": 520, "top": -24});
 	} else {
-		$("#m_a").css({"padding-left": 134, "top": -24});
-		$("#m_a2").css({"padding-left": 507, "top": -24});
+		$("#m_a").css({"padding-left": 144, "top": -24});
+		$("#m_a2").css({"padding-left": 520, "top": -24});
 	}
 
 	var tempHolderWidth
@@ -573,23 +566,23 @@ function m_vennTracking() {
 	    		
 				m_vennMapOn();
 				//$("#m_container").unbind('mousemove');
-				console.log("[mousemove] turn venn map on");
+				//console.log("[mousemove] turn venn map on");
 				vennMapIsOn = true;
 			} 
 			else {
 					//console.log("[mousemove] migrants instructionsOff is false");
 			}
 			clearTimeout(timer);
-			console.log("[mousemove] timer clear: " + timer);
+			//console.log("[mousemove] timer clear: " + timer);
 	        timer = setTimeout(function () {
 				if(instructionsOff && !downloadMigrants) {
 					
 					m_vennMapOff();
 					//m_vennTracking_mouseMove();
-					console.log("[mousemove] timeout venn map off " + timer);
+					//console.log("[mousemove] timeout venn map off " + timer);
 					vennMapIsOn = false;
 				} else {
-					console.log("[mouseenter] migrants instructionsOff is false");
+					//console.log("[mouseenter] migrants instructionsOff is false");
 				}
 	        }, 5000);
 	        // console.log("[mousemove] timer set: " + timer);
@@ -599,7 +592,7 @@ function m_vennTracking() {
 				
 				m_vennMapOff();
 				//m_vennTracking_mouseMove();
-				console.log("[mouseout] timeout venn map off");
+				//console.log("[mouseout] timeout venn map off");
 				vennMapIsOn = false;
 			} else {
 				// console.log("[mouseout] migrants instructionsOff is false");
@@ -620,7 +613,7 @@ function m_vennTracking_mouseMove() {
 	    	if(instructionsOff && !downloadMigrants) {
 				m_vennMapOn();
 				$("#m_container").unbind('mousemove');
-				console.log("[mousemove] turn venn map on");
+				//console.log("[mousemove] turn venn map on");
 
 			} 
 			else {
@@ -632,7 +625,7 @@ function m_vennTracking_mouseMove() {
 				if(instructionsOff && !downloadMigrants) {
 					m_vennMapOff();
 					m_vennTracking();
-					console.log("[mousemove] timeout venn map off");
+					//console.log("[mousemove] timeout venn map off");
 
 				} else {
 					//console.log("[mouseenter] migrants instructionsOff is false");
@@ -659,7 +652,7 @@ var m_vennMapOff = function() {
 	
 	if ( $("#holder").is(":visible") ===true){
 		//$('selector').css('display')
-		console.log("[m_vennMapOff]");
+		//console.log("[m_vennMapOff]");
 		$("#migrants_video").animate({
 			'z-index': 20
 		}, 800);
@@ -739,12 +732,6 @@ function migrants_openinstructions () {
 	else{
 		shouldShowVideo = true;
 	}
-	// $("#migrants_video").animate({'opacity': 0.6},5000,function(){
-	// 	var t = new Date();
-	// 	console.log("[migrants_openinstructions] migrants_video fadeIn " + t.getSeconds() );
-	// 	document.getElementById('migrants_video').volume = 0;
-	// 	m_playButton();
-	// });
 		
 	$("#holder").fadeIn(4000, function() {
 		$("#holder").css({'cursor' : 'default', 'pointer-events' : 'none', 'opacity': 1.0, 'z-index': 100});
@@ -817,7 +804,7 @@ var fadeInMigrantsAudio = function () {
 	m_currentVolume += 3;
 	//console.log("Fade Migrants Vol up " + m_currentVolume);
 	if(m_currentVolume > m_maxVolume){
-		console.log("CLEARING ID : " + m_intervalID);
+		//console.log("CLEARING ID : " + m_intervalID);
 		clearInterval(m_intervalID);
 	}
 }
@@ -1010,7 +997,7 @@ var m_scrubberUpdater = function () {
 			// mTracker.firstTime = true;
 			mTracker.isCrossOriginArc = false;
 			mTrackerArray.push(mTracker);
-			// console.log("Made first arc");
+		 	console.log("Made first arc");
 			// console.log(mTrackerArray);	
 			loadArcSegs();
 		}
@@ -1192,7 +1179,8 @@ function m_arrayActFills() {
 
 	var mapCenter;
 	var mapScalar = map(height, 600, 1200, 1.15, 2.0);
-	console.log("[Scaling] holderRatio: " + holderRatio);
+	//console.log("[Scaling] holderRatio: " + holderRatio);
+	
 	if ( holderRatio >= 0.9) {
 		// centerW = width/2 * 0.535;
 		// centerH = height/2 * 0.525;
