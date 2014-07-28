@@ -52,6 +52,61 @@ var previousPos = 0;
 
 // var offsetOn =   true;
 
+/*
+Copy the list of which segments of the video have been viewed and save it to localStorage
+*/
+function saveTrackerArray() {
+	var saved = [],
+		mTracker,
+		i;
+
+	for (i = 0; i < mTrackerArray.length; i++) {
+		mTracker = mTrackerArray[i];
+		saved.push({
+			startPos: mTracker.startPos,
+			endPos: mTracker.endPos
+		});
+	}
+
+	try {
+		localStorage.setItem('mTrackerArray', JSON.stringify(saved));
+	} catch (e) {}
+}
+
+/*
+Load list of viewed segments from loadStorage
+*/
+function loadTrackerArray() {
+	var saved,
+		mTracker,
+		savedTracker,
+		i;
+
+	if (mTrackerArray.length) {
+		return;
+	}
+
+	try {
+		saved = JSON.parse(window.localStorage.getItem('mTrackerArray'));
+	} catch (e) {
+		return;
+	}
+
+	if (saved && Array.isArray(saved)) {
+		for (i = 0; i < saved.length; i++) {
+			savedTracker = saved[i];
+			mTrackerArray.push({
+				isActive: false,
+				startPos: savedTracker.startPos,
+				endPos: savedTracker.endPos,
+				isCrossOriginArc: true,
+				arcSegment: null
+			});
+		}
+		loadArcSegs();
+	}
+}
+
 function progressArcInitPos(){
 	var initPos;
 	var initDur = m_getCurrentTime();
@@ -249,7 +304,6 @@ function m_init(){
     	"stroke": "#fff",
     	"stroke-width": 2,
     	'fill': 'none',
-		"stroke-width": 2,
 		"stroke-miterlimit": 10,
 		"stroke-dasharray": '.',
     	arc: [width/2, height/2, timeProgress, 100, height/2 -30]
@@ -292,6 +346,7 @@ function m_circleScrubber() {
 	//console.log("activeArcs : " + activeArcs);
 	checkArcLength();
 
+	saveTrackerArray();
 
 	for (var i = 0; i < mTrackerArray.length; i++) {
 		if(mTrackerArray[i].arcSegment !== null){
@@ -333,7 +388,7 @@ function m_circleScrubber() {
 			 			mTracker.arcSegment = null;
 			 			mTrackerArray.push(mTracker);
 			 			//console.log(mTrackerArray.length);
-			 			loadArcSegs();
+						loadArcSegs();
 						
 					}
 
@@ -419,6 +474,7 @@ function m_circleScrubber() {
 		 		mTracker.isCrossOriginArc = false;
 		 		mTracker.arcSegment = null;
 		 		mTrackerArray.push(mTracker);
+				loadArcSegs();
 		 		break;
 			}
 		}
@@ -859,6 +915,8 @@ function m_hasLooped() {
 }
 
 function m_loadVideo () {
+	loadTrackerArray();
+
 	//console.log("[ Migrants : Canplaythrough Event ] Video ");
 		m_vidLoaded = true;
 	//console.log("Video loaded ? " + m_vidLoaded);
