@@ -529,22 +529,6 @@ function getMigrantsVideoCurrentPos(){
 	return ration;
 } 
 
-function m_getDimensions() {
-	height = $("#migrants_top").height();
-	// 0.556 is ratio for holderWidth/ScreenWidth
-	console.log("Migrants Init()");
-
-	holderWidth = $("#migrants_top").width() * 0.595;
-	if (holderWidth < height) {
-		holderWidth = height * 1.1;
-	}
-	radius = height - 40;
-	archtype = Raphael("holder", holderWidth, height);
-	// width = $("#holder").width();
-	width = holderWidth;
-	//console.log("holder width: " + width);
-}
-
 function migrants_sizer() {
 	var w = $("#migrants_top").width();
 	var h = $("#migrants_top").height();
