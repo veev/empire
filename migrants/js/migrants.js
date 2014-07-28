@@ -319,6 +319,9 @@ function m_circleScrubber() {
 	if(! migrantsActive){
 		return;
 	}
+
+	loadTrackerArray();
+
 	var d = new Date();
 	var currentTimeOfDay = d.getHours()*60*60 + d.getMinutes()*60 + d.getSeconds();
 	var maxTimeOfDay = 24*60*60;
@@ -898,9 +901,7 @@ function m_hasLooped() {
 	console.log("migrants has played and restarted");
 }
 
-function m_loadVideo () {
-	loadTrackerArray();
-
+function m_loadVideo() {
 	//console.log("[ Migrants : Canplaythrough Event ] Video ");
 		m_vidLoaded = true;
 	//console.log("Video loaded ? " + m_vidLoaded);
