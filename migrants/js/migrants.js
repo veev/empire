@@ -8,12 +8,12 @@ var m_maxVolume = 20;
 var m_currentVolume = 0;
 var m_intervalID = 0;
 var amount = 0;
-var insructIvl = new Number();
+var insructIvl;
 // var m_enoughwithinstructions = false;
 var prevVenID = -1;
-var timecodeArray = new Array();
-var testTimecode =  new Array();
-var actFillArray = new Array();
+var timecodeArray = [];
+var testTimecode = [];
+var actFillArray = [];
 var maxTimeOfDay = 24*60*60;
 var width;
 var height;
@@ -33,7 +33,7 @@ var vennMap;
 var timeCircle = null;
 var watchedFullMigrants = false;
 var shouldShowVideo = false;
-var mTrackerArray = new Array();
+var mTrackerArray = [];
 var downloadMigrants = false;
 var returnMigrants = false;
 //var ratio;
@@ -42,7 +42,7 @@ var originCrossed = false;
 var previousPos = 0;
 
 //DEBUG
-// var mTracker = new Object();
+// var mTracker = {};
 // mTracker.isActive = true;
 // mTracker.startPos = 0;
 // mTracker.endPos = getMigrantsVideoCurrentPos();
@@ -378,16 +378,13 @@ function m_circleScrubber() {
 
 						console.log("Creating new arc starting at 0");
 						// originCrossed = true;
-						var mTracker = new Object();
-						mTracker.isActive = true;
-						mTracker.startPos = 0;
-						// mTracker.endPos = fakeProgress; //for testing faster progress
-						//mTracker.endPos = getMigrantsVideoCurrentPos();
-						mTracker.endPos = 0;
-						mTracker.isCrossOriginArc = true;
-
-						mTracker.arcSegment = null;
-						mTrackerArray.push(mTracker);
+						mTrackerArray.push({
+							isActive: true,
+							startPos: 0,
+							endPos: 0,
+							isCrossOriginArc: true,
+							arcSegment: null
+						});
 						//console.log(mTrackerArray.length);
 						loadArcSegs();
 
@@ -468,13 +465,13 @@ function m_circleScrubber() {
 				console.log("Drawing over another inactive arc");
 			} else {
 				//create an arc to "fill in the gap in the session"
-				var mTracker = new Object();
-				mTracker.isActive = true;
-				mTracker.startPos = getMigrantsVideoCurrentPos();
-				mTracker.endPos = getMigrantsVideoCurrentPos();
-				mTracker.isCrossOriginArc = false;
-				mTracker.arcSegment = null;
-				mTrackerArray.push(mTracker);
+				mTrackerArray.push({
+					isActive: true,
+					startPos: currentPos,
+					endPos: currentPos,
+					isCrossOriginArc: false,
+					arcSegment: null
+				});
 				loadArcSegs();
 				break;
 			}
@@ -725,7 +722,7 @@ function fadeInMigrantsVideo(){
 	$("#migrants_video").animate({opacity: "0.5"},4000);
 }
 function loadTimecodeData(data){
-	var localArray = new Array();
+	var localArray = [];
 	for (var i = 0; i < data.length; i++) {
 		// var tCodeArray = JSON.parse(data[0]);
 		// console.log( data[0].Timecode);
@@ -1024,16 +1021,14 @@ var m_scrubberUpdater = function () {
 	}
 	if(migrantsshowprogress){
 		if(mTrackerArray.length === 0) {
-			var mTracker = new Object();
-			mTracker.isActive = true;
-			mTracker.startPos = getMigrantsVideoCurrentPos();
-			mTracker.endPos = getMigrantsVideoCurrentPos();
-			// mTracker.startPos = 300; //for testing faster progress
-			// mTracker.endPos = fakeProgress; //for testing faster progress
-			mTracker.arcSegment = null;
-			// mTracker.firstTime = true;
-			mTracker.isCrossOriginArc = false;
-			mTrackerArray.push(mTracker);
+			var currentPos = getMigrantsVideoCurrentPos();
+			mTrackerArray.push({
+				isActive: true,
+				startPos: currentPos,
+				endPos: currentPos,
+				arcSegment: null,
+				isCrossOriginArc: false
+			});
 			console.log("Made first arc");
 			// console.log(mTrackerArray);
 			loadArcSegs();
@@ -1250,7 +1245,7 @@ function m_arrayActFills() {
 
 function checkArcLength(){
 
-	var fullRange = new Array();
+	var fullRange = [];
 
 	//treating the movie like it consists of 360 steps.
 	for (var i = 0; i < mTrackerArray.length; i++) {
