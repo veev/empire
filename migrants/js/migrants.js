@@ -854,7 +854,7 @@ var fadeOutMigrantsAudio = function () {
 	document.getElementById('migrants_video').volume = m_currentVolume / 100;
 	m_currentVolume -= 1;
 	//console.log("Fade Migrants Vol down " + m_currentVolume);
-	if(_currentaudiovolume == 0){
+	if(_currentaudiovolume === 0){
 		clearInterval(m_intervalID);
 		document.getElementById('ambientaudio').pause();
 	}
@@ -913,7 +913,7 @@ function m_loadVideo() {
 	// if(! videoFadeInComplete){
 		// fadeInMigrantsVideo();
 	// }
-	if($("#migrants_video").css("display") == "none" && shouldShowVideo){
+	if($("#migrants_video").css("display") === "none" && shouldShowVideo){
 		//console.log("Video loaded and should be seen. Fading in ");
 		fadeInMigrantsVideo();
 	}
@@ -1023,7 +1023,7 @@ var m_scrubberUpdater = function () {
 		var ratio = (document.getElementById("migrants_video").duration / dur);
 	}
 	if(migrantsshowprogress){
-		if(mTrackerArray.length == 0) {
+		if(mTrackerArray.length === 0) {
 			var mTracker = new Object();
 			mTracker.isActive = true;
 			mTracker.startPos = getMigrantsVideoCurrentPos();

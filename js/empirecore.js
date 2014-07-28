@@ -134,7 +134,7 @@ $(document).ready(function () {
 
 	$(document).on('keydown',function (e) {
 		var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-		if (key == 32){
+		if (key === 32){
 			e.preventDefault();
 
 			if(cradleActive) {
@@ -153,28 +153,28 @@ $(document).ready(function () {
 			}
 		}
 
-		else if (key == 68 || key == 100) { //press 'D' or 'd'
+		else if (key === 68 || key === 100) { //press 'D' or 'd'
 			e.preventDefault();
 			p_endVids();
 			//console.log(' [ document on keydown ] : debug p_endVids p_buildscreen');
 		}
 
-		else if (key == 67 || key == 99) { //press 'C' or 'c'
+		else if (key === 67 || key === 99) { //press 'C' or 'c'
 			c_endVids();
 
 		}
 
-		else if (key == 69 || key == 101) { // press 'E' or 'e'
+		else if (key === 69 || key === 101) { // press 'E' or 'e'
 			m_audioToggle();
 		}
 
-		else if (key == 70 || key == 102 ) { // press 'F' or 'f'
+		else if (key === 70 || key === 102 ) { // press 'F' or 'f'
 			//downloadMigrants = !downloadMigrants;
 			downloadMigrants = true;
 			console.log("You Can Now Download Migrants");
 		}
 
-		else if (key == 71 || key == 103 ) { // press 'G' or 'g'
+		else if (key === 71 || key === 103 ) { // press 'G' or 'g'
 			downloadMigrants = false;
 			returnMigrants = true;
 			console.log("Returning to Migrants Cycle");
@@ -242,7 +242,7 @@ $(document).ready(function () {
 		min: $("#c_instructions").offset().top,
 		onEnter: function(element, position) {
 			//console.log("entering c_instructions");
-			if(document.getElementById("video1").currentTime == 0) {
+			if(document.getElementById("video1").currentTime === 0) {
 				cradle_openscreen();
 			} else {
 				c_toggleButtonDisplay();
@@ -258,7 +258,7 @@ $(document).ready(function () {
 		min: $("#p_instructions").offset().top,
 		onEnter: function(element, position) {
 			//console.log("entering p_instructions");
-			if(document.getElementById("target").currentTime == 0) {
+			if(document.getElementById("target").currentTime === 0) {
 				periphery_openscreen();
 			}
 			else {
@@ -291,13 +291,13 @@ $(document).ready(function () {
 
 	//console.log(path);
 	// console.log(loc[loc.length -1])
-	if (path == "#cradle" ) {
+	if (path === "#cradle" ) {
 		animateButton(0);
-	} else if (path == "#legacy") {
+	} else if (path === "#legacy") {
 		animateButton(1);
-	} else if (path == "#migrants") {
+	} else if (path === "#migrants") {
 		animateButton(2);
-	} else if (path == "#periphery") {
+	} else if (path === "#periphery") {
 		animateButton(3);
 	}
 
@@ -1130,7 +1130,7 @@ function audioready () {
 }
 
 function audiostop () {
-	console.log("ambient audio is stopping")
+	console.log("ambient audio is stopping");
 
 	clearInterval(vIvl);
 	vIvl = setInterval(fadeOutAmbientAudio,100);
@@ -1146,7 +1146,7 @@ var fadeInAmbientAudio = function () {
 	if(_currentaudiovolume > audiovolume){
 		clearInterval(vIvl);
 	}
-}
+};
 
 var fadeOutAmbientAudio = function () {
 
@@ -1157,7 +1157,7 @@ var fadeOutAmbientAudio = function () {
 
 	_currentaudiovolume -= 1;
 	// console.log("Fade Vol down " + _currentaudiovolume);
-	if(_currentaudiovolume == 0){
+	if(_currentaudiovolume === 0){
 		clearInterval(vIvl);
 		document.getElementById('ambientaudio').pause();
 	}
