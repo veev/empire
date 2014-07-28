@@ -51,13 +51,13 @@ var m_url = 'migrants/css/timecode.json';
 $(document).ready(function () {
 
 	var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-    // var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
-    
-    if (!isChrome) {
-    	$('body:first').append('<div id="browserno"><div class="padded">Sorry, this experiment is only currently working in Google Chrome. Other browsers may encounter problems.  We apologize for the inconvenience.</div></div>');
-    	$("#browserno").slideDown();
-    	// console.log("BROWSER NOT CHROME");
-    } 
+	// var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+
+	if (!isChrome) {
+		$('body:first').append('<div id="browserno"><div class="padded">Sorry, this experiment is only currently working in Google Chrome. Other browsers may encounter problems.  We apologize for the inconvenience.</div></div>');
+		$("#browserno").slideDown();
+		// console.log("BROWSER NOT CHROME");
+	}
 
 	//load ambient audio
 	if(window.location.href.indexOf("noaudio") != -1) {  //what does this do?
@@ -82,10 +82,10 @@ $(document).ready(function () {
 	w = paper.w;
 	h = paper.h;
 	//console.log('w: '+w+', h: '+h);
-	paper.canvas.setAttribute('preserveAspectRatio', 'none'); 
+	paper.canvas.setAttribute('preserveAspectRatio', 'none');
 
 	buildRipples(total); //creates four ripples
-	
+
 	$("#canvas_container").fadeIn(2000);
 	$("#containerinner").fadeIn(2000);
 
@@ -94,7 +94,7 @@ $(document).ready(function () {
 	//add Migrants JSON file
 	var data = m_jsonCall();
 	timecodeArray = loadTimecodeData(data);
-	
+
 	//loadMedia();
 	addCradleListeners();
 	addPeripheryListeners();
@@ -129,23 +129,23 @@ $(document).ready(function () {
 		animateHome();
 		window.location.hash = "";
 		history.pushState('', document.title, window.location.pathname); // nice and clean
-    	e.preventDefault();
+		e.preventDefault();
 	});
 
 	$(document).on('keydown',function (e) {
 		var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
 		if (key == 32){
-	   		e.preventDefault();
+			e.preventDefault();
 
 			if(cradleActive) {
 				//console.log('[ document on keydown ] : c_playButton');
-				c_playButton();	
+				c_playButton();
 			}
 
 			else if(peripheryActive) {
 				//console.log('[ document on keydown ] : p_playButton');
 				p_playButton();
-				
+
 			}
 
 			else {
@@ -228,14 +228,14 @@ $(document).ready(function () {
 			proximity: 200,
 			onSnapEvent: cradle_scrollsnaphandle
 		});
-	// } 
+	// }
 	// else if (peripheryActive) {
-	// 	console.log("[ document ready ] peripheryActive scrollsnap");
-	// 	$(document).scrollsnap({
-	// 		snaps: '.snap',
-	// 		proximity: 180,
-	// 		handler: periphery_scrollsnaphandle
-	// 	});
+	//	console.log("[ document ready ] peripheryActive scrollsnap");
+	//	$(document).scrollsnap({
+	//		snaps: '.snap',
+	//		proximity: 180,
+	//		handler: periphery_scrollsnaphandle
+	//	});
 	// }
 
 	$("#c_instructions").scrollspy({
@@ -244,10 +244,9 @@ $(document).ready(function () {
 			//console.log("entering c_instructions");
 			if(document.getElementById("video1").currentTime == 0) {
 				cradle_openscreen();
-			} 
-			else {
+			} else {
 				c_toggleButtonDisplay();
-			} 	
+			}
 		},
 		onLeave: function(element, position) {
 			//console.log("leaving c_instructions");
@@ -261,10 +260,10 @@ $(document).ready(function () {
 			//console.log("entering p_instructions");
 			if(document.getElementById("target").currentTime == 0) {
 				periphery_openscreen();
-			} 
+			}
 			else {
 				p_toggleButtonDisplay();
-			} 	
+			}
 		},
 		onLeave: function(element, position) {
 			//console.log("leaving p_instructions");
@@ -278,7 +277,7 @@ $(document).ready(function () {
 			console.log("entering m_instructions");
 			migrants_openinstructions();
 			//m_vennTracking();
-	
+
 		},
 		onLeave: function(element, position) {
 			console.log("leaving m_instructions");
@@ -289,7 +288,7 @@ $(document).ready(function () {
 
 
 	var path = window.location.hash;
-	
+
 	//console.log(path);
 	// console.log(loc[loc.length -1])
 	if (path == "#cradle" ) {
@@ -305,23 +304,23 @@ $(document).ready(function () {
 });
 
 // $(window).bind("scroll", function() {
-// 	//testing viewport
-// 	// var viewPortTest = $("div").withinViewportBottom();
-// 	// console.log(viewPortTest);
+//	//testing viewport
+//	// var viewPortTest = $("div").withinViewportBottom();
+//	// console.log(viewPortTest);
 
-// 	// var videoElem = document.getElementById("video1");
-// 	// if(cradleActive && !peripheryActive) {
-// 	// 	if($("#c_container").is(":within-viewport-bottom")) {
-// 	// 		console.log("[ window scroll ] c_container within-viewport-bottom");
-// 	// 		cradle_openscreen();
-// 	// 	}
-// 	// } else 
-// 	if (peripheryActive ) {
-// 		if($("#p_instructions").is("within-viewport-bottom")) {
-// 			console.log("[ window scroll ] p_container within-viewport-bottom");
-// 			periphery_openscreen();
-// 		}
-// 	}
+//	// var videoElem = document.getElementById("video1");
+//	// if(cradleActive && !peripheryActive) {
+//	//	if($("#c_container").is(":within-viewport-bottom")) {
+//	//		console.log("[ window scroll ] c_container within-viewport-bottom");
+//	//		cradle_openscreen();
+//	//	}
+//	// } else
+//	if (peripheryActive ) {
+//		if($("#p_instructions").is("within-viewport-bottom")) {
+//			console.log("[ window scroll ] p_container within-viewport-bottom");
+//			periphery_openscreen();
+//		}
+//	}
 
 // });
 
@@ -358,7 +357,7 @@ function buildRippleNode(index){
 
 	ripple = paper.path("M0,0 L"+pos+",0 A"+pos+","+pos+" 0 0,1 0,"+pos+"z")
 	ripple.attr({'fill': COLORS[index], 'fill': URL[index], 'stroke': COLORS[index], 'cursor': 'pointer', 'position':'absolute'})
-		  .data('name_', RIPPLE_ID[index]);
+		.data('name_', RIPPLE_ID[index]);
 
 	title = paper.text(pos - titleOffset, titleHeight, LABELS[index]).attr({'font-size': '24px', 'font-style': 'italic', 'opacity': 1, 'cursor': 'pointer'});
 	topLetter = paper.text(topLetX, titleHeight, LETTERS[index]).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0, 'cursor': 'pointer'});
@@ -366,19 +365,19 @@ function buildRippleNode(index){
 
 	//for debugging bottom letter placement
 	// for(var i=0; i< 360; i++){
-	// 	botLetX =  posX * Math.cos(i * rad);
-	// 	botLetY =  posY * Math.sin(i * rad);
-	// 	paper.text(botLetX, botLetY, i).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0.2});
-	// }    
-    var btn = new Button(ripple, title, topLetter, bottomLetter, false, false);
-    btn.id = RIPPLE_ID[index];
-    btn.index = index;
+	//	botLetX =  posX * Math.cos(i * rad);
+	//	botLetY =  posY * Math.sin(i * rad);
+	//	paper.text(botLetX, botLetY, i).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0.2});
+	// }
+	var btn = new Button(ripple, title, topLetter, bottomLetter, false, false);
+	btn.id = RIPPLE_ID[index];
+	btn.index = index;
 
-    //TODO: how do i set isActive and isBig to be false at initialization?
-    //console log says they are "undefined"
+	//TODO: how do i set isActive and isBig to be false at initialization?
+	//console log says they are "undefined"
 
-    btn.onClick();
-    return btn;
+	btn.onClick();
+	return btn;
 }
 
 function Button(ripple, title, topLetter, bottomLetter, isActive, isBig) {
@@ -404,16 +403,16 @@ Button.prototype.addClickListener = function(callback){
 };
 
 function resizePaper( ){
-    resizing = true;
-    clearTimeout(this.id);
-    this.id = setTimeout(function(){
-    	var win = $(this);
-   		paper.changeSize(win.width(), win.height(), false, false);
-   		resizing = false;
-    }, 500);
+	resizing = true;
+	clearTimeout(this.id);
+	this.id = setTimeout(function(){
+		var win = $(this);
+		paper.changeSize(win.width(), win.height(), false, false);
+		resizing = false;
+	}, 500);
 }
 
-function buildRipples(total) {	
+function buildRipples(total) {
 
 	//var button = new Button();
 	var button;
@@ -446,199 +445,197 @@ function animateButton(index){
 			// if(index !== i){
 				//set all the other ripples to not active / not big
 				menu[i].ripple.isActive = false;
-				menu[i].ripple.isBig = false;	
+				menu[i].ripple.isBig = false;
 				menu[i].ripple.attr({'cursor' : 'pointer'});
 			// }
 		}
-		//set this ripple to active	
-		
- 		growRippleNode(index);
+		//set this ripple to active
+
+		growRippleNode(index);
 
 		if(index === 0) {
 			//console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
 			location.hash = "cradle";
 			$("#cradleContent").fadeIn(2000);
-			
+
 			if(cradleLoaded === false) {
 
-			 	loadCradle2();
-				
-			 	cradleLoaded = true;
+				loadCradle2();
+
+				cradleLoaded = true;
 				//console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
-			 }
+			}
 			//console.log("[ document ready ] cradleActive scrollsnap");
 			$(document).scrollsnap({
 				snaps: '.snap',
 				proximity: 180,
 				handler: cradle_scrollsnaphandle
-			});		 
-			 //addCradleListeners();
+			});
+			//addCradleListeners();
 			cradleActive = true;
 			audioready();
 			if( document.getElementById("video1") == null ){
-				//console.log("wtf? cradle") 
+				//console.log("wtf? cradle")
 			}
 			else{
 				if( document.getElementById("video1").currentTime > 0 ) {
-				 	//console.log("toggling display");
-				 		c_toggleButtonDisplay();
-				 }
-				 //console.log("video1 current time  ?" + document.getElementById("video1").currentTime);	 	
+					//console.log("toggling display");
+						c_toggleButtonDisplay();
+				}
+				//console.log("video1 current time  ?" + document.getElementById("video1").currentTime);
 			}
 			//console.log("[ animateButton ] cradle is active  ?" + cradleActive);
-		 } else {
+		} else {
 
-		 	$("#cradleContent").fadeOut("fast");
-		 	c_pauseVids();
-		 	cradleActive = false;
-		 	//console.log("[ animateButton ] cradle is active  ?" + cradleActive);
+			$("#cradleContent").fadeOut("fast");
+			c_pauseVids();
+			cradleActive = false;
+			//console.log("[ animateButton ] cradle is active  ?" + cradleActive);
 
-		 }
+		}
 
-		 if(index === 1) {
+		if(index === 1) {
 			location.hash = "legacy";
-		 	//console.log("[ animateButton ] legacy was loaded ?" + legacyLoaded);
+			//console.log("[ animateButton ] legacy was loaded ?" + legacyLoaded);
 
-		 	$("#legacyContent").fadeIn(2000);
+			$("#legacyContent").fadeIn(2000);
 
-		 	if(legacyLoaded === false){
-		 	 	loadLegacy();	
-		 	 	legacyLoaded = true;
-		 	 	//console.log("[ animateButton ] legacy was loaded  ?" + legacyLoaded);
-		 	 	
-		 	}	
-		 	legacyActive = true;
-		 	audioready();
-		 	//console.log("[ animateButton ] legacy is active  ?" + legacyActive);
-		 } 
-		 else  {
+			if(legacyLoaded === false){
+				loadLegacy();
+				legacyLoaded = true;
+				//console.log("[ animateButton ] legacy was loaded  ?" + legacyLoaded);
 
-		 	$("#legacyContent").fadeOut("fast");
-		 	legacyActive = false;
-		 	//console.log("[ animateButton ] legacy is active  ?" + legacyActive);
+			}
+			legacyActive = true;
+			audioready();
+			//console.log("[ animateButton ] legacy is active  ?" + legacyActive);
+		} else {
+
+			$("#legacyContent").fadeOut("fast");
+			legacyActive = false;
+			//console.log("[ animateButton ] legacy is active  ?" + legacyActive);
 		}
 
 		if(index === 2) {
 			location.hash = "migrants";
-		 	console.log("[ animateButton ] migrants was loaded ?" + migrantsLoaded);
+			console.log("[ animateButton ] migrants was loaded ?" + migrantsLoaded);
 
-		 	$("#migrantsContent").fadeIn(2000);
+			$("#migrantsContent").fadeIn(2000);
 
-		 	if(migrantsLoaded === false){
-		 	 	
-		 	 	loadMigrants();	
-		 	 	migrantsLoaded = true;
-		 	 	console.log("[ animateButton ] migrants was loaded  ?" + migrantsLoaded);
-		 	 	
-		 	}	
+			if(migrantsLoaded === false){
 
-		 	migrantsActive = true;
+				loadMigrants();
+				migrantsLoaded = true;
+				console.log("[ animateButton ] migrants was loaded  ?" + migrantsLoaded);
 
-		 	// 
-		 	//keeping track of tracking session
-		 	if(mTrackerArray.length > 0){
-		 		if(mTrackerArray[mTrackerArray.length-1].isActive === true){
+			}
+
+			migrantsActive = true;
+
+			//
+			//keeping track of tracking session
+			if(mTrackerArray.length > 0){
+				if(mTrackerArray[mTrackerArray.length-1].isActive === true){
 					mTrackerArray[mTrackerArray.length-1].endPos = getMigrantsVideoCurrentPos();
 					//mTrackerArray[mTrackerArray.length-1].endPos = fakeProgress;
 
 					mTrackerArray[mTrackerArray.length-1].isActive = false;
-		 		}
-		 		else{
-		 			var mTracker = new Object();
-		 			mTracker.isActive = true;
-		 			mTracker.startPos = getMigrantsVideoCurrentPos();
-		 			mTracker.endPos = getMigrantsVideoCurrentPos();
-		 			// mTracker.startPos = 300;
-		 			// mTracker.endPos = fakeProgress;
-		 			mTracker.isCrossOriginArc = false;
-		 			mTracker.arcSegment = null;
-		 			mTrackerArray.push(mTracker);
+				}
+				else{
+					var mTracker = new Object();
+					mTracker.isActive = true;
+					mTracker.startPos = getMigrantsVideoCurrentPos();
+					mTracker.endPos = getMigrantsVideoCurrentPos();
+					// mTracker.startPos = 300;
+					// mTracker.endPos = fakeProgress;
+					mTracker.isCrossOriginArc = false;
+					mTracker.arcSegment = null;
+					mTrackerArray.push(mTracker);
 
-		 		}
-		 		loadArcSegs();
-		 	}
+				}
+				loadArcSegs();
+			}
 			// else{
-			// 	 	// var mTracker = new Object();
-		 // 			// mTracker.isActive = true;
-		 // 			// mTracker.startPos = initPathNewPos;
-		 // 			// mTracker.endPos = initPathNewPos;
-		 // 			// mTracker.arcSegment = null
-		 // 			// mTracker.firstTime = true;
-		 // 			// mTrackerArray.push(mTracker);
-		 // 			// console.log("Made first arc");
-		 // 			// console.log(mTrackerArray);
-			//  }	
-			
-		 	audioready();
-		 	m_vennTracking();
-		 	console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
-		 }
-		 else{
+			//		// var mTracker = new Object();
+		//			// mTracker.isActive = true;
+		//			// mTracker.startPos = initPathNewPos;
+		//			// mTracker.endPos = initPathNewPos;
+		//			// mTracker.arcSegment = null
+		//			// mTracker.firstTime = true;
+		//			// mTrackerArray.push(mTracker);
+		//			// console.log("Made first arc");
+		//			// console.log(mTrackerArray);
+			//  }
 
-		 	$("#migrantsContent").fadeOut("fast");
-		 	$("#migrants_video").css({opacity: "0.0"});
-		 	m_pauseVids();
-		 	m_trackoff();
-		 	migrantsActive = false;
-		 	if(mTrackerArray.length <= 0){
-		 		console.log("Fading out migrants" + mTrackerArray);
-		 	}
-		 	else{
-			 	if(mTrackerArray[mTrackerArray.length-1].isActive === true){
+			audioready();
+			m_vennTracking();
+			console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
+		} else{
 
-			 		//console.log("Current Migrants Tracker Index : "+mTrackerArray.length-1 +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
+			$("#migrantsContent").fadeOut("fast");
+			$("#migrants_video").css({opacity: "0.0"});
+			m_pauseVids();
+			m_trackoff();
+			migrantsActive = false;
+			if(mTrackerArray.length <= 0){
+				console.log("Fading out migrants" + mTrackerArray);
+			}
+			else{
+				if(mTrackerArray[mTrackerArray.length-1].isActive === true){
+
+					//console.log("Current Migrants Tracker Index : "+mTrackerArray.length-1 +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
 					mTrackerArray[mTrackerArray.length-1].endPos = getMigrantsVideoCurrentPos();
 					mTrackerArray[mTrackerArray.length-1].isActive = false;
 					// console.log("Start Pos : "+mTrackerArray[mTrackerArray.length-1].startPos +" End Pos" +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
-			 	}	
-		 	}
-		 	
-		 	console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
-		 }
+				}
+			}
 
-	 	if(index === 3) {
-	 		location.hash = "periphery";
-	 		//console.log("[ animateButton ] periphery was loaded  ?" + peripheryLoaded);
+			console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
+		}
+
+		if(index === 3) {
+			location.hash = "periphery";
+			//console.log("[ animateButton ] periphery was loaded  ?" + peripheryLoaded);
 
 			$("#peripheryContent").fadeIn(2000);
-		 	if(peripheryLoaded === false) {
+			if(peripheryLoaded === false) {
 
-		 		loadPeriphery2();
-		 		peripheryLoaded = true;
-		 		//console.log("[ animateButton ] periphery was loaded  ?" + peripheryLoaded);
+				loadPeriphery2();
+				peripheryLoaded = true;
+				//console.log("[ animateButton ] periphery was loaded  ?" + peripheryLoaded);
 
-		 	}
-		 	peripheryActive = true;
-		 	audioready();
+			}
+			peripheryActive = true;
+			audioready();
 
-		 	if( document.getElementById("target") == null ){
-				//console.log("wtf? periphery") 
+			if( document.getElementById("target") == null ){
+				//console.log("wtf? periphery")
 			}
 			else{
 				if( document.getElementById("target").currentTime > 0 ) {
-				 	//console.log("toggling periphery display");
-				 	p_toggleButtonDisplay();
-				 }
-				 //console.log("target current time  ? " + document.getElementById("target").currentTime);	 	
-				
-			}
-		 	//console.log("[ animateButton ] periphery is active  ?" + peripheryActive);
- 	
- 		} else {
+					//console.log("toggling periphery display");
+					p_toggleButtonDisplay();
+				}
+				//console.log("target current time  ? " + document.getElementById("target").currentTime);
 
-		 	$("#peripheryContent").fadeOut("fast");
-		 	p_pauseVids();
-		 	peripheryActive = false;
-		 	//console.log("[ animateButton ] periphery is active  ?" + peripheryActive);
-		} 			
+			}
+			//console.log("[ animateButton ] periphery is active  ?" + peripheryActive);
+
+		} else {
+
+			$("#peripheryContent").fadeOut("fast");
+			p_pauseVids();
+			peripheryActive = false;
+			//console.log("[ animateButton ] periphery is active  ?" + peripheryActive);
+		}
 			$("#navigation").fadeIn();
-	 		$("#containerinner").fadeOut(function() {
-	 			//console.log("faded out containerinner");
-	 	});
+			$("#containerinner").fadeOut(function() {
+				//console.log("faded out containerinner");
+		});
 
 		menu[index].ripple.attr({'cursor' : 'default'});
 
-		fadeTitles(0);				
+		fadeTitles(0);
 
 }
 
@@ -686,11 +683,11 @@ function shrinkRippleNode(index) {
 	var smRadiusOffset = config.smRadiusOffset;
 
 	for(var i = 0; i <= index; i++) {
-		
+
 		var _index = i + 1;
 
 		if(index === menu.length - 1) {
-			 continue;
+			continue;
 		}
 
 		fadeBottomLetters( _index, 0);
@@ -701,9 +698,9 @@ function shrinkRippleNode(index) {
 		ripple.animate({path: "M0,0 L" + pos +",0 A" + pos +"," + pos + " 0 0,1 0," + pos + "z"}, speed,
 		function() {
 
-			  for(var i = 0; i <= index; i++) {
-				fadeTopLetters( i, 1);	
-			 }
+			for(var i = 0; i <= index; i++) {
+				fadeTopLetters( i, 1);
+			}
 		});
 	}
 }
@@ -713,7 +710,7 @@ function animateHome() {
 
 
 
-	
+
 	for( var i = 0; i < menu.length; i++) {
 		animateHomeNode(i);
 	}
@@ -735,20 +732,19 @@ function animateHome() {
 
 	//added this to try and fix home page bug, it doesn't fix it. Doesn't draw arcs on return to migrants
 	if(mTrackerArray.length <= 0){
-	 		console.log("[animateHome] Fading out migrants" + mTrackerArray);
-	 }
-	 else{
-	 	if(mTrackerArray[mTrackerArray.length-1].isActive === true){
-	 		console.log("In mTrackerArray.length > 0");
-	 		//console.log("Current Migrants Tracker Index : " + mTrackerArray.length-1 +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
+			console.log("[animateHome] Fading out migrants" + mTrackerArray);
+	} else {
+		if(mTrackerArray[mTrackerArray.length-1].isActive === true){
+			console.log("In mTrackerArray.length > 0");
+			//console.log("Current Migrants Tracker Index : " + mTrackerArray.length-1 +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
 			mTrackerArray[mTrackerArray.length-1].endPos = getMigrantsVideoCurrentPos();
 			mTrackerArray[mTrackerArray.length-1].isActive = false;
 			// console.log("Start Pos : "+mTrackerArray[mTrackerArray.length-1].startPos +" End Pos" +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
-	 	}	
- 	}
+		}
+	}
 
 
-	
+
 }
 
 function animateHomeNode(index) {
@@ -761,7 +757,7 @@ function animateHomeNode(index) {
 
 	for(var i = 0; i < menu.length; i++) {
 		//fade out bottom letters, opacity = 0
-		fadeBottomLetters(i, 0);	
+		fadeBottomLetters(i, 0);
 		fadeTopLetters(i, 0);
 	}
 
@@ -772,19 +768,19 @@ function animateHomeNode(index) {
 		//fade in titles, opacity = 1
 		fadeTitles(1);
 		$("#navigation").fadeOut();
- 		$("#containerinner").fadeIn();
- 		//console.log("In animate home");
- 		cradleActive = false;
- 		cradleLoaded = false;
- 		peripheryActive = false;
- 		peripheryLoaded = false;
- 	 	migrantsActive = false;
- 		//migrantsLoaded = false;
- 		legacyActive = false;
- 		legacyLoaded = false;
+		$("#containerinner").fadeIn();
+		//console.log("In animate home");
+		cradleActive = false;
+		cradleLoaded = false;
+		peripheryActive = false;
+		peripheryLoaded = false;
+		migrantsActive = false;
+		//migrantsLoaded = false;
+		legacyActive = false;
+		legacyLoaded = false;
 
- 		//console.log("[ animateHomeNode ] cradleActive ? "+ cradleActive +", peripheryActive ?" + peripheryActive);
- 		//console.log("[ animateHomeNode ] cradleLoaded ? "+ cradleLoaded +", peripheryLoaded ?" + peripheryLoaded);
+		//console.log("[ animateHomeNode ] cradleActive ? "+ cradleActive +", peripheryActive ?" + peripheryActive);
+		//console.log("[ animateHomeNode ] cradleLoaded ? "+ cradleLoaded +", peripheryLoaded ?" + peripheryLoaded);
 
 	});
 	//set menus to not big, not active
@@ -817,12 +813,12 @@ function loadCradle2() {
 	//console.log("[ loadCradle2 ]");
 
 	$("#cradleContent").css({'width': '100%', 'height': '100%'});
-   	$(".cradle_top").css({'background': 'none'});
+	$(".cradle_top").css({'background': 'none'});
 
 	cradle_sizer();
 
 	lazywidth = $("#c_outerouter").width();
-	
+
 	c_currentvideoid = 'video1';
 
 	c_enablecontrols();
@@ -839,13 +835,13 @@ function c_toggleButtonDisplay(){
 
 	if(document.getElementById("video1") != null){
 		if(document.getElementById("video1").paused ){
-			// c_playVids();	
+			// c_playVids();
 			//console.log("Toggle cradle play button on");
 			$("#c_play_bg").fadeIn();
 		}
 		else{
-			$("#c_play_bg").fadeOut();	
-			//console.log("Toggle cradle play button off");			
+			$("#c_play_bg").fadeOut();
+			//console.log("Toggle cradle play button off");
 		}
 	}
 }
@@ -869,20 +865,20 @@ function attachCradleEvents() {
 		//console.log("[Attach Cradle Events: c_playElement ] c_playButton");
 		c_playButton();
 		if( !document.getElementById("video1").paused ){
-			c_toggleButtonDisplay();	
+			c_toggleButtonDisplay();
 		}
 		// toggleButtonDisplay();
 
 	}).on('mouseover', function (){
 		if(document.getElementById("video1").paused || document.getElementById("video2").paused){
 			$("#c_playElement").css({'background':'url(../art/cradle/playWhite.png)'})
-		} else {				
+		} else {
 			$("#c_playElement").css({'background':'url(../art/cradle/pauseWhite.png)'})
 		}
 	}).on('mouseout', function (){
 		if(document.getElementById("video1").paused || document.getElementById("video2").paused){
 			$("#c_playElement").css({'background':'url(../art/cradle/playYellow.png)'})
-		} else {				
+		} else {
 			$("#c_playElement").css({'background':'url(../art/cradle/pauseYellow.png)'})
 		}
 	});
@@ -907,8 +903,8 @@ function attachCradleEvents() {
 
 	// // var videoElem = document.getElementById("video1");
 	// if($("#c_container").is(":within-viewport-bottom")) {
-	// 	console.log("[ attachCradleEvents ] c_container within-viewport-top");
-	// 	cradle_openscreen();
+	//	console.log("[ attachCradleEvents ] c_container within-viewport-top");
+	//	cradle_openscreen();
 	// }
 
 	$("#legacy_cbutton").on('click', function() {
@@ -916,7 +912,7 @@ function attachCradleEvents() {
 		c_pauseVids();
 		$('html body').animate({ scrollTop: ($('#cradle_top').offset().top) }, 1000, function() {
 			animateButton(1);
-		}); 
+		});
 	});
 
 	$("#migrants_cbutton").on('click', function() {
@@ -931,7 +927,7 @@ function attachCradleEvents() {
 		//console.log("[ attach Cradle Events ] periphery_cbutton - c_pauseVids");
 		c_pauseVids();
 		$('html body').animate({ scrollTop: ($('#cradle_top').offset().top) }, 1000,function(){
-	 		animateButton(3);
+			animateButton(3);
 		});
 	});
 }
@@ -958,9 +954,9 @@ function attachMigrantsEvents() {
 	var body = $('html body');
 	$("#migrantsmore").fadeIn(4000).on('click', function() {
 		body.animate({scrollTop: ($('#migrants_main').offset().top) }, 1000);
-		 console.log("migrants_openinstructions() in migrantsmore");
-		 migrants_openinstructions();
-		 console.log("[ more button click: migrants_openinstructions ] instructionsOff ? " + instructionsOff );
+		console.log("migrants_openinstructions() in migrantsmore");
+		migrants_openinstructions();
+		console.log("[ more button click: migrants_openinstructions ] instructionsOff ? " + instructionsOff );
 		if(!migrantsLoaded) {
 			console.log("[Migrants: migrantsmore listener] if not migrantsLoaded, migrants openscreen");
 			//migrants_openinstructions();
@@ -984,7 +980,7 @@ function attachLegacyEvents() {
 
 	$("#periphery_lbutton").on('click', function() {
 		$('html body').animate({ scrollTop: ($('#legacy_top').offset().top) }, 1000,function(){
-		 	animateButton(3);
+			animateButton(3);
 		});
 	});
 }
@@ -992,7 +988,7 @@ function attachLegacyEvents() {
 function loadPeriphery2() {
 
 	$("#peripheryContent").css({'width': '100%', 'height': '100%'});
-    $(".periphery_top").css({'background': 'none'});
+	$(".periphery_top").css({'background': 'none'});
 	periphery_sizer();
 
 	lazyYtop = $("#periphery_top").height();
@@ -1006,7 +1002,7 @@ function loadPeriphery2() {
 	// h = $("#container").height();
 
 	p_currentvideoid = 'target';
-	
+
 	p_enablecontrols();
 
 	//console.log("[ loadPeriphery2 ] mouseYTracking = " + mouseYTracking);
@@ -1021,19 +1017,19 @@ function attachPeripheryEvents() {
 		//console.log("[Attach Periphery Events: p_playElement ] p_playButton");
 		p_playButton();
 		if( !document.getElementById("target").paused ){
-			p_toggleButtonDisplay();	
+			p_toggleButtonDisplay();
 		}
 
 	}).on('mouseover', function (){
 		if(document.getElementById("target").paused){
 			$("#p_playElement").css({'background':'url(../art/periphery/playWhite.png)'})
-		} else {				
+		} else {
 			$("#p_playElement").css({'background':'url(../art/periphery/pauseWhite.png)'})
 		}
 	}).on('mouseout', function (){
 		if(document.getElementById("target").paused){
 			$("#p_playElement").css({'background':'url(../art/periphery/playRed.png)'})
-		} else {				
+		} else {
 			$("#p_playElement").css({'background':'url(../art/periphery/pauseRed.png)'})
 		}
 	});
@@ -1048,30 +1044,30 @@ function attachPeripheryEvents() {
 		p_restartVids();
 	});
 
-  	$("#cradle_pbutton").on('click', function() {
-  		//console.log("[ attach Periphery Events ] cradle_pbutton - p_pauseVids");
-  		p_pauseVids();
+	$("#cradle_pbutton").on('click', function() {
+		//console.log("[ attach Periphery Events ] cradle_pbutton - p_pauseVids");
+		p_pauseVids();
 
-  		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000,function() {
-  			animateButton(0);
-  		});
-  	});
+		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000,function() {
+			animateButton(0);
+		});
+	});
 
-  	$("#legacy_pbutton").on('click', function() {
-  		//console.log("[ attach Periphery Events ] legacy_pbutton - p_pauseVids");
-  		p_pauseVids();
-  		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
-  			animateButton(1);
-  		});
-  	});
+	$("#legacy_pbutton").on('click', function() {
+		//console.log("[ attach Periphery Events ] legacy_pbutton - p_pauseVids");
+		p_pauseVids();
+		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
+			animateButton(1);
+		});
+	});
 
-  	$("#migrants_pbutton").on('click', function() {
-  		//console.log("[ attach Periphery Events ] migrants_pbutton - p_pauseVids");
-  		p_pauseVids();
-  		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
-  			animateButton(2);
-  		});
-  	});
+	$("#migrants_pbutton").on('click', function() {
+		//console.log("[ attach Periphery Events ] migrants_pbutton - p_pauseVids");
+		p_pauseVids();
+		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
+			animateButton(2);
+		});
+	});
 }
 
 function fadeTitleNode(index, opacity) {
@@ -1138,7 +1134,7 @@ function audiostop () {
 
 	clearInterval(vIvl);
 	vIvl = setInterval(fadeOutAmbientAudio,100);
-	audioactive = false;	
+	audioactive = false;
 }
 
 var fadeInAmbientAudio = function () {
@@ -1154,11 +1150,11 @@ var fadeInAmbientAudio = function () {
 
 var fadeOutAmbientAudio = function () {
 
-	// internal function to fade outaudio 
+	// internal function to fade outaudio
 	if(_currentaudiovolume>=0){
-		document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;	
+		document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;
 	}
-	
+
 	_currentaudiovolume -= 1;
 	// console.log("Fade Vol down " + _currentaudiovolume);
 	if(_currentaudiovolume == 0){
@@ -1167,7 +1163,7 @@ var fadeOutAmbientAudio = function () {
 	}
 }
 
-// 
+//
 
 
 
