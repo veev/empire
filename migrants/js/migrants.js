@@ -9,7 +9,6 @@ var m_currentVolume = 0;
 var m_intervalID = 0;
 var amount = 0;
 var insructIvl;
-// var m_enoughwithinstructions = false;
 var prevVenID = -1;
 var timecodeArray = [];
 var testTimecode = [];
@@ -36,21 +35,9 @@ var shouldShowVideo = false;
 var mTrackerArray = [];
 var downloadMigrants = false;
 var returnMigrants = false;
-//var ratio;
 var fakeProgress = 30;
 var originCrossed = false;
 var previousPos = 0;
-
-//DEBUG
-// var mTracker = {};
-// mTracker.isActive = true;
-// mTracker.startPos = 0;
-// mTracker.endPos = getMigrantsVideoCurrentPos();
-// mTracker.isCrossOriginArc = false;
-// mTracker.arcSegment = null;
-// mTrackerArray.push(mTracker);
-
-// var offsetOn =   true;
 
 /*
 Copy the list of which segments of the video have been viewed and save it to localStorage
@@ -512,12 +499,8 @@ function migrants_sizer() {
 	tempHolderWidth = Math.ceil(tempHolderWidth);
 
 	$("#holder").css({"width" : tempHolderWidth});
-
 	$("#m_download").css({"left": ($("#m_outerinner").width()*0.465) , "top" : (h/2) - 44 });
-
 	$("#migrantsmore").css({"top": buffer, "left": centering });
-
-	console.log("migrants_sizer");
 }
 
 function m_vennTracking() {
@@ -661,8 +644,6 @@ function m_jsonCall() {
 		dataType: "json",
 		async: false
 	}).responseText);
-
-	//console.log(data);
 	return data;
 }
 
@@ -674,7 +655,6 @@ function migrants_openinstructions () {
 	if (!audioactive) {
 		audioready();
 	}
-
 
 	if(m_vidLoaded){
 		fadeInMigrantsVideo();
