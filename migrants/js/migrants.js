@@ -25,7 +25,7 @@ var time_arc;
 var time_progress_arc = null;
 var test_arcseg;
 var instructionsOff = false;
-var progrssCircle; 
+var progrssCircle;
 var initPathPos = 0;
 var initPathNewPos = 0;
 var vennMap;
@@ -38,6 +38,8 @@ var returnMigrants = false;
 var fakeProgress = 30;
 var originCrossed = false;
 var previousPos = 0;
+var remoteClock;
+var migrantsVideo;
 
 /*
 Copy the list of which segments of the video have been viewed and save it to localStorage
@@ -102,7 +104,7 @@ function progressArcInitPos(){
 	var initDur = m_getCurrentTime();
 	height = $("#migrants_top").height();
 	if(initDur > 0){
-		initPos = ( initDur / document.getElementById("migrants_video").duration);
+		initPos = ( initDur / migrantsVideo.duration);
 		//map progress to 360 degrees
 		initPathNewPos = initPos*360;
 		initPos *= 100;
@@ -188,6 +190,12 @@ function m_initPaths() {
 Init function to get dims and draw paths
 */
 function m_init(){
+
+	remoteClock = new RemoteClock(location.protocol + '//' + location.hostname + ':8080', function () {
+		if (migrantsVideo.duration) {
+			migrantsVideo.currentTime = m_getCurrentTime();
+		}
+	});
 
 	m_getDimensions();
 	m_initPaths();
@@ -355,7 +363,7 @@ function m_circleScrubber() {
 					}
 				}
 				else {
-	
+
 					mTrackerArray[i].arcSegment.attr({
 					"stroke": "#ff5a00",
 					"stroke-width": 2,
@@ -446,7 +454,7 @@ function getMigrantsVideoCurrentPos(){
 	var initDur = m_getCurrentTime();
 	height = $("#migrants_top").height();
 
-	ration = ( initDur / document.getElementById("migrants_video").duration);
+	ration = ( initDur / migrantsVideo.duration);
 	ration *= 360;
 	return ration;
 }
@@ -604,12 +612,12 @@ var m_vennMapOff = function() {
 
 function m_audioToggle() {
 	if(migrantsActive) {
-		console.log("[ AudioToggle ] Audio Volume is: "+ document.getElementById("migrants_video").volume);
-		if(document.getElementById("migrants_video").volume > 0){
-			document.getElementById("migrants_video").volume = 0;
+		console.log("[ AudioToggle ] Audio Volume is: "+ migrantsVideo.volume);
+		if(migrantsVideo.volume > 0){
+			migrantsVideo.volume = 0;
 		}
 		else{
-			document.getElementById("migrants_video").volume = 0.25;
+			migrantsVideo.volume = 0.25;
 		}
 	} else {
 		//console.log("[ Migrants: m_audioToggle ] migrantsActive ? : " + migrantsActive);
@@ -638,7 +646,7 @@ function loadTimecodeData(data){
 
 function m_jsonCall() {
 	console.log(m_url);
-	m_url = "/timecode.json"
+	m_url = "/timecode.json";
 	var data = $.parseJSON($.ajax({
 		url:  m_url,
 		dataType: "json",
@@ -683,7 +691,7 @@ var migrants_closeinstructions = function () {
 		audiostop();
 	}
 
-	document.getElementById("migrants_video").volume = 0;
+	migrantsVideo.volume = 0;
 
 	$("#m_instructions").fadeOut(2000);
 
@@ -701,7 +709,7 @@ var migrants_closeinstructions = function () {
 		instructionsOff = true;
 
 	});
-}
+};
 
 function migrants_audiostop () {
 	clearInterval(m_intervalID);
@@ -717,7 +725,7 @@ var fadeInMigrantsAudio = function () {
 	if(m_currentVolume > m_maxVolume){
 		clearInterval(m_intervalID);
 	}
-}
+};
 
 var fadeOutMigrantsAudio = function () {
 
@@ -728,7 +736,7 @@ var fadeOutMigrantsAudio = function () {
 		clearInterval(m_intervalID);
 		document.getElementById('ambientaudio').pause();
 	}
-}
+};
 
 function m_trackoff() {
 	$("#m_instructions").unbind('click');
@@ -737,26 +745,31 @@ function m_trackoff() {
 	$("#m_container").unbind('mouseout');
 }
 
+function m_videoPlaying() {
+	var targetTime = m_getCurrentTime();
+	if (Math.abs(migrantsVideo.currentTime - targetTime) > 0.3) {
+		migrantsVideo.currentTime = m_getCurrentTime();
+	}
+}
+
 function addMigrantsListeners() {
 	//console.log(timecodeArray);
-	document.getElementById("migrants_video").addEventListener("canplay", m_loadVideo, true);
-	document.getElementById("migrants_video").addEventListener("ended", m_endVids, true);
-	document.getElementById("migrants_video").addEventListener("seeked", m_hasLooped, true);
-	document.getElementById("migrants_video").addEventListener("timeupdate", m_scrubberUpdater, true);
-	document.getElementById("migrants_video").addEventListener("play", m_playVidsCallback, true);
-	document.getElementById("migrants_video").addEventListener("pause", m_pauseVidsCallback, true);
-	document.getElementById("migrants_video").addEventListener("loadedmetadata", function() {
-	}, false);
+	migrantsVideo.addEventListener("canplay", m_loadVideo, true);
+	migrantsVideo.addEventListener("ended", m_endVids, true);
+	migrantsVideo.addEventListener("seeked", m_hasLooped, true);
+	migrantsVideo.addEventListener("timeupdate", m_scrubberUpdater, true);
+	migrantsVideo.addEventListener("play", m_playVidsCallback, true);
+	migrantsVideo.addEventListener("pause", m_pauseVidsCallback, true);
+
+	migrantsVideo.addEventListener("playing", m_videoPlaying, false);
 }
 
 function removeMigrantsListeners() {
-	document.getElementById("migrants_video").removeEventListener("canplay", m_loadVideo, true);
-	document.getElementById("migrants_video").removeEventListener("ended", m_endVids, true);
-	document.getElementById("migrants_video").removeEventListener("seeked", m_hasLooped, true);
-	document.getElementById("migrants_video").removeEventListener("play", m_playVidsCallback, true);
-	document.getElementById("migrants_video").removeEventListener("pause", m_pauseVidsCallback, true);
-	document.getElementById("migrants_video").removeEventListener("loadedmetadata", function() {
-	}, false);
+	migrantsVideo.removeEventListener("canplay", m_loadVideo, true);
+	migrantsVideo.removeEventListener("ended", m_endVids, true);
+	migrantsVideo.removeEventListener("seeked", m_hasLooped, true);
+	migrantsVideo.removeEventListener("play", m_playVidsCallback, true);
+	migrantsVideo.removeEventListener("pause", m_pauseVidsCallback, true);
 }
 
 function m_hasLooped() {
@@ -768,9 +781,9 @@ function m_loadVideo() {
 	m_vidLoaded = true;
 	progressArcInitPos();
 
-	if(migrantsActive && document.getElementById("migrants_video").paused) {
+	if(migrantsActive && migrantsVideo.paused) {
 		m_playButton();
-		document.getElementById("migrants_video").volume = 0;
+		migrantsVideo.volume = 0;
 	} else {
 		//console.log("[m_loadVideo] migrants page not active but video loaded");
 	}
@@ -781,8 +794,8 @@ function m_loadVideo() {
 
 function m_playButton() {
 	if(migrantsActive) {
-		// console.log("[ Play Button ] Is Video paused ? "+ document.getElementById("migrants_video").paused);
-		if(document.getElementById("migrants_video").paused){
+		// console.log("[ Play Button ] Is Video paused ? "+ migrantsVideo.paused);
+		if(migrantsVideo.paused){
 			m_playVids();
 		}
 		else{
@@ -798,8 +811,8 @@ function m_playVids() {
 	if(m_vidLoaded){
 		//console.log("[ Migrants : playVids ] videoTrackCurrentPosition = " + videoTrackCurrentPosition);
 			var cTime = m_getCurrentTime();
-			document.getElementById("migrants_video").currentTime =cTime;
-			document.getElementById("migrants_video").play();
+			migrantsVideo.currentTime =cTime;
+			migrantsVideo.play();
 
 			m_circleScrubber();
 	} else{
@@ -809,28 +822,36 @@ function m_playVids() {
 }
 
 function m_getCurrentTime(){
-	var d = new Date();
-	var currentTimeOfDay = d.getHours()*60*60 + (d.getMinutes())*60 + d.getSeconds();
+	var d,
+		currentTimeOfDay,
+		currentTimeForVideo;
 
-	var currentTimeForVideo = currentTimeOfDay % document.getElementById("migrants_video").duration;
+	if (remoteClock && remoteClock.accuracy() <= 500) {
+		d = new Date(remoteClock.time());
+	} else {
+		d = new Date();
+	}
+
+	currentTimeOfDay = d.getHours()*60*60 + (d.getMinutes())*60 + d.getSeconds();
+	currentTimeForVideo = currentTimeOfDay % migrantsVideo.duration;
 	return currentTimeForVideo;
 
 }
 
 function m_pauseVids(){
 
-	currentTime =  document.getElementById("migrants_video").currentTime ;
-	m_videoTrackCurrentPosition  = document.getElementById("migrants_video").currentTime;
+	currentTime =  migrantsVideo.currentTime ;
+	m_videoTrackCurrentPosition  = migrantsVideo.currentTime;
 	//console.log("[ Migrants : pauseVids ] m_videoTrackCurrentPosition = " + m_videoTrackCurrentPosition);
-	document.getElementById("migrants_video").pause();
+	migrantsVideo.pause();
 }
 
 function m_playVidsCallback() {
-	// console.log("[ Migrants ] Video playing ? " + document.getElementById("migrants_video").paused);
+	// console.log("[ Migrants ] Video playing ? " + migrantsVideo.paused);
 }
 
 function m_pauseVidsCallback() {
-	// console.log("[ Migrants ] Video paused ? " + document.getElementById("migrants_video").paused);
+	// console.log("[ Migrants ] Video paused ? " + migrantsVideo.paused);
 }
 
 function m_endVids() {
@@ -864,9 +885,9 @@ function returnToMigrants() {
 //Called every frame
 var m_scrubberUpdater = function () {
 
-	var dur = Math.floor(document.getElementById("migrants_video").currentTime);
+	var dur = Math.floor(migrantsVideo.currentTime);
 	if(dur > 0){
-		var ratio = (document.getElementById("migrants_video").duration / dur);
+		var ratio = (migrantsVideo.duration / dur);
 	}
 	if(migrantsshowprogress){
 		if(mTrackerArray.length === 0) {
@@ -885,7 +906,7 @@ var m_scrubberUpdater = function () {
 		m_circleScrubber();
 	}
 
-	m_curtime = document.getElementById("migrants_video").currentTime;
+	m_curtime = migrantsVideo.currentTime;
 
 	if(instructionsOff) {
 		for (var i = 0; i < timecodeArray.length; i++) {
@@ -901,7 +922,7 @@ var m_scrubberUpdater = function () {
 
 
 					for(var j=0; j<actFillArray.length; j++){
-		
+
 						if(actFillArray[j].vennID === timecodeArray[i].Venn){
 							//Turn on act Fill
 							actFillArray[j].actFill.animate({opacity: '1.0'}, 800);
@@ -1050,14 +1071,14 @@ function m_arrayActFills() {
 		centerW = width/4 * 1;
 		centerH = height/4 * 1;
 		vennMap.transform("T " + centerW + " " + centerH + "S" + mapScalar + ","+ mapScalar +"," + centerW + "," + centerH);
-	
+
 	} else if (height < 710 && holderRatio < 0.9) {
-		
+
 		mapCenter = map(holderRatio, 0.6, 0.9, 1.3, 1.0);
 		centerW = width/4 * mapCenter;
 		centerH = height/4 * 1;
 		vennMap.transform("T " + centerW + " " + centerH + "S" + mapScalar + ","+ mapScalar +"," + centerW + "," + centerH);
-	
+
 	} else if (height >= 710 && holderRatio < 0.9) {
 
 		mapCenter = map(holderRatio, 0.6, 0.9, 1.4, 1.0);
@@ -1111,6 +1132,6 @@ function migrants_blockMenu() {
   blockContextMenu = function (evt) {
 	evt.preventDefault();
   };
-  document.getElementById("migrants_video").addEventListener('contextmenu', blockContextMenu);
+  migrantsVideo.addEventListener('contextmenu', blockContextMenu);
   //console.log("context menu block");
 }

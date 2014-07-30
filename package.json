@@ -1,0 +1,20 @@
+{
+  "name": "empire-time-server",
+  "version": "0.0.1",
+  "description": "Empire Time Server",
+  "repository": "git@github.com:veev/empire.git",
+  "scripts": {
+    "start": "node ./time-server.js",
+    "predeploy": "echo This will be run before deploying the app",
+    "postdeploy": "echo This will be run after deploying the app"
+  },
+  "main": "./server",
+  "keywords": [],
+  "dependencies": {
+    "socket.io": "^1.0.6"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.10"
+  }
+}
