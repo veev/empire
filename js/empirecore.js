@@ -91,6 +91,7 @@ $(document).ready(function () {
 
 	drawer();
 
+	migrantsVideo = document.getElementById("migrants_video");
 	//add Migrants JSON file
 	var data = m_jsonCall();
 	timecodeArray = loadTimecodeData(data);
