@@ -1,280 +1,248 @@
-var legacyLoaded = false;
-var legacyActive = false;
-var _adjuster = 140;
-var openTimeIvl;
-var india_vid_loaded, indo_vid_loaded, srilanka_vid_loaded, southafrica_vid_loaded, corners_vid_loaded;
-var l_videoTrackCurrentPosition;
+(function (window) {
+	'use strict';
 
+	var legacyLoaded = false;
+	var legacyActive = false;
+	var _adjuster = 140;
+	var openTimeIvl;
+	var allVideosLoaded = false;
+	var l_videoTrackCurrentPosition;
 
-function legacy_sizer() {
+	var active = false;
+	var introDismissed = false;
+	var firstTime = true;
 
-	var h = $("#legacy_top").height();
-	var w = $("#legacy_top").width();
-	//console.log("w: "+w+ ", h: " + h);
-	var padtop = h * 0.11; // top of the main title
-	//console.log("padtop: " + padtop);
-	var matop = 40; // top of the matrix
-	//var padtop = 84; // top of the main title
-	var legbottom = 70; //offset of the bottom play button on the open screen
-	var body = $('html body');
-	var buffer = h - legbottom;
-	//console.log("buffer = "+ buffer);
-	var centering = (w/2) - 70;
-	//console.log("centering = "+ centering);
-	if($(".legacy_top:first").height() < 780){ // if this a wee screen
-		padtop = 20;
-		matop = 20;
-		legbottom = 20;
-	}
-	
-	$(".legacy_bottom").css("height",$(".legacy_top:first").height());
-	
-	$("#legacy_title").css({ 'padding-top': padtop });
+	var videos = {
+		//corners: null,
+		indonesia: null,
+		india: null,
+		srilanka: null,
+		southafrica: null
+	};
 
-	$("#mainarea").css({ "margin-top": matop });	
+	/*
+	important elements that we may need to refer to again
+	*/
+	var zContainer,
+		legacyContent;
 
-	$(".vertical_line").css({ 'height' : h });
-	$("#legacy_wline1").css({ 'height': h/2 });
-	$("#legacy_wline2").css({ 'height': h/2 });
-	
-	var w = ($("#legacy_main").width() - _adjuster);
-	var h = ($("#legacy_main").width() - _adjuster) * .31
-	var vtop = (($("#legacy_main").height() - h) / 2) - 50;
+	function sizer() {
+		var h, w;
 
-	$("#ctn0").css({'top': (vtop - 75), 'left': ((w / 2) + 20) });
-	$("#ctn1").css({'top': ((vtop + (h / 2)) - 50), 'right': 30 });
-	$("#ctn2").css({'top': (vtop + h + 75), 'left': ((w / 2) + 20) });
-	$("#ctn3").css({'top': ((vtop + (h / 2)) - 70), 'left': 12 });
-
-	// $("#legplay").css({ "bottom": legbottom, "margin-left": ($("#legacy_main").width() / 2) - 50 }).fadeIn(4000);
-	$("#legmore").css({ "margin-left": ($("#legacy_main").width() / 2) - 90 });
-
-	$("#legacymore").css({ "top" : buffer, "left": centering }).fadeIn(4000).on('click', function() {
-		body.animate({scrollTop: ($('#legacy_main').offset().top) }, 1000);
-		// console.log("legacy_openscreen() in legacymore");
-		console.log("[Legacy: legacymore listener] if not legacyLoaded, legacy openscreen");
-		legacy_openscreen();
-	});
-}
-
-function legacy_openscreen() {
-	$("#l_instructions").fadeIn(2000);
-
-	//openTimeIvl = = setTimeout("legacy_closescreen()",10000);
-
-	$("#l_instructions").on('click', function () { 
-		//console.log("[ Legacy : legacy_openscreen ] + Calling playbutton in instructions event handler")
-		legacy_closescreen(); 
-		//console.log("[ Legacy : legacy_openscreen ] legacy_closescreen on instructions click");
-	});
-}
-
-function legacy_closescreen() {
-	$("#l_instructions").fadeOut(1000, function() {
-		//console.log("[Periphery: periphery_closescreen ] p_playButton");
-		
-	leg_playVideos();
-
-	});
-}
-
-function leg_playVideos() {
-	if (legacyActive) {
-		if(indo_vid_loaded === true && india_vid_loaded === true && southafrica_vid_loaded === true && srilanka_vid_loaded === true ) {
-			console.log("[leg_playVideos] Legacy videos loaded");
-			document.getElementById("indonesia_leg").play();
-			document.getElementById("india_leg").play();
-			document.getElementById("southafrica_leg").play();
-			document.getElementById("srilanka_leg").play();
-			document.getElementById("corners").play();
-		} else {
-			console.log("[leg_playVideos] Legacy videos have not loaded");
+		if (!active) {
+			return;
 		}
-	} else {
-		console.log("[leg_playVideos] Legacy is not active");
+
+		h = $("#legacy_top").height();
+		w = $("#legacy_top").width();
+		//console.log("w: "+w+ ", h: " + h);
+		var padtop = h * 0.11; // top of the main title
+		//console.log("padtop: " + padtop);
+		var matop = 40; // top of the matrix
+		//var padtop = 84; // top of the main title
+		var legbottom = 70; //offset of the bottom play button on the open screen
+		var body = $('html body');
+		var buffer = h - legbottom;
+		//console.log("buffer = "+ buffer);
+		var centering = (w/2) - 70;
+		//console.log("centering = "+ centering);
+		if($(".legacy_top:first").height() < 780){ // if this a wee screen
+			padtop = 20;
+			matop = 20;
+			legbottom = 20;
+		}
+
+		$(".legacy_bottom").css("height",$(".legacy_top:first").height());
+
+		$("#legacy_title").css({ 'padding-top': padtop });
+
+		$("#mainarea").css({ "margin-top": matop });
+
+		$(".vertical_line").css({ 'height' : h });
+		$("#legacy_wline1").css({ 'height': h/2 });
+		$("#legacy_wline2").css({ 'height': h/2 });
+
+		w = ($("#legacy_main").width() - _adjuster);
+		h = ($("#legacy_main").width() - _adjuster) * 0.31;
+		var vtop = (($("#legacy_main").height() - h) / 2) - 50;
+
+		/*
+		todo: this might be from the old version, so see if we even need it
+		$("#ctn0").css({'top': (vtop - 75), 'left': ((w / 2) + 20) });
+		$("#ctn1").css({'top': ((vtop + (h / 2)) - 50), 'right': 30 });
+		$("#ctn2").css({'top': (vtop + h + 75), 'left': ((w / 2) + 20) });
+		$("#ctn3").css({'top': ((vtop + (h / 2)) - 70), 'left': 12 });
+		*/
+
+		// $("#legplay").css({ "bottom": legbottom, "margin-left": ($("#legacy_main").width() / 2) - 50 }).fadeIn(4000);
+		$("#legmore").css({ "margin-left": ($("#legacy_main").width() / 2) - 90 });
+
+		$("#legacymore").css({ "top" : buffer, "left": centering }).fadeIn(4000).on('click', function() {
+			body.animate({scrollTop: ($('#legacy_main').offset().top) }, 1000);
+			// console.log("openScreen() in legacymore");
+			console.log("[Legacy: legacymore listener] if not legacyLoaded, legacy openscreen");
+			openScreen();
+		});
 	}
-}
 
-function leg_pauseVids() {
-	l_videoTrackCurrentPosition  = document.getElementById("srilanka_leg").currentTime;
-	console.log("[leg_pauseVids] Legacy videos paused");
-	document.getElementById("indonesia_leg").pause();
-	document.getElementById("india_leg").pause();
-	document.getElementById("southafrica_leg").pause();
-	document.getElementById("srilanka_leg").pause();
-	document.getElementById("corners").pause();
-}
+	function playVideos() {
+		var id;
 
-function leg_endVids() {
+		if (!allVideosLoaded) {
+			for (id in videos) {
+				if (videos.hasOwnProperty(id)) {
+					if (!videos[id] || videos[id].readyState < 2) {
+						return;
+					}
+				}
+			}
+			allVideosLoaded = true;
+		}
 
-}
+		if (active && introDismissed) {
+			for (id in videos) {
+				if (videos.hasOwnProperty(id) && videos[id]) {
+					videos[id].play();
+				}
+			}
+		}
+	}
 
-function leg_scrubberUpdater() {
+	function selectVideo(selectedId) {
+		var video, id, container;
+		for (id in videos) {
+			if (videos.hasOwnProperty(id)) {
+				video = videos[id];
+				if (video) {
+					video.volume = (!selectedId || selectedId === id) ? 1 : 0;
+				}
+			}
+		}
 
-}
+		container = $('legacy-container-' + selectedId);
+		container.zoomTo({targetsize:0.9, duration:600, root: zContainer });
+		container.zoomTarget();
+	}
 
-function loadIndonesiaVid() {
-	indo_vid_loaded = true;
-	console.log("[ Legacy : Canplay Event ] Indonesia Video = " + indo_vid_loaded);
-}
+	function attachLegacyEvents() {
+		/*
+		Main page navigation buttons for getting out of Legacy
+		*/
+		$("#cradle_lbutton").on('click', function() {
+			$('html body').animate({ scrollTop: ($('#legacy_top').offset().top) }, 1000, function() {
+				animateButton(0);
+			});
+		});
 
-function loadIndiaVid() {
-	india_vid_loaded = true;
-	console.log("[ Legacy : Canplay Event ] India Video = " + india_vid_loaded);
-}
+		$("#migrants_lbutton").on('click', function() {
+			$('html body').animate({ scrollTop: ($('#legacy_top').offset().top) }, 1000, function() {
+				animateButton(2);
+			});
+		});
 
-function loadSouthAfricaVid() {
-	southafrica_vid_loaded = true;
-	console.log("[ Legacy : Canplay Event ] South Africa Video = " + southafrica_vid_loaded);
-}
+		$("#periphery_lbutton").on('click', function() {
+			$('html body').animate({ scrollTop: ($('#legacy_top').offset().top) }, 1000,function(){
+			 	animateButton(3);
+			});
+		});
 
-function loadSriLankaVid() {
-	srilanka_vid_loaded = true;
-	console.log("[ Legacy : Canplay Event ] Sri Lanka Video = " + srilanka_vid_loaded);	
-}
+		/*
+		Legacy buttons/controls, Tier #2
+		*/
 
-function loadCornersVid() {
-	corners_vid_loaded = true;
-	console.log("[ Legacy : Canplay Event ] Corners Video = " + corners_vid_loaded);
-}
+		var cornerOrder = {
+			indonesia: 1,
+			srilanka: 2,
+			india: 3,
+			southafrica: 4
+		};
 
-function indoPlayCallback() {
-	console.log("[ Legacy ] Indonesia Video paused ? " + document.getElementById("indonesia_leg").paused);
-}
+		zContainer.click(function(){
+			console.log("in zoom container");
+			selectVideo(null);
+		});
 
-function indiaPlayCallback() {
-	console.log("[ Legacy ] India Video paused ? " + document.getElementById("india_leg").paused);
-}
 
-function southafricaPlayCallback() {
-	console.log("[ Legacy ] South Africa Video paused ? " + document.getElementById("southafrica_leg").paused);
-}
+		Object.keys(videos).forEach(function (id) {
+			function selectMe(evt){
+				selectVideo(id);
+				evt.stopPropagation();
+			}
 
-function srilankaPlayCallback() {
-	console.log("[ Legacy ] Sri Lanka Video paused ? " + document.getElementById("srilanka_leg").paused);
-}
+			var corner = '#corner' + cornerOrder[id];
+			$(corner).click(selectMe);
+			$('legacy-container-' + id).click(selectMe);
+		});
+	}
 
-function cornersPlayCallback() {
-	console.log("[ Legacy ] Corners Video paused ? " + document.getElementById("corners").paused);
-}
+	function initVideos() {
+		Object.keys(videos).forEach(function (id) {
+			var video = document.getElementById(id + '_leg');
+			video.addEventListener('canplay', function () {
+				console.log('[ Legacy : Canplay Event ] ' + id + ' Video');
+				playVideos();
+			});
+			video.load();
+			videos[id] = video;
+		});
+	}
 
-function addIndonesiaListeners() {
-	var indonesia_video = document.getElementById("indonesia_leg");
-	indonesia_video.addEventListener("canplay", loadIndonesiaVid, true);
-	indonesia_video.addEventListener("ended", leg_endVids, true);
-	indonesia_video.addEventListener("timeupdate", leg_scrubberUpdater, true);
-	indonesia_video.addEventListener("play", indoPlayCallback, true);
-}
+	function init() {
+		legacyContent = $("#legacyContent");
+		zContainer = $("#z_container");
 
-function addIndiaListeners() {
-	var india_video = document.getElementById("india_leg");
-	india_video.addEventListener("canplay", loadIndiaVid, true);
-	india_video.addEventListener("ended", leg_endVids, true);
-	india_video.addEventListener("timeupdate", leg_scrubberUpdater, true);
-	india_video.addEventListener("play", indiaPlayCallback, true);
-}
+		initVideos();
+		attachLegacyEvents();
+	}
 
-function addSouthAfricaListeners() {
-	var southafrica_video = document.getElementById("southafrica_leg");
-	southafrica_video.addEventListener("canplay", loadSouthAfricaVid, true);
-	southafrica_video.addEventListener("ended", leg_endVids, true);
-	southafrica_video.addEventListener("timeupdate", leg_scrubberUpdater, true);
-	southafrica_video.addEventListener("play", southafricaPlayCallback, true);
-}
+	function openScreen() {
+		$("#l_instructions").fadeIn(2000);
+		$("#l_instructions").on('click', closeScreen);
+	}
 
-function addSriLankaListeners() {
-	var srilanka_video = document.getElementById("srilanka_leg");
-	srilanka_video.addEventListener("canplay", loadSriLankaVid, true);
-	srilanka_video.addEventListener("ended", leg_endVids, true);
-	srilanka_video.addEventListener("timeupdate", leg_scrubberUpdater, true);
-	srilanka_video.addEventListener("play", srilankaPlayCallback, true);
-}
+	function closeScreen() {
+		$("#l_instructions").fadeOut(1000, function() {
+			introDismissed = true;
+			playVideos();
+		});
+	}
 
-function addCornersListeners() {
-	var corners_video = document.getElementById("corners");
-	corners_video.addEventListener("canplay", loadCornersVid, true);
-	corners_video.addEventListener("ended", leg_endVids, true);
-	corners_video.addEventListener("timeupdate", leg_scrubberUpdater, true);
-	corners_video.addEventListener("play", cornersPlayCallback, true);
-}
+	var legacy = {
+		sizer: sizer,
+		init: init,
+		active: function () {
+			return active;
+		},
+		activate: function () {
+			if (firstTime) {
+				legacyContent.css({ 'width' : '100%', 'height' : '100%' });
+				$(".legacy_top").css({ 'background' : 'none' });
+			}
+			firstTime = false;
+			if (!active) {
+				legacyContent.fadeIn(2000);
+			}
+			active = true;
+			playVideos();
+			sizer();
+		},
+		deactivate: function () {
+			var id;
 
-function addLegacyListeners() {
-	addIndonesiaListeners();
-	addIndiaListeners();
-	addSouthAfricaListeners();
-	addSriLankaListeners();
-	addCornersListeners();
-}
+			//pause all videos
+			for (id in videos) {
+				if (videos.hasOwnProperty(id) && videos[id]) {
+					videos[id].pause();
+				}
+			}
 
-function removeLegacyListeners() {
- // do we need?
-}
+			if (active) {
+				legacyContent.fadeOut("fast");
+			}
 
-function allVolumeUp() {
-	document.getElementById("india_leg").volume = 1;
-	document.getElementById("srilanka_leg").volume = 1;
-	document.getElementById("southafrica_leg").volume = 1;
-	document.getElementById("indonesia_leg").volume = 1;
-	console.log("all volume up");
-}
+			active = false;
+		}
+	};
 
-var indiaVolumeUp = function() {
-
-	document.getElementById("india_leg").volume = 1;
-	document.getElementById("srilanka_leg").volume = 0;
-	document.getElementById("southafrica_leg").volume = 0;
-	document.getElementById("indonesia_leg").volume = 0;
-	console.log("india volume up");
-}
-
-var viewIndia = function(evt) {
-	evt.stopPropagation();
-	evt.preventDefault();
-	indiaVolumeUp();
-	$(this).zoomTarget();
-}
-
-var srilankaVolumeUp = function() {
-	document.getElementById("india_leg").volume = 0;
-	document.getElementById("srilanka_leg").volume = 1;
-	document.getElementById("southafrica_leg").volume = 0;
-	document.getElementById("indonesia_leg").volume = 0;
-	console.log("sri lanka volume up");
-}
-
-var viewSriLanka = function(evt) {
-	evt.stopPropagation();
-	evt.preventDefault();
-	srilankaVolumeUp();
-	$(this).zoomTarget();
-}
-
-var southafricaVolumeUp = function() {
-	document.getElementById("india_leg").volume = 0;
-	document.getElementById("srilanka_leg").volume = 0;
-	document.getElementById("southafrica_leg").volume = 1;
-	document.getElementById("indonesia_leg").volume = 0;
-	console.log("south africa volume up");
-}
-
-var viewSouthAfrica = function(evt) {
-	evt.stopPropagation();
-	evt.preventDefault();
-	southafricaVolumeUp();
-	$(this).zoomTarget();
-}
-
-var indonesiaVolumeUp = function() {
-	document.getElementById("india_leg").volume = 0;
-	document.getElementById("srilanka_leg").volume = 0;
-	document.getElementById("southafrica_leg").volume = 0;
-	document.getElementById("indonesia_leg").volume = 1;
-	console.log("indonesia volume up");
-}
-
-var viewIndonesia = function(evt) {
-	evt.stopPropagation();
-	evt.preventDefault();
-	indonesiaVolumeUp();
-	$(this).zoomTarget();
-}
+	window.legacy = legacy;
+}(this));
