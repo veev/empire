@@ -1,23 +1,28 @@
 var server,
 	app,
 	http = require('http'),
-	socket;
+	SockJS = require('sockjs'),
+	socket,
+	server;
 
-socket = require('socket.io')(8080);
+//socket = require('socket.io')(5001);
+socket = SockJS.createServer();
 
-socket.on('connection', function(client){
+socket.on('connection', function(client) {
 	'use strict';
 
 	function max(a, b) {
 		return a !== undefined && a > b ? a : b;
 	}
 
-	function onMessage(message){
+	function onMessage(data){
 		var serverReceived;
 
-		if (!message) {
+		if (!data) {
 			return;
 		}
+
+		var message = JSON.parse(data);
 
 		console.log(client.id + ': ' + (typeof message) + ': ' + JSON.stringify(message));
 
@@ -26,10 +31,10 @@ socket.on('connection', function(client){
 		if (message.timing !== undefined) {
 			client.maxDiff = max(client.maxDiff, message.timing - serverReceived);
 
-			client.json.send({
+			client.write(JSON.stringify({
 				maxDiff: client.maxDiff,
 				timing: Date.now()
-			});
+			}));
 
 			if (client.maxDiff !== undefined) {
 				if (message.minDiff !== undefined) {
@@ -47,7 +52,7 @@ socket.on('connection', function(client){
 		return;
 	}
 	if (client.remoteAddress) {
-		console.log('client connected. ' + client.id + ' (' + client.connection.remoteAddress + ':' + client.connection.remotePort + ')');
+		console.log('client connected. ' + client.id + ' (' + client.remoteAddress + ':' + client.remotePort + ')');
 	} else {
 		console.log('client connected. ' + client.id);
 	}
@@ -55,15 +60,20 @@ socket.on('connection', function(client){
 	//console.log('properties', JSON.stringify(properties, null, 4));
 	//client.json.send(properties);
 
-	client.on('message', onMessage);
+	//client.on('message', onMessage);
+	client.on('data', onMessage);
 
+	/*
 	client.on('disconnect', function(){
 		//delete clients[client.id];
 		client.removeListener('message', onMessage);
 	});
+	*/
 });
 
-
+var server = http.createServer();
+socket.installHandlers(server, {prefix:'/time-server'});
+server.listen(5001);
 
 /*
 

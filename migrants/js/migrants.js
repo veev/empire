@@ -191,7 +191,7 @@ Init function to get dims and draw paths
 */
 function m_init(){
 
-	remoteClock = new RemoteClock(location.protocol + '//' + location.hostname + ':8080', function () {
+	remoteClock = new RemoteClock('http://digital.pov.org:8080/time-server/', function () {
 		if (migrantsVideo.duration) {
 			migrantsVideo.currentTime = m_getCurrentTime();
 		}

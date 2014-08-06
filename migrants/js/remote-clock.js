@@ -9,14 +9,16 @@
 			accuracy = Infinity,
 			timingDiff = 0;
 
-		function onMessage(message) {
+		function onMessage(evt) {
 			var clientReceived,
-				improved = false,
+				improved = 0,
 				acc;
 
-			if (!message) {
+			if (!evt.data) {
 				return;
 			}
+
+			var message = JSON.parse(evt.data);
 
 			clientReceived = Date.now();
 
@@ -29,7 +31,7 @@
 						timingDiff = minDiff + (maxDiff - minDiff) / 2;
 
 						acc = Math.abs(maxDiff - minDiff);
-						improved = accuracy - acc >= 20;
+						improved = accuracy - acc;
 						accuracy = acc;
 						console.log('remote clock', Date.now() - timingDiff, timingDiff, accuracy);
 						if (acc < 200) {
@@ -42,7 +44,7 @@
 								done = true;
 							}
 						}
-						if ((improved || done) && callback) {
+						if ((improved >= 10 || done) && callback) {
 							callback();
 						}
 					} else {
@@ -53,25 +55,23 @@
 		}
 
 		function requestTiming() {
-			socket.json.send({
+			socket.send(JSON.stringify({
 				action: 'sync',
 				minDiff: minDiff,
 				timing: Date.now()
-			});
+			}));
 			if (!done) {
 				setTimeout(requestTiming, 1000);
 			}
 		}
 
-		if (!window.io) {
-			throw new Error('Unable to initialize RemoteSync. Missing Socket.IO');
+		if (!window.SockJS) {
+			throw new Error('Unable to initialize RemoteSync. Missing SockJS');
 		}
 
-		socket = window.io.connect(server || location.origin);
-		socket.on('message', onMessage);
-		socket.on('connect', function() {
-			requestTiming();
-		});
+		socket = new SockJS(server || location.origin);
+		socket.onmessage = onMessage;
+		socket.onopen = requestTiming;
 
 		this.time = function () {
 			return Date.now() - timingDiff;
