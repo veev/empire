@@ -704,7 +704,7 @@
 		currentVolume -= 1;
 		if(_currentaudiovolume === 0){
 			clearInterval(intervalID);
-			document.getElementById('ambientaudio').pause();
+			ambientAudio.pause();
 		}
 	};
 

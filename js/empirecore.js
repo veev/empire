@@ -4,6 +4,7 @@
 var audioactive = false;
 var audiovolume = 20;
 var _currentaudiovolume = 0;
+var ambientAudio;
 var vIvl = new Number();
 var dontannoysam = false;
 var _ammobile = false;
@@ -67,6 +68,7 @@ $(document).ready(function () {
 	});
 	// setTimeout(10000,fadeLoading);
 	//console.log("Im in ready ");
+	ambientAudio = document.getElementById('ambientaudio');
 	container = $("#container");
 	canvasContainer = $("canvas_container");
 	containerInner = $("#containerinner");
@@ -550,8 +552,8 @@ function audioready() {
 	// audio has loaded, let's do this
 	console.log("ambient audio has loaded and playing");
 	if(!audioactive){
-		document.getElementById('ambientaudio').volume = 0;
-		document.getElementById('ambientaudio').play();
+		ambientAudio.volume = 0;
+		ambientAudio.play();
 		vIvl = setInterval(fadeInAmbientAudio,100);
 		audioactive = true;
 	}
@@ -568,7 +570,7 @@ function audiostop() {
 var fadeInAmbientAudio = function () {
 
 	// internal function to fade in
-	document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;
+	ambientAudio.volume = _currentaudiovolume / 100;
 	_currentaudiovolume += 5;
 	// console.log("Fade Vol up " + _currentaudiovolume);
 	if(_currentaudiovolume > audiovolume){
@@ -580,13 +582,13 @@ var fadeOutAmbientAudio = function () {
 
 	// internal function to fade outaudio
 	if(_currentaudiovolume>=0){
-		document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;
+		ambientAudio.volume = _currentaudiovolume / 100;
 	}
 
 	_currentaudiovolume -= 1;
 	// console.log("Fade Vol down " + _currentaudiovolume);
 	if(_currentaudiovolume == 0){
 		clearInterval(vIvl);
-		document.getElementById('ambientaudio').pause();
+		ambientAudio.pause();
 	}
 }
