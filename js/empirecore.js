@@ -30,11 +30,9 @@ var config = {
 
 var firstTimeLoadMigrants = false;
 var cradleLoaded = false;
-var legacyLoaded = false;
 var migrantsLoaded = false;
 var peripheryLoaded = false;
 var cradleActive = false;
-var legacyActive = false;
 var migrantsActive = false;
 var peripheryActive = false;
 var menu = [];
@@ -52,12 +50,12 @@ $(document).ready(function () {
 
 	var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
     // var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
-    
+
     if (!isChrome) {
     	$('body:first').append('<div id="browserno"><div class="padded">Sorry, this experiment is only currently working in Google Chrome. Other browsers may encounter problems.  We apologize for the inconvenience.</div></div>');
     	$("#browserno").slideDown();
     	// console.log("BROWSER NOT CHROME");
-    } 
+    }
 
 	//load ambient audio
 	if(window.location.href.indexOf("noaudio") != -1) {  //what does this do?
@@ -82,10 +80,10 @@ $(document).ready(function () {
 	w = paper.w;
 	h = paper.h;
 	//console.log('w: '+w+', h: '+h);
-	paper.canvas.setAttribute('preserveAspectRatio', 'none'); 
+	paper.canvas.setAttribute('preserveAspectRatio', 'none');
 
 	buildRipples(total); //creates four ripples
-	
+
 	$("#canvas_container").fadeIn(2000);
 	$("#containerinner").fadeIn(2000);
 
@@ -95,15 +93,15 @@ $(document).ready(function () {
 	//add Migrants JSON file
 	var data = m_jsonCall();
 	timecodeArray = loadTimecodeData(data);
-	
+
+	legacy.init();
+
 	//loadMedia();
 	addCradleListeners();
-	addLegacyListeners();
 	addPeripheryListeners();
 	addMigrantsListeners();
 
 	attachCradleEvents();
-	attachLegacyEvents();
 	attachMigrantsEvents();
 	attachPeripheryEvents();
 	window.addEventListener("hashchange", hashEvent, false);
@@ -123,19 +121,14 @@ $(document).ready(function () {
 			c_vid1.currentTime = 0;
 			c_vid2.currentTime = 0;
 			//console.log("[document ready] home_button : c_pauseVids ? " + cradleActive);
-		}
-		else if (!p_target.paused) {
+		} else if (!p_target.paused) {
 			p_pauseVids();
 			p_target.currentTime = 0;
 			document.getElementById("audio_norm").currentTime = 0;
 			document.getElementById("audio_yeti").currentTime = 0;
 			//console.log("[document ready] home_button : p_pauseVids ? " + peripheryActive);
-		}
-		else if (!document.getElementById("migrants_video").paused) {
+		} else if (!document.getElementById("migrants_video").paused) {
 			m_pauseVids();
-		}
-		else if (!l_sriVid.paused || !l_saVid.paused || !l_indoVid.paused || !l_indiaVid.paused) {
-			leg_pauseVids();
 		}
 		console.log("[ document ready ] home button : animateHome()");
 		animateHome();
@@ -151,13 +144,13 @@ $(document).ready(function () {
 
 			if(cradleActive) {
 				//console.log('[ document on keydown ] : c_playButton');
-				c_playButton();	
+				c_playButton();
 			}
 
 			else if(peripheryActive) {
 				//console.log('[ document on keydown ] : p_playButton');
 				p_playButton();
-				
+
 			}
 
 			else {
@@ -207,18 +200,13 @@ $(document).ready(function () {
 			var c_marginsize = (lazywidth - 960) / 2;
 			c_leftpoint = c_marginsize + 180;
 			c_rightpoint = (lazywidth - c_marginsize) - 180;
-		}
-		else if (peripheryActive) {
+		} else if (peripheryActive) {
 			periphery_sizer();
 			p_lazywidth = $("#p_outerouter").width();
 			var p_marginsize = (p_lazywidth - 960) / 2;
 			p_leftpoint = p_marginsize + 180;
 			p_rightpoint = (p_lazywidth - p_marginsize) - 180;
-		}
-		else if(legacyActive) {
-			legacy_sizer();
-		}
-		else if(migrantsActive) {
+		} else if(migrantsActive) {
 			migrants_sizer();
 			//being callied in init
 			// m_getDimensions();
@@ -229,6 +217,7 @@ $(document).ready(function () {
 			m_arrayActFills();
 		}
 
+		legacy.sizer();
 	});
 
 	//how do i get scroll snap to work better?
@@ -240,7 +229,7 @@ $(document).ready(function () {
 			proximity: 200,
 			onSnapEvent: cradle_scrollsnaphandle
 		});
-	// } 
+	// }
 	// else if (peripheryActive) {
 	// 	console.log("[ document ready ] peripheryActive scrollsnap");
 	// 	$(document).scrollsnap({
@@ -256,10 +245,10 @@ $(document).ready(function () {
 			//console.log("entering c_instructions");
 			if(document.getElementById("video1").currentTime == 0) {
 				cradle_openscreen();
-			} 
+			}
 			else {
 				c_toggleButtonDisplay();
-			} 	
+			}
 		},
 		onLeave: function(element, position) {
 			//console.log("leaving c_instructions");
@@ -273,10 +262,10 @@ $(document).ready(function () {
 			//console.log("entering p_instructions");
 			if(document.getElementById("target").currentTime == 0) {
 				periphery_openscreen();
-			} 
+			}
 			else {
 				p_toggleButtonDisplay();
-			} 	
+			}
 		},
 		onLeave: function(element, position) {
 			//console.log("leaving p_instructions");
@@ -293,7 +282,7 @@ $(document).ready(function () {
 				//m_vennTracking();
 			}
 
-	
+
 		},
 		onLeave: function(element, position) {
 			console.log("leaving m_instructions");
@@ -304,7 +293,7 @@ $(document).ready(function () {
 
 
 	var path = window.location.hash;
-	
+
 	//console.log(path);
 	// console.log(loc[loc.length -1])
 	if (path == "#cradle" ) {
@@ -330,7 +319,7 @@ $(document).ready(function () {
 // 	// 		console.log("[ window scroll ] c_container within-viewport-bottom");
 // 	// 		cradle_openscreen();
 // 	// 	}
-// 	// } else 
+// 	// } else
 // 	if (peripheryActive ) {
 // 		if($("#p_instructions").is("within-viewport-bottom")) {
 // 			console.log("[ window scroll ] p_container within-viewport-bottom");
@@ -384,7 +373,7 @@ function buildRippleNode(index){
 	// 	botLetX =  posX * Math.cos(i * rad);
 	// 	botLetY =  posY * Math.sin(i * rad);
 	// 	paper.text(botLetX, botLetY, i).attr({'font-size': '28px', 'font-style': 'italic', 'opacity': 0.2});
-	// }    
+	// }
     var btn = new Button(ripple, title, topLetter, bottomLetter, false, false);
     btn.id = RIPPLE_ID[index];
     btn.index = index;
@@ -428,7 +417,7 @@ function resizePaper( ){
     }, 500);
 }
 
-function buildRipples(total) {	
+function buildRipples(total) {
 
 	//var button = new Button();
 	var button;
@@ -461,23 +450,23 @@ function animateButton(index){
 			// if(index !== i){
 				//set all the other ripples to not active / not big
 				menu[i].ripple.isActive = false;
-				menu[i].ripple.isBig = false;	
+				menu[i].ripple.isBig = false;
 				menu[i].ripple.attr({'cursor' : 'pointer'});
 			// }
 		}
-		//set this ripple to active	
-		
+		//set this ripple to active
+
  		growRippleNode(index);
 
 		if(index === 0) {
 			//console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
 			location.hash = "cradle";
 			$("#cradleContent").fadeIn(2000);
-			
+
 			if(cradleLoaded === false) {
 
 			 	loadCradle2();
-				
+
 			 	cradleLoaded = true;
 				//console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
 			 }
@@ -486,19 +475,19 @@ function animateButton(index){
 				snaps: '.snap',
 				proximity: 180,
 				handler: cradle_scrollsnaphandle
-			});		 
+			});
 			 //addCradleListeners();
 			cradleActive = true;
 			audioready();
 			if( document.getElementById("video1") == null ){
-				//console.log("wtf? cradle") 
+				//console.log("wtf? cradle")
 			}
 			else{
 				if( document.getElementById("video1").currentTime > 0 ) {
 				 	//console.log("toggling display");
 				 		c_toggleButtonDisplay();
 				 }
-				 //console.log("video1 current time  ?" + document.getElementById("video1").currentTime);	 	
+				 //console.log("video1 current time  ?" + document.getElementById("video1").currentTime);
 			}
 			//console.log("[ animateButton ] cradle is active  ?" + cradleActive);
 		 } else {
@@ -512,25 +501,11 @@ function animateButton(index){
 
 		 if(index === 1) {
 			location.hash = "legacy";
-		 	//console.log("[ animateButton ] legacy was loaded ?" + legacyLoaded);
-
-		 	$("#legacyContent").fadeIn(2000);
-
-		 	if(legacyLoaded === false){
-		 	 	loadLegacy();	
-		 	 	legacyLoaded = true;
-		 	 	//console.log("[ animateButton ] legacy was loaded  ?" + legacyLoaded);
-		 	 	
-		 	}	
-		 	legacyActive = true;
+		 	legacy.activate();
 		 	audioready();
-		 	//console.log("[ animateButton ] legacy is active  ?" + legacyActive);
-		 } 
-		 else  {
-
-		 	$("#legacyContent").fadeOut("fast");
-		 	leg_pauseVids();
-		 	legacyActive = false;
+			//console.log("[ animateButton ] legacy is active  ?" + legacyActive);
+		 } else {
+			legacy.deactivate();
 		 	//console.log("[ animateButton ] legacy is active  ?" + legacyActive);
 		}
 
@@ -541,16 +516,16 @@ function animateButton(index){
 		 	$("#migrantsContent").fadeIn(2000);
 
 		 	if(migrantsLoaded === false){
-		 	 	
-		 	 	loadMigrants();	
+
+		 	 	loadMigrants();
 		 	 	migrantsLoaded = true;
 		 	 	console.log("[ animateButton ] migrants was loaded  ?" + migrantsLoaded);
-		 	 	
-		 	}	
+
+		 	}
 
 		 	migrantsActive = true;
 
-		 	// 
+		 	//
 		 	//keeping track of tracking session
 		 	if(mTrackerArray.length > 0){
 		 		if(mTrackerArray[mTrackerArray.length-1].isActive === true){
@@ -583,8 +558,8 @@ function animateButton(index){
 		 // 			// mTrackerArray.push(mTracker);
 		 // 			// console.log("Made first arc");
 		 // 			// console.log(mTrackerArray);
-			//  }	
-			
+			//  }
+
 		 	audioready();
 		 	m_vennTracking();
 		 	console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
@@ -606,9 +581,9 @@ function animateButton(index){
 					mTrackerArray[mTrackerArray.length-1].endPos = getMigrantsVideoCurrentPos();
 					mTrackerArray[mTrackerArray.length-1].isActive = false;
 					// console.log("Start Pos : "+mTrackerArray[mTrackerArray.length-1].startPos +" End Pos" +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
-			 	}	
+			 	}
 		 	}
-		 	
+
 		 	console.log("[ animateButton ] migrants is active  ?" + migrantsActive);
 		 }
 
@@ -627,26 +602,26 @@ function animateButton(index){
 		 	peripheryActive = true;
 		 	audioready();
 
-		 	if( document.getElementById("target") == null ){
-				//console.log("wtf? periphery") 
+		 	if( document.getElementById("target") == null ) {
+				//console.log("wtf? periphery")
 			}
 			else{
 				if( document.getElementById("target").currentTime > 0 ) {
 				 	//console.log("toggling periphery display");
 				 	p_toggleButtonDisplay();
 				 }
-				 //console.log("target current time  ? " + document.getElementById("target").currentTime);	 	
-				
+				 //console.log("target current time  ? " + document.getElementById("target").currentTime);
+
 			}
 		 	//console.log("[ animateButton ] periphery is active  ?" + peripheryActive);
- 	
+
  		} else {
 
 		 	$("#peripheryContent").fadeOut("fast");
 		 	p_pauseVids();
 		 	peripheryActive = false;
 		 	//console.log("[ animateButton ] periphery is active  ?" + peripheryActive);
-		} 			
+		}
 			$("#navigation").fadeIn();
 	 		$("#containerinner").fadeOut(function() {
 	 			//console.log("faded out containerinner");
@@ -654,7 +629,7 @@ function animateButton(index){
 
 		menu[index].ripple.attr({'cursor' : 'default'});
 
-		fadeTitles(0);				
+		fadeTitles(0);
 
 }
 
@@ -702,7 +677,7 @@ function shrinkRippleNode(index) {
 	var smRadiusOffset = config.smRadiusOffset;
 
 	for(var i = 0; i <= index; i++) {
-		
+
 		var _index = i + 1;
 
 		if(index === menu.length - 1) {
@@ -718,18 +693,13 @@ function shrinkRippleNode(index) {
 		function() {
 
 			  for(var i = 0; i <= index; i++) {
-				fadeTopLetters( i, 1);	
+				fadeTopLetters( i, 1);
 			 }
 		});
 	}
 }
 
 function animateHome() {
-
-
-
-
-	
 	for( var i = 0; i < menu.length; i++) {
 		animateHomeNode(i);
 	}
@@ -737,10 +707,10 @@ function animateHome() {
 	//audioactive = false;
 	//console.log("[ animateHome ] : audioready");
 	$("#cradleContent").fadeOut();
-	$("#legacyContent").fadeOut();
 	$("#migrantsContent").fadeOut();
 	$("#peripheryContent").fadeOut();
 	audioready();
+	legacy.deactivate();
 
 	//$("#migrantsContent").fadeOut("fast");
 	$("#migrants_video").css({opacity: "0.0"});
@@ -752,19 +722,18 @@ function animateHome() {
 	//added this to try and fix home page bug, it doesn't fix it. Doesn't draw arcs on return to migrants
 	if(mTrackerArray.length <= 0){
 	 		console.log("[animateHome] Fading out migrants" + mTrackerArray);
-	 }
-	 else{
+	} else{
 	 	if(mTrackerArray[mTrackerArray.length-1].isActive === true){
 	 		console.log("In mTrackerArray.length > 0");
 	 		//console.log("Current Migrants Tracker Index : " + mTrackerArray.length-1 +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
 			mTrackerArray[mTrackerArray.length-1].endPos = getMigrantsVideoCurrentPos();
 			mTrackerArray[mTrackerArray.length-1].isActive = false;
 			// console.log("Start Pos : "+mTrackerArray[mTrackerArray.length-1].startPos +" End Pos" +" Current Status : " mTrackerArray[mTrackerArray.length-1].isActive);
-	 	}	
+	 	}
  	}
 
 
-	
+
 }
 
 function animateHomeNode(index) {
@@ -777,7 +746,7 @@ function animateHomeNode(index) {
 
 	for(var i = 0; i < menu.length; i++) {
 		//fade out bottom letters, opacity = 0
-		fadeBottomLetters(i, 0);	
+		fadeBottomLetters(i, 0);
 		fadeTopLetters(i, 0);
 	}
 
@@ -796,8 +765,7 @@ function animateHomeNode(index) {
  		peripheryLoaded = false;
  	 	migrantsActive = false;
  		//migrantsLoaded = false;
- 		legacyActive = false;
- 		legacyLoaded = false;
+ 		legacy.deactivate();
 
  		//console.log("[ animateHomeNode ] cradleActive ? "+ cradleActive +", peripheryActive ?" + peripheryActive);
  		//console.log("[ animateHomeNode ] cradleLoaded ? "+ cradleLoaded +", peripheryLoaded ?" + peripheryLoaded);
@@ -821,13 +789,6 @@ function loadMigrants() {
 	// m_actFillsLabels();
 }
 
-function loadLegacy() {
-	$("#legacyContent").css({ 'width' : '100%', 'height' : '100%' });
-	$(".legacy_top").css({ 'background' : 'none' });
-
-	legacy_sizer();
-}
-
 function loadCradle2() {
 
 	//console.log("[ loadCradle2 ]");
@@ -838,7 +799,7 @@ function loadCradle2() {
 	cradle_sizer();
 
 	lazywidth = $("#c_outerouter").width();
-	
+
 	c_currentvideoid = 'video1';
 
 	c_enablecontrols();
@@ -855,13 +816,13 @@ function c_toggleButtonDisplay(){
 
 	if(document.getElementById("video1") != null){
 		if(document.getElementById("video1").paused ){
-			// c_playVids();	
+			// c_playVids();
 			//console.log("Toggle cradle play button on");
 			$("#c_play_bg").fadeIn();
 		}
 		else{
-			$("#c_play_bg").fadeOut();	
-			//console.log("Toggle cradle play button off");			
+			$("#c_play_bg").fadeOut();
+			//console.log("Toggle cradle play button off");
 		}
 	}
 }
@@ -885,20 +846,20 @@ function attachCradleEvents() {
 		//console.log("[Attach Cradle Events: c_playElement ] c_playButton");
 		c_playButton();
 		if( !document.getElementById("video1").paused ){
-			c_toggleButtonDisplay();	
+			c_toggleButtonDisplay();
 		}
 		// toggleButtonDisplay();
 
 	}).on('mouseover', function (){
 		if(document.getElementById("video1").paused || document.getElementById("video2").paused){
 			$("#c_playElement").css({'background':'url(../art/cradle/playWhite.png)'})
-		} else {				
+		} else {
 			$("#c_playElement").css({'background':'url(../art/cradle/pauseWhite.png)'})
 		}
 	}).on('mouseout', function (){
 		if(document.getElementById("video1").paused || document.getElementById("video2").paused){
 			$("#c_playElement").css({'background':'url(../art/cradle/playYellow.png)'})
-		} else {				
+		} else {
 			$("#c_playElement").css({'background':'url(../art/cradle/pauseYellow.png)'})
 		}
 	});
@@ -932,7 +893,7 @@ function attachCradleEvents() {
 		c_pauseVids();
 		$('html body').animate({ scrollTop: ($('#cradle_top').offset().top) }, 1000, function() {
 			animateButton(1);
-		}); 
+		});
 	});
 
 	$("#migrants_cbutton").on('click', function() {
@@ -984,65 +945,6 @@ function attachMigrantsEvents() {
 	});
 }
 
-function attachLegacyEvents() {
-
-	$("#cradle_lbutton").on('click', function() {
-		$('html body').animate({ scrollTop: ($('#legacy_top').offset().top) }, 1000, function() {
-			animateButton(0);
-		});
-	});
-
-	$("#migrants_lbutton").on('click', function() {
-		$('html body').animate({ scrollTop: ($('#legacy_top').offset().top) }, 1000, function() {
-			animateButton(2);
-		});
-	});
-
-	$("#periphery_lbutton").on('click', function() {
-		$('html body').animate({ scrollTop: ($('#legacy_top').offset().top) }, 1000,function(){
-		 	animateButton(3);
-		});
-	});
-
-	$("#z_container").click(function(){
-		console.log("in zoom container");
-		allVolumeUp();
-	});
-
-	$("#corner1").click(function(evt){
-		console.log("in corner1");
-		$("#item3").zoomTo({targetsize:0.9, duration:600, root: $("#z_container")});
-		indiaVolumeUp();
-		evt.stopPropagation();
-	});
-	
-	$("#corner2").click(function(evt){
-		console.log("in corner2");
-		$("#item4").zoomTo({targetsize:0.9, duration:600, root: $("#z_container")});
-		southafricaVolumeUp();
-		evt.stopPropagation();
-	});
-	
-	$("#corner3").click(function(evt){
-		console.log("in corner3");
-		$("#item2").zoomTo({targetsize:0.9, duration:600, root: $("#z_container")});
-		srilankaVolumeUp();
-		evt.stopPropagation();
-	});
-	$("#corner4").click(function(evt){
-		console.log("in corner4");
-		$("#item1").zoomTo({targetsize:0.9, duration:600, root: $("#z_container")});
-		indonesiaVolumeUp();
-		evt.stopPropagation();
-
-	});
-
-	$("#item1").click(viewIndonesia);					
-	$("#item2").click(viewSriLanka);
-	$("#item3").click(viewIndia);
-	$("#item4").click(viewSouthAfrica);
-}
-
 function loadPeriphery2() {
 
 	$("#peripheryContent").css({'width': '100%', 'height': '100%'});
@@ -1060,7 +962,7 @@ function loadPeriphery2() {
 	// h = $("#container").height();
 
 	p_currentvideoid = 'target';
-	
+
 	p_enablecontrols();
 
 	//console.log("[ loadPeriphery2 ] mouseYTracking = " + mouseYTracking);
@@ -1075,19 +977,19 @@ function attachPeripheryEvents() {
 		//console.log("[Attach Periphery Events: p_playElement ] p_playButton");
 		p_playButton();
 		if( !document.getElementById("target").paused ){
-			p_toggleButtonDisplay();	
+			p_toggleButtonDisplay();
 		}
 
 	}).on('mouseover', function (){
 		if(document.getElementById("target").paused){
 			$("#p_playElement").css({'background':'url(../art/periphery/playWhite.png)'})
-		} else {				
+		} else {
 			$("#p_playElement").css({'background':'url(../art/periphery/pauseWhite.png)'})
 		}
 	}).on('mouseout', function (){
 		if(document.getElementById("target").paused){
 			$("#p_playElement").css({'background':'url(../art/periphery/playRed.png)'})
-		} else {				
+		} else {
 			$("#p_playElement").css({'background':'url(../art/periphery/pauseRed.png)'})
 		}
 	});
@@ -1176,9 +1078,9 @@ function drawer () {
 	$("#bodytext").css( { 'right': rMargin_alt, 'top': 220 });
 }
 
-function audioready () {
+function audioready() {
 	// audio has loaded, let's do this
-	console.log("ambient audio has loaded and playing")
+	console.log("ambient audio has loaded and playing");
 	if(!audioactive){
 		document.getElementById('ambientaudio').volume = 0;
 		document.getElementById('ambientaudio').play();
@@ -1187,12 +1089,12 @@ function audioready () {
 	}
 }
 
-function audiostop () {
-	console.log("ambient audio is stopping")
+function audiostop() {
+	console.log("ambient audio is stopping");
 
 	clearInterval(vIvl);
 	vIvl = setInterval(fadeOutAmbientAudio,100);
-	audioactive = false;	
+	audioactive = false;
 }
 
 var fadeInAmbientAudio = function () {
@@ -1208,11 +1110,11 @@ var fadeInAmbientAudio = function () {
 
 var fadeOutAmbientAudio = function () {
 
-	// internal function to fade outaudio 
+	// internal function to fade outaudio
 	if(_currentaudiovolume>=0){
-		document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;	
+		document.getElementById('ambientaudio').volume = _currentaudiovolume / 100;
 	}
-	
+
 	_currentaudiovolume -= 1;
 	// console.log("Fade Vol down " + _currentaudiovolume);
 	if(_currentaudiovolume == 0){
