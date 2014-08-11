@@ -162,7 +162,7 @@
 		radius = height - 40;
 		archtype = Raphael("holder", holderWidth, height);
 		width = holderWidth;
-		console.log("[ Migrants getDimensions: width, height ] " + width + ", " + height);
+		//console.log("[ Migrants getDimensions: width, height ] " + width + ", " + height);
 	}
 
 	/*
@@ -535,7 +535,7 @@
 	function sizer() {
 		var w = $("#migrants_top").width();
 		var h = $("#migrants_top").height();
-		console.log("[ migrants w, h] " + w + ", " + h);
+		//console.log("[ migrants w, h] " + w + ", " + h);
 		var padtop = h * 0.1; // top of the main title
 		var matop = padtop * 1.5; // top of the matrix
 		var legbottom = 50; //offset of the bottom play button on the open screen
@@ -762,7 +762,7 @@
 	}
 
 	function loadVideo() {
-
+		console.log('[ Migrants : Canplay Event ] Video Loaded' );
 		allVideosLoaded = true;
 		progressArcInitPos();
 

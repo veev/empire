@@ -66,14 +66,6 @@
 		h = ($("#legacy_main").width() - _adjuster) * 0.31;
 		var vtop = (($("#legacy_main").height() - h) / 2) - 50;
 
-		/*
-		todo: this might be from the old version, so see if we even need it
-		$("#ctn0").css({'top': (vtop - 75), 'left': ((w / 2) + 20) });
-		$("#ctn1").css({'top': ((vtop + (h / 2)) - 50), 'right': 30 });
-		$("#ctn2").css({'top': (vtop + h + 75), 'left': ((w / 2) + 20) });
-		$("#ctn3").css({'top': ((vtop + (h / 2)) - 70), 'left': 12 });
-		*/
-
 		// $("#legplay").css({ "bottom": legbottom, "margin-left": ($("#legacy_main").width() / 2) - 50 }).fadeIn(4000);
 		$("#legmore").css({ "margin-left": ($("#legacy_main").width() / 2) - 90 });
 
@@ -121,10 +113,10 @@
 			}
 		}
 		
-		container = $('legacy_container_' + selectedId);
-		console.log(zContainer);
-		container.zoomTo({targetsize:0.1, duration:600, root: zContainer, debug:true});
-		// console.log(container);
+		container = $('#legacy_container_' + selectedId);
+		console.log(container);
+		//console.log(zContainer);
+		container.zoomTo({targetsize:0.9, duration:600, root: zContainer, closeclick: true });
 		// container.zoomTarget();	
 	}
 
@@ -152,45 +144,47 @@
 
 		/*
 		Legacy buttons/controls, Tier #2
-		*/
+
 		$("#corner1").click(function(evt){
-		console.log("in corner1");
-		$("#legacy_container_india").zoomTo({targetsize:0.9, duration:600, root: $("#z_container")});
-		// indiaVolumeUp();
-		evt.stopPropagation();
+			console.log("in corner1");
+			$("#legacy_container_india").zoomTo({targetsize:0.9, duration:600, root: zContainer});
+			// indiaVolumeUp();
+			evt.stopPropagation();
 		});
 
 		$("#corner2").click(function(evt){
-		console.log("in corner2");
-		$("#legacy_container_southafrica").zoomTo({targetsize:0.9, duration:600, root: $("#z_container")});
-		// southafricaVolumeUp();
-		evt.stopPropagation();
+			console.log("in corner2");
+			$("#legacy_container_southafrica").zoomTo({targetsize:0.9, duration:600, root: zContainer});
+			// southafricaVolumeUp();
+			evt.stopPropagation();
 		});
 
 		$("#corner3").click(function(evt){
-		console.log("in corner3");
-		$("#legacy_container_srilanka").zoomTo({targetsize:0.9, duration:600, root: $("#z_container")});
-		// srilankaVolumeUp();
-		evt.stopPropagation();
+			console.log("in corner3");
+			$("#legacy_container_srilanka").zoomTo({targetsize:0.9, duration:600, root: zContainer});
+			// srilankaVolumeUp();
+			evt.stopPropagation();
 		});
 		$("#corner4").click(function(evt){
-		console.log("in corner4");
-		$("#legacy_container_indonesia").zoomTo({targetsize:0.9, duration:600, root: $("#z_container")});
+			console.log("in corner4");
+			$("#legacy_container_indonesia").zoomTo({targetsize:0.9, duration:600, root: zContainer});
 			// indonesiaVolumeUp();
-		evt.stopPropagation();
-
+			evt.stopPropagation();
 		});
+		*/
 
 		var cornerOrder = {
-			indonesia: 1,
-			srilanka: 2,
-			india: 3,
-			southafrica: 4
+			india: 1,
+			southafrica: 2,
+			srilanka: 3,
+			indonesia: 4
 		};
 
-		zContainer.click(function(){
+		zContainer.click(function(evt){
 			console.log("in zoom container");
 			selectVideo(null);
+			zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
+			evt.stopPropagation();
 		});
 
 
@@ -201,8 +195,8 @@
 			}
 
 			var corner = '#corner' + cornerOrder[id];
-			// $(corner).click(selectMe);
-			// $('legacy-container-' + id).click(selectMe);
+			$(corner).click(selectMe);
+			$('#legacy_container_' + id).click(selectMe);
 		});
 	}
 
@@ -235,6 +229,9 @@
 		$("#l_instructions").fadeOut(1000, function() {
 			introDismissed = true;
 			playVideos();
+			if(audioactive) {
+				audiostop();
+			}
 		});
 	}
 
@@ -248,14 +245,15 @@
 			if (firstTime) {
 				legacyContent.css({ 'width' : '100%', 'height' : '100%' });
 				$(".legacy_top").css({ 'background' : 'none' });
+				initVideos();
 			}
 			firstTime = false;
 			if (!active) {
 				legacyContent.fadeIn(2000);
 			}
 			active = true;
-			initVideos();
-			playVideos();
+			// initVideos();
+			// playVideos();
 			sizer();
 
 			//load zoomooz.js dynamically

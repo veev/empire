@@ -109,9 +109,7 @@
 	function sizer(){
 		var w = $("#cradle_top").width();
 		var h = $("#cradle_top").height();
-		console.log("[cradle] " + w + " : " + h);
-
-
+		//console.log("[cradle] " + w + " : " + h);
 		var matop = ($("#cradle_top").height() / 2) - 220; // top of the matrix
 		var padtop = h * 0.11; // top of the main title
 		var legbottom = 70; //offset of the bottom play button on the open screen
@@ -195,7 +193,6 @@
 			 		playButton();	
 				} 
 				trackon();
-				audiostop();
 			}
 		});
 	}
@@ -284,7 +281,7 @@
 
 		Object.keys(videos).forEach(function (id) {
 			var video = document.getElementById('video'+id);
-			console.log(video);
+			//console.log(video);
 			video.addEventListener('timeupdate',scrubberUpdater,true);
 			video.addEventListener('play',function(){mouseXTracking=true;},true);
 			video.addEventListener('pause',function(){mouseXTracking=true;},true);
@@ -297,9 +294,9 @@
 	}
 
 	function playVideos(){
-		// if(audioactive){
-		// 	audiostop();
-		// }
+		if(audioactive){
+			audiostop();
+		}
 
 		var id;
 		if (!allVideosLoaded) {

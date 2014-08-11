@@ -53,7 +53,7 @@
 
 		var w = $("#periphery_top").width();
 		var h = $("#periphery_top").height();
-		console.log(w + " : " +h);
+		//console.log(w + " : " +h);
 		var matop = 210;
 		var padtop = h * 0.11;  // top of the main title
 		var legbottom = 70; //offset of the bottom play button on the open screen
@@ -236,7 +236,9 @@
 				playButton();
 			}
 			trackMouseRotation();
-			audiostop();
+			if(audioactive) {
+				audiostop();
+			}
 		});
 	}
 
@@ -489,7 +491,6 @@
 		peripheryContent = $("#peripheryContent");
 		controls = $("#p_controls");
 		initScrollspy();
-		console.log(peripheryContent);
 		peripheryContent.css({'width': '100%', 'height': '100%'});
 		
 		attachEvents();

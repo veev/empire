@@ -120,7 +120,7 @@ $(document).ready(function () {
 		if (!document.getElementById("migrants_video").paused) {
 			m_pauseVids();
 		}
-		console.log("[ document ready ] home button : animateHome()");
+		//console.log("[ document ready ] home button : animateHome()");
 		animateHome();
 		window.location.hash = "";
 		history.pushState('', document.title, window.location.pathname); // nice and clean
@@ -581,7 +581,7 @@ var fadeInAmbientAudio = function () {
 var fadeOutAmbientAudio = function () {
 
 	// internal function to fade outaudio
-	if(_currentaudiovolume>=0){
+	if(_currentaudiovolume >= 0){
 		ambientAudio.volume = _currentaudiovolume / 100;
 	}
 
