@@ -93,13 +93,13 @@ div.migrants_intro p#m_a {
 	text-align: center; 
 	padding-left: 235px;
 	top: -8;
-	width: 340;
+	width: 354;
 	z-index: 1; }
 div.migrants_intro p#m_a2 { 
 	text-align: center; 
 	padding-left: 474px;
 	top: -8;
-	width: 306;
+	width: 340;
 	z-index: 1; }
 div.migrants_intro p#m_b { top: 190px; left: 260px; width: 220px; z-index: 2; }
 div.migrants_intro p#m_c { top: 310px; left: 302px; width: 180px; text-align: right;}
