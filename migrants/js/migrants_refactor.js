@@ -1111,7 +1111,7 @@
 				getDimensions();
 				initPaths();
 				sizer();
-
+				migrantsVideo.load();
 				circleScrubber();
 				firstTime = false;
 			}
