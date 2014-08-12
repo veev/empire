@@ -20,7 +20,7 @@ div#container {
 	text-align: center; 
 	}
 h7 { font-size: 2em;}
-h8 { margin-top: 4px; font-style: italic; text-align: left; font-size: 1.493em;}
+h8 { margin-top: 4px; font-style: italic; text-align: left; font-size: 1.45em;}
 /*div#container div#containerinner {position: absolute; margin-left: 860;}*/
 div#container div#titleblock { position: absolute; }
 div#container div#logos { position: absolute; bottom: 20; left: 20; z-index: 20;}
