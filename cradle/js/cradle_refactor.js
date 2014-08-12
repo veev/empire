@@ -267,7 +267,9 @@
 			$("#rightbutton").removeClass('buttonon').addClass('buttonoff');
 			$("#leftbutton").removeClass('buttonoff').addClass('buttonon');
 		}
-		$("#card").css({ '-webkit-transform': 'rotateY( ' + flipangle + 'deg) translateX('+ translatePos + 'px)', 'transform': 'rotateY( ' + flipangle + 'deg) translateX('+ translatePos + 'px)' });
+		// $("#card").css({ '-webkit-transform': 'rotateY( ' + flipangle + 'deg) translateX('+ translatePos + 'px)', 'transform': 'rotateY( ' + flipangle + 'deg) translateX('+ translatePos + 'px)' });
+			$("#card").css({ '-webkit-transform': 'rotateY( ' + flipangle + 'deg)', 'transform': 'rotateY( ' + flipangle + 'deg)' });
+
 	}
 
 	function restartVideos() {	
