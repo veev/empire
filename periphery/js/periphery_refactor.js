@@ -26,7 +26,7 @@
 		peripheryContent,
 		controls;
 
-	var media ={
+	var media = {
 		target:null,
 		audio_norm:null,
 		audio_yeti:null
@@ -261,6 +261,7 @@
 			else{
 				var audio = document.getElementById(id);
 				audio.addEventListener("canplay", function(){console.log('[ Periphery : Canplay Event ] ' + id + ' Audio');}, true);
+				audio.load();
 				media[id] = audio;
 				console.log("Media: " + media);
 			}
