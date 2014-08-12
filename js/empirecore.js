@@ -36,7 +36,7 @@ var LABELS = ['Cradle','Legacy','Migrants', 'Periphery'];
 var LETTERS = ['C', 'L', 'M', 'P'];
 var COLORS = ['#ecda50', '#fbb03b', '#ff5a00', '#cc3333'];
 var URL = ['url(art/c_bg.jpg)', 'url(art/l_bg.jpg)', 'url(art/m_bg.jpg)', 'url(art/p_bg.jpg)' ];
-var URL_BOTTOM = ['url(art/c_bg_b.jpg)', 'url(art/l_bg_b.jpg)', 'url(art/m_bg_b.jpg)', 'url(art/p_bg_b.jpg)' ];
+// var URL_BOTTOM = ['url(art/c_bg_b.jpg)', 'url(art/l_bg_b.jpg)', 'url(art/m_bg_b.jpg)', 'url(art/p_bg_b.jpg)' ];
 var m_url = 'migrants/css/timecode.json';
 // var m_url = 'http://empire.genevievehoffman.com/migrants/css/timecode.json';
 
