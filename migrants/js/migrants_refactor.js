@@ -559,14 +559,14 @@
 		$("#minst_3").css({"top": h*0.84});
 
 		if (h < 710) {
-			$("#m_a").css({"padding-left": 144, "top": -8});
-			$("#m_a2").css({"padding-left": 520, "top": -8});
+			$("#m_a").css({"padding-left": 55, "top": -8});
+			$("#m_a2").css({"padding-left": 520, "top": 16});
 		} else if (h >= 710 && h < 800) {
-			$("#m_a").css({"padding-left": 144, "top": -24});
-			$("#m_a2").css({"padding-left": 520, "top": -24});
+			$("#m_a").css({"padding-left": 55, "top": -24});
+			$("#m_a2").css({"padding-left": 520, "top": 10});
 		} else {
-			$("#m_a").css({"padding-left": 144, "top": -24});
-			$("#m_a2").css({"padding-left": 520, "top": -24});
+			$("#m_a").css({"padding-left": 55, "top": -24});
+			$("#m_a2").css({"padding-left": 520, "top": 10});
 		}
 		//fix scaling
 		var tempHolderWidth;
