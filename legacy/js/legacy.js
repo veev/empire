@@ -122,7 +122,7 @@
 				}
 			}
 		}
-		
+
 		container = $('#legacy_container_' + selectedId);
 		console.log(container);
 		//console.log(zContainer);
@@ -195,8 +195,7 @@
 		seriously = new Seriously();
 		target = seriously.target('#canvas');
 		leg_videos = document.querySelectorAll('.legacy-video');
-		//console.log(leg_videos);
-		
+
 		maskCanvas = document.createElement('canvas');
 		maskCanvas.width = cw = target.width;
 		maskCanvas.height = ch = target.height;
@@ -212,7 +211,6 @@
 		ctx.lineTo(cw / 2, 0);
 		ctx.fill();
 
-		//CANVAS CODE
 		layers = seriously.effect('layers', {
 			count: leg_videos.length + 1
 		});
@@ -222,10 +220,22 @@
 		target.source = layers;
 
 		Array.prototype.forEach.call(leg_videos, function (video, index) {
-			var move = seriously.transform('2d');
+			var move = seriously.transform('2d'),
+				crop = seriously.effect('crop'),
+				reformat = seriously.transform('reformat');
 
-			move.source = video;
-			move.scale(0.5); // scaling is optional.
+			crop.source = video;
+			crop.top = 10;
+			crop.bottom = 32;
+
+			// reformat node needed to make the layers node big enough
+			reformat.source = crop;
+			reformat.mode = 'none';
+			reformat.height = target.height;
+			reformat.width = Math.round(target.height  * 960 / (304 - 32 - 10));
+
+			move.source = reformat;
+			//move.scale(0.5); // optional, here if you need it
 
 			layers['source' + index] = move;
 
@@ -233,27 +243,13 @@
 				// we don't know how much to move the videos until we know their dimensions
 				var x = (index % 2 ? 1 : -1),
 					y = (index < 2 ? -1 : 1);
-				move.translateX = x * video.videoWidth / 2 * move.scaleX;
-				move.translateY = y * video.videoHeight / 2 * move.scaleY;
 
-				// just to mix them up for this demo. Don't use this.
-				//video.currentTime = Math.random() * video.duration;
+				move.translateX = x * crop.width / 2 * move.scaleX;
+				move.translateY = y * crop.height / 2 * move.scaleY;
 			};
-
-			// video.oncanplay = function () {
-			// 	// don't start playing videos until they're all loaded. should keep them in sync
-			// 	remainToLoad--;
-			// 	if (!remainToLoad) {
-			// 		Array.prototype.forEach.call(videos, playVideo);
-			// 	}
-			// };
-			// remainToLoad++;
-
-			//video.load();
 		});
 
 		seriously.go();
-
 	}
 
 
@@ -291,7 +287,6 @@
 				legacyContent.css({ 'width' : '100%', 'height' : '100%' });
 				$(".legacy_top").css({ 'background' : 'none' });
 				initVideos();
-				
 			}
 			firstTime = false;
 			if (!active) {
@@ -300,7 +295,7 @@
 			active = true;
 			sizer();
 			initCanvas();
-			
+
 			//load zoomooz.js dynamically
 			var s = document.createElement("script");
     		s.type = "text/javascript";
