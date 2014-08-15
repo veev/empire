@@ -300,13 +300,6 @@
 			active = true;
 			sizer();
 			initCanvas();
-			
-			//load zoomooz.js dynamically
-			var s = document.createElement("script");
-    		s.type = "text/javascript";
-   			s.src = "../../js/jquery.zoomooz.min.js";
-    		// Use any selector
-    		$("head").append(s);
 		},
 		deactivate: function () {
 			var id;
