@@ -17,7 +17,7 @@
 		india: null,
 		srilanka: null,
 		southafrica: null,
-		corners: null,
+		// corners: null,
 	};
 
 	/*
@@ -25,6 +25,18 @@
 	*/
 	var zContainer,
 		legacyContent;
+
+	//canvas variables
+	var seriously,
+		target,
+		leg_videos,
+		layers,
+		remainToLoad = 0,
+
+		maskCanvas,
+		cw,
+		ch,
+		ctx;
 
 	function sizer() {
 		var h, w;
@@ -101,8 +113,6 @@
 	}
 
 	function selectVideo(selectedId) {
-		// $(".zoomTarget").zoomTarget();
-		// $(".zoomContainer").zoomContainer();
 		var video, id, container;
 		for (id in videos) {
 			if (videos.hasOwnProperty(id)) {
@@ -141,37 +151,6 @@
 			 	animateButton(3);
 			});
 		});
-
-		/*
-		Legacy buttons/controls, Tier #2
-
-		$("#corner1").click(function(evt){
-			console.log("in corner1");
-			$("#legacy_container_india").zoomTo({targetsize:0.9, duration:600, root: zContainer});
-			// indiaVolumeUp();
-			evt.stopPropagation();
-		});
-
-		$("#corner2").click(function(evt){
-			console.log("in corner2");
-			$("#legacy_container_southafrica").zoomTo({targetsize:0.9, duration:600, root: zContainer});
-			// southafricaVolumeUp();
-			evt.stopPropagation();
-		});
-
-		$("#corner3").click(function(evt){
-			console.log("in corner3");
-			$("#legacy_container_srilanka").zoomTo({targetsize:0.9, duration:600, root: zContainer});
-			// srilankaVolumeUp();
-			evt.stopPropagation();
-		});
-		$("#corner4").click(function(evt){
-			console.log("in corner4");
-			$("#legacy_container_indonesia").zoomTo({targetsize:0.9, duration:600, root: zContainer});
-			// indonesiaVolumeUp();
-			evt.stopPropagation();
-		});
-		*/
 
 		var cornerOrder = {
 			india: 1,
@@ -212,6 +191,72 @@
 		});
 	}
 
+	function initCanvas() {
+		seriously = new Seriously();
+		target = seriously.target('#canvas');
+		leg_videos = document.querySelectorAll('.legacy-video');
+		//console.log(leg_videos);
+		
+		maskCanvas = document.createElement('canvas');
+		maskCanvas.width = cw = target.width;
+		maskCanvas.height = ch = target.height;
+		ctx = maskCanvas.getContext('2d');
+		ctx.fillStyle = 'black';
+		ctx.fillRect(0, 0, target.width, target.height);
+		ctx.globalCompositeOperation = 'destination-out';
+		ctx.beginPath();
+		ctx.moveTo(cw / 2, 0);
+		ctx.lineTo(cw, ch / 2);
+		ctx.lineTo(cw / 2, ch);
+		ctx.lineTo(0, ch / 2);
+		ctx.lineTo(cw / 2, 0);
+		ctx.fill();
+
+		//CANVAS CODE
+		layers = seriously.effect('layers', {
+			count: leg_videos.length + 1
+		});
+
+		console.log(layers);
+		layers['source' + leg_videos.length] = maskCanvas;
+		target.source = layers;
+
+		Array.prototype.forEach.call(leg_videos, function (video, index) {
+			var move = seriously.transform('2d');
+
+			move.source = video;
+			move.scale(0.5); // scaling is optional.
+
+			layers['source' + index] = move;
+
+			video.onloadedmetadata = function () {
+				// we don't know how much to move the videos until we know their dimensions
+				var x = (index % 2 ? 1 : -1),
+					y = (index < 2 ? -1 : 1);
+				move.translateX = x * video.videoWidth / 2 * move.scaleX;
+				move.translateY = y * video.videoHeight / 2 * move.scaleY;
+
+				// just to mix them up for this demo. Don't use this.
+				//video.currentTime = Math.random() * video.duration;
+			};
+
+			// video.oncanplay = function () {
+			// 	// don't start playing videos until they're all loaded. should keep them in sync
+			// 	remainToLoad--;
+			// 	if (!remainToLoad) {
+			// 		Array.prototype.forEach.call(videos, playVideo);
+			// 	}
+			// };
+			// remainToLoad++;
+
+			//video.load();
+		});
+
+		seriously.go();
+
+	}
+
+
 	function init() {
 		legacyContent = $("#legacyContent");
 		zContainer = $("#z_container");
@@ -246,16 +291,16 @@
 				legacyContent.css({ 'width' : '100%', 'height' : '100%' });
 				$(".legacy_top").css({ 'background' : 'none' });
 				initVideos();
+				
 			}
 			firstTime = false;
 			if (!active) {
 				legacyContent.fadeIn(2000);
 			}
 			active = true;
-			// initVideos();
-			// playVideos();
 			sizer();
-
+			initCanvas();
+			
 			//load zoomooz.js dynamically
 			var s = document.createElement("script");
     		s.type = "text/javascript";

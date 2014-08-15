@@ -41,9 +41,9 @@ div.legacy_bottom p { text-align: left; width: 700px; margin: 1em auto; color: #
 div.legacy_bottom a { color: #000; }
 div.mystical { text-align: left; background: url(../../art/legacy/leg_overlay.png) no-repeat 220px 8px; position: relative; margin: auto; width: 790px; height: 500px; overflow: auto; }
 div.mystical p { position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
-div.mystical p#a { top: 0px; left: 285px; z-index: 1; }
+div.mystical p#a { top: 0px; left: 270px; z-index: 1; }
 div.mystical p#b { top: 170px; left: 575px; width: 200px; z-index: 2; }
-div.mystical p#c { top: 355px; left: 240px; }
+div.mystical p#c { top: 355px; left: 260px; }
 div.mystical p#d { top: 170px; left: 55px; z-index: 3; }
 div.mystical p#e { top: 160px; left: 305px; width: 200px; text-align: center; }
 div.mystical p#f { top: 425px; width: 520px; left: 150px; text-align: center; }
@@ -115,11 +115,24 @@ div#legacy_main div#l_instructions {
 	height: 230px; 
 	text-align: center; }
 
+div#l_instructions p#one {
+	position: relative;
+	top:0;
+	text-align: center;
+}
+
+div#l_instructions p#two {
+	position: relative;
+	top: 50;
+	text-align: center;
+}
+
+
 .zoomContainer {
 	margin:0;
     padding:0;
     width:1280px;
-    height:403px;
+    height:1280px;
     position:relative;
 }
 

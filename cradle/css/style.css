@@ -212,6 +212,7 @@ div#cradle_main #c_outerouter #c_outerinner {
 #c_outerinner #c_container #card div.back {
 	transform: rotateY(180deg);
 	-webkit-transform: rotateY(180deg);
+	left: 960;
 }
 
 #c_outerinner #c_container #card.flipped {
@@ -370,6 +371,7 @@ div#cradle_main #c_outerouter #c_outerinner {
 	position: relative;
 	width: auto;
 	height: auto;
+	transform-origin: 0 0 0;
 }
 
 #cradle_main .home_button {
