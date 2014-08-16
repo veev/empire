@@ -207,7 +207,7 @@
 			if(flipAngle < 90) {
 				flipAngle = 0;
 			} 
-			else if (flipAngle > 90 ) {
+			else if (flipAngle >= 90 ) {
 				flipAngle = 180;
 			}
 			 trackoff();

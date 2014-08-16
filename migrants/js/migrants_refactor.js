@@ -299,17 +299,15 @@
 			min: instructions.offset().top,
 			onEnter: function(element, position) {
 				if(active) {
-					console.log("entering m_instructions");
+					//console.log("entering m_instructions");
 					openScreen();
-					//vennTracking();
 				}
 
 
 			},
 			onLeave: function(element, position) {
-				console.log("leaving m_instructions");
+				//console.log("leaving m_instructions");
 				instructions.fadeOut();
-				//trackoff();
 			}
 		});
 	}
