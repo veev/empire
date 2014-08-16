@@ -37,8 +37,16 @@ div.legacy_bottom {
 	padding: 50px 0px 50px 0px}
 div.legacy_bottom div.yellowinner { color: #000; border:1px dashed black; width: 760px; height:420px; padding: 20px 20px 20px 20px; margin: 0 auto}
 div#legacy_top h1 { color: #000; padding-top: 8px; font-size: 2.1em; }
-div.legacy_bottom p { text-align: left; width: 700px; margin: 1em auto; color: #000 }
 div.legacy_bottom a { color: #000; }
+div.legacy_bottom div#legacy_bottomtitle { z-index: 1; position: absolute; bottom: 25; width: 100%; text-align: center; }
+div.legacy_bottom h2 { color: #000; padding-bottom: 8px; font-size: 1.6em; text-align: center; }
+div.legacy_bottom div.inner { padding: 1px 0 30px 0; }
+div.legacy_bottom div#lbottom_structure { z-index: 2; position: relative; margin:0 auto; width: 838px; height: 751px;  }
+div.legacy_bottom div#lbottom_structure div { text-align: left;  padding: 60px 0 0 175px; width: 506px;  color: #000; }
+div.legacy_bottom div#lbottom_structure div p { margin: 1.1em 0; text-align: left; width: 700px; margin: 1em auto; color: #000}
+
+div.legacy_bottom div#lbottom_structure div a { color: 000; }
+
 div.mystical { text-align: left; background: url(../../art/legacy/leg_overlay.png) no-repeat 220px 8px; position: relative; margin: auto; width: 790px; height: 500px; overflow: auto; }
 div.mystical p { position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
 div.mystical p#a { top: 0px; left: 270px; z-index: 1; }
