@@ -33,9 +33,11 @@ div.legacy_bottom {
 	background: #fbb03b url(../../art/l_bg_b.jpg) bottom left  repeat-x; 
 	width: 100%; 
 	height: 100%;
+	clear: both;
 	position: relative; 
-	padding: 50px 0px 50px 0px}
-div.legacy_bottom div.yellowinner { color: #000; border:1px dashed black; width: 760px; height:420px; padding: 20px 20px 20px 20px; margin: 0 auto}
+	pointer-events: all;
+	padding: 50px 0px 50px 0px;}
+/*div.legacy_bottom div.yellowinner { color: #000; border:1px dashed black; width: 760px; height:420px; padding: 20px 20px 20px 20px; margin: 0 auto}*/
 div#legacy_top h1 { color: #000; padding-top: 8px; font-size: 2.1em; }
 div.legacy_bottom a { color: #000; }
 div.legacy_bottom div#legacy_bottomtitle { z-index: 1; position: absolute; bottom: 25; width: 100%; text-align: center; }

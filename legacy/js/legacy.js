@@ -6,10 +6,14 @@
 	var _adjuster = 140;
 	var openTimeIvl;
 	var allVideosLoaded = false;
+	var allVideosComplete = false;
 	var l_videoTrackCurrentPosition;
+
+	var currentTime = 0;
 
 	var active = false;
 	var introDismissed = false;
+
 	var firstTime = true;
 
 	var videos = {
@@ -20,11 +24,19 @@
 		// corners: null,
 	};
 
+	var videoTracker = {
+		indonesia: null,
+		india: null,
+		srilanka: null,
+		southafrica: null,
+	}
+
 	/*
 	important elements that we may need to refer to again
 	*/
 	var zContainer,
-		legacyContent;
+		legacyContent,
+		instructions;
 
 	//canvas variables
 	var seriously,
@@ -39,6 +51,9 @@
 		ctx;
 
 	function sizer() {
+
+		console.log("In Legacy Sizer");
+
 		var h, w;
 
 		if (!active) {
@@ -83,7 +98,7 @@
 
 		$("#legacymore").css({ "top" : buffer, "left": centering }).fadeIn(4000).on('click', function() {
 			body.animate({scrollTop: ($('#legacy_main').offset().top) }, 1000);
-			// console.log("openScreen() in legacymore");
+			console.log("openScreen() in legacymore");
 			console.log("[Legacy: legacymore listener] if not legacyLoaded, legacy openscreen");
 			openScreen();
 		});
@@ -106,10 +121,14 @@
 		if (active && introDismissed) {
 			for (id in videos) {
 				if (videos.hasOwnProperty(id) && videos[id]) {
+					// set videos to start later for testing
+					//videos[id].currentTime = videos[id].duration - 20;
 					videos[id].play();
 				}
 			}
 		}
+
+		console.log("[videoTracker] :" + videoTracker);
 	}
 
 	function selectVideo(selectedId) {
@@ -130,7 +149,7 @@
 		// container.zoomTarget();	
 	}
 
-	function attachLegacyEvents() {
+	function attachEvents() {
 		/*
 		Main page navigation buttons for getting out of Legacy
 		*/
@@ -177,6 +196,21 @@
 			$(corner).click(selectMe);
 			$('#legacy_container_' + id).click(selectMe);
 		});
+
+	}
+
+	function initScrollspy() {
+		instructions.scrollspy({
+			min: instructions.offset().top,
+			onEnter: function(element, position) {
+				if(active) {
+					openScreen();
+				}
+			},
+			onLeave: function(element, position) {
+				instructions.fadeOut();
+			}
+		});
 	}
 
 	function initVideos() {
@@ -184,8 +218,55 @@
 			var video = document.getElementById(id + '_leg');
 			video.addEventListener('canplay', function () {
 				console.log('[ Legacy : Canplay Event ] ' + id + ' Video');
-				// playVideos();
+				// load metadata into VideoTracker object
+				videoTracker[id] = {};
+				videoTracker[id].totalDuration = video.duration;
+				videoTracker[id].durationPlayed = 0;
+				videoTracker[id].complete = false;
+				console.log(videoTracker[id]);
+				
 			});
+
+			video.addEventListener('ended', function (evt) {
+
+				console.log('[ Legacy : ] ' + id + ' has ended');
+				
+				zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
+
+
+				console.log(evt.srcElement.id);
+				var string = evt.srcElement.id;
+				var index = string.split('_');
+				videoTracker[index[0]].complete = true;
+				var count = 0;
+				Object.keys(videoTracker).forEach(function (id) {
+					
+					if(videoTracker[id].complete){
+						count++;
+					}
+					if(count >= 4){
+						console.log('[ Legacy : ] All videos complete.');
+						playVideos();
+					}
+					
+				});
+
+				selectVideo(null);
+			});
+
+			video.addEventListener('timeupdate', function (evt) {
+				Object.keys(videoTracker).forEach(function (id) {
+					//TODO - add function that keeps track of time watched for each film
+					//console.log('[ Legacy : ] ' + id + ' is playing');
+					//console.log(evt.srcElement.id);
+					var string = evt.srcElement.id;
+					var index = string.split('_');
+
+
+				});
+			});
+
+
 			video.load();
 			videos[id] = video;
 		});
@@ -236,20 +317,7 @@
 				move.translateX = x * video.videoWidth / 2 * move.scaleX;
 				move.translateY = y * video.videoHeight / 2 * move.scaleY;
 
-				// just to mix them up for this demo. Don't use this.
-				//video.currentTime = Math.random() * video.duration;
 			};
-
-			// video.oncanplay = function () {
-			// 	// don't start playing videos until they're all loaded. should keep them in sync
-			// 	remainToLoad--;
-			// 	if (!remainToLoad) {
-			// 		Array.prototype.forEach.call(videos, playVideo);
-			// 	}
-			// };
-			// remainToLoad++;
-
-			//video.load();
 		});
 
 		seriously.go();
@@ -260,18 +328,22 @@
 	function init() {
 		legacyContent = $("#legacyContent");
 		zContainer = $("#z_container");
+		instructions = $("#l_instructions");
 
 		// initVideos();
-		attachLegacyEvents();
+		sizer();
+		attachEvents();
+		initScrollspy();
+
 	}
 
 	function openScreen() {
-		$("#l_instructions").fadeIn(2000);
-		$("#l_instructions").on('click', closeScreen);
+		instructions.fadeIn(2000);
+		instructions.on('click', closeScreen);
 	}
 
 	function closeScreen() {
-		$("#l_instructions").fadeOut(1000, function() {
+		instructions.fadeOut(1000, function() {
 			introDismissed = true;
 			playVideos();
 			if(audioactive) {
@@ -290,9 +362,10 @@
 			if (firstTime) {
 				legacyContent.css({ 'width' : '100%', 'height' : '100%' });
 				$(".legacy_top").css({ 'background' : 'none' });
+				// sizer();
 				initVideos();
-				
 			}
+
 			firstTime = false;
 			if (!active) {
 				legacyContent.fadeIn(2000);
@@ -316,8 +389,6 @@
 			}
 
 			active = false;
-
-			//take out zoomooz dynamically
 		}
 	};
 
