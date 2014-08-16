@@ -209,7 +209,7 @@
 	}
 	function initScrollspy(){
 		instructions.scrollspy({
-		min: $("#c_instructions").offset().top,
+		min: instructions.offset().top,
 		onEnter: function(element, position) {
 			if(document.getElementById("video1").currentTime == 0) {
 				openScreen();
@@ -219,7 +219,7 @@
 			}
 		},
 		onLeave: function(element, position) {
-			$("#c_instructions").fadeOut();
+			instructions.fadeOut();
 		}
 	});
 	}
@@ -473,19 +473,20 @@
 				initVideos();
 				lazywidth = outerOuter.width();
 				currentVideoId = 'video1';
-				enableControls();
 			 	firstTime = false;
 			 }
 			 else{
 
 			 }
+
+			enableControls();
 			active = true;
 
-			if( document.getElementById("video1")){
+
 			if( document.getElementById("video1").currentTime > 0 ) {
-				 	toggleButtonDisplay();
-				 }
+				toggleButtonDisplay();
 			}
+
 
 		},
 		deactivate:function(){
