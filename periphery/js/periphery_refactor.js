@@ -81,7 +81,7 @@
 		$("#periphery_structure").css({ 'margin-top': matop, 'left': (($("#periphery_top").width() / 2) - 370) });
 
 		$("#pbottom_structure").css({ 'margin-top': ((($("#periphery_bottom").height() - 160) / 2) - 300), 'left': ($("#periphery_top").width() / 2)-286 });
-		$("#p_leg	").css({ "margin-left": ($("#periphery_main").width() / 2) - 70 }).on('click', function() {
+		$("#p_legmore").css({ "margin-left": ($("#periphery_main").width() / 2) - 70 }).on('click', function() {
 			body.animate({scrollTop: ($("#periphery_bottom").offset().top)}, 1000);
 		});
 		$("#peripherymore").css({"top": buffer, "left": centering }).fadeIn(4000).click(function() {
@@ -341,7 +341,7 @@
 			sideTracker[Math.floor(document.getElementById("target").currentTime)] = 0;
 		}
 
-		scrubberlength = Object.keys(sideTracker).length;
+		scrubberLength = Object.keys(sideTracker).length;
 	}
 	function initScrollspy(){
 		instructions.scrollspy({
@@ -374,11 +374,11 @@
 		var yetiFraction = 0;
 		var normFraction = 0;
 		var equalFraction = 0;
-		for(var i = 0; i < p_scrubberlength; i++){
-			if( p_sidetracker[i] === 1){
+		for(var i = 0; i < scrubberLength; i++){
+			if( sideTracker[i] === 1){
 				yetiFraction++;
 			}
-			else if (p_sidetracker[i] === 2){
+			else if (sideTracker[i] === 2){
 				normFraction++;
 			}
 			else {
