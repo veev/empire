@@ -6,10 +6,16 @@
 	var _adjuster = 140;
 	var openTimeIvl;
 	var allVideosLoaded = false;
+	var allVideosComplete = false;
 	var l_videoTrackCurrentPosition;
+
+	var currentTime = 0;
+	var currentVolume = 0;
+	var intervalID = 0;
 
 	var active = false;
 	var introDismissed = false;
+
 	var firstTime = true;
 
 	var videos = {
@@ -20,11 +26,19 @@
 		// corners: null,
 	};
 
+	var videoTracker = {
+		indonesia: null,
+		india: null,
+		srilanka: null,
+		southafrica: null,
+	}
+
 	/*
 	important elements that we may need to refer to again
 	*/
 	var zContainer,
-		legacyContent;
+		legacyContent,
+		instructions;
 
 	//canvas variables
 	var seriously,
@@ -39,6 +53,9 @@
 		ctx;
 
 	function sizer() {
+
+		console.log("In Legacy Sizer");
+
 		var h, w;
 
 		if (!active) {
@@ -83,13 +100,22 @@
 
 		$("#legacymore").css({ "top" : buffer, "left": centering }).fadeIn(4000).on('click', function() {
 			body.animate({scrollTop: ($('#legacy_main').offset().top) }, 1000);
-			// console.log("openScreen() in legacymore");
+			console.log("openScreen() in legacymore");
 			console.log("[Legacy: legacymore listener] if not legacyLoaded, legacy openscreen");
-			openScreen();
+			if(active && !introDismissed) {
+				openScreen();
+			} else {
+				toggleButtonDisplay();
+			}
 		});
 	}
 
 	function playVideos() {
+
+		if(audioactive) {
+			audiostop();
+		}
+
 		var id;
 
 		if (!allVideosLoaded) {
@@ -106,11 +132,30 @@
 		if (active && introDismissed) {
 			for (id in videos) {
 				if (videos.hasOwnProperty(id) && videos[id]) {
+					// set videos to start later for testing
+					//videos[id].currentTime = videos[id].duration - 20;
 					videos[id].play();
 				}
 			}
 		}
+
+		console.log("[videoTracker] :" + videoTracker);
 	}
+
+	var fadeInAudio = function (video) {
+		//console.log("In fadeInAudio");
+		if(currentVolume <= 1){
+			video.volume = currentVolume ;
+			currentVolume += 0.07;
+			//console.log(currentVolume);
+		} else{
+			clearTimeout(intervalID);
+			currentVolume = 0;
+			return;
+		}
+
+		intervalID = setTimeout(function() {fadeInAudio(video);}, 100);
+	};
 
 	function selectVideo(selectedId) {
 		var video, id, container;
@@ -118,7 +163,18 @@
 			if (videos.hasOwnProperty(id)) {
 				video = videos[id];
 				if (video) {
-					video.volume = (!selectedId || selectedId === id) ? 1 : 0;
+					// video.volume = (!selectedId || selectedId === id) ? 1 : 0;
+
+					if(!selectedId){
+						//do volume upp f
+						video.volume = 0.75;
+					} else if(selectedId === id){
+						//fading stuff
+						fadeInAudio(video); 
+						//video.volume = 1;
+					} else{
+						video.volume = 0;
+					}
 				}
 			}
 		}
@@ -130,7 +186,7 @@
 		// container.zoomTarget();	
 	}
 
-	function attachLegacyEvents() {
+	function attachEvents() {
 		/*
 		Main page navigation buttons for getting out of Legacy
 		*/
@@ -152,11 +208,17 @@
 			});
 		});
 
+		//play button that appears after first time instructions
+		$("#l_play_bg").on('click', function() {
+			playVideos();
+			toggleButtonDisplay();
+		});
+
 		var cornerOrder = {
-			india: 1,
-			southafrica: 2,
-			srilanka: 3,
-			indonesia: 4
+			indonesia: 1,
+			srilanka: 2,
+			india: 3,
+			southafrica: 4
 		};
 
 		zContainer.click(function(evt){
@@ -177,6 +239,39 @@
 			$(corner).click(selectMe);
 			$('#legacy_container_' + id).click(selectMe);
 		});
+
+	}
+
+	function initScrollspy() {
+		instructions.scrollspy({
+			min: instructions.offset().top,
+			onEnter: function(element, position) {
+
+				if(active && !introDismissed) {
+					openScreen();
+				} else {
+					toggleButtonDisplay();
+				}
+			},
+			onLeave: function(element, position) {
+				instructions.fadeOut();
+			}
+		});
+	}
+
+	function toggleButtonDisplay() {
+		if(videos != null) {
+			Object.keys(videos).forEach(function(id) {
+				if(active && videos[id].paused) {
+					console.log("Toggle periphery play button on");
+					$("#l_play_bg").fadeIn();
+				} else {
+					console.log("Toggle periphery play button off");
+					$("#l_play_bg").fadeOut();
+				}
+			})
+			
+		}
 	}
 
 	function initVideos() {
@@ -184,8 +279,57 @@
 			var video = document.getElementById(id + '_leg');
 			video.addEventListener('canplay', function () {
 				console.log('[ Legacy : Canplay Event ] ' + id + ' Video');
-				// playVideos();
+				// load metadata into VideoTracker object
+				videoTracker[id] = {};
+				videoTracker[id].totalDuration = video.duration;
+				videoTracker[id].durationPlayed = 0;
+				videoTracker[id].complete = false;
+				console.log(videoTracker[id]);
+				
 			});
+
+			video.addEventListener('ended', function (evt) {
+
+				console.log('[ Legacy : ] ' + id + ' has ended');
+				
+				//zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
+
+				console.log(evt.srcElement.id);
+				var string = evt.srcElement.id;
+				var index = string.split('_');
+				videoTracker[index[0]].complete = true;
+				var count = 0;
+				Object.keys(videoTracker).forEach(function (id) {
+					
+					if(videoTracker[id].complete){
+						count++;
+					}
+					if(count >= 4){
+						console.log('[ Legacy : ] All videos complete.');
+						zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
+						playVideos();
+						//TODO: buildEndScreen();
+					}
+					
+				});
+
+				//for volume
+				selectVideo(null);
+			});
+
+			video.addEventListener('timeupdate', function (evt) {
+				Object.keys(videoTracker).forEach(function (id) {
+					//TODO - add function that keeps track of time watched for each film
+					//console.log('[ Legacy : ] ' + id + ' is playing');
+					//console.log(evt.srcElement.id);
+					var string = evt.srcElement.id;
+					var index = string.split('_');
+
+
+				});
+			});
+
+
 			video.load();
 			videos[id] = video;
 		});
@@ -256,23 +400,27 @@
 	function init() {
 		legacyContent = $("#legacyContent");
 		zContainer = $("#z_container");
+		instructions = $("#l_instructions");
 
 		// initVideos();
-		attachLegacyEvents();
+		sizer();
+		attachEvents();
+		initScrollspy();
+
 	}
 
 	function openScreen() {
-		$("#l_instructions").fadeIn(2000);
-		$("#l_instructions").on('click', closeScreen);
+		instructions.fadeIn(2000);
+		instructions.on('click', closeScreen);
 	}
 
 	function closeScreen() {
-		$("#l_instructions").fadeOut(1000, function() {
+		instructions.fadeOut(1000, function() {
 			introDismissed = true;
 			playVideos();
-			if(audioactive) {
-				audiostop();
-			}
+			// if(audioactive) {
+			// 	audiostop();
+			// }
 		});
 	}
 
@@ -286,22 +434,18 @@
 			if (firstTime) {
 				legacyContent.css({ 'width' : '100%', 'height' : '100%' });
 				$(".legacy_top").css({ 'background' : 'none' });
+				// sizer();
 				initVideos();
 			}
+
 			firstTime = false;
 			if (!active) {
 				legacyContent.fadeIn(2000);
 			}
+
 			active = true;
 			sizer();
 			initCanvas();
-
-			//load zoomooz.js dynamically
-			var s = document.createElement("script");
-    		s.type = "text/javascript";
-   			s.src = "../../js/jquery.zoomooz.min.js";
-    		// Use any selector
-    		$("head").append(s);
 		},
 		deactivate: function () {
 			var id;
@@ -316,10 +460,7 @@
 			if (active) {
 				legacyContent.fadeOut("fast");
 			}
-
 			active = false;
-
-			//take out zoomooz dynamically
 		}
 	};
 

@@ -164,7 +164,7 @@ div.migrants_bottom {
 	clear: both;
 	pointer-events: all;
 }
-div.migrants_bottom div.inner { padding: 1px 0 30px 0; }
+div.migrants_bottom div.inner { overflow: hidden; height: 100%;}
 div#migrants_bottom h2 { color: #000; padding-bottom: 8px; font-size: 1.6em; text-align: center; }
 div.migrants_bottom div#migrants_bottomtitle { z-index: 1; position: absolute; bottom: 25; width: 100%; text-align: center; }
 div.migrants_bottom div#mbottom_structure { z-index: 2; position: relative; margin:0 auto; width: 838px; height: 751px; background: url(../../art/migrants/migrants_bottomstructure.png) no-repeat }

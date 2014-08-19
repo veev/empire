@@ -5,7 +5,6 @@
 	var allVideosLoaded = false;
 	var currentVideoPosition = 0;
 	var currentTime = 0;
-	var maxVolume = 20;
 	var currentVolume = 0;
 	var intervalID = 0;
 	var amount = 0;
@@ -299,17 +298,15 @@
 			min: instructions.offset().top,
 			onEnter: function(element, position) {
 				if(active) {
-					console.log("entering m_instructions");
+					//console.log("entering m_instructions");
 					openScreen();
-					//vennTracking();
 				}
 
 
 			},
 			onLeave: function(element, position) {
-				console.log("leaving m_instructions");
+				//console.log("leaving m_instructions");
 				instructions.fadeOut();
-				//trackoff();
 			}
 		});
 	}
@@ -332,8 +329,8 @@
 		});
 
 		initScrollSpy();
-		getDimensions();
-		initPaths();
+		//getDimensions();
+		//initPaths();
 		addListeners();
 		attachEvents();
 	}
@@ -515,7 +512,7 @@
 				clearTimeout(intervalID);
 			}
 			// fadeInMigrantsVideoAudio();
-			intervalID = setInterval(fadeInMigrantsAudio,100);
+			intervalID = setTimeout(fadeInMigrantsAudio,100);
 			showProgress = true;
 			instructionsOff = true;
 			console.log("Migrants In Holder FadeOut");
@@ -670,31 +667,33 @@
 		return data;
 	}
 
+	// function migrants_audiostop () {
+	// 	clearInterval(intervalID);
+	// 	intervalID = setInterval(fadeOutMigrantsAudio,100);
+	// 	audioactive = false;
+	// }
+
 	function migrants_audiostop () {
-		clearInterval(intervalID);
-		intervalID = setInterval(fadeOutMigrantsAudio,100);
+		// clearTimeout(intervalID);
+		fadeOutMigrantsAudio();
+		// intervalID = setTimeout(fadeOutMigrantsAudio,100);
 		audioactive = false;
 	}
 
 	var fadeInMigrantsAudio = function () {
 		console.log("In fadeInMigrantsAudio");
-		// internal function to fade outaudio
-		// console.log(migrantsVideo);
-		// console.log(migrantsVideo.volume);
-		// migrantsVideo.volume = currentVolume / 100;
-		// currentVolume += 1;
-		// if(_currentaudiovolume === 0){
-		// 	clearInterval(intervalID);
-		// 	document.getElementById('ambientaudio').pause();
-		// }
-		// intervalID = setTimeout(fadeInMigrantsAudio, 100);
 
 		// internal function to fade in
-		document.getElementById('migrants_video').volume = currentVolume / 100;
-		currentVolume += 3;
-		if(currentVolume > maxVolume){
-			clearInterval(intervalID);
+		if(currentVolume <= 1 ) {
+			document.getElementById('migrants_video').volume = currentVolume;
+			currentVolume += 0.05;
+		} else {
+			clearTimeout(intervalID);
+			currentVolume = 0;
+			return;
 		}
+
+		intervalID = setTimeout(fadeInMigrantsAudio,100);
 	};
 
 	var fadeOutMigrantsAudio = function () {
@@ -706,6 +705,7 @@
 			clearInterval(intervalID);
 			ambientAudio.pause();
 		}
+		intervalID = setTimeout(fadeOutMigrantsAudio,100);
 	};
 
 	function m_trackoff() {

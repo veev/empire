@@ -2,7 +2,7 @@
 	'use-strict';
 	var _trackingon = false;
 	var controlsActive = false;
-	var audioactive = false;
+	// var audioactive = false;
 	var vid1Loaded = false;
 	var vid2Loaded = false;
 	var mouseXTracking = false;
@@ -54,6 +54,7 @@
 		$("#c_playElement")
 			.on('click', function () {
 				playButton();
+				console.log("Cradle playButton #c_playElement");
 				if( !document.getElementById("video1").paused ){
 					toggleButtonDisplay();
 				}})
@@ -79,6 +80,8 @@
 		$("#c_play_bg")
 			.on('click', function() {
 				playButton();
+				console.log("Cradle playButton #c_play_bg");
+
 				toggleButtonDisplay();
 			})
 		
@@ -191,6 +194,7 @@
 			if(active) {
 				if (document.getElementById("video1").paused){
 			 		playButton();	
+			 		console.log("Cradle playButton closeScreen");
 				} 
 				trackon();
 			}
@@ -209,7 +213,7 @@
 	}
 	function initScrollspy(){
 		instructions.scrollspy({
-		min: $("#c_instructions").offset().top,
+		min: instructions.offset().top,
 		onEnter: function(element, position) {
 			if(document.getElementById("video1").currentTime == 0) {
 				openScreen();
@@ -219,7 +223,7 @@
 			}
 		},
 		onLeave: function(element, position) {
-			$("#c_instructions").fadeOut();
+			instructions.fadeOut();
 		}
 	});
 	}
@@ -473,19 +477,20 @@
 				initVideos();
 				lazywidth = outerOuter.width();
 				currentVideoId = 'video1';
-				enableControls();
 			 	firstTime = false;
 			 }
 			 else{
 
 			 }
+
+			enableControls();
 			active = true;
 
-			if( document.getElementById("video1")){
+
 			if( document.getElementById("video1").currentTime > 0 ) {
-				 	toggleButtonDisplay();
-				 }
+				toggleButtonDisplay();
 			}
+
 
 		},
 		deactivate:function(){
