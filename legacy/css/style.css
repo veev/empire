@@ -43,20 +43,19 @@ div.legacy_bottom a { color: #000; }
 div.legacy_bottom div#legacy_bottomtitle { z-index: 1; position: absolute; bottom: 25; width: 100%; text-align: center; }
 div.legacy_bottom h2 { color: #000; padding-bottom: 8px; font-size: 1.6em; text-align: center; }
 div.legacy_bottom div.inner { padding: 1px 0 30px 0; }
-div.legacy_bottom div#lbottom_structure { z-index: 2; position: relative; margin:0 auto; width: 838px; height: 751px;  }
-div.legacy_bottom div#lbottom_structure div { text-align: left;  padding: 60px 0 0 175px; width: 506px;  color: #000; }
-div.legacy_bottom div#lbottom_structure div p { margin: 1.1em 0; text-align: left; width: 700px; margin: 1em auto; color: #000}
+div.legacy_bottom div#lbottom_structure { z-index: 2; position: relative; margin:0 auto; width: 612px; height: 612px; background: url(../../art/legacy/legacy_bottomstructure.png) no-repeat; }
+div.legacy_bottom div#lbottom_structure div { text-align: left;  padding: 4px 0 0 29px; width: 555px;  color: #000; }
+div.legacy_bottom div#lbottom_structure div p { text-align: left; font-size: 1.1em; margin: 1em auto; color: #000}
 
 div.legacy_bottom div#lbottom_structure div a { color: 000; }
 
-div.mystical { text-align: left; background: url(../../art/legacy/leg_overlay.png) no-repeat 220px 8px; position: relative; margin: auto; width: 790px; height: 500px; overflow: auto; }
+div.mystical { text-align: left; background: url(../../art/legacy/legacy_topstructure.png) no-repeat; background-position-x: center; position: relative; margin: auto; width: 900px; height: 459px; overflow: auto; }
 div.mystical p { position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
-div.mystical p#a { top: 0px; left: 270px; z-index: 1; }
-div.mystical p#b { top: 170px; left: 575px; width: 200px; z-index: 2; }
-div.mystical p#c { top: 355px; left: 260px; }
-div.mystical p#d { top: 170px; left: 55px; z-index: 3; }
-div.mystical p#e { top: 160px; left: 305px; width: 200px; text-align: center; }
-div.mystical p#f { top: 425px; width: 520px; left: 150px; text-align: center; }
+div.mystical p#a { top: 64px; left: 40px; z-index: 1; }
+div.mystical p#b { top: 367px; left: 103px; width: 200px; z-index: 2; }
+div.mystical p#c { top: 367px; left: 602px; }
+div.mystical p#d { top: 65px; left: 603px; z-index: 3; }
+div.mystical p#f { top: 184px; width: 200px; left: 348px; text-align: center; }
 div.legacy_top div.play { position: absolute; width: 127px; height: 45px; cursor: pointer; background: url(/art/f_playbutton.png); }
 div#legacy_main div.more { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(/legacy/art/leg_more.png) no-repeat; }
 
@@ -117,24 +116,39 @@ div#legacy_main #l_outerouter #l_outerinner {
 
 div#legacy_main div#l_instructions { 
 	position: absolute; 
-	z-index: 800; cursor: 
+	z-index: 1000; cursor: 
 	pointer; background: 
 	rgba(0,0,0,.6); 
 	width: 1200px; 
 	padding: 150px 0px 160px 0px; 
 	height: 230px; 
-	text-align: center; }
-
-div#l_instructions p#one {
-	position: relative;
-	top:0;
-	text-align: center;
 }
 
-div#l_instructions p#two {
+div#l_instructions p#one_a {
 	position: relative;
-	top: 50;
-	text-align: center;
+	top:0;
+	left: 556;
+	color: #fbb03b;
+}
+div#l_instructions p#one_b {
+	position: relative;
+	top: 29;
+	left: 558;
+	color: #fbb03b;
+}
+
+div#l_instructions p#two_a {
+	position: relative;
+	top: 95;
+	left: 555;
+	color: #fbb03b;
+}
+
+div#l_instructions p#two_b {
+	position: relative;
+	top: 124;
+	left: 577;
+	color: #fbb03b;
 }
 
 
@@ -157,53 +171,55 @@ div#l_instructions p#two {
 	margin-left:auto;
 	margin-right:auto;
 /*	margin-top:1em;*/
-	margin-top: 120px;
+	margin-top: 12%;
+	cursor: pointer;
 }
 
 .legacy-item {
 	width:640px;
 	height:203px;
+	cursor: pointer;
 }
 
-#legacy_container_indonesia {
+#legacy_container_southafrica {
 /*	background-color:#cfc;*/
 	position:absolute;
-	top:398px;
+	top:396px;
 	left:1198px;
-	border:1px solid white;
+	border:2px dotted #fbb03b;
 	-webkit-transform: rotate(135deg);
 	-moz-transform: rotate(135deg);
 	-o-transform: rotate(135deg);
 }
 
-#legacy_container_srilanka {
+#legacy_container_india {
 /*	background-color:#cff;*/
 	position:absolute;
-	top:852px;
-	left:455px;
-	border:1px solid white;
+	top:851px;
+	left:454px;
+	border:2px dotted #fbb03b;
 	-webkit-transform: rotate(225deg);
 	-moz-transform: rotate(225deg);
 	-o-transform: rotate(225deg);
 }
 
-#legacy_container_india {
+#legacy_container_indonesia {
 /*	background-color:#fcf;*/
 	position:absolute;
-	top:109px;
-	left:1px;
-	border:1px solid white;
+	top:107px;
+	left:0px;
+	border:2px dotted #fbb03b;
 	-webkit-transform: rotate(315deg);
 	-moz-transform: rotate(315deg);
 	-o-transform: rotate(315deg);
 }
 
-#legacy_container_southafrica {
+#legacy_container_srilanka {
 /*	background-color:#ffc;*/
 	position:absolute;
-	top:-345px;
-	left:744px;
-	border:1px solid white;
+	top:-347px;
+	left:743px;
+	border:2px dotted #fbb03b;
 	-webkit-transform: rotate(405deg);
 	-moz-transform: rotate(405deg);
 	-o-transform: rotate(405deg);
@@ -221,6 +237,34 @@ div#l_instructions p#two {
 	background-color:#ffc;*/
 }
 
+#diamond_border {
+	position:absolute;
+	margin:0;
+    padding:0;
+    z-index: 1000;
+    cursor: pointer;
+    top: 64px;
+	left:607px;
+	width:262px;
+	height:262px;
+	border:2px dotted #fbb03b;
+	pointer-events: none;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+}
+
+#l_play_bg {
+	background: url(../../art/periphery/play_bg.png);
+	width: 155px;
+	height: 155px;
+	position: absolute;
+	z-index: 1000;
+	left: 530;
+	top: 174;
+	cursor: pointer;
+}
+
 #corner1 {
 	position:absolute;
 	margin:0;
@@ -231,7 +275,7 @@ div#l_instructions p#two {
 	height:186px;
 /*	opacity: 0.5;*/
 /*	background-color:#ffc;*/
-	z-index: 20;
+	z-index: 999;
 	cursor: pointer;
 }
 
@@ -245,7 +289,7 @@ div#l_instructions p#two {
 	height:186px;
 /*	opacity: 0.5;*/
 /*	background-color:#cff;*/
-	z-index: 20;
+	z-index: 999;
 	cursor: pointer;
 }
 
@@ -259,7 +303,7 @@ div#l_instructions p#two {
 	height:186px;
 /*	opacity: 0.5;*/
 /*	background-color:#cfc;*/
-	z-index: 20;
+	z-index: 999;
 	cursor: pointer;
 }
 
@@ -273,6 +317,6 @@ div#l_instructions p#two {
 	height:186px;
 /*	opacity: 0.5;*/
 /*	background-color:#ccf;*/
-	z-index: 20;
+	z-index: 999;
 	cursor: pointer;
 }

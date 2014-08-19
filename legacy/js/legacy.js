@@ -10,6 +10,8 @@
 	var l_videoTrackCurrentPosition;
 
 	var currentTime = 0;
+	var currentVolume = 0;
+	var intervalID = 0;
 
 	var active = false;
 	var introDismissed = false;
@@ -100,7 +102,11 @@
 			body.animate({scrollTop: ($('#legacy_main').offset().top) }, 1000);
 			console.log("openScreen() in legacymore");
 			console.log("[Legacy: legacymore listener] if not legacyLoaded, legacy openscreen");
-			openScreen();
+			if(active && !introDismissed) {
+				openScreen();
+			} else {
+				toggleButtonDisplay();
+			}
 		});
 	}
 
@@ -131,13 +137,39 @@
 		console.log("[videoTracker] :" + videoTracker);
 	}
 
+	var fadeInAudio = function (video) {
+		//console.log("In fadeInAudio");
+		if(currentVolume <= 1){
+			video.volume = currentVolume ;
+			currentVolume += 0.07;
+			//console.log(currentVolume);
+		} else{
+			clearTimeout(intervalID);
+			currentVolume = 0;
+			return;
+		}
+
+		intervalID = setTimeout(function() {fadeInAudio(video);}, 100);
+	};
+
 	function selectVideo(selectedId) {
 		var video, id, container;
 		for (id in videos) {
 			if (videos.hasOwnProperty(id)) {
 				video = videos[id];
 				if (video) {
-					video.volume = (!selectedId || selectedId === id) ? 1 : 0;
+					// video.volume = (!selectedId || selectedId === id) ? 1 : 0;
+
+					if(!selectedId){
+						//do volume upp f
+						video.volume = 0.75;
+					} else if(selectedId === id){
+						//fading stuff
+						fadeInAudio(video); 
+						//video.volume = 1;
+					} else{
+						video.volume = 0;
+					}
 				}
 			}
 		}
@@ -171,11 +203,17 @@
 			});
 		});
 
+		//play button that appears after first time instructions
+		$("#l_play_bg").on('click', function() {
+			playVideos();
+			toggleButtonDisplay();
+		});
+
 		var cornerOrder = {
-			india: 1,
-			southafrica: 2,
-			srilanka: 3,
-			indonesia: 4
+			indonesia: 1,
+			srilanka: 2,
+			india: 3,
+			southafrica: 4
 		};
 
 		zContainer.click(function(evt){
@@ -203,14 +241,32 @@
 		instructions.scrollspy({
 			min: instructions.offset().top,
 			onEnter: function(element, position) {
-				if(active) {
+
+				if(active && !introDismissed) {
 					openScreen();
+				} else {
+					toggleButtonDisplay();
 				}
 			},
 			onLeave: function(element, position) {
 				instructions.fadeOut();
 			}
 		});
+	}
+
+	function toggleButtonDisplay() {
+		if(videos != null) {
+			Object.keys(videos).forEach(function(id) {
+				if(active && videos[id].paused) {
+					console.log("Toggle periphery play button on");
+					$("#l_play_bg").fadeIn();
+				} else {
+					console.log("Toggle periphery play button off");
+					$("#l_play_bg").fadeOut();
+				}
+			})
+			
+		}
 	}
 
 	function initVideos() {
@@ -231,8 +287,7 @@
 
 				console.log('[ Legacy : ] ' + id + ' has ended');
 				
-				zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
-
+				//zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
 
 				console.log(evt.srcElement.id);
 				var string = evt.srcElement.id;
@@ -246,11 +301,14 @@
 					}
 					if(count >= 4){
 						console.log('[ Legacy : ] All videos complete.');
+						zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
 						playVideos();
+						//TODO: buildEndScreen();
 					}
 					
 				});
 
+				//for volume
 				selectVideo(null);
 			});
 
@@ -370,6 +428,7 @@
 			if (!active) {
 				legacyContent.fadeIn(2000);
 			}
+
 			active = true;
 			sizer();
 			initCanvas();
@@ -387,7 +446,6 @@
 			if (active) {
 				legacyContent.fadeOut("fast");
 			}
-
 			active = false;
 		}
 	};
