@@ -358,8 +358,8 @@
 		layers = seriously.effect('layers', {
 			count: leg_videos.length + 1
 		});
+		layers.sizeMode = leg_videos.length;
 
-		console.log(layers);
 		layers['source' + leg_videos.length] = maskCanvas;
 		target.source = layers;
 
