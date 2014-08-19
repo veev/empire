@@ -185,7 +185,7 @@ div#l_instructions p#two_b {
 /*	background-color:#cfc;*/
 	position:absolute;
 	top:396px;
-	left:1198px;
+	left:1197px;
 	border:2px dotted #fbb03b;
 	-webkit-transform: rotate(135deg);
 	-moz-transform: rotate(135deg);
@@ -195,7 +195,7 @@ div#l_instructions p#two_b {
 #legacy_container_india {
 /*	background-color:#cff;*/
 	position:absolute;
-	top:851px;
+	top:849px;
 	left:454px;
 	border:2px dotted #fbb03b;
 	-webkit-transform: rotate(225deg);
