@@ -54,6 +54,7 @@
 		$("#c_playElement")
 			.on('click', function () {
 				playButton();
+				console.log("Cradle playButton #c_playElement");
 				if( !document.getElementById("video1").paused ){
 					toggleButtonDisplay();
 				}})
@@ -79,6 +80,8 @@
 		$("#c_play_bg")
 			.on('click', function() {
 				playButton();
+				console.log("Cradle playButton #c_play_bg");
+
 				toggleButtonDisplay();
 			})
 		
@@ -191,6 +194,7 @@
 			if(active) {
 				if (document.getElementById("video1").paused){
 			 		playButton();	
+			 		console.log("Cradle playButton closeScreen");
 				} 
 				trackon();
 			}
