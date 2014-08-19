@@ -2,7 +2,7 @@
 	'use-strict';
 	var _trackingon = false;
 	var controlsActive = false;
-	var audioactive = false;
+	// var audioactive = false;
 	var vid1Loaded = false;
 	var vid2Loaded = false;
 	var mouseXTracking = false;
