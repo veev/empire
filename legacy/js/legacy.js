@@ -372,13 +372,7 @@
 			crop.top = 10;
 			crop.bottom = 32;
 
-			// reformat node needed to make the layers node big enough
-			reformat.source = crop;
-			reformat.mode = 'none';
-			reformat.height = target.height;
-			reformat.width = Math.round(target.height  * 960 / (304 - 32 - 10));
-
-			move.source = reformat;
+			move.source = crop;
 			//move.scale(0.5); // optional, here if you need it
 
 			layers['source' + index] = move;
