@@ -111,6 +111,11 @@
 	}
 
 	function playVideos() {
+
+		if(audioactive) {
+			audiostop();
+		}
+
 		var id;
 
 		if (!allVideosLoaded) {
@@ -404,9 +409,9 @@
 		instructions.fadeOut(1000, function() {
 			introDismissed = true;
 			playVideos();
-			if(audioactive) {
-				audiostop();
-			}
+			// if(audioactive) {
+			// 	audiostop();
+			// }
 		});
 	}
 
