@@ -82,7 +82,7 @@
 			legbottom = 20;
 		}
 
-		$(".legacy_bottom").css("height",$(".legacy_top:first").height());
+		// $(".legacy_bottom").css("height",$(".legacy_top:first").height());
 
 		$("#legacy_title").css({ 'padding-top': padtop });
 
