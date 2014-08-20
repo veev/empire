@@ -353,17 +353,19 @@
 			});
 
 			video.addEventListener('timeupdate', function (evt) {
-				Object.keys(videoTracker).forEach(function (id) {
-					//TODO - add function that keeps track of time watched for each film
-					//console.log('[ Legacy : ] ' + id + ' is playing');
-					//console.log(evt.srcElement.id);
-					var string = evt.srcElement.id;
-					var index = string.split('_');
+				var videoID = evt.srcElement.id;
+				var index = videoID.split('_')[0];
+				var vid = document.getElementById(videoID);
+				var dur = Math.floor(vid.currentTime);
+				//console.log("id: " + index + " currentDur : " + dur);
+				if(dur > 0) {
+					var ratio = (document.getElementById(videoID).duration / dur);
+				}
 
-					//add scrubberUpdater function here
-				});
+				videoCurrentTime = video.currentTime;
+
+				$("#" + id + "_progress").css({ "width": (640 / ratio) + 'px' });
 			});
-
 
 			video.load();
 			videos[id] = video;

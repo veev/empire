@@ -225,6 +225,68 @@ div#l_instructions p#two_b {
 	-o-transform: rotate(405deg);
 }
 
+.scrubberBar {
+	width:640px;
+	height: 1px;
+	background-color: #666;
+	position: absolute;
+}
+
+.progressBar {
+	width: 0;
+	position: absolute;
+	height: 1px;
+	background-color: #fbb03b;
+}
+
+#india_scrubber {
+	top:705px;
+	left:603px;
+	-webkit-transform: rotate(225deg);
+	-moz-transform: rotate(225deg);
+	-o-transform: rotate(225deg);
+}
+
+#india_progress {
+	width: 0;
+}
+
+#southafrica_scrubber {
+	top:252px;
+	left:1055px;
+	-webkit-transform: rotate(135deg);
+	-moz-transform: rotate(135deg);
+	-o-transform: rotate(135deg);
+}
+
+#southafrica_progress {
+	width: 0;
+}
+
+#srilanka_scrubber {
+	top:-200px;
+	left:602px;
+	-webkit-transform: rotate(405deg);
+	-moz-transform: rotate(405deg);
+	-o-transform: rotate(405deg);
+}
+
+#srilanka_progress {
+	width: 0;
+}
+
+#indonesia_scrubber {
+	top:254px;
+	left:150px;
+	-webkit-transform: rotate(315deg);
+	-moz-transform: rotate(315deg);
+	-o-transform: rotate(315deg);
+}
+
+#indonesia_progress {
+	width: 0;
+}
+
 #diamond {
 	position:absolute;
 	margin:0;
