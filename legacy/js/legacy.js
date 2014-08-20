@@ -12,6 +12,7 @@
 	var currentTime = 0;
 	var currentVolume = 0;
 	var intervalID = 0;
+	var videoCurrentTime = 0;
 
 	var active = false;
 	var introDismissed = false;
@@ -140,6 +141,34 @@
 		}
 
 		console.log("[videoTracker] :" + videoTracker);
+	}
+
+	/*
+	Function that updates as videos play. Needs to:
+	- Update progress bar for each film
+	- Keep track of which video is being watched (zoomed to / selected)
+	- Draw connections between videos of how people viewed them
+	*/
+	function scrubberUpdater(id) {
+		var video;
+		
+		for (id in videos) {
+			if(videos.hasOwnProperty(id)) {
+				video = videos[id];
+				if (video) {
+					
+					var dur = Math.floor(video.currentTime);
+
+					if (dur > 0) {
+						var ratio = video.duration / dur;
+					}
+
+					videoCurrentTime = video.currentTime;
+
+					$("#" + id + "_progress").css({ "width": (640 / ratio) + 'px' });
+				}
+			}
+		}
 	}
 
 	var fadeInAudio = function (video) {
@@ -293,7 +322,9 @@
 				console.log('[ Legacy : ] ' + id + ' has ended');
 				
 				//zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
-
+				//Can't kick people out of viewing a video if one happens to end. 
+				//Should only do this if the one you're watching ends
+			
 				console.log(evt.srcElement.id);
 				var string = evt.srcElement.id;
 				var index = string.split('_');
@@ -306,8 +337,13 @@
 					}
 					if(count >= 4){
 						console.log('[ Legacy : ] All videos complete.');
-						zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
+						//We should only kick people out of the zoomed in view if the one they're zoomed on ends
+						//zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
+
+						//Loop videos after they all end
 						playVideos();
+
+						//But leave the diamond opacity low?
 						//TODO: buildEndScreen();
 					}
 					
@@ -325,7 +361,7 @@
 					var string = evt.srcElement.id;
 					var index = string.split('_');
 
-
+					//add scrubberUpdater function here
 				});
 			});
 
@@ -354,7 +390,7 @@
 		ctx.lineTo(0, ch / 2);
 		ctx.lineTo(cw / 2, 0);
 		ctx.fill();
-
+		
 		layers = seriously.effect('layers', {
 			count: leg_videos.length + 1
 		});
