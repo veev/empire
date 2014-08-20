@@ -5,7 +5,7 @@ var audioactive = false;
 var audiovolume = 20;
 var _currentaudiovolume = 0;
 var ambientAudio;
-var vIvl = new Number();
+var vIvl;
 var dontannoysam = false;
 var _ammobile = false;
 var _canhls = true;
@@ -102,8 +102,6 @@ $(document).ready(function () {
 	// attachMigrantsEvents();
 	// attachPeripheryEvents();
 	window.addEventListener("hashchange", hashEvent, false);
-
-	migrants.blockMenu();
 
 	$(".home_button").on('click', function(e) {
 		cradle.deactivate();
@@ -576,7 +574,7 @@ var fadeInAmbientAudio = function () {
 	if(_currentaudiovolume > audiovolume){
 		clearInterval(vIvl);
 	}
-}
+};
 
 var fadeOutAmbientAudio = function () {
 
