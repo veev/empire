@@ -178,7 +178,7 @@
 				}
 			}
 		}
-		
+
 		container = $('#legacy_container_' + selectedId);
 		console.log(container);
 		//console.log(zContainer);
@@ -339,8 +339,7 @@
 		seriously = new Seriously();
 		target = seriously.target('#canvas');
 		leg_videos = document.querySelectorAll('.legacy-video');
-		//console.log(leg_videos);
-		
+
 		maskCanvas = document.createElement('canvas');
 		maskCanvas.width = cw = target.width;
 		maskCanvas.height = ch = target.height;
@@ -356,20 +355,25 @@
 		ctx.lineTo(cw / 2, 0);
 		ctx.fill();
 
-		//CANVAS CODE
 		layers = seriously.effect('layers', {
 			count: leg_videos.length + 1
 		});
+		layers.sizeMode = leg_videos.length;
 
-		console.log(layers);
 		layers['source' + leg_videos.length] = maskCanvas;
 		target.source = layers;
 
 		Array.prototype.forEach.call(leg_videos, function (video, index) {
-			var move = seriously.transform('2d');
+			var move = seriously.transform('2d'),
+				crop = seriously.effect('crop'),
+				reformat = seriously.transform('reformat');
 
-			move.source = video;
-			move.scale(0.5); // scaling is optional.
+			crop.source = video;
+			crop.top = 10;
+			crop.bottom = 32;
+
+			move.source = crop;
+			//move.scale(0.5); // optional, here if you need it
 
 			layers['source' + index] = move;
 
@@ -377,14 +381,13 @@
 				// we don't know how much to move the videos until we know their dimensions
 				var x = (index % 2 ? 1 : -1),
 					y = (index < 2 ? -1 : 1);
-				move.translateX = x * video.videoWidth / 2 * move.scaleX;
-				move.translateY = y * video.videoHeight / 2 * move.scaleY;
 
+				move.translateX = x * crop.width / 2 * move.scaleX;
+				move.translateY = y * crop.height / 2 * move.scaleY;
 			};
 		});
 
 		seriously.go();
-
 	}
 
 
