@@ -310,7 +310,7 @@ div#l_instructions p#two_b {
 	left:607px;
 	width:262px;
 	height:262px;
-	border:2px dotted #fbb03b;
+	border:1px dotted #fbb03b;
 	pointer-events: none;
 	-webkit-transform: rotate(45deg);
 	-moz-transform: rotate(45deg);
