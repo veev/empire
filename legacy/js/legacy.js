@@ -331,7 +331,7 @@
 				videoTracker[index[0]].complete = true;
 				var count = 0;
 				Object.keys(videoTracker).forEach(function (id) {
-					
+
 					if(videoTracker[id].complete){
 						count++;
 					}
@@ -346,7 +346,6 @@
 						//But leave the diamond opacity low?
 						//TODO: buildEndScreen();
 					}
-					
 				});
 
 				//for volume
@@ -466,6 +465,7 @@
 				$(".legacy_top").css({ 'background' : 'none' });
 				// sizer();
 				initVideos();
+				initCanvas();
 			}
 
 			firstTime = false;
@@ -475,7 +475,6 @@
 
 			active = true;
 			sizer();
-			initCanvas();
 		},
 		deactivate: function () {
 			var id;
