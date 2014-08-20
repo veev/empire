@@ -18,13 +18,29 @@
 
 	var videoCurrentTime = 0;
 	
-	var sideTracker = new Object();
+	var sideTracker = {};
 	var _transitiontimerIvl = new Number();
 	var soundivl = new Number();
 	var openIvl = new Number();
 	var currentVideoId = 1;
 	var currentVidesPos = 0;
 	var instructions, outerOuter, container, controls, cradleContent ;
+	function map(i, sStart, sEnd, tStart, tEnd) {
+			var v = i-sStart;
+			if (v>=0) {
+					if (i < sStart) { return tStart;}
+					else if (i > sEnd) {return tEnd;}
+			} else {
+					if (i < sStart) {return tStart;}
+					else if (i < sEnd){return tEnd;}
+			}
+			var sRange = sEnd - sStart;
+			if (sRange == 0) {return tStart;}
+			var tMax = tEnd - tStart;
+			var val = tStart + v / sRange * tMax;
+			//console.log("In map " + val);
+			return parseInt(val);
+	}
 
 	var videos = {
 		1: null,
@@ -325,6 +341,8 @@
 				if(id ==2){
 					videos[id].volume =0;	
 				}
+				videos[id].volume = 0;
+
 				videos[id].play();
 			}
 		}
@@ -375,8 +393,10 @@
 		videoCurrentTime = document.getElementById(currentVideoId).currentTime;
 
 		$("#c_progress").css({ "width": (930 / ratio) + 'px' });
+		//console.log("im on flipside  " + flipside);
 
 		sideTracker[Math.floor(document.getElementById(currentVideoId).currentTime)] = flipside;
+		//console.log(sideTracker);
 		
 	}
 
@@ -405,10 +425,14 @@
 		var multiplier = 1.21;
 
 		for(var x = 0; x < 446; x++){
+			// for(var x = 0; x < 286; x++){
+			var i = map(x, 0, 446,0, Object.keys(sideTracker).length ) ;
 			Object.keys(sideTracker).length;
 			outputstring += '<div style="width: 445px; ';
-			var rightnow = sideTracker[x];
+			var rightnow = sideTracker[i];
 			var accum = 1;
+			//console.log(sideTracker[i]);
+			//console.log(i);
 			while(sideTracker[x] == rightnow){
 				accum++;
 				x++;	
