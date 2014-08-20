@@ -341,8 +341,6 @@
 				if(id ==2){
 					videos[id].volume =0;	
 				}
-				videos[id].volume = 0;
-
 				videos[id].play();
 			}
 		}
