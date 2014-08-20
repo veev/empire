@@ -187,7 +187,7 @@ div#l_instructions p#two_b {
 	position:absolute;
 	top:399px;
 	left:1204px;
-	border:2px dotted #fbb03b;
+	border:1px dotted #fbb03b;
 	-webkit-transform: rotate(135deg);
 	-moz-transform: rotate(135deg);
 	-o-transform: rotate(135deg);
@@ -198,7 +198,7 @@ div#l_instructions p#two_b {
 	position:absolute;
 	top:855px;
 	left:455px;
-	border:2px dotted #fbb03b;
+	border:1px dotted #fbb03b;
 	-webkit-transform: rotate(225deg);
 	-moz-transform: rotate(225deg);
 	-o-transform: rotate(225deg);
@@ -209,7 +209,7 @@ div#l_instructions p#two_b {
 	position:absolute;
 	top:107px;
 	left:0px;
-	border:2px dotted #fbb03b;
+	border:1px dotted #fbb03b;
 	-webkit-transform: rotate(315deg);
 	-moz-transform: rotate(315deg);
 	-o-transform: rotate(315deg);
@@ -220,7 +220,7 @@ div#l_instructions p#two_b {
 	position:absolute;
 	top:-349px;
 	left:748px;
-	border:2px dotted #fbb03b;
+	border:1px dotted #fbb03b;
 	-webkit-transform: rotate(405deg);
 	-moz-transform: rotate(405deg);
 	-o-transform: rotate(405deg);
