@@ -12,6 +12,7 @@
 	var currentTime = 0;
 	var currentVolume = 0;
 	var intervalID = 0;
+//	var intervalID_out = 0;
 	var videoCurrentTime = 0;
 
 	var active = false;
@@ -145,9 +146,9 @@
 
 	/*
 	Function that updates as videos play. Needs to:
-	- Update progress bar for each film
+	
 	- Keep track of which video is being watched (zoomed to / selected)
-	- Draw connections between videos of how people viewed them
+
 	*/
 	function scrubberUpdater(id) {
 		var video;
@@ -172,11 +173,11 @@
 	}
 
 	var fadeInAudio = function (video) {
-		//console.log("In fadeInAudio");
+		console.log("In fadeInAudio");
 		if(currentVolume <= 1){
 			video.volume = currentVolume ;
 			currentVolume += 0.07;
-			//console.log(currentVolume);
+			console.log(currentVolume);
 		} else{
 			clearTimeout(intervalID);
 			currentVolume = 0;
@@ -186,24 +187,53 @@
 		intervalID = setTimeout(function() {fadeInAudio(video);}, 100);
 	};
 
+/* Don't think this is helping
+	var fadeOutAudio = function (video) {
+		console.log("In fadeOutAudio");
+		if(currentVolume > 0){
+			video.volume = currentVolume;
+			currentVolume -= 0.07;
+			console.log(currentVolume);
+		} else {
+			clearTimeout(intervalID_out);
+			currentVolume = 0;
+			return;
+		}
+
+		intervalID_out = setTimeout(function() {fadeOutAudio(video);}, 100);
+	}
+*/
 	function selectVideo(selectedId) {
 		var video, id, container;
 		for (id in videos) {
 			if (videos.hasOwnProperty(id)) {
 				video = videos[id];
+				
 				if (video) {
-					// video.volume = (!selectedId || selectedId === id) ? 1 : 0;
 
+					// video.volume = (!selectedId || selectedId === id) ? 1 : 0;
 					if(!selectedId){
 						//do volume upp f
 						video.volume = 0.75;
+
+						//This isn't working. Better way/place to keep track of active state?
+						videoTracker[id].active = false;
+						//console.log(selectedId + " is " + videoTracker[id].active);
 					} else if(selectedId === id){
+
+						videoTracker[id].active = true;
+						//console.log(selectedId + " is " + videoTracker[id].active);
 						//fading stuff
 						fadeInAudio(video); 
 						//video.volume = 1;
-					} else{
+					} else {
+						//fadeOutAudio(video);
 						video.volume = 0;
+						videoTracker[id].active = false;
+						//console.log(selectedId + " is " + videoTracker[id].active);
 					}
+				} else {
+
 				}
 			}
 		}
@@ -312,6 +342,7 @@
 				videoTracker[id] = {};
 				videoTracker[id].totalDuration = video.duration;
 				videoTracker[id].durationPlayed = 0;
+				videoTracker[id].active = false;
 				videoTracker[id].complete = false;
 				console.log(videoTracker[id]);
 				
@@ -328,6 +359,7 @@
 				console.log(evt.srcElement.id);
 				var string = evt.srcElement.id;
 				var index = string.split('_');
+				//index[0] is country name
 				videoTracker[index[0]].complete = true;
 				var count = 0;
 				Object.keys(videoTracker).forEach(function (id) {
@@ -356,15 +388,17 @@
 				var videoID = evt.srcElement.id;
 				var index = videoID.split('_')[0];
 				var vid = document.getElementById(videoID);
+				
+				// Update progress bar for each film
 				var dur = Math.floor(vid.currentTime);
 				//console.log("id: " + index + " currentDur : " + dur);
 				if(dur > 0) {
 					var ratio = (document.getElementById(videoID).duration / dur);
 				}
-
 				videoCurrentTime = video.currentTime;
 
 				$("#" + id + "_progress").css({ "width": (640 / ratio) + 'px' });
+
 			});
 
 			video.load();
@@ -489,6 +523,7 @@
 			}
 
 			if (active) {
+				zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
 				legacyContent.fadeOut("fast");
 			}
 			active = false;
