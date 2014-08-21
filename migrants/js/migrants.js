@@ -8,8 +8,8 @@
 	var WHITE = '#FFFFFF';
 	var BLACK = '#000000';
 	var ORANGE = '#ff5a00';
-	var WIDTH = 900;
-	var HEIGHT = 900;
+	var WIDTH = 850;
+	var HEIGHT = 850;
 
 	var radius = HEIGHT - 40;
 	var center = WIDTH / 2; // horizontal
@@ -310,9 +310,9 @@
 
 		// Hours text
 		archtype.text(center, 10, '24h').attr(styles.timeText);
-		archtype.text(center + radius / 2 + 17, HEIGHT / 4 + 2, '6h').attr(styles.timeText);
-		archtype.text(center, middle, '12h').attr(styles.timeText);
-		archtype.text(center - radius / 2 - 17, HEIGHT / 4 + 2 , '18h').attr(styles.timeText);
+		archtype.text(center + radius / 2 + 10, HEIGHT / 4 + 2, '6').attr(styles.timeText);
+		archtype.text(center, middle - 2, '12').attr(styles.timeText);
+		archtype.text(center - radius / 2 - 12, HEIGHT / 4 + 2 , '18').attr(styles.timeText);
 		archtype.text(center, 38, '20m:50s').attr(styles.timeText);
 
 		// dots next to hours text
