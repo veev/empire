@@ -9,8 +9,8 @@
 	var BLACK = '#000000';
 	var ORANGE = '#ff5a00';
 	//initialize scaling constants in initPaths() from page height
-	var WIDTH;
-	var HEIGHT;
+	var width;
+	var height;
 	var radius;
 	var center; // horizontal
 	var middle; // vertical
@@ -201,12 +201,12 @@
 	Initialize paths
 	*/
 	function initPaths() {
-		WIDTH = $("#migrants_top").height();
-		HEIGHT = $("#migrants_top").height();;
+		width = $("#migrants_top").height();
+		height = $("#migrants_top").height();;
 
-		radius = HEIGHT - 40;
-		center = WIDTH / 2; // horizontal
-		middle = HEIGHT / 2; // vertical
+		radius = height - 40;
+		center = width / 2; // horizontal
+		middle = height / 2; // vertical
 		
 		var totalArc,
 			timeArc,
