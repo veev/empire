@@ -8,12 +8,12 @@
 	var WHITE = '#FFFFFF';
 	var BLACK = '#000000';
 	var ORANGE = '#ff5a00';
-	var WIDTH = 850;
-	var HEIGHT = 850;
-
-	var radius = HEIGHT - 40;
-	var center = WIDTH / 2; // horizontal
-	var middle = HEIGHT / 2; // vertical
+	//initialize scaling constants in initPaths() from page height
+	var WIDTH;
+	var HEIGHT;
+	var radius;
+	var center; // horizontal
+	var middle; // vertical
 
 	var firstTime = true;
 	var active = false;
@@ -201,6 +201,13 @@
 	Initialize paths
 	*/
 	function initPaths() {
+		WIDTH = $("#migrants_top").height();
+		HEIGHT = $("#migrants_top").height();;
+
+		radius = HEIGHT - 40;
+		center = WIDTH / 2; // horizontal
+		middle = HEIGHT / 2; // vertical
+		
 		var totalArc,
 			timeArc,
 
@@ -1126,9 +1133,10 @@
 				//add Migrants JSON file
 				var data = jsonCall();
 				timecodeArray = loadTimecodeData(data);
-
-				initPaths();
+				
 				sizer();
+				initPaths();
+				
 				migrantsVideo.load();
 				circleScrubber();
 				firstTime = false;
