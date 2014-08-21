@@ -353,8 +353,6 @@
 					console.log('entering m_instructions');
 					openScreen();
 				}
-
-
 			},
 			onLeave: function(element, position) {
 				console.log('leaving m_instructions');
@@ -546,8 +544,8 @@
 		}
 
 		holder.fadeIn(4000, function() {
-			holder.css({'cursor' : 'default', 'pointer-events' : 'none', 'opacity': 1.0, 'z-index': 100});
-			instructions.fadeIn(4000).css({'cursor' : 'default'});
+			holder.css({'cursor' : 'pointer', 'pointer-events' : 'none', 'opacity': 1.0, 'z-index': 100});
+			instructions.fadeIn(4000).css({'cursor' : 'pointer'});
 		});
 		insructIvl = setTimeout(closeScreen, 10000);
 	}
@@ -564,17 +562,19 @@
 			audiostop();
 		}
 		migrantsVideo.volume = 0;
-		instructions.fadeOut(2000);
-		holder.css({'cursor': 'default'}).fadeOut(3000, function() {
-			if(intervalID !== 0){
-				clearTimeout(intervalID);
-			}
+		instructions.fadeOut(800, function() {
+			holder.css({'cursor': 'default'}).fadeOut(1000, function() {
+				if(intervalID !== 0){
+					clearTimeout(intervalID);
+				}
 
-			intervalID = setInterval(fadeInMigrantsAudio, 100);
-			showProgress = true;
-			instructionsOff = true;
-			console.log('Migrants In Holder FadeOut');
+				intervalID = setInterval(fadeInMigrantsAudio, 100);
+				showProgress = true;
+				instructionsOff = true;
+				console.log('Migrants In Holder FadeOut');
+			});
 		});
+
 	}
 
 	function getMigrantsVideoCurrentPos(){
@@ -767,6 +767,11 @@
 			body.animate({scrollTop: ($('#migrants_main').offset().top) }, 1000);
 			openScreen();
 		});
+
+		instructions.on('click', function() {
+			closeScreen();
+			console.log('Migrants on Instruction click');
+		})
 
 		/* block video context menu */
 		migrantsVideo.addEventListener('contextmenu', function (evt) {
