@@ -430,8 +430,6 @@
 		ctx.lineTo(0 - spacing, ch / 2);
 		ctx.lineTo(cw / 2, 0 - spacing);
 		ctx.fill();
-
-
 		
 		layers = seriously.effect('layers', {
 			count: leg_videos.length + 1
@@ -465,7 +463,7 @@
 			};
 		});
 
-
+		ctx.globalCompositeOperation = 'source-over';
 
 		seriously.go(function() {
 			// ctx = maskCanvas.getContext('2d');
@@ -479,28 +477,28 @@
 			ctx.moveTo(cw / 2, 0);
 			ctx.lineTo(cw, ch / 2);
 			ctx.stroke();
-			ctx.closePath();
+			//ctx.closePath();
 			
 			ctx.fillStyle = 'red';
 			ctx.beginPath();
 			ctx.moveTo(cw, ch / 2);
 			ctx.lineTo(cw/2, ch)
 			ctx.stroke();
-			ctx.closePath();
+			//ctx.closePath();
 
 			ctx.fillStyle = 'red';
 			ctx.beginPath();
 			ctx.moveTo(cw/2, ch);
 			ctx.lineTo(0, ch/2)
 			ctx.stroke();
-			ctx.closePath();
+			//ctx.closePath();
 
 			ctx.fillStyle = 'red';
 			ctx.beginPath();
 			ctx.moveTo(0, ch/2);
 			ctx.lineTo(cw/2, 0);
 			ctx.stroke();
-			ctx.closePath();
+			//ctx.closePath();
 
 		}); //pass a callback function to redraw orange lines on top of main canvas
 	}
