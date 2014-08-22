@@ -29,10 +29,10 @@
 	};
 
 	var videoTracker = {
-		indonesia: null,
-		india: null,
-		srilanka: null,
-		southafrica: null,
+		indonesia: {},
+		india: {},
+		srilanka: {},
+		southafrica: {},
 	}
 
 	/*
@@ -210,7 +210,8 @@
 				video = videos[id];
 				
 				if (video) {
-
+					
+					console.log(selectedId + " is " + videoTracker[id].active);
 					// video.volume = (!selectedId || selectedId === id) ? 1 : 0;
 					if(!selectedId){
 						//do volume upp f
@@ -218,11 +219,11 @@
 
 						//This isn't working. Better way/place to keep track of active state?
 						videoTracker[id].active = false;
-						//console.log(selectedId + " is " + videoTracker[id].active);
+						console.log(selectedId + " is " + videoTracker[id].active);
 					} else if(selectedId === id){
-
 						videoTracker[id].active = true;
-						//console.log(selectedId + " is " + videoTracker[id].active);
+						videoTracker[id].active = true;
+						console.log(selectedId + " is " + videoTracker[id].active);
 						//fading stuff
 						fadeInAudio(video); 
 						//video.volume = 1;
@@ -230,10 +231,11 @@
 						//fadeOutAudio(video);
 						video.volume = 0;
 						videoTracker[id].active = false;
-						//console.log(selectedId + " is " + videoTracker[id].active);
+						console.log(selectedId + " is " + videoTracker[id].active);
 					}
 				} else {
-
+					videoTracker[id].active = false;
+					console.log(selectedId + " is " + videoTracker[id].active);
 				}
 			}
 		}
@@ -414,17 +416,22 @@
 		maskCanvas = document.createElement('canvas');
 		maskCanvas.width = cw = target.width;
 		maskCanvas.height = ch = target.height;
+		
 		ctx = maskCanvas.getContext('2d');
 		ctx.fillStyle = 'black';
 		ctx.fillRect(0, 0, target.width, target.height);
 		ctx.globalCompositeOperation = 'destination-out';
+		
+		var spacing = -12;
 		ctx.beginPath();
-		ctx.moveTo(cw / 2, 0);
-		ctx.lineTo(cw, ch / 2);
-		ctx.lineTo(cw / 2, ch);
-		ctx.lineTo(0, ch / 2);
-		ctx.lineTo(cw / 2, 0);
+		ctx.moveTo(cw / 2, 0 - spacing);
+		ctx.lineTo(cw + spacing, ch / 2);
+		ctx.lineTo(cw / 2, ch + spacing);
+		ctx.lineTo(0 - spacing, ch / 2);
+		ctx.lineTo(cw / 2, 0 - spacing);
 		ctx.fill();
+
+
 		
 		layers = seriously.effect('layers', {
 			count: leg_videos.length + 1
@@ -444,7 +451,7 @@
 			crop.bottom = 32;
 
 			move.source = crop;
-			//move.scale(0.5); // optional, here if you need it
+			move.scale(0.71); // optional, here if you need it
 
 			layers['source' + index] = move;
 
@@ -458,7 +465,44 @@
 			};
 		});
 
-		seriously.go();
+
+
+		seriously.go(function() {
+			// ctx = maskCanvas.getContext('2d');
+			// ctx.fillStyle = 'black';
+			// ctx.fillRect(0, 0, target.width, target.height);
+			// ctx.globalCompositeOperation = 'destination-out';
+
+			//test to cover video 
+			ctx.fillStyle = 'red';
+			ctx.beginPath();
+			ctx.moveTo(cw / 2, 0);
+			ctx.lineTo(cw, ch / 2);
+			ctx.stroke();
+			ctx.closePath();
+			
+			ctx.fillStyle = 'red';
+			ctx.beginPath();
+			ctx.moveTo(cw, ch / 2);
+			ctx.lineTo(cw/2, ch)
+			ctx.stroke();
+			ctx.closePath();
+
+			ctx.fillStyle = 'red';
+			ctx.beginPath();
+			ctx.moveTo(cw/2, ch);
+			ctx.lineTo(0, ch/2)
+			ctx.stroke();
+			ctx.closePath();
+
+			ctx.fillStyle = 'red';
+			ctx.beginPath();
+			ctx.moveTo(0, ch/2);
+			ctx.lineTo(cw/2, 0);
+			ctx.stroke();
+			ctx.closePath();
+
+		}); //pass a callback function to redraw orange lines on top of main canvas
 	}
 
 
