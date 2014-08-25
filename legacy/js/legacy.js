@@ -415,10 +415,10 @@
 						
 						//do volume upp for all
 						video.volume = 0.75;
-						$('#legacy_container_' + selectedId).css({'cursor':'pointer'});
 
 						if(videoTracker[id].active){
 							console.log(id +" was active and is now inactive");
+
 							videoTracker[id].active = false;	
 							//videoTracker[id].startPos = 0;
 							//videoTracker[id].endPos = 0;
@@ -528,6 +528,12 @@
 			console.log("in zoom container");
 			selectVideo(null);
 			zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
+
+			$('#legacy_container_india').css({'cursor':'pointer'});
+			$('#legacy_container_indonesia').css({'cursor':'pointer'});
+			$('#legacy_container_southafrica').css({'cursor':'pointer'});
+			$('#legacy_container_srilanka').css({'cursor':'pointer'});
+
 			evt.stopPropagation();
 		});
 
