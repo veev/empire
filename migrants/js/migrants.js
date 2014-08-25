@@ -309,7 +309,10 @@
 		timeCircle.node.id = 'time-circle'; //debug
 
 		progressCircle = archtype.circle(center, 0, 0)
-			.attr(styles.solid)
+			.attr({'fill': ORANGE,
+					'stroke': ORANGE,
+					'stroke-width': '1',
+					'stroke-opacity': '1'})
 			.data('id', 'progress-circle');
 		progressCircle.node.id = 'progress-circle'; //debug
 
