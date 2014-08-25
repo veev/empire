@@ -139,7 +139,8 @@ $(document).ready(function () {
 
 		else if (key == 68 || key == 100) { //press 'D' or 'd'
 			e.preventDefault();
-			// p_endVids();
+			legacy.buildEndScreen();
+			console.log("legacy endscreen");
 		}
 
 		else if (key == 67 || key == 99) { //press 'C' or 'c'
@@ -535,7 +536,7 @@ function drawer () {
 	var _w = container.width();
 	var _h = container.height();
 	var rMargin = 300;
-	var rMargin_alt = 100;
+	var rMargin_alt = '10%';
 
 	$("#titleblock").css({ 'right': rMargin_alt, 'top': (86)});
 	$("#pinchelines").css({ 'height': (_h-(86+80)), 'right': rMargin_alt, 'top': 150 });
@@ -543,7 +544,8 @@ function drawer () {
 	$("#legacy").css({ 'top': ((_h/2) - 280), right: rMargin_alt });
 	$("#cradle").css({ 'top': ((_h/2) + 20), right: rMargin_alt });
 
-	$("#bodytext").css( { 'right': rMargin_alt, 'top': 220 });
+	$("#bodytext").css( { 'right': rMargin_alt, 'top': '25%' });
+	$("#credits").css( { 'right': rMargin_alt, 'top': '60%' });
 }
 
 function audioready() {

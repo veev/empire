@@ -1,3 +1,4 @@
+
 (function (window) {
 	'use strict';
 
@@ -19,6 +20,7 @@
 	var introDismissed = false;
 
 	var firstTime = true;
+	var legacyEndScreen = false;
 
 	var videos = {
 		indonesia: null,
@@ -29,11 +31,12 @@
 	};
 
 	var videoTracker = {
-		indonesia: null,
-		india: null,
-		srilanka: null,
-		southafrica: null,
-	}
+		indonesia: {},
+		india: {},
+		srilanka: {},
+		southafrica: {},
+	};
+
 
 	/*
 	important elements that we may need to refer to again
@@ -53,6 +56,83 @@
 		cw,
 		ch,
 		ctx;
+
+	//Raphael variables
+	var diamondCanvas;
+
+//*** OLD	
+//Tracker Object
+// Active
+// Complete
+// Total Duration
+// Duration Played
+
+//*** NEW
+
+//Tracker Object
+// StartPos
+// EndPost 
+// Active
+
+	var doOnce = true;
+	var count=0;
+
+	//currentActiveVideoTracker
+	var currentActiveVideoTracker = {
+			indonesia: {},
+			india: {},
+			srilanka: {},
+			southafrica: {},
+		};
+ // 1 Object for each video
+ // 1 Object has 
+  // Active - in selectVideo when video was inactive and is now active
+  // StartPos - in selectVideo when video was inactive and is now active
+  // EndPos - in selectVideo when video was active and is now inactive
+
+
+//sessionHistory
+	// Has multiple object for each video
+	var sessionHistory = 	{
+			india:[],
+			indonesia:[],
+			southafrica:[],
+			srilanka:[]
+		};
+
+	function map(i, sStart, sEnd, tStart, tEnd,toInt) {
+		var v = i - sStart;
+		if (v >= 0) {
+			if (i < sStart) {
+				return tStart;
+			}
+			if (i > sEnd) {
+				return tEnd;
+			}
+		} else if (i < sStart) {
+			return tStart;
+		} else if (i < sEnd){
+			return tEnd;
+		}
+
+		var sRange = sEnd - sStart;
+
+		if (!sRange) {
+			return tStart;
+		}
+		
+		var tMax = tEnd - tStart;
+		var value =tStart + v / sRange * tMax;
+		
+		if(toInt){
+			return parseInt(value);
+
+		}
+		else{
+			return value;
+		}
+		
+	}
 
 	function sizer() {
 
@@ -112,6 +192,72 @@
 		});
 	}
 
+	function initPaths() {
+		diamondCanvas = new Raphael("diamond_border", 262, 262);
+		diamondCanvas.path('M 0 0 L 262 0').attr({stroke: '#666', 'stroke-width': '2', 'stroke-opacity': '1.0'});
+		diamondCanvas.path('M 262 0 L 262 262').attr({stroke: '#666', 'stroke-width': '3', 'stroke-opacity': '1.0'});
+		diamondCanvas.path('M 262 262 L 0 262').attr({stroke: '#666', 'stroke-width': '3', 'stroke-opacity': '1.0'});
+		diamondCanvas.path('M 0 262 L 0 0').attr({stroke: '#666', 'stroke-width': '2', 'stroke-opacity': '1.0'});
+		//diamondCanvas.path('M' + 0 + ' 0 L' + 262 + ' 0').attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
+
+	}
+
+	/*
+	Copy the list of which segments of the video have been viewed and save it to localStorage
+	*/
+	function saveSessionHistory() {
+		var saved = [],
+			session,
+			i;
+
+		for (i = 0; i < sessionHistory.length; i++) {
+			session = sessionHistory[i];
+			saved.push({
+				startPos: session.startPos,
+				endPos: session.endPos
+			});
+		}
+
+		try {
+			localStorage.setItem('lsessionHistory', JSON.stringify(saved));
+		} catch (e) {}
+	}
+
+	/*
+	Load list of viewed segments from loadStorage
+	*/
+	function loadSessionHistory() {
+		var saved,
+			session,
+			savedSession,
+			i;
+
+		if (sessionHistory.length) {
+			return;
+		}
+
+		try {
+			saved = JSON.parse(window.localStorage.getItem('lsessionHistory'));
+		} catch (e) {
+			return;
+		}
+
+		if (saved && Array.isArray(saved)) {
+			for (i = 0; i < saved.length; i++) {
+				savedSession = saved[i];
+				sessionHistory.push({
+					// isActive: false,
+					startPos: savedTracker.startPos,
+					endPos: savedTracker.endPos,
+					// isCrossOriginArc: true,
+					// arcSegment: null
+				});
+			}
+			//not sure if this is going to work
+			//addProgressPath(id, start, end);
+		}
+	}
+
 	function playVideos() {
 
 		if(audioactive) {
@@ -158,15 +304,7 @@
 				video = videos[id];
 				if (video) {
 					
-					var dur = Math.floor(video.currentTime);
-
-					if (dur > 0) {
-						var ratio = video.duration / dur;
-					}
-
-					videoCurrentTime = video.currentTime;
-
-					$("#" + id + "_progress").css({ "width": (640 / ratio) + 'px' });
+					
 				}
 			}
 		}
@@ -177,7 +315,7 @@
 		if(currentVolume <= 1){
 			video.volume = currentVolume ;
 			currentVolume += 0.07;
-			console.log(currentVolume);
+			// console.log(currentVolume);
 		} else{
 			clearTimeout(intervalID);
 			currentVolume = 0;
@@ -187,22 +325,74 @@
 		intervalID = setTimeout(function() {fadeInAudio(video);}, 100);
 	};
 
-/* Don't think this is helping
-	var fadeOutAudio = function (video) {
-		console.log("In fadeOutAudio");
-		if(currentVolume > 0){
-			video.volume = currentVolume;
-			currentVolume -= 0.07;
-			console.log(currentVolume);
-		} else {
-			clearTimeout(intervalID_out);
-			currentVolume = 0;
-			return;
+	function addProgressPath(id,start, end){
+		if(id === "srilanka"){
+			var pathString ='M '+start.toString()+' 0 L '+end.toString()+' 0';
+			// console.log("Srilanka "+ pathString);
+			diamondCanvas.path(pathString).attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
 		}
-
-		intervalID_out = setTimeout(function() {fadeOutAudio(video);}, 100);
+		else if(id === "southafrica"){
+			// console.log("southafrica "+ pathString);
+			diamondCanvas.path('M 262 '+start.toString()+' L 262 '+end.toString()).attr({stroke: '#fbb03b', 'stroke-width': '3', 'stroke-opacity': '1.0'});
+		}
+		else if(id === "india"){
+			//  bottom \ india
+			start = 262-start;
+			end = 262-end;
+			// console.log("india "+ pathString);
+			diamondCanvas.path('M '+start.toString()+' 262 L '+end.toString()+' 262').attr({stroke: '#fbb03b', 'stroke-width': '3', 'stroke-opacity': '1.0'});
+		}
+		else if(id === "indonesia"){
+			//  top / indonesia
+			start = 262-start;
+			end = 262-end
+			// console.log("indonesia "+ pathString)/;
+			diamondCanvas.path('M 0 '+start.toString()+' L 0 '+end.toString()).attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
+		}
 	}
-*/
+
+	var debugCount = 0;
+
+	function checkProgressLength(){
+		var fullRange = [];
+		// console.log(sessionHistory.length);
+
+		Object.keys(sessionHistory).forEach(function (id) {
+
+			if(sessionHistory[id].length > 0){
+				
+				for (var i = 0; i < sessionHistory[id].length; i++) {
+					//find the range that has been watched in arc [i] and add it to the full range
+					//i.e is startPos is 10 and endPos is 20
+					// curRange [10,11,12,13,14,15,16,17,18,19,20]
+
+					var curRange = _.range(Math.ceil(sessionHistory[id][i].startPos), Math.ceil(sessionHistory[id][i].endPos), 1);
+					//max value is 275653
+
+					//append curRange to the fullRange i.e range of all lines combined
+					fullRange.push(curRange);
+				}
+			}
+		});
+
+		//remove duplicate steps that have been watched. This removes overlap
+		fullRange = _.flatten(fullRange);
+		fullRange = _.uniq(fullRange);
+
+		//add them all up to see how much has been watched
+		var totalAmtWatched = _.reduce(fullRange, function(memo, num){ return memo + num; }, 0);
+		// if(fullRange.length > 0){
+
+		// }
+		if(!(debugCount%30)){
+			console.log("Current count : " + totalAmtWatched);
+			debugCount =0;
+		}
+		debugCount++
+		//90% of 275653 is 248088
+		return totalAmtWatched >= 248088;
+	}
+
 	function selectVideo(selectedId) {
 		var video, id, container;
 		for (id in videos) {
@@ -210,31 +400,72 @@
 				video = videos[id];
 				
 				if (video) {
+					//Each video should have an array of objects
+					//Each object should have a starPos and End pos
+					//These start and end positions can be used to draw the progress bar.
 
 					// video.volume = (!selectedId || selectedId === id) ? 1 : 0;
 					if(!selectedId){
+						
 						//do volume upp f
 						video.volume = 0.75;
-
 						//This isn't working. Better way/place to keep track of active state?
-						videoTracker[id].active = false;
-						//console.log(selectedId + " is " + videoTracker[id].active);
-					} else if(selectedId === id){
+						// videoTracker[id].active = false;
+						if(videoTracker[id].active){
+							console.log(id +" was active and is now inactive");
+							videoTracker[id].active = false;	
+							//videoTracker[id].startPos = 0;
+							//videoTracker[id].endPos = 0;
 
-						videoTracker[id].active = true;
-						//console.log(selectedId + " is " + videoTracker[id].active);
-						//fading stuff
-						fadeInAudio(video); 
-						//video.volume = 1;
-					} else {
-						//fadeOutAudio(video);
-						video.volume = 0;
-						videoTracker[id].active = false;
-						//console.log(selectedId + " is " + videoTracker[id].active);
+							sessionHistory[id].push({
+							startPos: videoTracker[id].startPos,
+							endPos: videoTracker[id].endPos 
+							});
+							var start = map(videoTracker[id].startPos,0,video.duration, 0, 262,true);
+							var end = map(videoTracker[id].endPos,0,video.duration, 0, 262,true);
+							addProgressPath(id,start,end);
+
+						}
+						console.log("!selectedId");
+						console.log(selectedId + " is " + videoTracker[id].active);
 					}
-				} else {
+					else if(videoTracker[id].active && selectedId !== id){
+						video.volume = 0;
+						console.log("videoTracker[id].active && selectedId !== id");
+						videoTracker[id].endPos = video.currentTime;
+						console.log("videoTracker[id] startPos: " + videoTracker[id].startPos);
+						console.log("videoTracker[id] endPos: " + videoTracker[id].endPos);
+						console.log(videoTracker[id]);
+						sessionHistory[id].push({
+								startPos: videoTracker[id].startPos,
+								endPos: videoTracker[id].endPos 
+							});
 
-				}
+							videoTracker[id].active = false;
+							var start = map(videoTracker[id].startPos,0,video.duration, 0, 262,true);
+							var end = map(videoTracker[id].endPos,0,video.duration, 0, 262,true);
+							addProgressPath(id,start,end);
+					}
+					else if(selectedId === id){
+						if(!videoTracker[id].active){
+							fadeInAudio(video); 
+							videoTracker[id].active = true;
+							videoTracker[id].startPos = video.currentTime;
+
+							videoTracker[id].endPos = -1;
+							currentActiveVideoTracker[id].active = true;
+							console.log(id +" was inactive and is now active");
+							continue;
+						}
+						else{
+							console.log(id +" was active and is now active");
+						}
+					} 
+					else {
+						video.volume = 0;
+						console.log(id +" was inactive and is now inactive");
+					}
+				} 
 			}
 		}
 
@@ -243,6 +474,10 @@
 		//console.log(zContainer);
 		container.zoomTo({targetsize:0.9, duration:600, root: zContainer, closeclick: true });
 		// container.zoomTarget();	
+	}
+
+	function buildEndScreen() {
+		$("#l_endscreen").fadeIn();
 	}
 
 	function attachEvents() {
@@ -344,17 +579,22 @@
 				videoTracker[id].durationPlayed = 0;
 				videoTracker[id].active = false;
 				videoTracker[id].complete = false;
-				console.log(videoTracker[id]);
-				
+				console.log("videoTracker[id]: " + videoTracker[id]);
+
+				currentActiveVideoTracker[id] = {};
+				currentActiveVideoTracker[id].startPos = 0;
+				currentActiveVideoTracker[id].endPos = 0;
+				currentActiveVideoTracker[id].active = false;
+				currentActiveVideoTracker[id].totalDuration = video.duration;
+				console.log("currentActiveVideoTracker[id]: " + currentActiveVideoTracker[id]);				
 			});
 
 			video.addEventListener('ended', function (evt) {
 
 				console.log('[ Legacy : ] ' + id + ' has ended');
-				
-				//zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
-				//Can't kick people out of viewing a video if one happens to end. 
-				//Should only do this if the one you're watching ends
+				if(videoTracker[id].active) {
+					zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
+				}
 			
 				console.log(evt.srcElement.id);
 				var string = evt.srcElement.id;
@@ -365,18 +605,11 @@
 				Object.keys(videoTracker).forEach(function (id) {
 
 					if(videoTracker[id].complete){
+						video.play(); //play video after it completes
 						count++;
 					}
-					if(count >= 4){
+					if(count >= 4){ //Not doing anything anymore since looping changed
 						console.log('[ Legacy : ] All videos complete.');
-						//We should only kick people out of the zoomed in view if the one they're zoomed on ends
-						//zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
-
-						//Loop videos after they all end
-						playVideos();
-
-						//But leave the diamond opacity low?
-						//TODO: buildEndScreen();
 					}
 				});
 
@@ -389,15 +622,27 @@
 				var index = videoID.split('_')[0];
 				var vid = document.getElementById(videoID);
 				
-				// Update progress bar for each film
-				var dur = Math.floor(vid.currentTime);
+				// Update progress bar for each film - TODO: change from a bar to a circle
+				var currentTime = Math.floor(vid.currentTime);
 				//console.log("id: " + index + " currentDur : " + dur);
-				if(dur > 0) {
-					var ratio = (document.getElementById(videoID).duration / dur);
+				if(currentTime > 0) {
+					var ratio = (document.getElementById(videoID).duration / currentTime);
 				}
-				videoCurrentTime = video.currentTime;
 
-				$("#" + id + "_progress").css({ "width": (640 / ratio) + 'px' });
+				$("#" + id + "_progressDiamond").css({ "left": (640 / ratio) + 'px'});
+
+				if(videoTracker[id].active){
+					videoTracker[id].endPos = currentTime;
+						// console.log("current active endPos: " + videoTracker[id].endPos);
+				}
+
+				checkProgressLength();
+
+				if (checkProgressLength()) {
+					legacyEndScreen = true;
+					console.log('Legacy Endscreen');
+					buildEndScreen();
+				}
 
 			});
 
@@ -414,16 +659,19 @@
 		maskCanvas = document.createElement('canvas');
 		maskCanvas.width = cw = target.width;
 		maskCanvas.height = ch = target.height;
+		
 		ctx = maskCanvas.getContext('2d');
 		ctx.fillStyle = 'black';
 		ctx.fillRect(0, 0, target.width, target.height);
 		ctx.globalCompositeOperation = 'destination-out';
+		
+		var spacing = -12;
 		ctx.beginPath();
-		ctx.moveTo(cw / 2, 0);
-		ctx.lineTo(cw, ch / 2);
-		ctx.lineTo(cw / 2, ch);
-		ctx.lineTo(0, ch / 2);
-		ctx.lineTo(cw / 2, 0);
+		ctx.moveTo(cw / 2, 0 - spacing);
+		ctx.lineTo(cw + spacing, ch / 2);
+		ctx.lineTo(cw / 2, ch + spacing);
+		ctx.lineTo(0 - spacing, ch / 2);
+		ctx.lineTo(cw / 2, 0 - spacing);
 		ctx.fill();
 		
 		layers = seriously.effect('layers', {
@@ -444,7 +692,7 @@
 			crop.bottom = 32;
 
 			move.source = crop;
-			//move.scale(0.5); // optional, here if you need it
+			move.scale(0.71); // optional, here if you need it
 
 			layers['source' + index] = move;
 
@@ -458,7 +706,169 @@
 			};
 		});
 
-		seriously.go();
+		seriously.go(function() {
+			
+
+		/*
+		ctx.globalCompositeOperation = 'source-over';
+			//test to cover video
+			// console.log(now);	 
+			var color = "red";
+			if((count % 13)){
+				color = "yellow";
+				console.log(color);
+			ctx.strokeStyle = color;
+			ctx.beginPath();
+			ctx.moveTo(cw / 2, 0);
+			ctx.lineTo(cw, ch / 2);
+			ctx.stroke();
+			}
+			count++;
+			
+			//ctx.closePath();
+			
+			ctx.strokeStyle = 'blue';
+			ctx.beginPath();
+			ctx.moveTo(cw, ch / 2);
+			ctx.lineTo(cw/2, ch)
+			ctx.stroke();
+			//ctx.closePath();
+
+			ctx.strokeStyle = 'red';
+			ctx.beginPath();
+			ctx.moveTo(cw/2, ch);
+			ctx.lineTo(0, ch/2)
+			ctx.stroke();
+			//ctx.closePath();
+
+			ctx.strokeStyle = 'green';
+			ctx.beginPath();
+			ctx.moveTo(0, ch/2);
+			ctx.lineTo(cw/2, 0);
+			ctx.stroke();
+			//ctx.closePath();
+			
+
+			// count++;
+			//if(videoTracker.india.active){
+		 	if(sessionHistory.india.length > 0 ){		
+					// console.log("current active in canvas: " + videoTracker.india.endPos);
+				ctx.globalCompositeOperation = 'source-over';
+				console.log("current active in canvas: " + sessionHistory.india.length);
+				ctx.strokeStyle = 'orange';
+				ctx.beginPath();
+				ctx.moveTo(0, 0 );
+				ctx.lineTo(cw  , ch );
+				ctx.stroke();
+				// ctx.closePath();
+			}
+
+			
+			// videos.india.currentTime
+			var endPosOffset = map(videos.india.currentTime,0,videos.india.duration, 0, ch);
+			
+			//var endPosOffset = map(session.endPos,0,durationOfVid, 0, lengthOfLine);
+				// ctx.strokeStyle = 'orange';
+				// ctx.beginPath();
+				// ctx.moveTo(cw, 0 );
+				// ctx.lineTo(0  , 100);
+				// ctx.stroke();
+				// ctx.closePath();
+			console.log("current active in canvas: " + endPosOffset);
+				ctx.strokeStyle = 'red';
+				ctx.beginPath();
+				ctx.moveTo(0, parseInt(now/1000) );
+				ctx.lineTo(0  ,endPosOffset);
+				ctx.stroke();
+				ctx.closePath();
+				ctx.stroke();
+				ctx.clearRect(0,0, 50, 50);
+			// ctx.strokeStyle = 'orange';
+			// ctx.beginPath();
+			// ctx.moveTo(0, 0 );
+			// ctx.lineTo(cw  , ch );
+			// ctx.stroke();
+			if(sessionHistory.india.length > 0 ){
+					ctx.strokeStyle = 'orange';
+					ctx.beginPath();
+					ctx.moveTo(0 , ch/2 );
+					ctx.lineTo(cw/2  , 0 );
+					ctx.stroke();
+			}
+*/
+			//loop through all keys i.e india, sri lanka south africa, indonesia
+			// Object.keys(sessionHistory).forEach(function (id) {
+				
+				
+			// 	// loop through each session of each video
+			// 	var durationOfVid = currentActiveVideoTracker[id].totalDuration;
+			// 	var lengthOfLine = Math.sqrt(((ch/2)*(ch/2)) + ((cw/2)*(cw/2)) );
+			// 	// console.log(id);
+			// 	// if (sessionHistory.hasOwnProperty(id)) {
+			// 		// ctx.strokeStyle = 'orange';
+			// 		// ctx.beginPath();
+			// 		// ctx.moveTo(0 , ch/2 );
+			// 		// ctx.lineTo(cw/2  , 0 );
+			// 		// ctx.stroke();
+			// 		// console.log(sessionHistory[id]);
+			// 	// if (sessionHistory[id].length > 0){
+
+					
+			// 		// for(var sessionIndex in sessionHistory[id]){
+			// 		// 	// console.log(sessionHistory[id].startPos);			
+			// 		// 		var session = sessionHistory[id][sessionIndex];
+			// 		// 		// if(session){
+								
+			// 		// 			if(count>180){
+			// 		// 				//console.log("drawing session History");
+			// 		// 				// console.log(session.startPos + " : " + session.endPos);
+			// 		// 				console.log("sessionIndex: " + sessionIndex);
+			// 		// 				console.log("sessionId: " + id);
+			// 		// 				console.log("length: " + sessionHistory[id].length);
+			// 		// 				count = 0;
+			// 		// 				// doO/nce = false;
+			// 		// 			 }
+
+								// var startPosOffset = map(session.startPos,0,durationOfVid, 0, lengthOfLine);
+								// var endPosOffset = map(session.endPos,0,durationOfVid, 0, lengthOfLine);
+
+								
+			// 		// 			// ctx.closePath();	
+			// 		// 	}
+			// 		// // }
+
+			// 		// ctx.strokeStyle = 'orange';
+			// 		// ctx.beginPath();
+			// 		// ctx.moveTo(0 , ch/2 );
+			// 		// ctx.lineTo(cw/2  , 0 );
+			// 		// ctx.stroke();
+
+			// 	// if(currentActiveVideoTracker[id].active){
+			// 	// 	//draw current one
+			// 	// 	// console.log("drawing current tracker");
+			// 	// 	var startPosOffset = map(0,durationOfVid, 0, lengthOfLine);
+			// 	// 	var endPosOffset = map(0,durationOfVid, 0, lengthOfLine);
+
+			// 	// 		ctx.strokeStyle = 'orange';
+			// 	// 		ctx.beginPath();
+			// 	// 		ctx.moveTo(0 + startPosOffset, ch/2 + startPosOffset);
+			// 	// 		ctx.lineTo(cw/2 + endPosOffset , 0 + endPosOffset);
+			// 	// 		ctx.stroke();
+
+			// 	// 		ctx.strokeStyle = 'orange';
+			// 	// 		ctx.beginPath();
+			// 	// 		ctx.moveTo(0 , ch/2 );
+			// 	// 		ctx.lineTo(cw/2  , 0 );
+			// 	// 		ctx.stroke();
+
+			// 	// 	// if(sessiontracker[india].length > 0) {
+					
+			// 	// 	// }
+
+			// 	// }
+
+			// });
+		}); 
 	}
 
 
@@ -502,6 +912,7 @@
 				// sizer();
 				initVideos();
 				initCanvas();
+				initPaths();
 			}
 
 			firstTime = false;
@@ -527,6 +938,14 @@
 				legacyContent.fadeOut("fast");
 			}
 			active = false;
+		},
+		buildEndScreen: function() {
+			$("#l_endscreen").fadeIn();
+			legacyEndScreen = true;
+			if (legacyEndScreen) {
+				$("#diamond_border").css({'background-color': '#000'});
+			}
+
 		}
 	};
 

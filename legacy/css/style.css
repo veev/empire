@@ -50,18 +50,30 @@ div.legacy_bottom div#lbottom_structure div p { text-align: left; font-size: 1.1
 
 div.legacy_bottom div#lbottom_structure div a { color: 000; }
 
-div.mystical { text-align: left; background: url(../../art/legacy/legacy_topstructure.png) no-repeat; background-position-x: center; position: relative; margin: auto; width: 900px; height: 459px; overflow: auto; }
+div.mystical { text-align: left; background: url(../../art/legacy/legacy_topstructure.png) no-repeat; background-position-x: center; position: relative; margin: auto; width: 910px; height: 459px; overflow: auto; }
 div.mystical p { position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
-div.mystical p#a { top: 64px; left: 40px; z-index: 1; }
-div.mystical p#b { top: 367px; left: 103px; width: 200px; z-index: 2; }
-div.mystical p#c { top: 367px; left: 602px; }
-div.mystical p#d { top: 65px; left: 603px; z-index: 3; }
+div.mystical p#a { top: 64px; left: 20px; z-index: 1; }
+div.mystical p#b { top: 367px; left: 95px; width: 220px; z-index: 2; }
+div.mystical p#c { top: 367px; left: 604px; }
+div.mystical p#d { top: 64px; left: 607px; z-index: 3; }
 div.mystical p#f { top: 184px; width: 200px; left: 348px; text-align: center; }
 div.legacy_top div.play { position: absolute; width: 127px; height: 45px; cursor: pointer; background: url(/art/f_playbutton.png); }
 div#legacy_main div.more { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(/legacy/art/leg_more.png) no-repeat; }
 
 #legacy_main .home_button {
 	z-index: 5; opacity: 0.5;
+}
+
+#nav_top_blackout {
+	width: 100%;
+	height: 100px;
+	background-color: black;
+}
+
+#nav_bottom_blackout {
+	width: 100%;
+	height: 100px;
+	background-color: black;
 }
 
 .more_button {
@@ -93,7 +105,8 @@ div#legacy_main #l_outerouter {
 }
 
 div#legacy_main #l_outerouter #l_outerinner {
-	height: 735px;
+	/*height: 735px;*/
+	height: 100%;
 	margin: 0 auto;
 	position: relative;
     transform-style: preserve-3d;
@@ -104,7 +117,8 @@ div#legacy_main #l_outerouter #l_outerinner {
 
 #l_outerinner #l_container {
 	position: relative;
-	height: 730px;
+	/*height: 730px;*/
+	height: 100%;
 	width: 1280px;
 	margin-left: auto;
 	margin-right: auto;
@@ -120,29 +134,24 @@ div#legacy_main div#l_instructions {
 	z-index: 1000; cursor: 
 	pointer; background: 
 	rgba(0,0,0,.6); 
-	width: 1200px; 
-	padding: 150px 0px 160px 0px; 
-	height: 230px; 
+	width: 1284px; 
+	padding: 325px 0px 160px 0px; 
+	height: 100%; 
 }
 
-div#l_instructions p#one_a {
+div#l_instructions p#one {
 	position: relative;
 	top:0;
-	left: 556;
-	color: #fbb03b;
-}
-div#l_instructions p#one_b {
-	position: relative;
-	top: 29;
-	left: 558;
-	color: #fbb03b;
+	left: 503;
+	width: 105;
+	text-align: right;
 }
 
-div#l_instructions p#two_a {
+div#l_instructions p#two{
 	position: relative;
-	top: 95;
-	left: 555;
-	color: #fbb03b;
+	top: 154;
+	left: 615;
+	width: 105;
 }
 
 div#l_instructions p#two_b {
@@ -164,30 +173,42 @@ div#l_instructions p#two_b {
 .zoomViewport {
 	margin:0;
     padding:0;
-    width:1280px;
-	height:500px;
+    width:1284px;
+	/*height:500px;*/
+	height:80%;
 	border:1px solid #000;
 	background-color: black;
 	overflow:hidden;
 	margin-left:auto;
 	margin-right:auto;
 /*	margin-top:1em;*/
-	margin-top: 12%;
+	/*margin-top: 12%;*/
 	cursor: pointer;
+}
+
+#centeringCanvas {
+	width: 100%;
+	height: 100%;
+	margin-left:auto;
+	margin-right:auto;
+	position: absolute;
+	top: 4%;
 }
 
 .legacy-item {
 	width:640px;
-	height:203px;
+	height:208px;
 	cursor: pointer;
+	padding: 5px;
+	border:1px solid #666;
 }
 
 #legacy_container_southafrica {
 /*	background-color:#cfc;*/
 	position:absolute;
-	top:399px;
-	left:1204px;
-	border:1px dotted #fbb03b;
+	top:540px;
+	left:1234px;
+	
 	-webkit-transform: rotate(135deg);
 	-moz-transform: rotate(135deg);
 	-o-transform: rotate(135deg);
@@ -196,9 +217,8 @@ div#l_instructions p#two_b {
 #legacy_container_india {
 /*	background-color:#cff;*/
 	position:absolute;
-	top:855px;
-	left:455px;
-	border:1px dotted #fbb03b;
+	top:1001px;
+	left:462px;
 	-webkit-transform: rotate(225deg);
 	-moz-transform: rotate(225deg);
 	-o-transform: rotate(225deg);
@@ -207,9 +227,9 @@ div#l_instructions p#two_b {
 #legacy_container_indonesia {
 /*	background-color:#fcf;*/
 	position:absolute;
-	top:107px;
+	top:228px;
 	left:0px;
-	border:1px dotted #fbb03b;
+
 	-webkit-transform: rotate(315deg);
 	-moz-transform: rotate(315deg);
 	-o-transform: rotate(315deg);
@@ -218,34 +238,48 @@ div#l_instructions p#two_b {
 #legacy_container_srilanka {
 /*	background-color:#ffc;*/
 	position:absolute;
-	top:-349px;
-	left:748px;
-	border:1px dotted #fbb03b;
+	top:-233px;
+	left:773px;
+
 	-webkit-transform: rotate(405deg);
 	-moz-transform: rotate(405deg);
 	-o-transform: rotate(405deg);
 }
 
 .scrubberBar {
-	width:640px;
+	width:650px;
 	height: 1px;
-	background-color: #666;
+/*	background-color: red;*/
 	position: absolute;
 }
 
-.progressBar {
-	width: 0;
+.progressDiamond {
+	width: 15px;
+	height: 15px;
 	position: absolute;
-	height: 1px;
+	left: 0px;
+	top: -7px;
 	background-color: #fbb03b;
+	background: url(../../art/legacy/progressCircle.png) no-repeat;
+	background-size: 100% 100%;
+	-webkit-transform: translate(-5px);
+	-moz-transform: translate(-5px);
+	-o-transform: translate(-5px);
+	-webkit-transform: translate3d(0,0,0);
+	-moz-transform: translate3d(0,0,0);
+	-o-transform: translate3d(0,0,0);
 }
 
 #india_scrubber {
-	top:705px;
-	left:603px;
+	top:845px;
+	left:617px;
 	-webkit-transform: rotate(225deg);
 	-moz-transform: rotate(225deg);
 	-o-transform: rotate(225deg);
+}
+
+#india_progressDiamond {
+	left: 0px;
 }
 
 #india_progress {
@@ -253,8 +287,8 @@ div#l_instructions p#two_b {
 }
 
 #southafrica_scrubber {
-	top:252px;
-	left:1055px;
+	top:386px;
+	left:1079px;
 	-webkit-transform: rotate(135deg);
 	-moz-transform: rotate(135deg);
 	-o-transform: rotate(135deg);
@@ -264,9 +298,13 @@ div#l_instructions p#two_b {
 	width: 0;
 }
 
+#southafrica_progressDiamond {
+	left: 0px;
+}
+
 #srilanka_scrubber {
-	top:-200px;
-	left:602px;
+	top:-76px;
+	left:619px;
 	-webkit-transform: rotate(405deg);
 	-moz-transform: rotate(405deg);
 	-o-transform: rotate(405deg);
@@ -276,9 +314,13 @@ div#l_instructions p#two_b {
 	width: 0;
 }
 
+#srilanka_progressDiamond {
+	left: 0px;
+}
+
 #indonesia_scrubber {
-	top:254px;
-	left:150px;
+	top:384px;
+	left:155px;
 	-webkit-transform: rotate(315deg);
 	-moz-transform: rotate(315deg);
 	-o-transform: rotate(315deg);
@@ -288,14 +330,18 @@ div#l_instructions p#two_b {
 	width: 0;
 }
 
+#indonesia_progressDiamond {
+	left: 0px;
+}
+
 #diamond {
 	position:absolute;
 	margin:0;
     padding:0;
-	top: 64px;
-	left:420px;
-	width:186px;
-	height:186px;
+	top: 200px;
+	left:428px;
+	width:372px;
+	height:372px;
 /*	opacity: 0.5;
 	background-color:#ffc;*/
 }
@@ -306,15 +352,25 @@ div#l_instructions p#two_b {
     padding:0;
     z-index: 1000;
     cursor: pointer;
-    top: 64px;
-	left:607px;
+    top: 200px;
+	left:615px;
 	width:262px;
 	height:262px;
-	border:1px dotted #fbb03b;
 	pointer-events: none;
 	-webkit-transform: rotate(45deg);
 	-moz-transform: rotate(45deg);
 	-o-transform: rotate(45deg);
+}
+
+#playTitle {
+	background: url(../../art/legacy/legacy_play.png) no-repeat;
+	width: 101px;
+	height: 103px;
+	position: absolute;
+	z-index: 1000;
+	cursor: pointer;
+	left: 566;
+	top: 385;
 }
 
 #l_play_bg {
@@ -323,8 +379,8 @@ div#l_instructions p#two_b {
 	height: 155px;
 	position: absolute;
 	z-index: 1000;
-	left: 530;
-	top: 174;
+	left: 110;
+	top: 110;
 	cursor: pointer;
 }
 
@@ -332,8 +388,8 @@ div#l_instructions p#two_b {
 	position:absolute;
 	margin:0;
     padding:0;
-	top: 64px;
-	left:420px;
+	top: 0px;
+	left:0px;
 	width:186px;
 	height:186px;
 /*	opacity: 0.5;*/
@@ -346,8 +402,8 @@ div#l_instructions p#two_b {
 	position:absolute;
 	margin:0;
     padding:0;
-	top: 64px;
-	left:606px;
+	top: 0px;
+	left: 186px;
 	width:186px;
 	height:186px;
 /*	opacity: 0.5;*/
@@ -360,10 +416,10 @@ div#l_instructions p#two_b {
 	position:absolute;
 	margin:0;
     padding:0;
-	top: 250px;
-	left:420px;
-	width:186px;
-	height:186px;
+	top: 186px;
+	left: 0px;
+	width: 186px;
+	height: 186px;
 /*	opacity: 0.5;*/
 /*	background-color:#cfc;*/
 	z-index: 999;
@@ -374,12 +430,118 @@ div#l_instructions p#two_b {
 	position:absolute;
 	margin:0;
     padding:0;
-	top: 250px;
-	left:606px;
+	top: 186px;
+	left:186px;
 	width:186px;
 	height:186px;
 /*	opacity: 0.5;*/
 /*	background-color:#ccf;*/
 	z-index: 999;
 	cursor: pointer;
+}
+
+.directionLine {
+	border-top: 1px dotted #666;
+	color: #666;
+	height: 1px;
+	width:190px;
+}
+
+.directionsNegSlope {
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+}
+
+.directionsPosSlope {
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+}
+
+#indonesia_directions {
+	width: 200px;
+	height: 30px;
+	position: absolute;
+	top: 158;
+	left: 384;
+}
+#southafrica_directions {
+	width: 200px;
+	height: 30px;
+	position: absolute;
+	top: 477;
+	left: 714;
+}
+#india_directions {
+	width: 200px;
+	height: 30px;
+	position: absolute;
+	top: 612;
+	left: 386;
+}
+
+#srilanka_directions {
+	width: 200px;
+	height: 30px;
+	position: absolute;
+	top: 290;
+	left: 710;
+}
+
+.directionTitle {
+	color: #666;
+	font-size: 24px;
+}
+
+#indonesiaTitle {
+	position: absolute;
+	top: 18;
+	left: 47;
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+}
+
+#southafricaTitle {
+	position: absolute;
+	left: 39;
+	top: 35;
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+}
+
+#indiaTitle {
+	position: absolute;
+	left: 90;
+	top: -28;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+}
+
+#srilankaTitle {
+	position: absolute;
+	left: 76;
+	top: -43;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+}
+
+#l_endscreen {
+	position: absolute;
+	width: 180;
+	height: 100;
+	left: 524;
+	top: 331;
+	color: #fbb03b;
+	text-align: center;
+	font-size: 1.2em;
+	z-index: 1000;
+}
+
+#l_endscreen p.empiredoc {
+	font-size: 2em;
 }
