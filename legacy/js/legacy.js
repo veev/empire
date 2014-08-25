@@ -467,12 +467,12 @@
 						}
 						else{
 							console.log(id +" was active and is now active");
+							$('#legacy_container_' + selectedId).css({'cursor':'default'});
 						}
 					} 
 					else {
 						video.volume = 0;
 						console.log(id +" was inactive and is now inactive");
-						$('#legacy_container_' + selectedId).css({'cursor':'pointer'});
 					}
 				} 
 			}
