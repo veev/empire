@@ -72,14 +72,23 @@
 	<div id="containerinner" style="display: none">
 		<div id="pinchelines" ></div>
 		<div id="titleblock" >
-			<h1><img src="art/placeholder_title.png" width="420" height="61" alt="Empire" /></h1>
+			<h1><img src="art/placeholder_title.png" width="457" height="67" alt="Empire" /></h1>
 			<h8>The unintended consequences of colonialism</h8>
 		</div>
 		<div id="bodytext" >
-			<p>Empire is an immersive documentary project that explores how the conditions of the past define our lives in the present.</p>
-			<p>The Dutch East and West India Companies once controlled vast trading networks that stretched from the Cape of Good Hope to the Indonesian archipelago, and from New York City to South America's Wild Coast. Although they came in pursuit of short-term profits, the companies left behind a legacy that can still be seen today in the cultures, and in the bloodlines, of people and communities around the world.</p>
-			<p>Shot in ten countries over the course of four years, Empire invites you to discover the human-scaled impact of the first global capitalist endeavour.</p>
-			<p class="credits">Directed and produced by <a href="http://www.jongsmaoneill.com" target="_blank">Eline Jongsma and Kel O'Neill</a><br />Design and development by Clint Beharry, Sam Bailey and Genevieve Hoffman.</p>
+			<p>The Dutch East and West India Companies once controlled vast trading networks that stretched from the Cape of Good Hope to the Indonesian archipelago, and from New York to South America's Wild Coast. Although they came in pursuit of short-term profits, the companies left behind a legacy that can still be seen in the cultures, and in the bloodlines, of people and communities around the world.</p>
+			<p>Shot in ten countries over the course of four years, Empire employs human-scaled storytelling to explore how the conditions of the past impact our lives in the present.</p>
+		</div>
+		<div id="credits">
+			<p id="directors">Directed, produced, shot and edited by</p> 
+			<p id="credits_ke"<a href="http://www.jongsmaoneill.com" target="_blank">Eline Jongsma and Kel O'Neill</a><p/>
+			<div id="book"><a href="http://www.jongsmaoneill.com/empire-store/empire-the-unintended-consequences-of-dutch-colonialism-art-book" target="_blank">Buy the <i>Empire</i> book</a></div>
+			<p id="credits_gh">Web Development</br>Genevieve Hoffman</p>	
+			<p id="credits_cb">UX and Graphic Design</br>Clint Beharry</p>
+			<p id="credits_sb">Additional Development</br>Sam Bailey</p>
+			<p id="credits_bc">POV Technology Fellow</br>Brian Chirls</p>
+			<p id="credits_aw">Exec. Producer for POV Digital</br>Adnaan Wasey</p>
+			<p id="credits_sk">Exec. Producer for POV</br>Simon Kilmurry</p>
 		</div>
 		<div id="preaching">
 			<ul>
@@ -226,9 +235,11 @@
 				<div class="more_button" id="legacymore" style="display: none"></div>
 			</div>
 			<div class="outer snap" id="legacy_main">
+				<div id="nav_top_blackout"></div>
 				<div class="main_nav_buttons_top">
 					<button type="button" class="nav_button" class="top" id="cradle_lbutton">C</button>
 				</div>
+				<!-- <div id="nav_bottom_blackout"></div> -->
 				<div class="main_nav_buttons">
 					<button type="button" class="nav_button" id="migrants_lbutton">M</button>
 					<button type="button" class="nav_button" id="periphery_lbutton">P</button>
@@ -240,50 +251,70 @@
 					<div id="l_outerinner">
 						<div id="l_container">
 							<div id="l_instructions" style="display:none">
-
-									<p id="one_a">Click on a screen</p>
-									<p id="one_b"> to select a video</p>
-									<p id="two_a">Click on another</p>
-									<p id="two_b">to switch</p>
+								<div id="playTitle"></div>
+									<p id="one">Click on a screen to select a video</p>
+								<!-- 	<p id="one_b"> to select a video</p> -->
+									<p id="two">Click on another to switch</p>
+									<!-- <p id="two_b">to switch</p> -->
 							</div>
 							<div class="zoomViewport">
 								<div id="z_container" class="zoomContainer">
-									<div id="diamond" >
-										<canvas id="canvas" width="372" height="372"></canvas>
-									</div>
-									<div id="diamond_border"></div>
-									<div id="l_play_bg" style="display: none"></div>
-									<div id="corner1"></div>
-									<div id="corner2"></div>
-									<div id="corner3"></div>
-									<div id="corner4"></div>
-
-									<div id="legacy_container_india" class="legacy-item" data-targetsize = "0.9">
-										<video id="india_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/LEGACY_INDIA_TITLES_960_304.mp4" width="640" height="202" preload ="none"></video>
-									</div>	
-									<div id="india_scrubber" class="scrubberBar">
-										<div id="india_progress" class="progressBar"></div>
-									</div>
-
-									<div id="legacy_container_southafrica" class="legacy-item" data-targetsize = "0.9" >
-										<video id="southafrica_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/LEGACY_SOUTHAFRICA_TITLES_960_304.mp4" width="640" height="202" preload="none"></video>
-									</div>	
-									<div id="southafrica_scrubber" class="scrubberBar">
-										<div id="southafrica_progress" class="progressBar"></div>
+									<div id="centeringCanvas">
+										<div id="diamond" >
+											<canvas id="canvas" width="372" height="372"></canvas>
+											<div id="l_play_bg" style="display: none"></div>
+											<div id="corner1"></div>
+											<div id="corner2"></div>
+											<div id="corner3"></div>
+											<div id="corner4"></div>
+										</div>
+										<div id="diamond_border"></div>
+										<div id = "indonesia_directions" class="directionsNegSlope">
+											<div id="indonesia_line" class="directionLine"></div>
+												<div id="indonesiaTitle" class="directionTitle">Indonesia</div>
+										</div>
+										<div id = "southafrica_directions" class="directionsNegSlope">
+											<div id="southafrica_line" class="directionLine"></div>
+												<div id="southafricaTitle" class="directionTitle">South Africa</div>
+										</div>
+										<div id = "india_directions" class="directionsPosSlope">
+											<div id="india_line" class="directionLine"></div>
+												<div id="indiaTitle" class="directionTitle">India</div>
+										</div>
+										<div id = "srilanka_directions" class="directionsPosSlope">
+											<div id="srilanka_line" class="directionLine"></div>
+												<div id="srilankaTitle" class="directionTitle">Sri Lanka</div>
+										</div>
+										<div id = "l_endscreen" style="display: none">
+											<p class="endscreen">skype the filmakers at</p>
+											<p class="empiredoc">empiredoc</p>
+											<p class="endscreen">to discuss the connections you've seen here</p>
+										</div>
+										<div id="legacy_container_india" class="legacy-item" data-targetsize = "0.9">
+											<video id="india_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/LEGACY_INDIA_TITLES_960_304.mp4" width="640" height="202" preload ="none"></video>
+										</div>	
+										<div id="india_scrubber" class="scrubberBar">
+											<div id="india_progressDiamond" class="progressDiamond"></div>
+										</div>
+										<div id="legacy_container_southafrica" class="legacy-item" data-targetsize = "0.9" >
+											<video id="southafrica_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/LEGACY_SOUTHAFRICA_TITLES_960_304.mp4" width="640" height="202" preload="none"></video>
+										</div>	
+										<div id="southafrica_scrubber" class="scrubberBar">
+											<div id="southafrica_progressDiamond" class="progressDiamond"></div>
+										</div>							
+										<div id="legacy_container_indonesia" class="legacy-item" data-targetsize="0.9">
+											<video id="indonesia_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/LEGACY_INDONESIA_TITLES_960_304.mp4" width="640" height="202" preload ="none" ></video>
+										</div>
+										<div id="indonesia_scrubber" class="scrubberBar">
+											<div id="indonesia_progressDiamond" class="progressDiamond"></div>
+										</div>
+										<div id="legacy_container_srilanka" class="legacy-item" data-targetsize = "0.9">
+											<video id="srilanka_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/LEGACY_SRILANKA_TITLES_906_304.mp4" width="640" height="202" preload ="none"></video>
+										</div>	
+										<div id="srilanka_scrubber" class="scrubberBar">
+											<div id="srilanka_progressDiamond" class="progressDiamond"></div>
+										</div>	
 									</div>							
-									<div id="legacy_container_indonesia" class="legacy-item" data-targetsize="0.9">
-										<video id="indonesia_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/LEGACY_INDONESIA_TITLES_960_304.mp4" width="640" height="202" preload ="none" ></video>
-									</div>
-									<div id="indonesia_scrubber" class="scrubberBar">
-										<div id="indonesia_progress" class="progressBar"></div>
-									</div>
-
-									<div id="legacy_container_srilanka" class="legacy-item" data-targetsize = "0.9">
-										<video id="srilanka_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/LEGACY_SRILANKA_TITLES_906_304.mp4" width="640" height="202" preload ="none"></video>
-									</div>	
-									<div id="srilanka_scrubber" class="scrubberBar">
-										<div id="srilanka_progress" class="progressBar"></div>
-									</div>								
 								</div>
 							</div>
 						</div>
