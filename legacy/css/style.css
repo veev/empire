@@ -125,9 +125,10 @@ div#legacy_main #l_outerouter #l_outerinner {
 
 div#legacy_main div#l_instructions { 
 	position: absolute; 
-	z-index: 1000; cursor: 
-	pointer; background: 
-	rgba(0,0,0,.6); 
+	z-index: 1001; 
+	cursor: 
+	pointer; 
+	background: rgba(0,0,0,.6); 
 	width: 1284px; 
 	padding: 325px 0px 160px 0px; 
 	height: 100%; 
