@@ -240,13 +240,13 @@ div#l_instructions p#two{
 }
 
 .progressDiamond {
-	width: 15px;
-	height: 15px;
+	width: 10px;
+	height: 10px;
 	position: absolute;
 	left: 0px;
-	top: -7px;
+	top: -5px;
 	background-color: #fbb03b;
-	background: url(../../art/legacy/progressCircle.png) no-repeat;
+	background: url(../../art/legacy/progressCircle_sm.png) no-repeat;
 	background-size: 100% 100%;
 	-webkit-transform: translate(-5px);
 	-moz-transform: translate(-5px);
