@@ -239,7 +239,8 @@
 				}
 			};
 
-		archtype = Raphael('holder', WIDTH, HEIGHT);
+		archtype = Raphael('holder', width, height);
+		//archtype.canvas.setAttribute('preserveAspectRatio', 'none');
 
 		//keep svg centered
 		archtype.canvas.style.left = '50%';
@@ -317,9 +318,9 @@
 
 		// Hours text
 		archtype.text(center, 10, '24h').attr(styles.timeText);
-		archtype.text(center + radius / 2 + 10, HEIGHT / 4 + 2, '6').attr(styles.timeText);
+		archtype.text(center + radius / 2 + 10, height / 4 + 2, '6').attr(styles.timeText);
 		archtype.text(center, middle - 2, '12').attr(styles.timeText);
-		archtype.text(center - radius / 2 - 12, HEIGHT / 4 + 2 , '18').attr(styles.timeText);
+		archtype.text(center - radius / 2 - 12, height / 4 + 2 , '18').attr(styles.timeText);
 		archtype.text(center, 38, '20m:50s').attr(styles.timeText);
 
 		// dots next to hours text
@@ -350,6 +351,8 @@
 		}
 
 		arrayActFills();
+
+		//resizeHolder();
 	}
 
 	function initScrollSpy(){
@@ -632,6 +635,16 @@
 
 		$('#m_download').css({'left': ($('#m_outerinner').width()*0.465) , 'top' : (h/2) - 44 });
 		$('#migrantsmore').css({'top': buffer, 'left': centering });
+	}
+
+	function resizeHolder() {
+    	resizing = true;
+   		clearTimeout(this.id);
+    	this.id = setTimeout(function(){
+    		var win = $(this);
+   			archtype.changeSize(win.height(), win.height(), false, false);
+   			resizing = false;
+    	}, 500);
 	}
 
 	function vennTracking() {
@@ -1063,27 +1076,27 @@
 
 		vennMap.push(countryLabels.ghana, countryLabels.brazil, countryLabels.suriname);
 
-		var centerW = WIDTH / 4;
-		var centerH = HEIGHT / 4;
-		var holderRatio = HEIGHT / WIDTH;
+		var centerW = width / 4;
+		var centerH = height / 4;
+		var holderRatio = height / width;
 
 		var mapCenter;
-		var mapScalar = map(HEIGHT, 600, 1200, 1.15, 2.0);
+		var mapScalar = map(height, 600, 1200, 1.15, 2.0);
 
 		//scaling fixes
 		if (holderRatio >= 0.9) {
-			centerW = WIDTH / 4 * 1;
-			centerH = HEIGHT / 4 * 1;
+			centerW = width / 4 * 1;
+			centerH = height / 4 * 1;
 			vennMap.transform('T ' + centerW + ' ' + centerH + 'S' + mapScalar + ','+ mapScalar +',' + centerW + ',' + centerH);
-		} else if (HEIGHT < 710 && holderRatio < 0.9) {
+		} else if (height < 710 && holderRatio < 0.9) {
 			mapCenter = map(holderRatio, 0.6, 0.9, 1.3, 1.0);
-			centerW = WIDTH / 4 * mapCenter;
-			centerH = HEIGHT / 4 * 1;
+			centerW = width / 4 * mapCenter;
+			centerH = height / 4 * 1;
 			vennMap.transform('T ' + centerW + ' ' + centerH + 'S' + mapScalar + ','+ mapScalar +',' + centerW + ',' + centerH);
-		} else if (HEIGHT >= 710 && holderRatio < 0.9) {
+		} else if (height >= 710 && holderRatio < 0.9) {
 			mapCenter = map(holderRatio, 0.6, 0.9, 1.4, 1.0);
-			centerW = WIDTH / 4 * mapCenter;
-			centerH = HEIGHT / 4;
+			centerW = width / 4 * mapCenter;
+			centerH = height / 4;
 			vennMap.transform('T ' + centerW + ' ' + centerH + 'S' + mapScalar + ','+ mapScalar +',' + centerW + ',' + centerH);
 		}
 
@@ -1178,6 +1191,7 @@
 		},
 		resize: function(){
 			sizer();
+			//resizeHolder();
 			prevVenID = -1;
 		}
 	};
