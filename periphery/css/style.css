@@ -204,8 +204,8 @@ div#periphery_main #p_outerouter #p_outerinner {
 }
 
 .norm #target {
-    mask: url("mask.svg#c1");
-    -webkit-mask-box-image: url(mask.svg);
+/*    mask: url("mask.svg#c1");
+    -webkit-mask-box-image: url(mask.svg);*/
 }
 
 /*#outerinner #container.norm {

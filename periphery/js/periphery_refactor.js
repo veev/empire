@@ -12,6 +12,7 @@
 	var sideTracker = new Object(); // tracking element to get the visualisation later
 	var scrubberLength;
 	var currentVideoId;
+	var videoCurrentTime = 0;
 	var mouseYTracking = false;
 	var allVideosLoaded = false;
 	
@@ -327,7 +328,7 @@
 		var dur = Math.floor(document.getElementById("target").currentTime);
 		if(dur > 0){ var ratio = (document.getElementById("target").duration / dur); }
 		
-		p_curtime = document.getElementById("target").currentTime;
+		videoCurrentTime = document.getElementById("target").currentTime;
 
 		$("#p_progress").css({ "width": (640 / ratio) + 'px' });
 		

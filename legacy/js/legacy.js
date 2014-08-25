@@ -413,10 +413,10 @@
 					// video.volume = (!selectedId || selectedId === id) ? 1 : 0;
 					if(!selectedId){
 						
-						//do volume upp f
+						//do volume upp for all
 						video.volume = 0.75;
-						//This isn't working. Better way/place to keep track of active state?
-						// videoTracker[id].active = false;
+						$('#legacy_container_' + selectedId).css({'cursor':'pointer'});
+
 						if(videoTracker[id].active){
 							console.log(id +" was active and is now inactive");
 							videoTracker[id].active = false;	
@@ -437,6 +437,7 @@
 					}
 					else if(videoTracker[id].active && selectedId !== id){
 						video.volume = 0;
+						//$('#legacy_container_' + selectedId).css({'cursor':'pointer'});
 						console.log("videoTracker[id].active && selectedId !== id");
 						videoTracker[id].endPos = video.currentTime;
 						console.log("videoTracker[id] startPos: " + videoTracker[id].startPos);
@@ -455,6 +456,7 @@
 					else if(selectedId === id){
 						if(!videoTracker[id].active){
 							fadeInAudio(video); 
+							$('#legacy_container_' + selectedId).css({'cursor':'default'});
 							videoTracker[id].active = true;
 							videoTracker[id].startPos = video.currentTime;
 
@@ -470,6 +472,7 @@
 					else {
 						video.volume = 0;
 						console.log(id +" was inactive and is now inactive");
+						$('#legacy_container_' + selectedId).css({'cursor':'pointer'});
 					}
 				} 
 			}
