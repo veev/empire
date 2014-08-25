@@ -83,12 +83,16 @@
 			<p id="directors">Directed, produced, shot and edited by</p> 
 			<p id="credits_ke"<a href="http://www.jongsmaoneill.com" target="_blank">Eline Jongsma and Kel O'Neill</a><p/>
 			<div id="book"><a href="http://www.jongsmaoneill.com/empire-store/empire-the-unintended-consequences-of-dutch-colonialism-art-book" target="_blank">Buy the <i>Empire</i> book</a></div>
-			<p id="credits_gh">Web Development</br>Genevieve Hoffman</p>	
-			<p id="credits_cb">UX and Graphic Design</br>Clint Beharry</p>
-			<p id="credits_sb">Additional Development</br>Sam Bailey</p>
-			<p id="credits_bc">POV Technology Fellow</br>Brian Chirls</p>
-			<p id="credits_aw">Exec. Producer for POV Digital</br>Adnaan Wasey</p>
-			<p id="credits_sk">Exec. Producer for POV</br>Simon Kilmurry</p>
+			<div id="credits_left">
+				<p id="credits_gh">Web Development</br>Genevieve Hoffman</p>
+				<p id="credits_sb">Additional Development</br>Sam Bailey</p>
+				<p id="credits_aw">Exec. Producer for POV Digital</br>Adnaan Wasey</p>
+			</div>
+			<div id="credits_right">
+				<p id="credits_cb">UX and Graphic Design</br>Clint Beharry</p>
+				<p id="credits_bc">POV Technology Fellow</br>Brian Chirls</p>
+				<p id="credits_sk">Exec. Producer for POV</br>Simon Kilmurry</p>
+			</div>
 		</div>
 		<div id="preaching">
 			<ul>
@@ -250,16 +254,14 @@
 				<div id="l_outerouter">
 					<div id="l_outerinner">
 						<div id="l_container">
-							<div id="l_instructions" style="display:none">
-								<div id="playTitle"></div>
-									<p id="one">Click on a screen to select a video</p>
-								<!-- 	<p id="one_b"> to select a video</p> -->
-									<p id="two">Click on another to switch</p>
-									<!-- <p id="two_b">to switch</p> -->
-							</div>
 							<div class="zoomViewport">
 								<div id="z_container" class="zoomContainer">
 									<div id="centeringCanvas">
+										<div id="l_instructions" style="display:none">
+											<div id="playTitle"></div>
+											<p id="one">Click on a screen to select a video</p>
+											<p id="two">Click on another to switch</p>
+										</div>
 										<div id="diamond" >
 											<canvas id="canvas" width="372" height="372"></canvas>
 											<div id="l_play_bg" style="display: none"></div>

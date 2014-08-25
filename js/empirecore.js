@@ -538,7 +538,7 @@ function drawer () {
 	var rMargin = 300;
 	var rMargin_alt = '10%';
 
-	$("#titleblock").css({ 'right': rMargin_alt, 'top': (86)});
+	$("#titleblock").css({ 'right': rMargin_alt, 'top': '8%'});
 	$("#pinchelines").css({ 'height': (_h-(86+80)), 'right': rMargin_alt, 'top': 150 });
 	$("#preaching").css({ 'right': rMargin_alt, 'top': ( _h - 70) });
 	$("#legacy").css({ 'top': ((_h/2) - 280), right: rMargin_alt });

@@ -25,8 +25,8 @@ h8 { margin-top: 4px; font-style: italic; text-align: left; font-size: 1.6em;}
 div#container div#titleblock { position: absolute; }
 div#container div#logos { position: absolute; bottom: 20; left: 20; z-index: 20;}
 div#container div#pinchelines { position: absolute; width: 4px; background: url(../art/placeholder_dots.png) repeat-y; }
-div#container div#bodytext { position: absolute; margin-right: 16px; text-align: left; width: 450px; z-index: 5}
-div#container div#bodytext p { margin: 1em 0; font-size: 1.2em;}
+div#container div#bodytext { position: absolute; margin-right: 16px; text-align: left; width: 430px; z-index: 5}
+div#container div#bodytext p { margin: 1em 0; font-size: 1em;}
 /*div#container div#bodytext p.credits { margin-top: 3em; }*/
 div#container div#bodytext a {
 	color: #fff;
@@ -36,10 +36,21 @@ div#container div#credits {
 	position: absolute;
 	margin-right: 16px;
 	text-align: left;
-	width: 450px;
+	width: 430px;
 	z-index: 5;
 }
-div#container div#credits p {font-size: 1.1em;}
+
+div#container div#credits_left {
+	width: 200px;
+	float: left;
+}
+
+div#container div#credits_right {
+	width: 200px;
+	float: right;
+}
+
+div#container div#credits p {font-size: 0.9em;}
 div#container div#credits a {
 	color: #fff;
 	text-decoration: none;
@@ -49,15 +60,15 @@ div#container div#credits div#book {
 	width: 105px;
 	height: 50px;
 	border: 2px dotted #fff;
-	right: 1px;
-	top:0;
+	right: 10px;
+	top:-16;
 	text-align: center;
 	padding: 5px;
 	font-size: 1.1em;
 }
 
 div#container div#credits p#credits_ke {
-	font-size: 1.5em;
+	font-size: 1.2em;
 }
 
 div#container div#credits p#credits_gh {
@@ -69,23 +80,14 @@ div#container div#credits p#credits_sb {
 div#container div#credits p#credits_aw {
 	margin-top: 15px;
 }
-div#container div#credits p#credits_bc {
-	margin-top: 20px;
-	left: 250;
-	position: absolute;
-	top: 115px;
-}
 div#container div#credits p#credits_cb {
 	margin-top: 20px;
-	left: 250;
-	position: absolute;
-	top: 55px;
+}
+div#container div#credits p#credits_bc {
+	margin-top: 15px;
 }
 div#container div#credits p#credits_sk {
-	margin-top: 20px;
-	left: 250;
-	position: absolute;
-	top: 174px;
+	margin-top: 15px;
 }
 
 div#logo {
