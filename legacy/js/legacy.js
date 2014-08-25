@@ -163,6 +163,10 @@
 			legbottom = 20;
 		}
 
+		var canvasShift = h * 0.146;
+
+		$("#centeringCanvas").css({ 'top': '-' + canvasShift + 'px' });
+
 		// $(".legacy_bottom").css("height",$(".legacy_top:first").height());
 
 		$("#legacy_title").css({ 'padding-top': padtop });
@@ -176,6 +180,8 @@
 		w = ($("#legacy_main").width() - _adjuster);
 		h = ($("#legacy_main").width() - _adjuster) * 0.31;
 		var vtop = (($("#legacy_main").height() - h) / 2) - 50;
+
+
 
 		// $("#legplay").css({ "bottom": legbottom, "margin-left": ($("#legacy_main").width() / 2) - 50 }).fadeIn(4000);
 		$("#legmore").css({ "margin-left": ($("#legacy_main").width() / 2) - 90 });
