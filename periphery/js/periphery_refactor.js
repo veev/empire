@@ -219,14 +219,25 @@
 	}
 
 	function resetVideoRotation() {
-		if(flipAngle < 90) {
-			flipAngle = 0;
-		} 
-		else if (flipAngle >= 90 || flipAngle < 270 ) {
-			flipAngle = 180;
-		} else if (flipAngle >= 270) {
-			flipAngle = 360;
-		}
+		console.log("flipAngle Before Reset: "+ flipAngle);
+		// if ((flipAngle % 180) = 0 ) {
+		// 	console.log("flipAngle is 180 or multiple");
+		// 	flipAngle = flipAngle;
+		// } else {
+		// 	console.log("flipAngle is needs to rotate");
+
+			if((flipAngle) < 90) {
+				flipAngle = 0;
+			} 
+			else if ((flipAngle) >= 90 || (flipAngle) < 270 ) {
+				flipAngle = 180;
+			} else if ((flipAngle) >= 270) {
+				flipAngle = 360;
+			}
+		// }
+
+		console.log("flipAngle After Reset: "+ flipAngle);
+
 		$("#pcard").css({ '-webkit-transform': 'rotate( ' + flipAngle + 'deg)', 'transform': 'rotate( ' + flipAngle + 'deg)',"transition": "all 600ms cubic-bezier(0.175, 0.885, 0.32, 1.275)" });
 
 	}
@@ -297,9 +308,9 @@
 		}
 	}
 	function playVideos(){
-		// if(audioactive){
-		// 	audiostop();
-		// }
+		if(audioactive){
+			audiostop();
+		}
 
 		var id;
 		if (!allVideosLoaded) {
