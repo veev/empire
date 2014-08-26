@@ -208,20 +208,39 @@
 			if(flipAngle < 90) {
 				flipAngle = 0;
 			} 
-			else if (flipAngle >= 90 ) {
+			else if (flipAngle >= 90 || flipAngle < 270 ) {
 				flipAngle = 180;
+			} else if (flipAngle >= 270) {
+				flipAngle = 360;
 			}
 			 trackoff();
 		}); 
 
 	}
-	function disableControls () {
-		outerOuter.unbind("mouseenter");
-		outerOuter.unbind("mouseleave");
-		$("#leftbutton").unbind("click");
-		$("#rightbutton").unbind("click");
-		controlsActive = false;
+
+	function resetVideoRotation() {
+		if(flipAngle < 90) {
+			flipAngle = 0;
+		} 
+		else if (flipAngle >= 90 || flipAngle < 270 ) {
+			flipAngle = 180;
+		} else if (flipAngle >= 270) {
+			flipAngle = 360;
+		}
+		$("#pcard").css({ '-webkit-transform': 'rotate( ' + flipAngle + 'deg)', 'transform': 'rotate( ' + flipAngle + 'deg)',"transition": "all 600ms cubic-bezier(0.175, 0.885, 0.32, 1.275)" });
+
 	}
+
+	// function disableControls () {
+	// 	outerOuter.unbind("mouseenter");
+	// 	outerOuter.unbind("mouseleave");
+	// 	$("#leftbutton").unbind("click");
+	// 	$("#rightbutton").unbind("click");
+		
+	// 	trackoff();
+	// 	resetVideoRotation();
+	// 	controlsActive = false;
+	// }
 
 	function openScreen () {
 		instructions.fadeIn(2000);
@@ -464,6 +483,7 @@
 	  	$("#cradle_pbutton").on('click', function() {
 	  		//console.log("[ attach Periphery Events ] cradle_pbutton - p_pauseVids");
 	  		pauseVideos();
+	  		resetVideoRotation();
 
 	  		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000,function() {
 	  			animateButton(0);
@@ -473,6 +493,7 @@
 	  	$("#legacy_pbutton").on('click', function() {
 	  		//console.log("[ attach Periphery Events ] legacy_pbutton - p_pauseVids");
 	  		pauseVideos();
+	  		resetVideoRotation();
 	  		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
 	  			animateButton(1);
 	  		});
@@ -481,6 +502,7 @@
 	  	$("#migrants_pbutton").on('click', function() {
 	  		//console.log("[ attach Periphery Events ] migrants_pbutton - p_pauseVids");
 	  		pauseVideos();
+	  		resetVideoRotation();
 	  		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
 	  			animateButton(2);
 	  		});
