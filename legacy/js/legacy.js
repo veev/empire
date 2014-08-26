@@ -13,6 +13,7 @@
 	var currentTime = 0;
 	var currentVolume = 0;
 	var intervalID = 0;
+	var insructIvl;
 //	var intervalID_out = 0;
 	var videoCurrentTime = 0;
 
@@ -302,19 +303,19 @@
 	- Keep track of which video is being watched (zoomed to / selected)
 
 	*/
-	function scrubberUpdater(id) {
-		var video;
+	// function scrubberUpdater(id) {
+	// 	var video;
 		
-		for (id in videos) {
-			if(videos.hasOwnProperty(id)) {
-				video = videos[id];
-				if (video) {
+	// 	for (id in videos) {
+	// 		if(videos.hasOwnProperty(id)) {
+	// 			video = videos[id];
+	// 			if (video) {
 					
 					
-				}
-			}
-		}
-	}
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	var fadeInAudio = function (video) {
 		console.log("In fadeInAudio");
@@ -332,9 +333,10 @@
 	};
 
 	function addProgressPath(id,start, end){
+		
 		if(id === "srilanka"){
 			var pathString ='M '+start.toString()+' 0 L '+end.toString()+' 0';
-			// console.log("Srilanka "+ pathString);
+			console.log("Srilanka "+ pathString);
 			diamondCanvas.path(pathString).attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
 		}
 		else if(id === "southafrica"){
@@ -360,43 +362,111 @@
 	var debugCount = 0;
 
 	function checkProgressLength(){
-		var fullRange = [];
-		// console.log(sessionHistory.length);
+		
+		var numWatched = 0;
+
 
 		Object.keys(sessionHistory).forEach(function (id) {
-
+			var fullRange = [];
+			
 			if(sessionHistory[id].length > 0){
-				
+				var totalAmtWatched = 0;
+
 				for (var i = 0; i < sessionHistory[id].length; i++) {
-					//find the range that has been watched in arc [i] and add it to the full range
-					//i.e is startPos is 10 and endPos is 20
-					// curRange [10,11,12,13,14,15,16,17,18,19,20]
 
 					var curRange = _.range(Math.ceil(sessionHistory[id][i].startPos), Math.ceil(sessionHistory[id][i].endPos), 1);
-					//max value is 275653
-
-					//append curRange to the fullRange i.e range of all lines combined
 					fullRange.push(curRange);
+
+					//Not using this anymore but is there for testing
+					// var duration = sessionHistory[id][i].endPos - sessionHistory[id][i].startPos;
+					// totalAmtWatched += 	duration;
 				}
+					
+					fullRange = _.flatten(fullRange);
+					fullRange = _.uniq(fullRange);
+					var totalDuration = videos[id].duration;
+					var thresh = parseInt(totalDuration*0.9);
+					
+					if(fullRange.length > thresh){
+						numWatched++;
+						console.log(id+" > 90%");
+					}
+					
+					if(!(debugCount%100)){
+					// not doing this method anymore
+					// console.log(id+" % : " +parseInt((((totalAmtWatched)/totalDuration))*100) );
+
+					console.log(id+" % : " +parseInt((((fullRange.length)/totalDuration))*100) );
+						console.log("All watched ?" + numWatched );
+					}
 			}
 		});
 
-		//remove duplicate steps that have been watched. This removes overlap
-		fullRange = _.flatten(fullRange);
-		fullRange = _.uniq(fullRange);
-
-		//add them all up to see how much has been watched
-		var totalAmtWatched = _.reduce(fullRange, function(memo, num){ return memo + num; }, 0);
-		// if(fullRange.length > 0){
-
-		// }
-		if(!(debugCount%30)){
-			console.log("Current count : " + totalAmtWatched);
-			debugCount =0;
-		}
 		debugCount++
-		//90% of 275653 is 248088
-		return totalAmtWatched >= 248088;
+		if(numWatched>=4){
+			return true
+		}
+		else{
+			return false
+		};
+
+	}
+	function updateSessionTracker(id){
+		console.log("here");
+		var nonOverlappingSession = true;
+		for (var i = 0; i < sessionHistory[id].length; i++) {
+			
+
+			if(videoTracker[id].startPos > sessionHistory[id][i].startPos &&
+				videoTracker[id].endPos < sessionHistory[id][i].endPos){
+				console.log("full overlapping session ignoring");
+				nonOverlappingSession = false;
+				continue;
+			}
+
+			//All of this is unecessary actually as 
+			//using the array flatten method to remove
+			//duplicates but its here now
+
+			if(videoTracker[id].startPos > sessionHistory[id][i].startPos &&
+				videoTracker[id].startPos < sessionHistory[id][i].endPos){
+		
+				if(videoTracker[id].endPos > sessionHistory[id][i].endPos){
+
+					console.log("Startp "+videoTracker[id].startPos+" within : " +sessionHistory[id][i].startPos+ " - "+sessionHistory[id][i].endPos);
+					console.log("semi overlapping session updating old session endPos");
+					sessionHistory[id][i].endPos = videoTracker[id].endPos;	
+					nonOverlappingSession = false;
+				}
+				else{
+					console.log("full overlapping session ignoring");
+				}
+
+			}
+			
+			if(videoTracker[id].endPos > sessionHistory[id][i].startPos &&
+					videoTracker[id].endPos < sessionHistory[id][i].endPos){
+				if(videoTracker[id].startPos < sessionHistory[id][i].startPos){
+					console.log("overlapping session updating old session startPos");
+					// console.log("Endp "+videoTracker[id].startPos+" within : " sessionHistory[id][i].startPos+ " - "+sessionHistory[id][i].endPos);
+					sessionHistory[id][i].startPos = videoTracker[id].startPos;	
+					nonOverlappingSession = false;
+				}
+				else{
+					console.log("full overlapping session ignoring");
+				}
+			}
+		}
+
+		if(nonOverlappingSession){
+			console.log("new non overlapping session");
+			sessionHistory[id].push({
+					startPos: videoTracker[id].startPos,
+					endPos: videoTracker[id].endPos 
+			});
+		}
+
+
 	}
 
 	function selectVideo(selectedId) {
@@ -418,15 +488,12 @@
 
 						if(videoTracker[id].active){
 							console.log(id +" was active and is now inactive");
+							updateSessionTracker(id);
 
 							videoTracker[id].active = false;	
-							//videoTracker[id].startPos = 0;
-							//videoTracker[id].endPos = 0;
+							// videoTracker[id].startPos = 0;
+							// videoTracker[id].endPos = 0;
 
-							sessionHistory[id].push({
-							startPos: videoTracker[id].startPos,
-							endPos: videoTracker[id].endPos 
-							});
 							var start = map(videoTracker[id].startPos,0,video.duration, 0, 262,true);
 							var end = map(videoTracker[id].endPos,0,video.duration, 0, 262,true);
 							addProgressPath(id,start,end);
@@ -438,20 +505,21 @@
 					else if(videoTracker[id].active && selectedId !== id){
 						video.volume = 0;
 						//$('#legacy_container_' + selectedId).css({'cursor':'pointer'});
-						console.log("videoTracker[id].active && selectedId !== id");
+						// console.log("videoTracker[id].active && selectedId !== id");
+						// console.log("videoTracker[id] startPos: " + videoTracker[id].startPos);
+						// console.log("videoTracker[id] endPos: " + videoTracker[id].endPos);
+						// console.log(videoTracker[id]);
+						
 						videoTracker[id].endPos = video.currentTime;
-						console.log("videoTracker[id] startPos: " + videoTracker[id].startPos);
-						console.log("videoTracker[id] endPos: " + videoTracker[id].endPos);
-						console.log(videoTracker[id]);
-						sessionHistory[id].push({
-								startPos: videoTracker[id].startPos,
-								endPos: videoTracker[id].endPos 
-							});
+						updateSessionTracker(id);
+						
+						videoTracker[id].active = false;
+						// videoTracker[id].startPos = 0;
+						// videoTracker[id].endPos = 0;
 
-							videoTracker[id].active = false;
-							var start = map(videoTracker[id].startPos,0,video.duration, 0, 262,true);
-							var end = map(videoTracker[id].endPos,0,video.duration, 0, 262,true);
-							addProgressPath(id,start,end);
+						var start = map(videoTracker[id].startPos,0,video.duration, 0, 262,true);
+						var end = map(videoTracker[id].endPos,0,video.duration, 0, 262,true);
+						addProgressPath(id,start,end);
 					}
 					else if(selectedId === id){
 						if(!videoTracker[id].active){
@@ -459,7 +527,6 @@
 							$('#legacy_container_' + selectedId).css({'cursor':'default'});
 							videoTracker[id].active = true;
 							videoTracker[id].startPos = video.currentTime;
-
 							videoTracker[id].endPos = -1;
 							currentActiveVideoTracker[id].active = true;
 							console.log(id +" was inactive and is now active");
@@ -593,7 +660,6 @@
 				videoTracker[id].totalDuration = video.duration;
 				videoTracker[id].durationPlayed = 0;
 				videoTracker[id].active = false;
-				videoTracker[id].complete = false;
 				console.log("videoTracker[id]: " + videoTracker[id]);
 
 				currentActiveVideoTracker[id] = {};
@@ -606,30 +672,26 @@
 
 			video.addEventListener('ended', function (evt) {
 
-				console.log('[ Legacy : ] ' + id + ' has ended');
-				if(videoTracker[id].active) {
-					zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
-				}
 			
 				console.log(evt.srcElement.id);
 				var string = evt.srcElement.id;
 				var index = string.split('_');
+				var id = index[0];
 				//index[0] is country name
-				videoTracker[index[0]].complete = true;
+				console.log('[ Legacy : ] ' + id + ' has ended');
+				if(videoTracker[id].active) {
+					zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
+					console.log(id +" Complete updating history");
+					//for volume
+					selectVideo(null);
+					var start = map(videoTracker[id].startPos,0,video.duration, 0, 262,true);
+					var end = map(videoTracker[id].endPos,0,video.duration, 0, 262,true);
+					addProgressPath(id,start,end);
+				}
+				video.play();
 				var count = 0;
-				Object.keys(videoTracker).forEach(function (id) {
 
-					if(videoTracker[id].complete){
-						video.play(); //play video after it completes
-						count++;
-					}
-					if(count >= 4){ //Not doing anything anymore since looping changed
-						console.log('[ Legacy : ] All videos complete.');
-					}
-				});
-
-				//for volume
-				selectVideo(null);
+				
 			});
 
 			video.addEventListener('timeupdate', function (evt) {
@@ -902,16 +964,21 @@
 	function openScreen() {
 		instructions.fadeIn(2000);
 		instructions.on('click', closeScreen);
+		insructIvl = setTimeout(closeScreen, 5000);
 	}
 
 	function closeScreen() {
+		clearInterval(insructIvl);
+		if(audioactive) {
+			audiostop();
+		}
 		instructions.fadeOut(1000, function() {
 			introDismissed = true;
 			playVideos();
-			// if(audioactive) {
-			// 	audiostop();
-			// }
+
 		});
+		
+
 	}
 
 	var legacy = {

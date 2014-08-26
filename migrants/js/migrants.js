@@ -560,7 +560,7 @@
 			holder.css({'cursor' : 'pointer', 'pointer-events' : 'none', 'opacity': 1.0, 'z-index': 100});
 			instructions.fadeIn(4000).css({'cursor' : 'pointer'});
 		});
-		insructIvl = setTimeout(closeScreen, 10000);
+		insructIvl = setTimeout(closeScreen, 8000);
 	}
 
 	function closeScreen() {
