@@ -7,8 +7,9 @@
 	var firstTime = true;
 
 	var videoLoaded = false;
-	var audio1Loaded = false;
-	var audio2Loaded = false;
+	var audioNormLoaded = false;
+	var audioYetiLoaded = false;
+	var videoTrackCurrentPosition = 0;
 	var sideTracker = new Object(); // tracking element to get the visualisation later
 	var scrubberLength;
 	var currentVideoId;
@@ -184,7 +185,8 @@
 		$("#periphery_arrows").css({'z-index': '12'});
 	}
 	function syncTime() {
-		if(videoLoaded && audio1Loaded && audio2Loaded) {
+		//console.log("in periphery sync time");
+		if(videoLoaded && audioNormLoaded && audioYetiLoaded) {
 			var audioNorm = document.getElementById("audio_norm");
 			var audioYeti = document.getElementById("audio_yeti");
 			
@@ -196,6 +198,8 @@
 			if(audioYeti.volume === 0) {
 				audioYeti.currentTime = videoTrackCurrentPosition;
 			}
+
+			//console.log("videoCurrentPos: " + videoTrackCurrentPosition);
 		}
 	}
 	function enableControls () {
@@ -281,7 +285,10 @@
 				var video = document.getElementById(id);
 				// console.log(video);
 
-				video.addEventListener("canplay", function(){console.log('[ Periphery : Canplay Event ] ' + id + ' Video');videoLoaded= true;}, true);
+				video.addEventListener("canplay", function(){
+					console.log('[ Periphery : Canplay Event ] ' + id + ' Video');
+					videoLoaded= true;
+				}, true);
 				video.addEventListener("ended", endVideos, true);
 				video.addEventListener("timeupdate", scrubberUpdater, true);
 				video.addEventListener("play", function(){mouseYTracking = true;}, true);
@@ -291,7 +298,14 @@
 			}
 			else{
 				var audio = document.getElementById(id);
-				audio.addEventListener("canplay", function(){console.log('[ Periphery : Canplay Event ] ' + id + ' Audio');}, true);
+				audio.addEventListener("canplay", function(){
+					console.log('[ Periphery : Canplay Event ] ' + id + ' Audio');
+					if(id === 'audio_norm') {
+						audioNormLoaded = true;
+					} else if(id === 'audio_yeti') {
+						audioYetiLoaded = true;
+					}
+				}, true);
 				audio.load();
 				media[id] = audio;
 				console.log("Media: " + media);
