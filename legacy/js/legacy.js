@@ -526,6 +526,7 @@
 						if(!videoTracker[id].active){
 							fadeInAudio(video); 
 							$('#legacy_container_' + selectedId).css({'cursor':'default'});
+							$('.directionTitle').css({'opacity':'0'});
 							videoTracker[id].active = true;
 							videoTracker[id].startPos = video.currentTime;
 							videoTracker[id].endPos = -1;
@@ -536,6 +537,7 @@
 						else{
 							console.log(id +" was active and is now active");
 							$('#legacy_container_' + selectedId).css({'cursor':'default'});
+							$('.directionTitle').css({'opacity':'0'});
 						}
 					} 
 					else {
@@ -601,6 +603,8 @@
 			$('#legacy_container_indonesia').css({'cursor':'pointer'});
 			$('#legacy_container_southafrica').css({'cursor':'pointer'});
 			$('#legacy_container_srilanka').css({'cursor':'pointer'});
+			$('.directionTitle').css({'opacity':'1'});
+
 
 			evt.stopPropagation();
 		});

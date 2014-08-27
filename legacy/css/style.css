@@ -485,12 +485,13 @@ div#l_instructions p#two{
 .directionTitle {
 	color: #666;
 	font-size: 24px;
+	transform-origin: center center;
 }
 
 #indonesiaTitle {
 	position: absolute;
-	top: 18;
-	left: 47;
+	top: -22;
+	left: 55;
 	-webkit-transform: rotate(-45deg);
 	-moz-transform: rotate(-45deg);
 	-o-transform: rotate(-45deg);
@@ -498,8 +499,8 @@ div#l_instructions p#two{
 
 #southafricaTitle {
 	position: absolute;
-	left: 39;
-	top: 35;
+	left: 36;
+	top: -11;
 	-webkit-transform: rotate(-45deg);
 	-moz-transform: rotate(-45deg);
 	-o-transform: rotate(-45deg);
@@ -507,8 +508,8 @@ div#l_instructions p#two{
 
 #indiaTitle {
 	position: absolute;
-	left: 90;
-	top: -28;
+	left: 64;
+	top: -23;
 	-webkit-transform: rotate(45deg);
 	-moz-transform: rotate(45deg);
 	-o-transform: rotate(45deg);
@@ -516,8 +517,8 @@ div#l_instructions p#two{
 
 #srilankaTitle {
 	position: absolute;
-	left: 76;
-	top: -43;
+	left: 50;
+	top: -16;
 	-webkit-transform: rotate(45deg);
 	-moz-transform: rotate(45deg);
 	-o-transform: rotate(45deg);
