@@ -294,11 +294,11 @@
 			}
 		}
 
-		console.log("[videoTracker] :" + videoTracker);
+		//console.log("[videoTracker] :" + videoTracker);
 	}
 
 	var fadeInAudio = function (video) {
-		console.log("In fadeInAudio");
+		//console.log("In fadeInAudio");
 		if(currentVolume <= 1){
 			video.volume = currentVolume ;
 			currentVolume += 0.07;
@@ -316,7 +316,7 @@
 		
 		if(id === "srilanka"){
 			var pathString ='M '+start.toString()+' 0 L '+end.toString()+' 0';
-			console.log("Srilanka "+ pathString);
+			//console.log("Srilanka "+ pathString);
 			diamondCanvas.path(pathString).attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
 		}
 		else if(id === "southafrica"){
@@ -375,8 +375,8 @@
 					if(!(debugCount%100)){
 					// not doing this method anymore
 					// console.log(id+" % : " +parseInt((((totalAmtWatched)/totalDuration))*100) );
-						console.log(id+" % : " + parseInt((((fullRange.length)/totalDuration))*100) );
-						console.log("All watched ?" + numWatched );
+						//console.log(id+" % : " + parseInt((((fullRange.length)/totalDuration))*100) );
+						//console.log("All watched ?" + numWatched );
 					}
 			}
 		});
@@ -392,13 +392,13 @@
 	}
 
 	function updateSessionTracker(id){
-		console.log("here");
+		//console.log("here");
 		var nonOverlappingSession = true;
 		for (var i = 0; i < sessionHistory[id].length; i++) {
 			
 			if(videoTracker[id].startPos > sessionHistory[id][i].startPos &&
 				videoTracker[id].endPos < sessionHistory[id][i].endPos){
-				console.log("full overlapping session ignoring");
+				//console.log("full overlapping session ignoring");
 				nonOverlappingSession = false;
 				continue;
 			}
@@ -412,8 +412,8 @@
 		
 				if(videoTracker[id].endPos > sessionHistory[id][i].endPos){
 
-					console.log("Start "+videoTracker[id].startPos+" within : " +sessionHistory[id][i].startPos+ " - "+sessionHistory[id][i].endPos);
-					console.log("semi overlapping session updating old session endPos");
+					//console.log("Start "+videoTracker[id].startPos+" within : " +sessionHistory[id][i].startPos+ " - "+sessionHistory[id][i].endPos);
+					//console.log("semi overlapping session updating old session endPos");
 					sessionHistory[id][i].endPos = videoTracker[id].endPos;	
 					nonOverlappingSession = false;
 				}
@@ -438,19 +438,11 @@
 		}
 
 		if(nonOverlappingSession){
-			console.log("new non overlapping session");
+			//console.log("new non overlapping session");
 			sessionHistory[id].push({
 					startPos: videoTracker[id].startPos,
 					endPos: videoTracker[id].endPos 
 			});
-			
-			//sessionHistory[id].startPos = videoTracker[id].startPos;
-			// console.log("sessionHistory "+ id + " startPos: " + sessionHistory[id][sessionHistory[id].length-1].startPos );
-			// console.log("sessionHistory "+ id + " endPos: " + sessionHistory[id][sessionHistory[id].length-1].endPos );
-			// for (var j = 0; j < sessionHistory[id].length; j++) {
-			// 	// console.log("poopy start " + sessionHistory[id][j].startPos);
-			// 	// console.log("poopy end " + sessionHistory[id][j].endPos);
-			// }
 		}
 	}
 
@@ -655,20 +647,20 @@
 				videoTracker[id].totalDuration = video.duration;
 				//videoTracker[id].durationPlayed = 0;
 				videoTracker[id].active = false;
-				console.log("videoTracker[id]: " + videoTracker[id]);
+				//console.log("videoTracker[id]: " + videoTracker[id]);
 
 				currentActiveVideoTracker[id] = {};
 				currentActiveVideoTracker[id].startPos = 0;
 				currentActiveVideoTracker[id].endPos = 0;
 				currentActiveVideoTracker[id].active = false;
 				currentActiveVideoTracker[id].totalDuration = video.duration;
-				console.log("currentActiveVideoTracker[id]: " + currentActiveVideoTracker[id]);				
+				//console.log("currentActiveVideoTracker[id]: " + currentActiveVideoTracker[id]);				
 			});
 
 			video.addEventListener('ended', function (evt) {
 
 			
-				console.log(evt.srcElement.id);
+				//console.log(evt.srcElement.id);
 				var string = evt.srcElement.id;
 				var index = string.split('_');
 				var id = index[0];
@@ -714,11 +706,13 @@
 
 				checkProgressLength();
 
-				// if (checkProgressLength()) {
-				// 	legacyEndScreen = true;
-				// 	console.log('Legacy Endscreen');
-				// 	buildEndScreen();
-				// }
+				if (checkProgressLength()) {
+					legacyEndScreen = true;
+					console.log('Legacy Endscreen');
+					buildEndScreen();
+
+					//Insert Skype button functionality here
+				}
 
 			});
 
