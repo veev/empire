@@ -445,12 +445,12 @@
 			});
 			
 			//sessionHistory[id].startPos = videoTracker[id].startPos;
-			console.log("sessionHistory "+ id + " startPos: " + sessionHistory[id][sessionHistory[id].length-1].startPos );
-			console.log("sessionHistory "+ id + " endPos: " + sessionHistory[id][sessionHistory[id].length-1].endPos );
-			for (var j = 0; j < sessionHistory[id].length; j++) {
-				console.log("poopy start " + sessionHistory[id][j].startPos);
-				console.log("poopy end " + sessionHistory[id][j].endPos);
-			}
+			// console.log("sessionHistory "+ id + " startPos: " + sessionHistory[id][sessionHistory[id].length-1].startPos );
+			// console.log("sessionHistory "+ id + " endPos: " + sessionHistory[id][sessionHistory[id].length-1].endPos );
+			// for (var j = 0; j < sessionHistory[id].length; j++) {
+			// 	// console.log("poopy start " + sessionHistory[id][j].startPos);
+			// 	// console.log("poopy end " + sessionHistory[id][j].endPos);
+			// }
 		}
 	}
 
@@ -705,21 +705,11 @@
 
 				if(videoTracker[id].active){
 					videoTracker[id].endPos = currTime;
-
-					console.log(id + "is active poopy");
 					//xxx
 					var lastElement = sessionHistory[id].pop();
 					lastElement.endPos = currTime;
-					console.log("lastELement: " + lastElement.startPos);
+					//console.log("lastELement: " + lastElement.startPos);
 					sessionHistory[id].push(lastElement);
-
-					// if(sessionHistory[id].length > 0) {
-					// 	var idx = sessionHistory[id].length-1; 
-					// 	//sessionHistory[id][idx].endPos = currTime;
-					// 	console.log("idx: " + idx);
-					// } else {
-					// 	console.log("No " + id + " session history yet");
-					// }
 				}
 
 				checkProgressLength();
