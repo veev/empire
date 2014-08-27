@@ -786,6 +786,7 @@
 					if (video) {
 						if (videoTracker[id].watched90 ) {
 						//console.log("turn off " + id + " opacity");
+						buildEndScreen();
 
 							if(id === "srilanka"){
 								//console.log(id + "reached 90%");
@@ -843,7 +844,6 @@
 		instructions.fadeOut(1000, function() {
 			introDismissed = true;
 			playVideos();
-			$("#l_endscreen").fadeIn();
 		});
 		
 
