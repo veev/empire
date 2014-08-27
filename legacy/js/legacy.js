@@ -389,7 +389,8 @@
 					
 					if(fullRange.length > thresh){
 						numWatched++;
-						console.log(id+" > 90%");
+						//console.log(id+" > 20%");
+						videoTracker[id].watched90 = true;
 					}
 					
 					if(!(debugCount%100)){
@@ -683,7 +684,7 @@
 					zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
 					console.log(id +" Complete updating history");
 					//for volume
-					selectVideo(null);
+					//selectVideo(null);
 					var start = map(videoTracker[id].startPos,0,video.duration, 0, 262,true);
 					var end = map(videoTracker[id].endPos,0,video.duration, 0, 262,true);
 					addProgressPath(id,start,end);
@@ -709,8 +710,16 @@
 				$("#" + id + "_progressDiamond").css({ "left": (640 / ratio) + 'px'});
 
 				if(videoTracker[id].active){
-					videoTracker[id].endPos = currentTime;
-						// console.log("current active endPos: " + videoTracker[id].endPos);
+					// videoTracker[id].endPos = currentTime;
+					if(sessionHistory[id].length > 0) {
+						videoTracker[id].endPos = currentTime;
+						var idx = sessionHistory[id].length-1; 
+						sessionHistory[id][idx].endPos = currentTime;
+						console.log("idx: " + idx);
+					} else {
+						console.log("No " + id + " session history yet");
+					}
+
 				}
 
 				checkProgressLength();
@@ -785,6 +794,44 @@
 
 		seriously.go(function() {
 			
+			var video, id, container;
+			for (id in videos) {
+				if (videos.hasOwnProperty(id)) {
+					video = videos[id];
+			
+					if (video) {
+						if (videoTracker[id].watched90 ) {
+						console.log("turn off " + id + " opacity");
+						layers.opacity2 = 0.5;
+						console.log("layers.opacity1: " + layers.opacity2);
+						//layer['opacity' + i] = opacity;
+
+							if(id === "srilanka"){
+								console.log(id + "reached 90%");
+								layers.opacity3 = 0;
+								diamondCanvas.path('M 0 0 L 262 0').attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
+							}
+							else if(id === "southafrica"){
+								console.log(id + "reached 90%");
+								layers.opacity1 = 0;							
+								diamondCanvas.path('M 262 0 L 262 262').attr({stroke: '#fbb03b', 'stroke-width': '3', 'stroke-opacity': '1.0'});
+							}
+							else if(id === "india"){
+								console.log(id + "reached 90%");
+								layers.opacity0 = 0;
+								//  bottom \ india
+								diamondCanvas.path('M 262 262 L 0 262').attr({stroke: '#fbb03b', 'stroke-width': '3', 'stroke-opacity': '1.0'});
+							}
+							else if(id === "indonesia"){
+								console.log(id + "reached 90%");
+								layers.opacity2 = 0;
+								//  top / indonesia
+								diamondCanvas.path('M 0 262 L 0 0').attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
+							}
+						}
+					}
+				}
+			}
 
 		/*
 		ctx.globalCompositeOperation = 'source-over';
@@ -964,7 +1011,7 @@
 	function openScreen() {
 		instructions.fadeIn(2000);
 		instructions.on('click', closeScreen);
-		insructIvl = setTimeout(closeScreen, 5000);
+		insructIvl = setTimeout(closeScreen, 7000);
 	}
 
 	function closeScreen() {
@@ -975,7 +1022,7 @@
 		instructions.fadeOut(1000, function() {
 			introDismissed = true;
 			playVideos();
-
+			$("#l_endscreen").fadeIn();
 		});
 		
 
@@ -1022,10 +1069,10 @@
 			active = false;
 		},
 		buildEndScreen: function() {
-			$("#l_endscreen").fadeIn();
+			//$("#l_endscreen").fadeIn();
 			legacyEndScreen = true;
 			if (legacyEndScreen) {
-				$("#diamond_border").css({'background-color': '#000'});
+				//$("#diamond_border").css({'background-color': '#000'});
 			}
 
 		}

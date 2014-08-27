@@ -329,6 +329,7 @@ div#l_instructions p#two{
 	left:428px;
 	width:372px;
 	height:372px;
+	z-index:10;
 /*	opacity: 0.5;
 	background-color:#ffc;*/
 }
@@ -452,6 +453,7 @@ div#l_instructions p#two{
 	position: absolute;
 	top: 158;
 	left: 384;
+	z-index: 10;
 }
 #southafrica_directions {
 	width: 200px;
@@ -459,6 +461,7 @@ div#l_instructions p#two{
 	position: absolute;
 	top: 477;
 	left: 714;
+	z-index: 10;
 }
 #india_directions {
 	width: 200px;
@@ -466,6 +469,7 @@ div#l_instructions p#two{
 	position: absolute;
 	top: 612;
 	left: 386;
+	z-index: 10;
 }
 
 #srilanka_directions {
@@ -474,7 +478,9 @@ div#l_instructions p#two{
 	position: absolute;
 	top: 290;
 	left: 710;
+	z-index: 10;
 }
+
 
 .directionTitle {
 	color: #666;
@@ -526,7 +532,7 @@ div#l_instructions p#two{
 	color: #fbb03b;
 	text-align: center;
 	font-size: 1.2em;
-	z-index: 1000;
+	z-index: 1;
 }
 
 #l_endscreen p.empiredoc {
