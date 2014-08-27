@@ -17,7 +17,9 @@
 	var introDismissed = false;
 
 	var videoCurrentTime = 0;
-	
+	var videoSchipol;
+	var videoSpotters;
+
 	var sideTracker = {};
 	var _transitiontimerIvl = new Number();
 	var soundivl = new Number();
@@ -71,17 +73,17 @@
 			.on('click', function () {
 				playButton();
 				console.log("Cradle playButton #c_playElement");
-				if( !document.getElementById("video1").paused ){
+				if( !videoSchipol.paused ){
 					toggleButtonDisplay();
 				}})
 			.on('mouseover', function (){
-				if(document.getElementById("video1").paused || document.getElementById("video2").paused){
+				if(videoSchipol.paused || videoSpotters.paused){
 					$("#c_playElement").css({'background':'url(../art/cradle/playWhite.png)'})
 				} else {
 					$("#c_playElement").css({'background':'url(../art/cradle/pauseWhite.png)'})
 				}})
 			.on('mouseout', function (){
-				if(document.getElementById("video1").paused || document.getElementById("video2").paused){
+				if(videoSchipol.paused || videoSpotters.paused){
 					$("#c_playElement").css({'background':'url(../art/cradle/playYellow.png)'})
 				} else {
 					$("#c_playElement").css({'background':'url(../art/cradle/pauseYellow.png)'})
@@ -155,7 +157,7 @@
 		});
 		$("#cradlemore").css({"top": buffer, "left": centering }).fadeIn(4000).on('click', function() {
 			body.animate({scrollTop: ($('#cradle_main').offset().top) }, 1000);
-				if(document.getElementById("video1").currentTime == 0) {
+				if(videoSchipol.currentTime == 0) {
 					openScreen();
 				} 
 				else {
@@ -208,7 +210,7 @@
 		instructions.fadeOut(1000, function() {
 			introDismissed = true;
 			if(active) {
-				if (document.getElementById("video1").paused){
+				if (videoSchipol.paused){
 			 		playButton();	
 			 		console.log("Cradle playButton closeScreen");
 				} 
@@ -219,7 +221,7 @@
 	function playButton(){
 		if(active) {
 			mouseXTracking = true;
-			if(document.getElementById("video1").paused || document.getElementById("video2").paused){
+			if(videoSchipol.paused || videoSpotters.paused){
 				playVideos();
 			}
 			else{
@@ -231,7 +233,7 @@
 		instructions.scrollspy({
 		min: instructions.offset().top,
 		onEnter: function(element, position) {
-			if(document.getElementById("video1").currentTime == 0) {
+			if(videoSchipol.currentTime == 0) {
 				openScreen();
 			}
 			else {
@@ -292,13 +294,29 @@
 
 	}
 
+	function syncTime() {
+		if(vid1Loaded && vid2Loaded) {
+			var audioNorm = document.getElementById("audio_norm");
+			var audioYeti = document.getElementById("audio_yeti");
+			
+			videoTrackCurrentPosition  = document.getElementById("target").currentTime;
+			if(audioNorm.volume === 0) {
+				audioNorm.currentTime = videoTrackCurrentPosition;
+			}
+
+			if(audioYeti.volume === 0) {
+				audioYeti.currentTime = videoTrackCurrentPosition;
+			}
+		}
+	}
+
 	function restartVideos() {	
 		//console.log("Restarting cradle videos");
-		document.getElementById("video1").currentTime = 0;
-		document.getElementById("video2").currentTime = 0;
-		document.getElementById("video2").volume = 0;
-		document.getElementById("video1").play();
-		document.getElementById("video2").play();
+		videoSchipol.currentTime = 0;
+		videoSpotters.currentTime = 0;
+		videoSpotters.volume = 0;
+		videoSchipol.play();
+		videoSpotters.play();
 	}
 	
 
@@ -400,8 +418,8 @@
 
 	function toggleButtonDisplay(){
 
-		if(document.getElementById("video1")){
-			if(document.getElementById("video1").paused ){
+		if(videoSchipol){
+			if(videoSchipol.paused ){
 				$("#c_play_bg").fadeIn();
 			}
 			else{
@@ -452,8 +470,8 @@
 			sideTracker = {};
 			$("#c_endscreen").fadeOut();
 			$("#c_legmore").fadeOut();
-			document.getElementById("video1").currentTime = 0;
-			document.getElementById("video2").currentTime = 0;
+			videoSchipol.currentTime = 0;
+			videoSpotters.currentTime = 0;
 			container.fadeIn();
 			controls.fadeIn();
 			playVideos();
@@ -464,6 +482,8 @@
 	}
 
 	function init(){
+		videoSchipol = document.getElementById('video1');
+		videoSpotters = document.getElementById('video2');
 		instructions = $("#c_instructions");
 		outerOuter = $("#c_outerouter");
 		container = $("#c_container");
@@ -509,7 +529,7 @@
 			active = true;
 
 
-			if( document.getElementById("video1").currentTime > 0 ) {
+			if( videoSchipol.currentTime > 0 ) {
 				toggleButtonDisplay();
 			}
 
