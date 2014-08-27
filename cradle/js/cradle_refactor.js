@@ -262,6 +262,7 @@
 					}
 				}
 			}
+			syncTime();
 		});
 	}
 	function trackoff () {
@@ -296,16 +297,11 @@
 
 	function syncTime() {
 		if(vid1Loaded && vid2Loaded) {
-			var audioNorm = document.getElementById("audio_norm");
-			var audioYeti = document.getElementById("audio_yeti");
 			
-			videoTrackCurrentPosition  = document.getElementById("target").currentTime;
-			if(audioNorm.volume === 0) {
-				audioNorm.currentTime = videoTrackCurrentPosition;
-			}
-
-			if(audioYeti.volume === 0) {
-				audioYeti.currentTime = videoTrackCurrentPosition;
+			var videoTrackCurrentPosition  = videoSchipol.currentTime;
+			if(!flipside) {
+				videoSpotters.currentTime = videoTrackCurrentPosition;
+				//console.log("videoSpotters.currentTime: " + videoSpotters.currentTime);
 			}
 		}
 	}
@@ -329,7 +325,16 @@
 			video.addEventListener('play',function(){mouseXTracking=true;},true);
 			video.addEventListener('pause',function(){mouseXTracking=true;},true);
 			video.addEventListener("ended", endVideos, true);
-			video.addEventListener('canplay', function () {console.log('[ Cradle : Canplay Event ] ' + id + ' Video');});
+			video.addEventListener('canplay', function () {
+				console.log('[ Cradle : Canplay Event ] ' + id + ' Video');
+				if(id === '1') {
+					vid1Loaded = true;
+					//console.log("vid1Loaded is " + vid1Loaded);
+				} else if (id === '2') {
+					vid2Loaded = true;
+					//console.log("vid2Loaded is " + vid2Loaded);
+				}
+			});
 			video.load();
 			videos[id] = video;
 
