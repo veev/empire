@@ -10,7 +10,7 @@
 	var allVideosComplete = false;
 	var l_videoTrackCurrentPosition;
 
-	var currentTime = 0;
+	var currTime = 0;
 	var currentVolume = 0;
 	var intervalID = 0;
 	var insructIvl;
@@ -297,26 +297,6 @@
 		console.log("[videoTracker] :" + videoTracker);
 	}
 
-	/*
-	Function that updates as videos play. Needs to:
-	
-	- Keep track of which video is being watched (zoomed to / selected)
-
-	*/
-	// function scrubberUpdater(id) {
-	// 	var video;
-		
-	// 	for (id in videos) {
-	// 		if(videos.hasOwnProperty(id)) {
-	// 			video = videos[id];
-	// 			if (video) {
-					
-					
-	// 			}
-	// 		}
-	// 	}
-	// }
-
 	var fadeInAudio = function (video) {
 		console.log("In fadeInAudio");
 		if(currentVolume <= 1){
@@ -365,7 +345,6 @@
 		
 		var numWatched = 0;
 
-
 		Object.keys(sessionHistory).forEach(function (id) {
 			var fullRange = [];
 			
@@ -381,7 +360,7 @@
 					// var duration = sessionHistory[id][i].endPos - sessionHistory[id][i].startPos;
 					// totalAmtWatched += 	duration;
 				}
-					
+				
 					fullRange = _.flatten(fullRange);
 					fullRange = _.uniq(fullRange);
 					var totalDuration = videos[id].duration;
@@ -396,28 +375,27 @@
 					if(!(debugCount%100)){
 					// not doing this method anymore
 					// console.log(id+" % : " +parseInt((((totalAmtWatched)/totalDuration))*100) );
-
-					console.log(id+" % : " +parseInt((((fullRange.length)/totalDuration))*100) );
+						console.log(id+" % : " + parseInt((((fullRange.length)/totalDuration))*100) );
 						console.log("All watched ?" + numWatched );
 					}
 			}
 		});
 
-		debugCount++
-		if(numWatched>=4){
-			return true
+		debugCount++;
+		if(numWatched >= 4){
+			return true;
 		}
 		else{
-			return false
+			return false;
 		};
 
 	}
+
 	function updateSessionTracker(id){
 		console.log("here");
 		var nonOverlappingSession = true;
 		for (var i = 0; i < sessionHistory[id].length; i++) {
 			
-
 			if(videoTracker[id].startPos > sessionHistory[id][i].startPos &&
 				videoTracker[id].endPos < sessionHistory[id][i].endPos){
 				console.log("full overlapping session ignoring");
@@ -434,7 +412,7 @@
 		
 				if(videoTracker[id].endPos > sessionHistory[id][i].endPos){
 
-					console.log("Startp "+videoTracker[id].startPos+" within : " +sessionHistory[id][i].startPos+ " - "+sessionHistory[id][i].endPos);
+					console.log("Start "+videoTracker[id].startPos+" within : " +sessionHistory[id][i].startPos+ " - "+sessionHistory[id][i].endPos);
 					console.log("semi overlapping session updating old session endPos");
 					sessionHistory[id][i].endPos = videoTracker[id].endPos;	
 					nonOverlappingSession = false;
@@ -465,9 +443,15 @@
 					startPos: videoTracker[id].startPos,
 					endPos: videoTracker[id].endPos 
 			});
+			
+			//sessionHistory[id].startPos = videoTracker[id].startPos;
+			console.log("sessionHistory "+ id + " startPos: " + sessionHistory[id][sessionHistory[id].length-1].startPos );
+			console.log("sessionHistory "+ id + " endPos: " + sessionHistory[id][sessionHistory[id].length-1].endPos );
+			for (var j = 0; j < sessionHistory[id].length; j++) {
+				console.log("poopy start " + sessionHistory[id][j].startPos);
+				console.log("poopy end " + sessionHistory[id][j].endPos);
+			}
 		}
-
-
 	}
 
 	function selectVideo(selectedId) {
@@ -532,6 +516,12 @@
 							videoTracker[id].endPos = -1;
 							currentActiveVideoTracker[id].active = true;
 							console.log(id +" was inactive and is now active");
+
+							//xxx
+							sessionHistory[id].push({
+								startPos: videoTracker[id].startPos,
+								endPos: videoTracker[id].startPos,
+							});
 							continue;
 						}
 						else{
@@ -663,7 +653,7 @@
 				// load metadata into VideoTracker object
 				videoTracker[id] = {};
 				videoTracker[id].totalDuration = video.duration;
-				videoTracker[id].durationPlayed = 0;
+				//videoTracker[id].durationPlayed = 0;
 				videoTracker[id].active = false;
 				console.log("videoTracker[id]: " + videoTracker[id]);
 
@@ -705,34 +695,40 @@
 				var vid = document.getElementById(videoID);
 				
 				// Update progress bar for each film - TODO: change from a bar to a circle
-				var currentTime = Math.floor(vid.currentTime);
+				var currTime = Math.floor(vid.currentTime);
 				//console.log("id: " + index + " currentDur : " + dur);
-				if(currentTime > 0) {
-					var ratio = (document.getElementById(videoID).duration / currentTime);
+				if(currTime > 0) {
+					var ratio = (document.getElementById(videoID).duration / currTime);
 				}
 
 				$("#" + id + "_progressDiamond").css({ "left": (640 / ratio) + 'px'});
 
 				if(videoTracker[id].active){
-					// videoTracker[id].endPos = currentTime;
-					if(sessionHistory[id].length > 0) {
-						videoTracker[id].endPos = currentTime;
-						var idx = sessionHistory[id].length-1; 
-						sessionHistory[id][idx].endPos = currentTime;
-						console.log("idx: " + idx);
-					} else {
-						console.log("No " + id + " session history yet");
-					}
+					videoTracker[id].endPos = currTime;
 
+					console.log(id + "is active poopy");
+					//xxx
+					var lastElement = sessionHistory[id].pop();
+					lastElement.endPos = currTime;
+					console.log("lastELement: " + lastElement.startPos);
+					sessionHistory[id].push(lastElement);
+
+					// if(sessionHistory[id].length > 0) {
+					// 	var idx = sessionHistory[id].length-1; 
+					// 	//sessionHistory[id][idx].endPos = currTime;
+					// 	console.log("idx: " + idx);
+					// } else {
+					// 	console.log("No " + id + " session history yet");
+					// }
 				}
 
 				checkProgressLength();
 
-				if (checkProgressLength()) {
-					legacyEndScreen = true;
-					console.log('Legacy Endscreen');
-					buildEndScreen();
-				}
+				// if (checkProgressLength()) {
+				// 	legacyEndScreen = true;
+				// 	console.log('Legacy Endscreen');
+				// 	buildEndScreen();
+				// }
 
 			});
 
@@ -805,27 +801,26 @@
 			
 					if (video) {
 						if (videoTracker[id].watched90 ) {
-						console.log("turn off " + id + " opacity");
-						//layer['opacity' + i] = opacity;
+						//console.log("turn off " + id + " opacity");
 
 							if(id === "srilanka"){
-								console.log(id + "reached 90%");
+								//console.log(id + "reached 90%");
 								layers.opacity3 = 0;
 								diamondCanvas.path('M 0 0 L 262 0').attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
 							}
 							else if(id === "southafrica"){
-								console.log(id + "reached 90%");
+								//console.log(id + "reached 90%");
 								layers.opacity1 = 0;							
 								diamondCanvas.path('M 262 0 L 262 262').attr({stroke: '#fbb03b', 'stroke-width': '3', 'stroke-opacity': '1.0'});
 							}
 							else if(id === "india"){
-								console.log(id + "reached 90%");
+								//console.log(id + "reached 90%");
 								layers.opacity0 = 0;
 								//  bottom \ india
 								diamondCanvas.path('M 262 262 L 0 262').attr({stroke: '#fbb03b', 'stroke-width': '3', 'stroke-opacity': '1.0'});
 							}
 							else if(id === "indonesia"){
-								console.log(id + "reached 90%");
+								//console.log(id + "reached 90%");
 								layers.opacity2 = 0;
 								//  top / indonesia
 								diamondCanvas.path('M 0 262 L 0 0').attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
