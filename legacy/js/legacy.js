@@ -802,8 +802,6 @@
 					if (video) {
 						if (videoTracker[id].watched90 ) {
 						console.log("turn off " + id + " opacity");
-						layers.opacity2 = 0.5;
-						console.log("layers.opacity1: " + layers.opacity2);
 						//layer['opacity' + i] = opacity;
 
 							if(id === "srilanka"){
