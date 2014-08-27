@@ -574,7 +574,9 @@
 		 	if( document.getElementById("target") ) {
 				if( document.getElementById("target").currentTime > 0 ) {
 				 	toggleButtonDisplay();
-				 }
+				 	$("#pcard").css({ '-webkit-transform': 'rotate(0deg)', 'transform': 'rotate(0deg)' });
+
+				}
 			}
 		},
 		deactivate:function(){
