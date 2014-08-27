@@ -684,7 +684,7 @@
 					zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
 					console.log(id +" Complete updating history");
 					//for volume
-					//selectVideo(null);
+					selectVideo(null);
 					var start = map(videoTracker[id].startPos,0,video.duration, 0, 262,true);
 					var end = map(videoTracker[id].endPos,0,video.duration, 0, 262,true);
 					addProgressPath(id,start,end);
