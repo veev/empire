@@ -17,6 +17,7 @@
 
 	var firstTime = true;
 	var active = false;
+	var pageLoaded = false;
 	var showProgress = false;
 	var allVideosLoaded = false;
 	var currentVolume = 0;
@@ -605,10 +606,19 @@
 		var legbottom = 50; //offset of the bottom play button on the open screen
 		var buffer = h - legbottom;
 		var centering = (w / 2) - 62;
-		if($('.migrants_top:first').height() < 780){ // if this a wee screen
+		if($('.migrants_top:first').height() < 780 && pageLoaded === true){ // if this a wee screen
 			padtop = 20;
 			matop = h * 0.15;
 			legbottom = 20;
+
+			//RESIZING VIDEO
+			var newContainerWidth = w - 160;
+			var newContainerHeight = newContainerWidth * 0.20625;
+			console.log("newContainerWidth: "+newContainerWidth+", newContainerHeight "+newContainerHeight);
+
+			$("#m_container").css({'width': newContainerWidth+'px', 'height': newContainerHeight+'px', 'margin-left': '-'+newContainerWidth/2});
+			$("#m_outerinner").css({'width': newContainerWidth+'px'});
+
 		}
 
 		$('#migrants_title').css({ 'padding-top': padtop, 'height' : matop });
@@ -1142,6 +1152,7 @@
 		},
 		activate: function(){
 			migrantsContent.fadeIn(2000);
+			pageLoaded = true;
 			if(firstTime){
 				migrantsContent.css({ 'width' : '100%', 'height' : '100%' });
 				$('.migrants_top').css({ 'background' : 'none'});
