@@ -1100,7 +1100,7 @@
 		// var holderRatio = height / width;
 
 		var mapCenter;
-		var mapScalar = map(height, 600, 1200, 1.15, 2.0);
+		var mapScalar = map(height, 600, 1200, 1, 2.0);
 		//var mapScalar = 1;
 		console.log("Migrants mapScalar = "+mapScalar);
 
@@ -1109,31 +1109,10 @@
 			bboxH = Math.ceil(bbox.height);
 
 		console.log("VennMap bbox: "+ bboxW+ ', '+bboxH);
-
-		centerW = (width - bboxH)/2 + 5;
-		centerH = (height - bboxH)/2 + 20;
+		centerW = bboxH/2 ;
+		centerH = bboxH/2 ;
 		console.log("Migrants holder center: " + centerW + ' height: '+centerH);
-		vennMap.transform('S' + mapScalar + ','+ mapScalar +',' + centerW + ',' + centerH+ 'T ' + centerW + ' ' + centerH);
-
-		/*
-		//scaling fixes
-		if (holderRatio >= 0.9) {
-			centerW = width / 4 * 1;
-			centerH = height / 4 * 1;
-			vennMap.transform('T ' + centerW + ' ' + centerH + 'S' + mapScalar + ','+ mapScalar +',' + centerW + ',' + centerH);
-		} else if (height < 710 && holderRatio < 0.9) {
-			mapCenter = map(holderRatio, 0.6, 0.9, 1.3, 1.0);
-			centerW = width / 4 * mapCenter;
-			centerH = height / 4 * 1;
-			vennMap.transform('T ' + centerW + ' ' + centerH + 'S' + mapScalar + ','+ mapScalar +',' + centerW + ',' + centerH);
-		} else if (height >= 710 && holderRatio < 0.9) {
-			mapCenter = map(holderRatio, 0.6, 0.9, 1.4, 1.0);
-			centerW = width / 4 * mapCenter;
-			centerH = height / 4;
-			vennMap.transform('T ' + centerW + ' ' + centerH + 'S' + mapScalar + ','+ mapScalar +',' + centerW + ',' + centerH);
-		}
-		*/
-
+		vennMap.transform('s' + mapScalar + ','+ mapScalar +', 0, 0 t ' + centerW + ' ' + centerH);
 	}
 
 	function checkArcLength(){
@@ -1226,6 +1205,7 @@
 		},
 		resize: function(){
 			sizer();
+			//arrayActFills();
 			//resizeHolder();
 			prevVenID = -1;
 		}
