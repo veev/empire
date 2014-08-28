@@ -133,7 +133,6 @@
 					<button type="button" class="nav_button" id="migrants_cbutton">M</button>
 					<button type="button" class="nav_button" id="periphery_cbutton">P</button>
 				</div>
-
 				<div class="home_button">
 					<img src="art/e_nav.png" width="40" height="35" alt="home"/>
 				</div>
@@ -159,15 +158,12 @@
 									<video id="video1" width="960" height="540" poster="art/thumbs/full-schipol-1.jpg" preload="none">
 									<source src="http://dalcr8izwrdz8.cloudfront.net/cradle/schipol_hinted.mp4" type="video/mp4">
 									 <source src="http://dalcr8izwrdz8.cloudfront.net/cradle/schipol.webm">
-									 	<!-- <source src="cradle/mp4/schipol.mp4"> -->
-
 									</video>
 								</div>
 								<div class="back" id="cradle1" data-clipname="spotters">
 									<video id="video2" width="960" height="540" poster="art/thumbs/full-spotters-1.jpg" preload="none">
 									 <source src="http://dalcr8izwrdz8.cloudfront.net/cradle/spotters_hinted.mp4" type="video/mp4">
 								 	<source src="http://dalcr8izwrdz8.cloudfront.net/cradle/spotters.webm">
-								 		<!-- <source src="cradle/mp4/spotters.mp4"> -->
 									</video>
 								</div>
 							</div>
@@ -191,8 +187,8 @@
 				</div>
 			</div>
 			<div class="more" id="c_legmore" style="display:none"></div>
-			</div>
-			<div class="cradle_bottom snap" id="cradle_bottom">
+		</div>
+		<div class="cradle_bottom snap" id="cradle_bottom">
 				<div id="cradle_bottomline"></div>
 				<div class="inner">
 					<div id="cbottom_structure">
@@ -218,9 +214,10 @@
 				<div class="home_button">
 					<img src="art/e_nav.png" width="40" height="35" alt="home"/>
 				</div>
-			</div>
-		</div>			
+		</div>		
+	</div>			
 	</div>
+
 	<div id="legacyContent" style="display:none">
 		<div id="legacy_wrapper">		
 			<div class="legacy_top snap" id="legacy_top">
@@ -323,8 +320,8 @@
 					</div>
 				</div>
 			</div>
-			<!-- <div class="more" id="l_legmore" style="display:none"></div> -->
-				<div class="legacy_bottom snap" id="legacy_bottom">
+			<div class="more" id="l_legmore" style="display:none"></div>
+		<div class="legacy_bottom snap" id="legacy_bottom">
 				<div class="inner">
 					<div id="lbottom_structure">
 						<div class="lbottom" >
@@ -339,14 +336,13 @@
 						<img src="art/emp_title.png" width="284" height="43" title="Empire" />
 					</div>
 				</div> 
-			</div>
-
-				<!-- <div class="home_button">
-					<img src="art/e_nav.png" width="40" height="35" alt="home"/>
-				</div> -->
-			</div>
+				<div class="home_button">
+				<img src="art/e_nav.png" width="40" height="35" alt="home"/>
+				</div>
 		</div>
-<!-- 	</div> -->
+	</div>
+	</div>
+
 	<div id="migrantsContent" style="display:none">
 		<div id="migrants_wrapper">
 			<div class="migrants_top snap" id="migrants_top">
@@ -409,7 +405,6 @@
 				</div>
 			</div>
 			<div class="more" id="m_legmore" style="display:none"></div>
-			</div>
 			<div class="migrants_bottom snap" id="migrants_bottom">
 				<div class="inner">
 					<div id="mbottom_structure">
@@ -430,7 +425,7 @@
 				</div>
 			</div>
 		</div>
-<!-- 	</div> -->
+	</div>
 	<div id="peripheryContent" style="display:none">
 		<div id="periphery_wrapper">
 			<div class="periphery_top snap" id="periphery_top">
@@ -474,45 +469,37 @@
 							<div id="periphery_arrows"></div>
 							<div id="pcard">
 								<div class="norm">
-									<video id="target" src="https://s3-us-west-2.amazonaws.com/empire-project/PERIPHERY_NORM_noMASK_1_1.mp4" height="720" width="1280" type="video/mp4" poster="/art/periphery/periphery_poster.jpg" preload="none">
+									<video id="target" src="https://s3-us-west-2.amazonaws.com/empire-project/PERIPHERY_NORM_noMASK_1_1.mp4" height="720" width="640" type="video/mp4" poster="/art/periphery/periphery_poster2.jpg" preload="none">
 									</video>
-									<!-- <video id="target" src="periphery/mp4/PERIPHERY_NORM_VIMEO_1_1.mp4" height="720" width="1280" type="video/mp4" poster="/art/periphery/periphery_poster.jpg" preload="none">
-									</video> -->
 									<div id="audio1" style="display:none">
 										<audio src="http://dalcr8izwrdz8.cloudfront.net/PERIPHERY+NORM_WEB_1-2_AIFF.mp3" type="audio/mpeg" id="audio_norm" preload="none"></audio>
 									</div>
-									<!-- <div id="audio1" style="display:none">
-										<audio src="periphery/audio/PERIPHERY+NORM_WEB_1-2_AIFF.mp3" type="audio/mpeg" id="audio_norm" preload="none"></audio>
-									</div> -->
 									<div id="audio2" style="display:none">
 										<audio src="http://dalcr8izwrdz8.cloudfront.net/PERIPHERY+YETI_WEB_1-2_AIFF.mp3" type="audio/mpeg" id="audio_yeti" preload="none"></audio>
 									</div>
-									<!-- <div id="audio2" style="display:none">
-										<audio src="periphery/audio/PERIPHERY+YETI_WEB_1-2_AIFF.mp3" type="audio/mpeg" id="audio_yeti" preload="none"></audio>
-									</div> -->
 								</div>
 							</div>
-						</div>
-						<div id="p_controls">
-							<span id="p_refresh" style="cursor: pointer;"></span>
-							<span id="p_playElement" style="cursor: pointer;"></span>
-							<div id="p_scrubber">
-								<div id="p_progress"></div>
+							<div id="p_controls">
+								<span id="p_refresh" style="cursor: pointer;"></span>
+								<span id="p_playElement" style="cursor: pointer;"></span>
+								<div id="p_scrubber">
+									<div id="p_progress"></div>
+								</div>
 							</div>
-						</div>
-						<div id="p_endscreen" style="display: none;">
-							<div id="p_person_a" style="display: none;"></div>
-							<div id="p_person_b" style="display: none;"></div>
-							<div id="p_people_data"></div>
-							<div id="p_person_overlay">
-							<p>This is the world you experienced<br />
-							Try again to change your perspective</p>
+							<div id="p_endscreen" style="display: none;">
+								<div id="p_person_a" style="display: none;"></div>
+								<div id="p_person_b" style="display: none;"></div>
+								<div id="p_people_data"></div>
+								<div id="p_person_overlay">
+								<p>This is the world you experienced<br />
+								Try again to change your perspective</p>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="more" id="p_legmore" style="display:none"></div>
-			</div>
+		</div>
 			<div class="periphery_bottom snap" id="periphery_bottom">
 				<div class="returntop_button" id="periphery_returntop" style="display: none"></div>
 				<div id="periphery_bottomline"></div>

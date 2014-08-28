@@ -63,11 +63,19 @@
 		var centering = (w/2) - 70;
 		var linetop = 610;
 		var body = $('html body');
-		if($("#periphery_top").height() < 780){ // if this a wee screen
+		console.log("periphery is active: " + active);
+		if($("#periphery_top").height() < 780 && active === true){ // if this a wee screen
 		  padtop = 20;
 		  matop = 120;
 		  legbottom = 20;
 		  linetop = 525;
+
+		  //RESIZING VIDEO
+		  var newCardHeight = h-37;
+		  var newCardWidth = newCardHeight * 0.9525;
+
+		  $("#pcard").css({ 'width': newCardWidth+'px', 'height': newCardHeight+'px'});
+		  $("#periphery_arrows").css({ 'width': newCardHeight+'px', 'height': newCardWidth+'px', 'margin-left': '-'+newCardHeight/2});
 		}
 
 		outerOuter.css({ 'padding-top': (($("#periphery_top").height() / 2) - ($("#p_outerinner").height() / 2)) });
@@ -112,6 +120,25 @@
 			}
 		}
 	}
+
+	$.fn.isOnScreen = function(){
+	    
+	    var win = $(window);
+	    
+	    var viewport = {
+	        top : win.scrollTop(),
+	        left : win.scrollLeft()
+	    };
+	    viewport.right = viewport.left + win.width();
+	    viewport.bottom = viewport.top + win.height();
+	    
+	    var bounds = this.offset();
+	    bounds.right = bounds.left + this.outerWidth();
+	    bounds.bottom = bounds.top + this.outerHeight();
+	    
+	    return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
+	    
+	};
 
 	function trackMouseRotation() {
 		p_trackingon = true;
@@ -207,7 +234,7 @@
 		controlsActive = true;
 
 		outerOuter
-		.on('mouseenter', function () { if(mouseYTracking) { trackMouseRotation(); } })
+		.on('mouseenter', function () { if(mouseYTracking && container.isOnScreen()) { trackMouseRotation(); } })
 		.on('mouseleave', function () {
 			if(flipAngle < 90) {
 				flipAngle = 0;
@@ -559,6 +586,7 @@
 		activate:function(){
 			
 			peripheryContent.fadeIn(2000);
+			active = true;
 		 	if(firstTime) {
 				peripheryContent.css({'width': '100%', 'height': '100%'});
 				$(".periphery_top").css({'background': 'none'});
@@ -570,7 +598,7 @@
 		 		firstTime = false;
 		 	}
 
-		 	active = true;
+		 	// active = true;
 		 	if( document.getElementById("target") ) {
 				if( document.getElementById("target").currentTime > 0 ) {
 				 	toggleButtonDisplay();
