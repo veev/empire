@@ -1094,13 +1094,28 @@
 
 		vennMap.push(countryLabels.ghana, countryLabels.brazil, countryLabels.suriname);
 
-		var centerW = width / 4;
-		var centerH = height / 4;
-		var holderRatio = height / width;
+
+		// var centerW = width / 4;
+		// var centerH = height / 4;
+		// var holderRatio = height / width;
 
 		var mapCenter;
 		var mapScalar = map(height, 600, 1200, 1.15, 2.0);
+		//var mapScalar = 1;
+		console.log("Migrants mapScalar = "+mapScalar);
 
+		var bbox = vennMap.getBBox(),
+			bboxW = Math.ceil(bbox.width),
+			bboxH = Math.ceil(bbox.height);
+
+		console.log("VennMap bbox: "+ bboxW+ ', '+bboxH);
+
+		centerW = (width - bboxH)/2 + 5;
+		centerH = (height - bboxH)/2 + 20;
+		console.log("Migrants holder center: " + centerW + ' height: '+centerH);
+		vennMap.transform('S' + mapScalar + ','+ mapScalar +',' + centerW + ',' + centerH+ 'T ' + centerW + ' ' + centerH);
+
+		/*
 		//scaling fixes
 		if (holderRatio >= 0.9) {
 			centerW = width / 4 * 1;
@@ -1117,6 +1132,7 @@
 			centerH = height / 4;
 			vennMap.transform('T ' + centerW + ' ' + centerH + 'S' + mapScalar + ','+ mapScalar +',' + centerW + ',' + centerH);
 		}
+		*/
 
 	}
 
