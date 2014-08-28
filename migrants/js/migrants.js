@@ -599,6 +599,7 @@
 	}
 
 	function sizer() {
+		console.log("In Migrants Sizer");
 		var w = $('#migrants_top').width();
 		var h = $('#migrants_top').height();
 		var padtop = h * 0.1; // top of the main title
@@ -606,7 +607,7 @@
 		var legbottom = 50; //offset of the bottom play button on the open screen
 		var buffer = h - legbottom;
 		var centering = (w / 2) - 62;
-		if($('.migrants_top:first').height() < 780 && pageLoaded === true){ // if this a wee screen
+		if(w > 1440) { // if this a big screen
 			padtop = 20;
 			matop = h * 0.15;
 			legbottom = 20;
@@ -616,7 +617,11 @@
 			var newContainerHeight = newContainerWidth * 0.20625;
 			console.log("newContainerWidth: "+newContainerWidth+", newContainerHeight "+newContainerHeight);
 
-			$("#m_container").css({'width': newContainerWidth+'px', 'height': newContainerHeight+'px', 'margin-left': '-'+newContainerWidth/2});
+			$("#m_container").css({
+				'width': newContainerWidth+'px', 
+				'height': newContainerHeight+'px', 
+				'margin-left': '-'+newContainerWidth/2+'px', 
+				'margin-top': '-'+newContainerHeight/2+'px'});
 			$("#m_outerinner").css({'width': newContainerWidth+'px'});
 
 		}
