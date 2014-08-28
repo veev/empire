@@ -158,11 +158,13 @@ div#l_instructions p#two{
 }
 
 .zoomViewport {
+	position: absolute;
+	top: 5%;
 	margin:0;
     padding:0;
     width:1284px;
 	/*height:500px;*/
-	height:76%;
+	height:70%;
 	border:1px solid #000;
 	background-color: black;
 	overflow:hidden;

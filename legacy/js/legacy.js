@@ -164,9 +164,9 @@
 			legbottom = 20;
 		}
 
-		var canvasShift = h * 0.146;
+		var canvasShift = map(h, 600, 1200, -160, -1);
 
-		$("#centeringCanvas").css({ 'top': '-' + canvasShift + 'px' });
+		$("#centeringCanvas").css({ 'top': canvasShift + 'px' });
 
 		// $(".legacy_bottom").css("height",$(".legacy_top:first").height());
 
