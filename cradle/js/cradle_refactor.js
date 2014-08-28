@@ -177,12 +177,6 @@
 		})
 		.on('mouseleave', function () {
 			trackoff();
-		});	
-
-		$("#leftbutton").on('click', function () {
-			if(flipside){
-				flipper();
-			}
 		});
 
 		$("#rightbutton").on('click', function () {
@@ -259,10 +253,11 @@
 				} else {
 					if(!flipside){
 						flipper(true);
+
 					}
 				}
 			}
-			syncTime();
+			
 		});
 	}
 	function trackoff () {
@@ -276,6 +271,8 @@
 
 	function flipper (isright){
 		var translatePos;
+		syncTime();
+		
 		if(flipside){		
 			flipside = false;
 			flipangle = 0;
@@ -301,7 +298,7 @@
 			var videoTrackCurrentPosition  = videoSchipol.currentTime;
 			if(!flipside) {
 				videoSpotters.currentTime = videoTrackCurrentPosition;
-				//console.log("videoSpotters.currentTime: " + videoSpotters.currentTime);
+				console.log("videoSpotters.currentTime: " + videoSpotters.currentTime);
 			}
 		}
 	}
