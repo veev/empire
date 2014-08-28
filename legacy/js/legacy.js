@@ -297,6 +297,12 @@
 		//console.log("[videoTracker] :" + videoTracker);
 	}
 
+	//Way to get videos to play after loading
+	//has it been at least 7 seconds, if not return false
+	//has it been 7 seconds, are all videos ready? if not, return false
+	//for migrants, delete local storage and set array to empty
+
+
 	var fadeInAudio = function (video) {
 		//console.log("In fadeInAudio");
 		if(currentVolume <= 1){
@@ -647,6 +653,7 @@
 				videoTracker[id].totalDuration = video.duration;
 				//videoTracker[id].durationPlayed = 0;
 				videoTracker[id].active = false;
+				videoTracker[id].canplay = true;
 				//console.log("videoTracker[id]: " + videoTracker[id]);
 
 				currentActiveVideoTracker[id] = {};
@@ -831,9 +838,30 @@
 	}
 
 	function openScreen() {
-		instructions.fadeIn(2000);
-		instructions.on('click', closeScreen);
-		insructIvl = setTimeout(closeScreen, 7000);
+		var videosCanPlay = false;
+
+		for(id in videoTracker){
+			if(videoTracker.hasOwnProperty(id) && 
+				videoTracker[id].canplay){
+				videosCanPlay = true
+			}
+			else{
+				videosCanPlay = false;
+			}
+		}
+		if(videosCanPlay){
+			instructions.fadeIn(2000);
+			instructions.on('click', closeScreen);
+			insructIvl = setTimeout(closeScreen, 7000);	
+			console.log("videos loaded");
+		}
+		else{
+			console.log("videos not loaded in openScreen legacy looping");
+			setTimeout(openScreen, 1000);
+		}
+		// instructions.fadeIn(2000);
+		// instructions.on('click', closeScreen);
+		// insructIvl = setTimeout(closeScreen, 7000);
 	}
 
 	function closeScreen() {
