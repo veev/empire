@@ -401,7 +401,7 @@
 		
 		videoCurrentTime = document.getElementById("target").currentTime;
 
-		$("#p_progress").css({ "width": (640 / ratio) + 'px' });
+		$("#p_progress").css({ "width": (588 / ratio) + 'px' });
 		
 		if(document.getElementById("audio_yeti").volume > document.getElementById("audio_norm").volume ){
 			sideTracker[Math.floor(document.getElementById("target").currentTime)] = 1;
