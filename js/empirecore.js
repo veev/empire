@@ -555,6 +555,15 @@ function audioready() {
 		ambientAudio.volume = 0;
 		ambientAudio.play();
 		vIvl = setInterval(fadeInAmbientAudio,100);
+		
+		// ambientAudio.fadeaudio({
+		// 	'fade_in_start' : 0,
+		// 	'fade_in_interval' : 100,
+		// 	'fade_out_start' : 50,
+		// 	'fade_out_interval' : 200,
+ 	// 		'step' : 0.02
+		// });
+
 		audioactive = true;
 	}
 }
@@ -564,6 +573,10 @@ function audiostop() {
 
 	clearInterval(vIvl);
 	vIvl = setInterval(fadeOutAmbientAudio,100);
+	// ambientAudio.fadeaudio({
+	// 	'fade_out_start' : 50,
+	// 	'fade_out_interval' : 100
+	// });
 	audioactive = false;
 }
 

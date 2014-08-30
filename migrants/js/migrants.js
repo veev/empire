@@ -153,6 +153,12 @@
 		}
 	}
 
+	function clearArcSegs() {
+		for (var i = 0; i < mTrackerArray.length; i++) {
+			mTrackerArray[i].arcSegment.remove();
+		}
+	}
+
 	function arcseg(cx, cy, radius, startAngle, endAngle) {
 		var startX,
 			startY,
@@ -557,10 +563,11 @@
 			shouldShowVideo = true;
 		}
 
-		holder.fadeIn(4000, function() {
+		holder.fadeIn(1000, function() {
 			holder.css({'cursor' : 'pointer', 'pointer-events' : 'none', 'opacity': 1.0, 'z-index': 100});
-			instructions.fadeIn(4000).css({'cursor' : 'pointer'});
+			
 		});
+		instructions.fadeIn(500).css({'cursor' : 'pointer'});
 		insructIvl = setTimeout(closeScreen, 8000);
 	}
 
@@ -576,17 +583,16 @@
 			audiostop();
 		}
 		migrantsVideo.volume = 0;
-		instructions.fadeOut(800, function() {
-			holder.css({'cursor': 'default'}).fadeOut(1000, function() {
-				if(intervalID !== 0){
-					clearTimeout(intervalID);
-				}
+		instructions.fadeOut(1000);
+		holder.css({'cursor': 'default'}).fadeOut(1000, function() {
+			if(intervalID !== 0){
+				clearTimeout(intervalID);
+			}
 
-				intervalID = setInterval(fadeInMigrantsAudio, 100);
-				showProgress = true;
-				instructionsOff = true;
-				console.log('Migrants In Holder FadeOut');
-			});
+			intervalID = setInterval(fadeInMigrantsAudio, 100);
+			showProgress = true;
+			instructionsOff = true;
+			console.log('Migrants In Holder FadeOut');
 		});
 
 	}
@@ -665,6 +671,7 @@
     	}, 500);
 	}
 
+/*
 	function vennTracking() {
 		var timer;
 		container.on({
@@ -687,6 +694,24 @@
 					vennMapIsOn = false;
 				}
 				clearTimeout(timer);
+			}
+		});
+	}
+	*/
+
+	function vennTracking() {
+		container.on({
+			'mousemove': function() {
+				if(instructionsOff && !downloadMigrants) {
+					vennMapOn();
+					vennMapIsOn = true;
+				}
+			},
+			'mouseout' : function() {
+				if(instructionsOff && !downloadMigrants) {
+					vennMapOff();
+					vennMapIsOn = false;
+				}
 			}
 		});
 	}
@@ -893,7 +918,7 @@
 		vennMapOn();
 	}
 
-	function returnToMigrants() {
+	function resetMigrants() {
 		var props = {
 			opacity: '0',
 			fill: ORANGE
@@ -908,6 +933,17 @@
 		countryLabels.brazil.attr({fill: BLACK, opacity: '1'});
 		countryLabels.suriname.attr({fill: BLACK, opacity: '1'});
 		vennMapOff();
+
+		clearArcSegs();
+		
+		//mTrackerArray = [];
+		while(mTrackerArray.length > 0) {
+    		mTrackerArray.pop();
+		}
+
+		localStorage.clear();
+
+		console.log("Reset Migrants")
 	}
 
 	//Called every frame
@@ -995,13 +1031,14 @@
 		if(downloadMigrants) {
 			downloadScreen();
 			instructionsOff = false;
+			//returnMigrants = true;
 		}
 
 		if (returnMigrants) {
 			returnMigrants = false;
 			instructionsOff = true;
 			prevVenID = -1;
-			returnToMigrants();
+			resetMigrants();
 		}
 	}
 
@@ -1100,7 +1137,7 @@
 		// var holderRatio = height / width;
 
 		var mapCenter;
-		var mapScalar = map(height, 600, 1200, 1, 2.0);
+		var mapScalar = map(height, 560, 1200, 1, 2.0); //how much to scale up venn diagram circles
 		//var mapScalar = 1;
 		console.log("Migrants mapScalar = "+mapScalar);
 
@@ -1109,9 +1146,10 @@
 			bboxH = Math.ceil(bbox.height);
 
 		console.log("VennMap bbox: "+ bboxW+ ', '+bboxH);
-		centerW = bboxH/2 ;
-		centerH = bboxH/2 ;
+		centerW = (bboxH/2) * 0.95;
+		centerH = (bboxH/2);
 		console.log("Migrants holder center: " + centerW + ' height: '+centerH);
+		//scale at origin and then translate by half of bounding box size
 		vennMap.transform('s' + mapScalar + ','+ mapScalar +', 0, 0 t ' + centerW + ' ' + centerH);
 	}
 
@@ -1195,6 +1233,10 @@
 			migrantsContent.fadeOut('fast');
 			migrantsVideoJqry.css({opacity: '0.0'});
 			pauseVideos();
+			if(downloadMigrants) {
+				resetMigrants();
+				downloadMigrants = false;
+			}
 			active = false;
 			if(mTrackerArray.length <= 0){
 				console.log('Fading out migrants' + mTrackerArray);
