@@ -430,7 +430,7 @@
 					fullRange = _.flatten(fullRange);
 					fullRange = _.uniq(fullRange);
 					var totalDuration = videos[id].duration;
-					var thresh = parseInt(totalDuration*0.01);
+					var thresh = parseInt(totalDuration*0.9);
 					
 					if(fullRange.length > thresh){
 						numWatched++;
@@ -1038,8 +1038,6 @@
 			introDismissed = true;
 			playVideos();
 		});
-		
-
 	}
 
 	function pauseVideos() {
@@ -1105,7 +1103,6 @@
 				zoomOut();				
 				legacyContent.fadeOut("fast");
 			}
-
 
 			active = false;
 		}
