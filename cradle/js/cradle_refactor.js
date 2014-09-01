@@ -320,6 +320,7 @@
 			if(!flipside) {
 				videoSpotters.currentTime = videoTrackCurrentPosition;
 				console.log("videoSpotters.currentTime: " + videoSpotters.currentTime);
+				console.log("videoSchipol.currentTime: " + videoSchipol.currentTime);
 			}
 		}
 	}
