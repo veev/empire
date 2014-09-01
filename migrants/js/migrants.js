@@ -96,7 +96,7 @@
 	}
 
 	/*
-	Load list of viewed segments from loadStorage
+	Load list of viewed segments from localStorage
 	*/
 	function loadTrackerArray() {
 		var saved,
@@ -438,6 +438,8 @@
 		checkArcLength();
 		saveTrackerArray();
 
+		//console.log("mTrackerArray length: "+mTrackerArray.length);
+
 		for (i = 0; i < mTrackerArray.length; i++) {
 			if(mTrackerArray[i].arcSegment !== null){
 
@@ -613,11 +615,14 @@
 		var legbottom = 50; //offset of the bottom play button on the open screen
 		var buffer = h - legbottom;
 		var centering = (w / 2) - 62;
-		if(w > 1440) { // if this a big screen
+		
+		if( h < 780) { // if this a big screen
 			padtop = 20;
 			matop = h * 0.15;
 			legbottom = 20;
+		} 
 
+		if(w > 1440) {
 			//RESIZING VIDEO
 			var newContainerWidth = w - 160;
 			var newContainerHeight = newContainerWidth * 0.20625;
@@ -938,12 +943,12 @@
 		
 		//mTrackerArray = [];
 		while(mTrackerArray.length > 0) {
-    		mTrackerArray.pop();
+			mTrackerArray.pop();
 		}
 
 		localStorage.clear();
 
-		console.log("Reset Migrants")
+		console.log("Reset Migrants");
 	}
 
 	//Called every frame
@@ -1185,6 +1190,8 @@
 	var migrants = {
 		init: init,
 		sizer: sizer,
+		pauseVideos: pauseVideos,
+		playVideos: playVideos,
 		active: function(){
 			return active;
 		},
@@ -1245,6 +1252,7 @@
 				mTrackerArray[mTrackerArray.length - 1].isActive = false;
 			}
 		},
+
 		resize: function(){
 			sizer();
 			//arrayActFills();
