@@ -172,7 +172,7 @@ div#l_instructions p#two{
 	margin-right:auto;
 /*	margin-top:1em;*/
 	/*margin-top: 12%;*/
-	cursor: pointer;
+/*	cursor: pointer;*/
 }
 
 #centeringCanvas {
@@ -524,6 +524,19 @@ div#l_instructions p#two{
 	-webkit-transform: rotate(45deg);
 	-moz-transform: rotate(45deg);
 	-o-transform: rotate(45deg);
+}
+
+#wideZoom {
+	width: 640;
+	height: 640;
+	position: absolute;
+	top: -68px;
+	left: 618px;
+	cursor: pointer;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+
 }
 
 #l_endscreen {

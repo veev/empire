@@ -54,6 +54,7 @@
 	important elements that we may need to refer to again
 	*/
 	var zContainer,
+		wideZoom,
 		legacyContent,
 		instructions;
 
@@ -698,7 +699,7 @@
 			southafrica: 4
 		};
 
-		zContainer.click(function(evt){
+		wideZoom.click(function(evt){
 			console.log("in zoom container");
 			selectVideo(null);
 			zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
@@ -994,6 +995,7 @@
 		legacyContent = $("#legacyContent");
 		zContainer = $("#z_container");
 		instructions = $("#l_instructions");
+		wideZoom = $("#wideZoom");
 
 		// initVideos();
 		sizer();
