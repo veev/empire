@@ -566,34 +566,28 @@ function drawer () {
 
 function audioready() {
 	// audio has loaded, let's do this
-	console.log("ambient audio has loaded and playing");
+	//console.log("ambient audio has loaded and playing");
 	//console.log("ambientAudio: " + ambientAudio);
-	if(!audioactive){
-		ambientAudio.volume = 0;
-		ambientAudio.play();
-		vIvl = setInterval(fadeInAmbientAudio,100);
 
-		// $("#ambientaudio").fadeaudio({
-		// 	'fade_in_start' : ambientAudio.currentTime,
-		// 	'fade_in_interval' : 100,
- 	// 		'step' : 0.1
-		// });
+	//TAKE OUT AUDIO BUT SAVE FUNCTIONALITY
+	// if(!audioactive){
+	// 	ambientAudio.volume = 0;
+	// 	ambientAudio.play();
+	// 	vIvl = setInterval(fadeInAmbientAudio,100);
 
-		audioactive = true;
-	}
+	// 	audioactive = true;
+	// }
 }
 
 function audiostop() {
-	console.log("ambient audio is stopping");
+	//TAKE OUT AUDIO BUT SAVE FUNCTIONALITY
 
-	clearInterval(vIvl);
-	vIvl = setInterval(fadeOutAmbientAudio,100);
+	// console.log("ambient audio is stopping");
 
-	// $("#ambientaudio").fadeaudio({
-	// 	'fade_out_start' : ambientAudio.currentTime,
-	// 	'fade_out_interval' : 100
-	// });
-	audioactive = false;
+	// clearInterval(vIvl);
+	// vIvl = setInterval(fadeOutAmbientAudio,100);
+
+	// audioactive = false;
 }
 
 var fadeInAmbientAudio = function () {
@@ -623,9 +617,7 @@ var fadeInAmbientAudio = function () {
 var fadeOutAmbientAudio = function () {
 
 	// internal function to fade outaudio
-	// if(_currentaudiovolume >= 0){
-	// 	
-	// }
+
 	if(_currentaudiovolume < 0 ){
 		_currentaudiovolume = 0;
 	}
@@ -637,7 +629,6 @@ var fadeOutAmbientAudio = function () {
 	}
 	ambientAudio.volume = _currentaudiovolume / 100;
 
-	// _currentaudiovolume -= 1;
 	// console.log("Fade Vol down " + _currentaudiovolume);
 	if(_currentaudiovolume == 0){
 		clearInterval(vIvl);
@@ -647,7 +638,6 @@ var fadeOutAmbientAudio = function () {
 	console.log("currentAmbientAudioVolume: "+ _currentaudiovolume);
 }
 
-	//startSimulation and pauseSimulation defined elsewhere
 var	handleVisibilityChange = function() {
 	if (document.hidden) {
 		pauseSiteAudio();	
