@@ -209,26 +209,26 @@
 		// console.log("controls are: " + controlsActive);
 	}
 	function openScreen () {
-
-		instructions.fadeIn(2000);
-		console.log("[Cradle] instructions openScreen");
-		openIvl = setTimeout(function() {
+		if(active && videoSchipol.paused) {
+			instructions.fadeIn(2000);
+			console.log("[Cradle] instructions openScreen");
+			openIvl = setTimeout(function() {
 			closeScreen();
 			console.log("Cradle closeScreen timeout");
 		}
 		, 10000);
+		}
+
 	}
 
 	function closeScreen () {
 		clearInterval(openIvl);
 		instructions.fadeOut(1000, function() {
 			introDismissed = true;
-			if(active) {
-				if (videoSchipol.paused){
-			 		playButton();	
-			 		console.log("Cradle playButton closeScreen");
-				} 
-				trackon();
+			if(active && videoSchipol.paused) {
+			 	playButton();	
+			 	trackon();
+			 	console.log("Cradle playButton closeScreen");	
 			}
 		});
 	}

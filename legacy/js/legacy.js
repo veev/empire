@@ -442,9 +442,9 @@
 					if(!(debugCount%100)){
 						// not doing this method anymore
 						// console.log(id+" % : " + parseInt((((totalAmtWatched)/totalDuration))*100) );
-						console.log(id+" % : " + parseInt((((fullRange.length)/totalDuration))*100) );
-						console.log("fullRange.length: " + fullRange.length);
-						console.log("threshold: " + thresh);
+						//console.log(id+" % : " + parseInt((((fullRange.length)/totalDuration))*100) );
+						//console.log("fullRange.length: " + fullRange.length);
+						//console.log("threshold: " + thresh);
 						//console.log(sessionHistory);
 						//console.log("All watched ?" + numWatched );
 					}
@@ -553,9 +553,13 @@
 						
 						//do volume upp for all
 						video.volume = 0.75;
+						//$('#legacy_container_' + selectedId).css({'cursor':'pointer'});
+
 
 						if(videoTracker[id].active){
 							console.log(id +" was active and is now inactive");
+							//$('#legacy_container_' + selectedId).css({'cursor':'pointer'});
+
 							updateSessionTracker(id);
 
 							videoTracker[id].active = false;	
@@ -567,12 +571,14 @@
 							addProgressPath(id,start,end);
 
 						}
-						//console.log("!selectedId");
+						console.log("!selectedId");
 						console.log(selectedId + " is " + videoTracker[id].active);
 					}
 					else if(videoTracker[id].active && selectedId !== id){
 						video.volume = 0;
-						//$('#legacy_container_' + selectedId).css({'cursor':'pointer'});
+						console.log(id +" was clicked");
+						$('#legacy_container_' + id).css({'cursor':'pointer'});
+						$('#legacy_container_' + selectedId).css({'cursor':'default'});
 						// console.log("videoTracker[id].active && selectedId !== id");
 						// console.log("videoTracker[id] startPos: " + videoTracker[id].startPos);
 						// console.log("videoTracker[id] endPos: " + videoTracker[id].endPos);
@@ -582,8 +588,6 @@
 						updateSessionTracker(id);
 						
 						videoTracker[id].active = false;
-						// videoTracker[id].startPos = 0;
-						// videoTracker[id].endPos = 0;
 
 						var start = map(videoTracker[id].startPos,0,video.duration, 0, 262,true);
 						var end = map(videoTracker[id].endPos,0,video.duration, 0, 262,true);
@@ -610,6 +614,7 @@
 					else {
 						video.volume = 0;
 						console.log(id +" was inactive and is now inactive");
+						//$('#legacy_container_' + selectedId).css({'cursor':'pointer'});
 					}
 				} 
 			}
