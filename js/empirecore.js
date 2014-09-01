@@ -599,8 +599,19 @@ function audiostop() {
 var fadeInAmbientAudio = function () {
 
 	// internal function to fade in
+	
+	
+	if(_currentaudiovolume <= 0 ){
+		_currentaudiovolume = 0;
+	}
+	else if(_currentaudiovolume >= 100){
+		_currentaudiovolume = 100;
+	}
+	else{
+		_currentaudiovolume += 3;	
+	}
 	ambientAudio.volume = _currentaudiovolume / 100;
-	_currentaudiovolume += 5;
+	
 	// console.log("Fade Vol up " + _currentaudiovolume);
 	if(_currentaudiovolume > audiovolume){
 		clearInterval(vIvl);
@@ -610,11 +621,21 @@ var fadeInAmbientAudio = function () {
 var fadeOutAmbientAudio = function () {
 
 	// internal function to fade outaudio
-	if(_currentaudiovolume >= 0){
-		ambientAudio.volume = _currentaudiovolume / 100;
+	// if(_currentaudiovolume >= 0){
+	// 	
+	// }
+	if(_currentaudiovolume <= 0 ){
+		_currentaudiovolume = 0;
 	}
+	else if(_currentaudiovolume >= 100){
+		_currentaudiovolume = 100;
+	}
+	else{
+		_currentaudiovolume -= 1;	
+	}
+	ambientAudio.volume = _currentaudiovolume / 100;
 
-	_currentaudiovolume -= 1;
+	// _currentaudiovolume -= 1;
 	// console.log("Fade Vol down " + _currentaudiovolume);
 	if(_currentaudiovolume == 0){
 		clearInterval(vIvl);
