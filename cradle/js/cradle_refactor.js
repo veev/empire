@@ -101,7 +101,15 @@
 				console.log("Cradle playButton #c_play_bg");
 
 				toggleButtonDisplay();
-			})
+			});
+
+		$("#c_play_bg_back")
+			.on('click', function() {
+				playButton();
+				console.log("Cradle playButton #c_play_bg_back");
+
+				toggleButtonDisplay();
+			});
 		
 		$("#legacy_cbutton")
 			.on('click', function() { pauseVideos();
@@ -172,8 +180,8 @@
 
 		controlsActive = true;
 		outerOuter
-		.on('mouseenter', function () {
-			if(mouseXTracking && (container.isOnScreen())) { trackon();}
+		.on('mousemove', function () {
+			if(mouseXTracking && ($("#c_controls").isOnScreen())) { trackon();}
 		})
 		.on('mouseleave', function () {
 			trackoff();
@@ -191,6 +199,7 @@
 		$("#leftbutton").unbind("click");
 		$("#rightbutton").unbind("click");
 		controlsActive = false;
+		// mouseXTracking = false;
 		// console.log("controls are: " + controlsActive);
 	}
 	function openScreen () {
@@ -423,9 +432,11 @@
 		if(videoSchipol){
 			if(videoSchipol.paused ){
 				$("#c_play_bg").fadeIn();
+				$("#c_play_bg_back").fadeIn();
 			}
 			else{
 				$("#c_play_bg").fadeOut();
+				$("#c_play_bg_back").fadeOut();
 			}
 		}
 	}
@@ -506,6 +517,8 @@
 	var cradle = {
 		sizer:sizer,
 		init:init,
+		pauseVideos: pauseVideos,
+		toggleButtonDisplay: toggleButtonDisplay,
 		active:function(){
 			return active;
 		},
