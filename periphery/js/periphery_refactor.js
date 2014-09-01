@@ -234,7 +234,7 @@
 		controlsActive = true;
 
 		outerOuter
-		.on('mouseenter', function () { if(mouseYTracking && container.isOnScreen()) { trackMouseRotation(); } })
+		.on('mousemove', function () { if(mouseYTracking && $("#p_controls").isOnScreen()) { trackMouseRotation(); } })
 		.on('mouseleave', function () {
 			if(flipAngle < 90) {
 				flipAngle = 0;
@@ -476,6 +476,8 @@
 		$("#p_people_data").css({ '-webkit-transform': 'rotate( ' + endAngle + 'deg)', 'transform': 'rotate( ' + endAngle + 'deg)' });
 
 		$("#p_person_overlay").click(function () {
+
+			//RESTART PERIPHERY
 			sideTracker = {};
 			$("#p_endscreen").fadeOut();
 			$("#p_legmore").fadeOut();
@@ -580,6 +582,8 @@
 	var periphery ={
 		sizer:sizer,
 		init:init,
+		pauseVideos: pauseVideos,
+		toggleButtonDisplay: toggleButtonDisplay,
 		active:function(){
 			return active;
 		},
@@ -603,7 +607,7 @@
 				if( document.getElementById("target").currentTime > 0 ) {
 				 	toggleButtonDisplay();
 				 	$("#pcard").css({ '-webkit-transform': 'rotate(0deg)', 'transform': 'rotate(0deg)' });
-
+				 	//Is there a better way to make Periphery lie flat?
 				}
 			}
 		},
