@@ -95,6 +95,11 @@
 			.on('mouseout', function() {$("#c_refresh").css({'background':'url(../art/cradle/refresh_yellow.png'});
 		});
 
+		instructions.on('click', function () { 
+			closeScreen(); 
+			console.log("[Cradle] instructions closeScreen");
+		});
+
 		$("#c_play_bg")
 			.on('click', function() {
 				playButton();
@@ -167,6 +172,7 @@
 			body.animate({scrollTop: ($('#cradle_main').offset().top) }, 1000);
 				if(videoSchipol.currentTime == 0) {
 					openScreen();
+					console.log("[Cradle] cradlemore openScreen");
 				} 
 				else {
 					toggleButtonDisplay();
@@ -179,7 +185,7 @@
 	function enableControls () {
 
 		controlsActive = true;
-		outerOuter
+		container
 		.on('mousemove', function () {
 			if(mouseXTracking && ($("#c_controls").isOnScreen())) { trackon();}
 		})
@@ -205,9 +211,14 @@
 	function openScreen () {
 
 		instructions.fadeIn(2000);
-		openIvl = setTimeout(closeScreen,10000);
-		instructions.on('click', function () { closeScreen(); });
+		console.log("[Cradle] instructions openScreen");
+		openIvl = setTimeout(function() {
+			closeScreen();
+			console.log("Cradle closeScreen timeout");
+		}
+		, 10000);
 	}
+
 	function closeScreen () {
 		clearInterval(openIvl);
 		instructions.fadeOut(1000, function() {
@@ -238,6 +249,7 @@
 		onEnter: function(element, position) {
 			if(videoSchipol.currentTime == 0) {
 				openScreen();
+				console.log("[Cradle] initScrollspy openScreen");
 			}
 			else {
 				toggleButtonDisplay();
@@ -328,8 +340,8 @@
 			var video = document.getElementById('video'+id);
 			//console.log(video);
 			video.addEventListener('timeupdate',scrubberUpdater,true);
-			video.addEventListener('play',function(){mouseXTracking=true;},true);
-			video.addEventListener('pause',function(){mouseXTracking=true;},true);
+			//video.addEventListener('play',function(){mouseXTracking=true;},true);
+			//video.addEventListener('pause',function(){mouseXTracking=true;},true);
 			video.addEventListener("ended", endVideos, true);
 			video.addEventListener('canplay', function () {
 				console.log('[ Cradle : Canplay Event ] ' + id + ' Video');
