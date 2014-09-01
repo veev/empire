@@ -21,7 +21,11 @@
 	var introDismissed = false;
 
 	var firstTime = true;
-	var legacyEndScreen = false;
+	var allVideosReached90 = false;
+	var endScreenBuilt = false;
+	var srilankaOff, southafricaOff, indiaOff, indonesiaOff = false;
+	var legacyHasBeenReset = false;
+	var opacitiesOff = false;
 
 	var videos = {
 		indonesia: null,
@@ -36,6 +40,13 @@
 		india: {},
 		srilanka: {},
 		southafrica: {},
+	};
+
+	var videoEndTimes = {
+		indonesia: 599.680031,
+		india: 662.528031,
+		srilanka: 558.176031,
+		southafrica: 742.304031
 	};
 
 
@@ -100,7 +111,7 @@
 			southafrica:[],
 			srilanka:[]
 		};
-
+	var pathHistory = [];
 	function map(i, sStart, sEnd, tStart, tEnd,toInt) {
 		var v = i - sStart;
 		if (v >= 0) {
@@ -213,25 +224,31 @@
 	Copy the list of which segments of the video have been viewed and save it to localStorage
 	*/
 	function saveSessionHistory() {
-		var saved = [],
+		var saved = {},
 			session,
 			i;
+		console.log("Save");
+		console.log(saved);
+		Object.keys(sessionHistory).forEach(function (id) {
+			saved[id] =[];
+			for (i = 0; i < sessionHistory[id].length; i++) {
+				session = sessionHistory[id][i];
+				saved[id].push({
+					startPos: session.startPos,
+					endPos: session.endPos
+				});
+			}
 
-		for (i = 0; i < sessionHistory.length; i++) {
-			session = sessionHistory[i];
-			saved.push({
-				startPos: session.startPos,
-				endPos: session.endPos
-			});
-		}
-
+		});
+		console.log("Save");
+		//console.log(saved);
 		try {
 			localStorage.setItem('lsessionHistory', JSON.stringify(saved));
-		} catch (e) {}
+		} catch (e) {return;}
 	}
 
 	/*
-	Load list of viewed segments from loadStorage
+	Load list of viewed segments from localStorage
 	*/
 	function loadSessionHistory() {
 		var saved,
@@ -245,23 +262,46 @@
 
 		try {
 			saved = JSON.parse(window.localStorage.getItem('lsessionHistory'));
-		} catch (e) {
+		} catch (e) {	
 			return;
 		}
+			// console.log("Load");
+			// console.log(saved);
+			console.log("Load");
+			//console.log(saved);
+		if (saved ) {
+			// for (i = 0; i < saved.length; i++) {
+			// 	savedSession = saved[i];
+			// 	sessionHistory.push({
+			// 		// isActive: false,
+			// 		startPos: savedTracker.startPos,
+			// 		endPos: savedTracker.endPos,
+			// 		// isCrossOriginArc: true,
+			// 		// arcSegment: null
+			// 	});
+			// }
 
-		if (saved && Array.isArray(saved)) {
-			for (i = 0; i < saved.length; i++) {
-				savedSession = saved[i];
-				sessionHistory.push({
-					// isActive: false,
-					startPos: savedTracker.startPos,
-					endPos: savedTracker.endPos,
-					// isCrossOriginArc: true,
-					// arcSegment: null
-				});
-			}
+			Object.keys(saved).forEach(function (id) {
+				if ( !sessionHistory.hasOwnProperty(id) ){
+					sessionHistory[id] =[];
+				}
+		
+				for (i = 0; i < saved[id].length; i++) {
+					savedSession = saved[id][i];
+					
+					sessionHistory[id].push({
+						startPos: savedSession.startPos,
+						endPos: savedSession.endPos
+					});
+					videoTracker[id].startPos = savedSession.startPos;
+					videoTracker[id].endPos = savedSession.endPos;
+					var start = map(videoTracker[id].startPos,0,videoEndTimes[id], 0, 262,true);
+					var end = map(videoTracker[id].endPos,0,videoEndTimes[id], 0, 262,true);
+					addProgressPath(id,start,end);
+				}
+			});
 			//not sure if this is going to work
-			//addProgressPath(id, start, end);
+			// addProgressPath(id, start, end);
 		}
 	}
 
@@ -318,31 +358,46 @@
 		intervalID = setTimeout(function() {fadeInAudio(video);}, 100);
 	};
 
-	function addProgressPath(id,start, end){
+	function addProgressPath(id, start, end){
 		
 		if(id === "srilanka"){
 			var pathString ='M '+start.toString()+' 0 L '+end.toString()+' 0';
 			//console.log("Srilanka "+ pathString);
-			diamondCanvas.path(pathString).attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
+
+			var line = diamondCanvas.path(pathString).attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
+			pathHistory.push(line);
 		}
 		else if(id === "southafrica"){
 			// console.log("southafrica "+ pathString);
-			diamondCanvas.path('M 262 '+start.toString()+' L 262 '+end.toString()).attr({stroke: '#fbb03b', 'stroke-width': '3', 'stroke-opacity': '1.0'});
+			var line = diamondCanvas.path('M 262 '+start.toString()+' L 262 '+end.toString()).attr({stroke: '#fbb03b', 'stroke-width': '3', 'stroke-opacity': '1.0'});
+			pathHistory.push(line);
 		}
 		else if(id === "india"){
 			//  bottom \ india
 			start = 262-start;
 			end = 262-end;
 			// console.log("india "+ pathString);
-			diamondCanvas.path('M '+start.toString()+' 262 L '+end.toString()+' 262').attr({stroke: '#fbb03b', 'stroke-width': '3', 'stroke-opacity': '1.0'});
+			var line = diamondCanvas.path('M '+start.toString()+' 262 L '+end.toString()+' 262').attr({stroke: '#fbb03b', 'stroke-width': '3', 'stroke-opacity': '1.0'});
+			pathHistory.push(line);
 		}
 		else if(id === "indonesia"){
 			//  top / indonesia
 			start = 262-start;
 			end = 262-end
 			// console.log("indonesia "+ pathString)/;
-			diamondCanvas.path('M 0 '+start.toString()+' L 0 '+end.toString()).attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
+			var line = diamondCanvas.path('M 0 '+start.toString()+' L 0 '+end.toString()).attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
+			pathHistory.push(line);
 		}
+	}
+
+	function clearProgressPaths() {
+		console.log("path history before: " + pathHistory);
+		for(var i = 0; i < pathHistory.length; i++) {
+			pathHistory[i].remove();
+		}
+		console.log("path history after: " + pathHistory);
+
+		pathHistory = []
 	}
 
 	var debugCount = 0;
@@ -359,18 +414,23 @@
 
 				for (var i = 0; i < sessionHistory[id].length; i++) {
 
-					var curRange = _.range(Math.ceil(sessionHistory[id][i].startPos), Math.ceil(sessionHistory[id][i].endPos), 1);
-					fullRange.push(curRange);
+					var oldRanges = _.range(Math.ceil(sessionHistory[id][i].startPos), Math.ceil(sessionHistory[id][i].endPos), 1);
+					fullRange.push(oldRanges);
 
 					//Not using this anymore but is there for testing
 					// var duration = sessionHistory[id][i].endPos - sessionHistory[id][i].startPos;
 					// totalAmtWatched += 	duration;
 				}
-				
+					
+					if(videoTracker[id].active){
+						var curRange = _.range(Math.ceil(videoTracker[id].startPos), Math.ceil(videoTracker[id].endPos), 1);
+						fullRange.push(curRange);
+					}
+
 					fullRange = _.flatten(fullRange);
 					fullRange = _.uniq(fullRange);
 					var totalDuration = videos[id].duration;
-					var thresh = parseInt(totalDuration*0.9);
+					var thresh = parseInt(totalDuration*0.01);
 					
 					if(fullRange.length > thresh){
 						numWatched++;
@@ -379,9 +439,12 @@
 					}
 					
 					if(!(debugCount%100)){
-					// not doing this method anymore
-					// console.log(id+" % : " +parseInt((((totalAmtWatched)/totalDuration))*100) );
-						//console.log(id+" % : " + parseInt((((fullRange.length)/totalDuration))*100) );
+						// not doing this method anymore
+						// console.log(id+" % : " + parseInt((((totalAmtWatched)/totalDuration))*100) );
+						console.log(id+" % : " + parseInt((((fullRange.length)/totalDuration))*100) );
+						console.log("fullRange.length: " + fullRange.length);
+						console.log("threshold: " + thresh);
+						//console.log(sessionHistory);
 						//console.log("All watched ?" + numWatched );
 					}
 			}
@@ -402,12 +465,24 @@
 		var nonOverlappingSession = true;
 		for (var i = 0; i < sessionHistory[id].length; i++) {
 			
+			if(videoTracker[id].startPos === sessionHistory[id][i].startPos &&
+				videoTracker[id].endPos === sessionHistory[id][i].endPos){
+				//ignore dulpicates
+				//console.log(videoTracker[id]);
+				//console.log(sessionHistory[id][i])
+				//console.log("ignore dulpicates");
+				nonOverlappingSession = false;
+				continue;
+			}
+
+
 			if(videoTracker[id].startPos > sessionHistory[id][i].startPos &&
 				videoTracker[id].endPos < sessionHistory[id][i].endPos){
 				//console.log("full overlapping session ignoring");
 				nonOverlappingSession = false;
 				continue;
 			}
+
 
 			//All of this is unecessary actually as 
 			//using the array flatten method to remove
@@ -421,10 +496,12 @@
 					//console.log("Start "+videoTracker[id].startPos+" within : " +sessionHistory[id][i].startPos+ " - "+sessionHistory[id][i].endPos);
 					//console.log("semi overlapping session updating old session endPos");
 					sessionHistory[id][i].endPos = videoTracker[id].endPos;	
+					saveSessionHistory();
+					//console.log("SAVE1");
 					nonOverlappingSession = false;
 				}
 				else{
-					console.log("full overlapping session ignoring");
+					//console.log("full overlapping session ignoring");
 				}
 
 			}
@@ -432,13 +509,15 @@
 			if(videoTracker[id].endPos > sessionHistory[id][i].startPos &&
 					videoTracker[id].endPos < sessionHistory[id][i].endPos){
 				if(videoTracker[id].startPos < sessionHistory[id][i].startPos){
-					console.log("overlapping session updating old session startPos");
+					//console.log("overlapping session updating old session startPos");
 					// console.log("Endp "+videoTracker[id].startPos+" within : " sessionHistory[id][i].startPos+ " - "+sessionHistory[id][i].endPos);
 					sessionHistory[id][i].startPos = videoTracker[id].startPos;	
+					//console.log("SAVE2");
+					saveSessionHistory();
 					nonOverlappingSession = false;
 				}
 				else{
-					console.log("full overlapping session ignoring");
+					//console.log("full overlapping session ignoring");
 				}
 			}
 		}
@@ -449,7 +528,12 @@
 					startPos: videoTracker[id].startPos,
 					endPos: videoTracker[id].endPos 
 			});
+			//console.log("SAVE3");
+			saveSessionHistory();
 		}
+
+		
+
 	}
 
 	function selectVideo(selectedId) {
@@ -482,7 +566,7 @@
 							addProgressPath(id,start,end);
 
 						}
-						console.log("!selectedId");
+						//console.log("!selectedId");
 						console.log(selectedId + " is " + videoTracker[id].active);
 					}
 					else if(videoTracker[id].active && selectedId !== id){
@@ -514,12 +598,6 @@
 							videoTracker[id].endPos = -1;
 							currentActiveVideoTracker[id].active = true;
 							console.log(id +" was inactive and is now active");
-
-							//xxx
-							sessionHistory[id].push({
-								startPos: videoTracker[id].startPos,
-								endPos: videoTracker[id].startPos,
-							});
 							continue;
 						}
 						else{
@@ -537,7 +615,7 @@
 		}
 
 		container = $('#legacy_container_' + selectedId);
-		console.log(container);
+		//console.log(container);
 		//console.log(zContainer);
 		container.zoomTo({targetsize:0.9, duration:600, root: zContainer, closeclick: true });
 		// container.zoomTarget();	
@@ -545,6 +623,44 @@
 
 	function buildEndScreen() {
 		$("#l_endscreen").fadeIn();
+		console.log("fade in legacy endscreen");
+	}
+
+	function resetLegacy() {
+		clearProgressPaths(); //not working yet
+		
+		$("#l_endscreen").fadeOut(); //make skype message disappear
+		endScreenBuilt = false;
+		
+		//make opacities turn back on
+		var id, video;
+		for (id in videos) {
+			if (videos.hasOwnProperty(id)) {
+				video = videos[id];
+				if (video) {
+
+
+					while(videoTracker[id].length > 0 ) {
+						videoTracker[id].pop();
+					}
+					while(sessionHistory[id].length > 0 ) {
+						sessionHistory[id].pop();
+					}
+
+					videoTracker[id].watched90 = false;
+
+					console.log(id + " videoTracker = " + videoTracker[id]);
+					console.log(id + " sessionHistory = " + sessionHistory[id]);
+				}
+			}
+		}
+
+		localStorage.clear(); //clear local storage of session History
+
+		console.log("resetting Legacy once all videos have reached 90");
+
+		legacyHasBeenReset = true;
+
 	}
 
 	function attachEvents() {
@@ -643,15 +759,48 @@
 		}
 	}
 
+	function initTrackerObjects() {
+		var video, id;
+		for (id in videos) {
+			if (videos.hasOwnProperty(id)) {
+				video = videos[id];
+				if (video) {
+					// load metadata into VideoTracker object
+					videoTracker[id] = {};
+					videoTracker[id].totalDuration = video.duration;
+					videoTracker[id].active = false;
+					videoTracker[id].canplay = true;
+					videoTracker[id].watched90 = false;
+					//console.log("videoTracker[id]: " + videoTracker[id]);
+
+					currentActiveVideoTracker[id] = {};
+					currentActiveVideoTracker[id].startPos = 0;
+					currentActiveVideoTracker[id].endPos = 0;
+					currentActiveVideoTracker[id].active = false;
+					currentActiveVideoTracker[id].totalDuration = video.duration;
+			
+				}
+			}
+		}
+
+		sessionHistory = 	{
+			india:[],
+			indonesia:[],
+			southafrica:[],
+			srilanka:[]
+		};
+		//console.log(id + " is " + video.duration + " seconds");
+	}
+
 	function initVideos() {
 		Object.keys(videos).forEach(function (id) {
 			var video = document.getElementById(id + '_leg');
 			video.addEventListener('canplay', function () {
 				console.log('[ Legacy : Canplay Event ] ' + id + ' Video');
+
 				// load metadata into VideoTracker object
 				videoTracker[id] = {};
 				videoTracker[id].totalDuration = video.duration;
-				//videoTracker[id].durationPlayed = 0;
 				videoTracker[id].active = false;
 				videoTracker[id].canplay = true;
 				//console.log("videoTracker[id]: " + videoTracker[id]);
@@ -661,12 +810,12 @@
 				currentActiveVideoTracker[id].endPos = 0;
 				currentActiveVideoTracker[id].active = false;
 				currentActiveVideoTracker[id].totalDuration = video.duration;
-				//console.log("currentActiveVideoTracker[id]: " + currentActiveVideoTracker[id]);				
+				//console.log(id + " is " + video.duration + " seconds");
+								
 			});
 
 			video.addEventListener('ended', function (evt) {
 
-			
 				//console.log(evt.srcElement.id);
 				var string = evt.srcElement.id;
 				var index = string.split('_');
@@ -678,15 +827,16 @@
 					console.log(id +" Complete updating history");
 					//for volume
 					selectVideo(null);
+
 					var start = map(videoTracker[id].startPos,0,video.duration, 0, 262,true);
 					var end = map(videoTracker[id].endPos,0,video.duration, 0, 262,true);
 					addProgressPath(id,start,end);
 				}
 				video.play();
 				var count = 0;
-
 				
 			});
+			
 
 			video.addEventListener('timeupdate', function (evt) {
 				var videoID = evt.srcElement.id;
@@ -704,20 +854,10 @@
 
 				if(videoTracker[id].active){
 					videoTracker[id].endPos = currTime;
-					//xxx
-					var lastElement = sessionHistory[id].pop();
-					lastElement.endPos = currTime;
-					//console.log("lastELement: " + lastElement.startPos);
-					sessionHistory[id].push(lastElement);
 				}
-
-				checkProgressLength();
-
-				if (checkProgressLength()) {
-					legacyEndScreen = true;
+				allVideosReached90 = checkProgressLength();
+				if (allVideosReached90) {
 					console.log('Legacy Endscreen');
-					buildEndScreen();
-
 					//Insert Skype button functionality here
 				}
 
@@ -786,6 +926,7 @@
 		seriously.go(function() {
 			
 			var video, id, container;
+
 			for (id in videos) {
 				if (videos.hasOwnProperty(id)) {
 					video = videos[id];
@@ -793,30 +934,54 @@
 					if (video) {
 						if (videoTracker[id].watched90 ) {
 						//console.log("turn off " + id + " opacity");
-						buildEndScreen();
+							if(!endScreenBuilt) {
+								buildEndScreen();
+								endScreenBuilt = true;
+							}
 
-							if(id === "srilanka"){
-								//console.log(id + "reached 90%");
+							if(id === "srilanka" && !srilankaOff){
+								//console.log(id + " reached 90%");
 								layers.opacity3 = 0;
-								diamondCanvas.path('M 0 0 L 262 0').attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
+								var line = diamondCanvas.path('M 0 0 L 262 0').attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
+								pathHistory.push(line);
+								srilankaOff = true;
 							}
-							else if(id === "southafrica"){
-								//console.log(id + "reached 90%");
+							else if(id === "southafrica" && !southafricaOff){
+								//console.log(id + " reached 90%");
 								layers.opacity1 = 0;							
-								diamondCanvas.path('M 262 0 L 262 262').attr({stroke: '#fbb03b', 'stroke-width': '3', 'stroke-opacity': '1.0'});
+								var line = diamondCanvas.path('M 262 0 L 262 262').attr({stroke: '#fbb03b', 'stroke-width': '3', 'stroke-opacity': '1.0'});
+								pathHistory.push(line);
+								southafricaOff = true;
 							}
-							else if(id === "india"){
-								//console.log(id + "reached 90%");
+							else if(id === "india" && !indiaOff){
+								//console.log(id + " reached 90%");
 								layers.opacity0 = 0;
 								//  bottom \ india
-								diamondCanvas.path('M 262 262 L 0 262').attr({stroke: '#fbb03b', 'stroke-width': '3', 'stroke-opacity': '1.0'});
+								var line = diamondCanvas.path('M 262 262 L 0 262').attr({stroke: '#fbb03b', 'stroke-width': '3', 'stroke-opacity': '1.0'});
+								pathHistory.push(line);
+								indiaOff = true;
 							}
-							else if(id === "indonesia"){
-								//console.log(id + "reached 90%");
+							else if(id === "indonesia" && !indonesiaOff){
+								//console.log(id +  " reached 90%");
 								layers.opacity2 = 0;
 								//  top / indonesia
-								diamondCanvas.path('M 0 262 L 0 0').attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
-							}
+								var line = diamondCanvas.path('M 0 262 L 0 0').attr({stroke: '#fbb03b', 'stroke-width': '2', 'stroke-opacity': '1.0'});
+								pathHistory.push(line);
+								indonesiaOff = true;
+							} 
+						}
+
+						if(legacyHasBeenReset && indonesiaOff && indiaOff && southafricaOff && srilankaOff) {
+							layers.opacity3 = 1;
+							layers.opacity2 = 1;
+							layers.opacity1 = 1;
+							layers.opacity0 = 1;
+							srilankaOff = false; 
+							southafricaOff = false; 
+							indiaOff = false; 
+							indonesiaOff = false;
+							//console.log("turning diamond opacities back on");
+
 						}
 					}
 				}
@@ -877,9 +1042,27 @@
 
 	}
 
+	function pauseVideos() {
+		var id;
+		//pause all videos
+		for (id in videos) {
+			if (videos.hasOwnProperty(id) && videos[id]) {
+				videos[id].pause();
+			}
+		}
+	}
+
+	function zoomOut() {
+		zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
+
+	}
+
 	var legacy = {
 		sizer: sizer,
 		init: init,
+		pauseVideos: pauseVideos,
+		toggleButtonDisplay: toggleButtonDisplay,
+		zoomOut: zoomOut,
 		active: function () {
 			return active;
 		},
@@ -891,9 +1074,17 @@
 				initVideos();
 				initCanvas();
 				initPaths();
+				loadSessionHistory();
 			}
 
 			firstTime = false;
+
+			if(legacyHasBeenReset) {
+				initTrackerObjects();
+			}
+
+			legacyHasBeenReset = false;
+
 			if (!active) {
 				legacyContent.fadeIn(2000);
 			}
@@ -902,28 +1093,21 @@
 			sizer();
 		},
 		deactivate: function () {
-			var id;
 
-			//pause all videos
-			for (id in videos) {
-				if (videos.hasOwnProperty(id) && videos[id]) {
-					videos[id].pause();
-				}
+			pauseVideos();
+
+			if(allVideosReached90) {
+				resetLegacy();
+				allVideosReached90 = false;
 			}
 
 			if (active) {
-				zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
+				zoomOut();				
 				legacyContent.fadeOut("fast");
 			}
-			active = false;
-		},
-		buildEndScreen: function() {
-			//$("#l_endscreen").fadeIn();
-			legacyEndScreen = true;
-			if (legacyEndScreen) {
-				//$("#diamond_border").css({'background-color': '#000'});
-			}
 
+
+			active = false;
 		}
 	};
 

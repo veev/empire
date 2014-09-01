@@ -39,6 +39,7 @@ var URL = ['url(art/c_bg.jpg)', 'url(art/l_bg.jpg)', 'url(art/m_bg.jpg)', 'url(a
 // var URL_BOTTOM = ['url(art/c_bg_b.jpg)', 'url(art/l_bg_b.jpg)', 'url(art/m_bg_b.jpg)', 'url(art/p_bg_b.jpg)' ];
 var m_url = 'migrants/css/timecode.json';
 // var m_url = 'http://empire.genevievehoffman.com/migrants/css/timecode.json';
+var hidden, visibilityChange; 
 
 
 $(document).ready(function () {
@@ -58,7 +59,6 @@ $(document).ready(function () {
 	}
 
 	if(!dontannoysam) {
-		//$('body:first').append('<div id="audiodiv" style="display: none"><audio src="https://s3-us-west-2.amazonaws.com/empire-project/ambiance.mp3" type="audio/mpeg" loop id="ambientaudio"></audio></div>');
 		document.getElementById('ambientaudio').addEventListener('canplaythrough', audioready);
 	}
 
@@ -102,6 +102,22 @@ $(document).ready(function () {
 	// attachMigrantsEvents();
 	// attachPeripheryEvents();
 	window.addEventListener("hashchange", hashEvent, false);
+
+	if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support 
+		hidden = "hidden";
+		visibilityChange = "visibilitychange";
+	} else if (typeof document.mozHidden !== "undefined") {
+		hidden = "mozHidden";
+		visibilityChange = "mozvisibilitychange";
+	} else if (typeof document.msHidden !== "undefined") {
+		hidden = "msHidden";
+		visibilityChange = "msvisibilitychange";
+	} else if (typeof document.webkitHidden !== "undefined") {
+		hidden = "webkitHidden";
+		visibilityChange = "webkitvisibilitychange";
+	}
+
+	document.addEventListener("visibilitychange", handleVisibilityChange, false);
 
 	$(".home_button").on('click', function(e) {
 		cradle.deactivate();
@@ -551,17 +567,16 @@ function drawer () {
 function audioready() {
 	// audio has loaded, let's do this
 	console.log("ambient audio has loaded and playing");
+	console.log("ambientAudio: " + ambientAudio);
 	if(!audioactive){
 		ambientAudio.volume = 0;
 		ambientAudio.play();
 		vIvl = setInterval(fadeInAmbientAudio,100);
-		
-		// ambientAudio.fadeaudio({
-		// 	'fade_in_start' : 0,
+
+		// $("#ambientaudio").fadeaudio({
+		// 	'fade_in_start' : ambientAudio.currentTime,
 		// 	'fade_in_interval' : 100,
-		// 	'fade_out_start' : 50,
-		// 	'fade_out_interval' : 200,
- 	// 		'step' : 0.02
+ 	// 		'step' : 0.1
 		// });
 
 		audioactive = true;
@@ -573,8 +588,9 @@ function audiostop() {
 
 	clearInterval(vIvl);
 	vIvl = setInterval(fadeOutAmbientAudio,100);
-	// ambientAudio.fadeaudio({
-	// 	'fade_out_start' : 50,
+
+	// $("#ambientaudio").fadeaudio({
+	// 	'fade_out_start' : ambientAudio.currentTime,
 	// 	'fade_out_interval' : 100
 	// });
 	audioactive = false;
@@ -604,4 +620,67 @@ var fadeOutAmbientAudio = function () {
 		clearInterval(vIvl);
 		ambientAudio.pause();
 	}
+}
+
+	//startSimulation and pauseSimulation defined elsewhere
+var	handleVisibilityChange = function() {
+	if (document.hidden) {
+		pauseSiteAudio();	
+	} else  {
+		playSiteAudio();
+	}
+}
+
+function pauseSiteAudio() {
+
+	// cradle.pauseVideos();
+	// legacy.pauseVideos();
+	// migrants.pauseVideos();
+	// periphery.pauseVideos();
+
+	if(cradle.active()) {
+		cradle.pauseVideos();
+		console.log(" cradle pause site audio");
+	} else if(legacy.active()) {
+		legacy.zoomOut();
+		legacy.pauseVideos();
+		console.log("legacy pause site audio");
+	} else if(migrants.active()) {
+		migrants.pauseVideos();
+		console.log("migrants pause site audio");
+	} else if(periphery.active()) {
+		periphery.pauseVideos();
+		console.log("periphery pause site audio");
+	} 
+
+	if(audioready) {
+		//audiostop();
+		ambientAudio.volume = 0;
+		console.log("ambient pause site audio");
+	}
+	console.log("pause site audio");
+}
+
+function playSiteAudio() {
+	console.log("page is visible - playing site audio");
+	if(cradle.active()) {
+		cradle.toggleButtonDisplay();
+		console.log(" cradle play site audio");
+	} else if(legacy.active()) {
+		legacy.toggleButtonDisplay();
+		console.log("legacy play site audio");
+	} else if(migrants.active()) {
+		migrants.playVideos();
+		console.log("migrants play site audio");
+	} else if(periphery.active()) {
+		periphery.toggleButtonDisplay();
+		console.log("periphery play site audio");
+	} 
+
+	if(audiostop) {
+		//audioready();
+		ambientAudio.volume = 0.25;
+		console.log("ambient play site audio");
+	}
+
 }

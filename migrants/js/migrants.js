@@ -626,7 +626,7 @@
 			//RESIZING VIDEO
 			var newContainerWidth = w - 160;
 			var newContainerHeight = newContainerWidth * 0.20625;
-			console.log("newContainerWidth: "+newContainerWidth+", newContainerHeight "+newContainerHeight);
+			console.log("newContainerWidth: " + newContainerWidth + ", newContainerHeight "+newContainerHeight);
 
 			$("#m_container").css({
 				'width': newContainerWidth+'px', 
