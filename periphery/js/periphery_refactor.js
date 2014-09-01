@@ -157,6 +157,7 @@
 				var vec = { x : e.pageX - center.x, y : e.pageY - center.y };
 				flipAngle = Math.PI -	Math.atan2(vec.x, vec.y);
 				flipAngle *= 180/ Math.PI;
+				// console.log(flipAngle);
 				//set audio according to angle
 				if(flipAngle >= 0 && flipAngle <= 180) {
 					audioLevelNorm = map(flipAngle, 0, 180, 1, 0);
@@ -197,8 +198,10 @@
 				else if(flipAngle  < 60   && previousFlipAngle > 300   ){
 					numRotations++;
 				}
+
 				previousFlipAngle = flipAngle;
 				flipAngle = 360*numRotations + flipAngle ;
+				console.log(flipAngle);
 				$("#pcard").css({ '-webkit-transform': 'rotate( ' + flipAngle + 'deg)', 'transform': 'rotate( ' + flipAngle + 'deg)',"transition": "all 600ms cubic-bezier(0.175, 0.885, 0.32, 1.275)" });
 			}
 		});
@@ -244,14 +247,7 @@
 			} 
 		})
 		.on('mouseleave', function () {
-			if(flipAngle < 90) {
-				flipAngle = 0;
-			} 
-			else if (flipAngle >= 90 || flipAngle < 270 ) {
-				flipAngle = 180;
-			} else if (flipAngle >= 270) {
-				flipAngle = 360;
-			}
+			resetVideoRotation();
 			 trackoff();
 		}); 
 
@@ -264,14 +260,16 @@
 		// 	flipAngle = flipAngle;
 		// } else {
 		// 	console.log("flipAngle is needs to rotate");
+		var testReset = flipAngle % 360;
 
-			if((flipAngle) < 90) {
-				flipAngle = 0;
+			if((testReset) < 90) {
+				// flipAngle = 0;
+				flipAngle = 360*numRotations + 0 ;
 			} 
-			else if ((flipAngle) >= 90 || (flipAngle) < 270 ) {
-				flipAngle = 180;
-			} else if ((flipAngle) >= 270) {
-				flipAngle = 360;
+			else if ((testReset) >= 90 || (testReset) < 270 ) {
+				flipAngle = 360*numRotations + 180 ;
+			} else if ((testReset) >= 270) {
+				flipAngle = 360*numRotations + 360 ;
 			}
 		// }
 
@@ -559,8 +557,6 @@
 	  	$("#cradle_pbutton").on('click', function() {
 	  		//console.log("[ attach Periphery Events ] cradle_pbutton - p_pauseVids");
 	  		pauseVideos();
-	  		resetVideoRotation();
-
 	  		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000,function() {
 	  			animateButton(0);
 	  		});
@@ -569,7 +565,6 @@
 	  	$("#legacy_pbutton").on('click', function() {
 	  		//console.log("[ attach Periphery Events ] legacy_pbutton - p_pauseVids");
 	  		pauseVideos();
-	  		resetVideoRotation();
 	  		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
 	  			animateButton(1);
 	  		});
@@ -578,7 +573,6 @@
 	  	$("#migrants_pbutton").on('click', function() {
 	  		//console.log("[ attach Periphery Events ] migrants_pbutton - p_pauseVids");
 	  		pauseVideos();
-	  		resetVideoRotation();
 	  		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
 	  			animateButton(2);
 	  		});
@@ -636,7 +630,7 @@
 		deactivate:function(){
 			peripheryContent.fadeOut("fast");
 		 	pauseVideos();
-		 	$("#pcard").css({ '-webkit-transform': 'rotate(0deg)', 'transform': 'rotate(0deg)' });
+		 	resetVideoRotation();
 		 	mouseYTracking = false;
 		 	console.log("[Periphery: deactivate] mouseYTracking: " + mouseYTracking);
 		 	active = false;
