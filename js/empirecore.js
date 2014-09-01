@@ -601,10 +601,10 @@ var fadeInAmbientAudio = function () {
 	// internal function to fade in
 	
 	
-	if(_currentaudiovolume <= 0 ){
+	if(_currentaudiovolume < 0 ){
 		_currentaudiovolume = 0;
 	}
-	else if(_currentaudiovolume >= 100){
+	else if(_currentaudiovolume > 100){
 		_currentaudiovolume = 100;
 	}
 	else{
@@ -616,6 +616,8 @@ var fadeInAmbientAudio = function () {
 	if(_currentaudiovolume > audiovolume){
 		clearInterval(vIvl);
 	}
+
+	console.log("currentAmbientAudioVolume: "+ _currentaudiovolume);
 };
 
 var fadeOutAmbientAudio = function () {
@@ -624,10 +626,10 @@ var fadeOutAmbientAudio = function () {
 	// if(_currentaudiovolume >= 0){
 	// 	
 	// }
-	if(_currentaudiovolume <= 0 ){
+	if(_currentaudiovolume < 0 ){
 		_currentaudiovolume = 0;
 	}
-	else if(_currentaudiovolume >= 100){
+	else if(_currentaudiovolume > 100){
 		_currentaudiovolume = 100;
 	}
 	else{
@@ -641,6 +643,8 @@ var fadeOutAmbientAudio = function () {
 		clearInterval(vIvl);
 		ambientAudio.pause();
 	}
+
+	console.log("currentAmbientAudioVolume: "+ _currentaudiovolume);
 }
 
 	//startSimulation and pauseSimulation defined elsewhere
