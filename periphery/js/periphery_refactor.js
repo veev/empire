@@ -614,6 +614,7 @@
 		deactivate:function(){
 			peripheryContent.fadeOut("fast");
 		 	pauseVideos();
+		 	mouseYTracking = false;
 		 	active = false;
 
 		}
