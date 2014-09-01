@@ -567,7 +567,7 @@ function drawer () {
 function audioready() {
 	// audio has loaded, let's do this
 	console.log("ambient audio has loaded and playing");
-	console.log("ambientAudio: " + ambientAudio);
+	//console.log("ambientAudio: " + ambientAudio);
 	if(!audioactive){
 		ambientAudio.volume = 0;
 		ambientAudio.play();

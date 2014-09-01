@@ -75,6 +75,8 @@
 		  var newCardWidth = newCardHeight * 0.9525;
 
 		  $("#pcard").css({ 'width': newCardWidth+'px', 'height': newCardHeight+'px'});
+		  container.css({ 'height': newCardHeight+'px'});
+		  $("#p_instructions").css({ 'height': newCardHeight+'px'});
 		  $("#periphery_arrows").css({ 'width': newCardHeight+'px', 'height': newCardWidth+'px', 'margin-left': '-'+newCardHeight/2});
 		}
 
@@ -234,7 +236,13 @@
 		controlsActive = true;
 
 		outerOuter
-		.on('mousemove', function () { if(mouseYTracking && $("#p_controls").isOnScreen()) { trackMouseRotation(); } })
+		.on('mouseenter', function () { 
+			console.log("[mouseenter] mouseYTracking: " + mouseYTracking);
+			if(mouseYTracking && $("#p_controls").isOnScreen()) { 
+				trackMouseRotation(); 
+				console.log("Periphery: mouseenter trackMouseRotation");
+			} 
+		})
 		.on('mouseleave', function () {
 			if(flipAngle < 90) {
 				flipAngle = 0;
@@ -269,7 +277,7 @@
 
 		console.log("flipAngle After Reset: "+ flipAngle);
 
-		$("#pcard").css({ '-webkit-transform': 'rotate( ' + flipAngle + 'deg)', 'transform': 'rotate( ' + flipAngle + 'deg)',"transition": "all 600ms cubic-bezier(0.175, 0.885, 0.32, 1.275)" });
+		$("#pcard").css({ '-webkit-transform': 'rotate( ' + flipAngle + 'deg)', 'transform': 'rotate( ' + flipAngle + 'deg)' });
 
 	}
 
@@ -297,7 +305,8 @@
 			if(active && document.getElementById("target").paused) {
 				playButton();
 			}
-			trackMouseRotation();
+			//trackMouseRotation();
+			//console.log("Periphery: closescreen trackMouseRotation");
 			if(audioactive) {
 				audiostop();
 			}
@@ -318,8 +327,14 @@
 				}, true);
 				video.addEventListener("ended", endVideos, true);
 				video.addEventListener("timeupdate", scrubberUpdater, true);
-				video.addEventListener("play", function(){mouseYTracking = true;}, true);
-				video.addEventListener("pause", function(){mouseYTracking = true;}, true);
+				video.addEventListener("play", function(){
+					mouseYTracking = true;
+					console.log("[Periphery: play callback] mouseYTracking: " + mouseYTracking);
+				}, true);
+				video.addEventListener("pause", function(){
+					//mouseYTracking = true;
+					//console.log("[pause callback] mouseYTracking: " + mouseYTracking);
+				}, true);
 				video.load();
 				media[id] = video;
 			}
@@ -343,8 +358,15 @@
 
 	function playButton(){
 		if(active) {
+			
 			mouseYTracking = true;
-			if(document.getElementById("target").paused){ playVideos();}
+			console.log("[Periphery: playButton] mouseYTracking: " + mouseYTracking);
+			if(document.getElementById("target").paused){
+				playVideos();
+				if(mouseYTracking) {
+			 		trackMouseRotation();
+				}
+			}
 			else{ pauseVideos();}
 		}
 	}
@@ -606,7 +628,7 @@
 		 	if( document.getElementById("target") ) {
 				if( document.getElementById("target").currentTime > 0 ) {
 				 	toggleButtonDisplay();
-				 	$("#pcard").css({ '-webkit-transform': 'rotate(0deg)', 'transform': 'rotate(0deg)' });
+				 	//$("#pcard").css({ '-webkit-transform': 'rotate(0deg)', 'transform': 'rotate(0deg)' });
 				 	//Is there a better way to make Periphery lie flat?
 				}
 			}
@@ -614,7 +636,9 @@
 		deactivate:function(){
 			peripheryContent.fadeOut("fast");
 		 	pauseVideos();
+		 	$("#pcard").css({ '-webkit-transform': 'rotate(0deg)', 'transform': 'rotate(0deg)' });
 		 	mouseYTracking = false;
+		 	console.log("[Periphery: deactivate] mouseYTracking: " + mouseYTracking);
 		 	active = false;
 
 		}
