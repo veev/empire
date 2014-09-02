@@ -793,7 +793,7 @@
 		} else {
 			currentVolume += 3;
 		}
-		document.getElementById('migrants_video').volume = currentVolume / 100;
+		migrantsVideo.volume = currentVolume / 100;
 		
 		if(currentVolume > MAX_VOLUME) {
 			clearInterval(intervalID);
@@ -805,11 +805,20 @@
 	function fadeOutMigrantsAudio() {
 		// internal function to fade outaudio
 		console.log('In fadeOutMigrantsAudio');
+
+		if(currentVolume < 0 ) {
+			currentVolume = 0;
+		} else if (currentVolume > 100) {
+			currentVolume = 100;
+		} else {
+			currentVolume -= 1;
+		}
+
 		migrantsVideo.volume = currentVolume / 100;
-		currentVolume -= 1;
+		
 		if(_currentaudiovolume === 0){
 			clearInterval(intervalID);
-			ambientAudio.pause();
+			//ambientAudio.pause();
 		}
 	}
 
@@ -913,7 +922,11 @@
 	}
 
 	function pauseVideos(){
-		migrantsVideo.pause();
+		if(!migrantsVideo.paused) {
+			fadeOutMigrantsAudio();
+			migrantsVideo.pause();
+		}
+		
 	}
 
 	function downloadScreen() {
@@ -1249,8 +1262,7 @@
 		deactivate: function(){
 			migrantsContent.fadeOut('fast');
 			migrantsVideoJqry.css({opacity: '0.0'});
-			fadeOutMigrantsAudio();
-				pauseVideos();
+			pauseVideos();
 		
 			
 			if(downloadMigrants) {
