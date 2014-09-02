@@ -434,7 +434,7 @@ div#l_instructions p#two{
 	border-top: 1px dotted #666;
 	color: #666;
 	height: 1px;
-	width:190px;
+	width:100%;
 }
 
 .directionsNegSlope {
@@ -450,32 +450,32 @@ div#l_instructions p#two{
 }
 
 #indonesia_directions {
-	width: 200px;
+	width: 195px;
 	height: 30px;
 	position: absolute;
-	top: 158;
+	top: 156;
 	left: 384;
 	z-index: 10;
 }
 #southafrica_directions {
-	width: 200px;
+	width: 195px;
 	height: 30px;
 	position: absolute;
-	top: 477;
-	left: 714;
+	top: 472;
+	left: 712;
 	z-index: 10;
 }
 #india_directions {
-	width: 200px;
+	width: 193px;
 	height: 30px;
 	position: absolute;
 	top: 612;
-	left: 386;
+	left: 385;
 	z-index: 10;
 }
 
 #srilanka_directions {
-	width: 200px;
+	width: 198px;
 	height: 30px;
 	position: absolute;
 	top: 296;
