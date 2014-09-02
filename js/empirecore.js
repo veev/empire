@@ -41,6 +41,24 @@ var m_url = 'migrants/css/timecode.json';
 // var m_url = 'http://empire.genevievehoffman.com/migrants/css/timecode.json';
 var hidden, visibilityChange; 
 
+// var options = {
+//     $menu: false,
+// 	menuSelector: 'a',
+// 	panelSelector: 'section',
+// 	namespace: '.panelSnap',
+// 	onSnapStart: function(){},
+// 	onSnapFinish: function(){},
+// 	onActivate: function(){},
+// 	directionThreshold: 50,
+// 	slideSpeed: 200,
+// 	keyboardNavigation: {
+// 	enabled: false,
+// 	nextPanelKey: 40,
+// 	previousPanelKey: 38,
+// 	wrapAround: true
+// 	}
+// };
+
 
 $(document).ready(function () {
 
@@ -89,18 +107,19 @@ $(document).ready(function () {
 
 	drawer();
 
-	//migrantsVideo = document.getElementById("migrants_video");
-
 	legacy.init();
 	cradle.init();
 	periphery.init();
 	migrants.init();
-	//loadMedia();
-	// addPeripheryListeners();
-	// addMigrantsListeners();
 
-	// attachMigrantsEvents();
-	// attachPeripheryEvents();
+	// $(document).scrollsnap({
+ //        snaps: '.snap',
+ //        proximity: 100,
+ //        handler: scrollsnaphandle
+ //    });
+
+   // $('.snap').panelSnap(options);
+
 	window.addEventListener("hashchange", hashEvent, false);
 
 	if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support 
@@ -218,6 +237,10 @@ $(document).ready(function () {
 	}
 
 });
+
+function scrollsnaphandle() {
+	console.log("in scrollsnaphandle");
+}
 
 function buildRippleNode(index){
 	var ripple, pattern, title, bottomLetter, topLetter;
@@ -632,7 +655,7 @@ var fadeOutAmbientAudio = function () {
 	// console.log("Fade Vol down " + _currentaudiovolume);
 	if(_currentaudiovolume == 0){
 		clearInterval(vIvl);
-		ambientAudio.pause();
+		//ambientAudio.pause();
 	}
 
 	console.log("currentAmbientAudioVolume: "+ _currentaudiovolume);
