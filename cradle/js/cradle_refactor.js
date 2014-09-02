@@ -317,7 +317,10 @@
 		if(vid1Loaded && vid2Loaded) {
 			
 			var videoTrackCurrentPosition  = videoSchipol.currentTime;
+			
 			if(!flipside) {
+				console.log("videoSpotters.currentTime: " + videoSpotters.currentTime);
+				console.log("videoSchipol.currentTime: " + videoSchipol.currentTime);
 				videoSpotters.currentTime = videoTrackCurrentPosition;
 				console.log("videoSpotters.currentTime: " + videoSpotters.currentTime);
 				console.log("videoSchipol.currentTime: " + videoSchipol.currentTime);
