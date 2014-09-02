@@ -795,6 +795,7 @@
 
 	function fadeOutMigrantsAudio() {
 		// internal function to fade outaudio
+		console.log('In fadeInMigrantsAudio');
 		migrantsVideo.volume = currentVolume / 100;
 		currentVolume -= 1;
 		if(_currentaudiovolume === 0){
@@ -1239,7 +1240,10 @@
 		deactivate: function(){
 			migrantsContent.fadeOut('fast');
 			migrantsVideoJqry.css({opacity: '0.0'});
-			pauseVideos();
+			fadeOutMigrantsAudio();
+				pauseVideos();
+		
+			
 			if(downloadMigrants) {
 				resetMigrants();
 				downloadMigrants = false;
