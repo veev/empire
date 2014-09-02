@@ -195,8 +195,8 @@ div#l_instructions p#two{
 #legacy_container_southafrica {
 /*	background-color:#cfc;*/
 	position:absolute;
-	top:540px;
-	left:1234px;
+	top:538px;
+	left:1232px;
 	
 	-webkit-transform: rotate(135deg);
 	-moz-transform: rotate(135deg);
@@ -206,8 +206,8 @@ div#l_instructions p#two{
 #legacy_container_india {
 /*	background-color:#cff;*/
 	position:absolute;
-	top:1001px;
-	left:462px;
+	top:999px;
+	left:461px;
 	-webkit-transform: rotate(225deg);
 	-moz-transform: rotate(225deg);
 	-o-transform: rotate(225deg);
@@ -228,7 +228,7 @@ div#l_instructions p#two{
 /*	background-color:#ffc;*/
 	position:absolute;
 	top:-233px;
-	left:773px;
+	left:771px;
 
 	-webkit-transform: rotate(405deg);
 	-moz-transform: rotate(405deg);
@@ -261,7 +261,7 @@ div#l_instructions p#two{
 
 #india_scrubber {
 	top:845px;
-	left:617px;
+	left:616px;
 	-webkit-transform: rotate(225deg);
 	-moz-transform: rotate(225deg);
 	-o-transform: rotate(225deg);
@@ -277,7 +277,7 @@ div#l_instructions p#two{
 
 #southafrica_scrubber {
 	top:386px;
-	left:1079px;
+	left:1076px;
 	-webkit-transform: rotate(135deg);
 	-moz-transform: rotate(135deg);
 	-o-transform: rotate(135deg);
@@ -292,8 +292,8 @@ div#l_instructions p#two{
 }
 
 #srilanka_scrubber {
-	top:-76px;
-	left:619px;
+	top:-77px;
+	left:617px;
 	-webkit-transform: rotate(405deg);
 	-moz-transform: rotate(405deg);
 	-o-transform: rotate(405deg);
@@ -308,7 +308,7 @@ div#l_instructions p#two{
 }
 
 #indonesia_scrubber {
-	top:384px;
+	top:383px;
 	left:155px;
 	-webkit-transform: rotate(315deg);
 	-moz-transform: rotate(315deg);
@@ -478,8 +478,8 @@ div#l_instructions p#two{
 	width: 200px;
 	height: 30px;
 	position: absolute;
-	top: 290;
-	left: 710;
+	top: 296;
+	left: 709;
 	z-index: 10;
 }
 
