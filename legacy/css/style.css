@@ -544,7 +544,7 @@ div#l_instructions p#two{
 	width: 180;
 	height: 100;
 	left: 524;
-	top: 331;
+	top: 323;
 	color: #fbb03b;
 	text-align: center;
 	font-size: 1.2em;
@@ -553,4 +553,9 @@ div#l_instructions p#two{
 
 #l_endscreen p.empiredoc {
 	font-size: 2em;
+	margin-bottom: 5px;
+}
+
+#l_endscreen a {
+	color: #fbb03b;
 }

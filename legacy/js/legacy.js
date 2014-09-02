@@ -451,6 +451,8 @@
 			}
 		});
 
+		console.log("numWatched: " + numWatched); 
+
 		debugCount++;
 		if(numWatched >= 4){
 			return true;
@@ -753,7 +755,7 @@
 	function toggleButtonDisplay() {
 		if(videos != null) {
 			Object.keys(videos).forEach(function(id) {
-				if(active && videos[id].paused) {
+				if(active && videos[id].paused && !allVideosReached90) {
 					console.log("Toggle periphery play button on");
 					$("#l_play_bg").fadeIn();
 				} else {
@@ -864,6 +866,7 @@
 				allVideosReached90 = checkProgressLength();
 				if (allVideosReached90) {
 					console.log('Legacy Endscreen');
+					$("#l_endscreen").css({ 'z-index': '1000'});
 					//Insert Skype button functionality here
 				}
 
