@@ -201,7 +201,7 @@
 
 				previousFlipAngle = flipAngle;
 				flipAngle = 360*numRotations + flipAngle ;
-				console.log(flipAngle);
+				//console.log(flipAngle);
 				$("#pcard").css({ '-webkit-transform': 'rotate( ' + flipAngle + 'deg)', 'transform': 'rotate( ' + flipAngle + 'deg)',"transition": "all 600ms cubic-bezier(0.175, 0.885, 0.32, 1.275)" });
 			}
 		});
@@ -254,26 +254,21 @@
 	}
 
 	function resetVideoRotation() {
-		console.log("flipAngle Before Reset: "+ flipAngle);
-		// if ((flipAngle % 180) = 0 ) {
-		// 	console.log("flipAngle is 180 or multiple");
-		// 	flipAngle = flipAngle;
-		// } else {
-		// 	console.log("flipAngle is needs to rotate");
+		//console.log("flipAngle Before Reset: "+ flipAngle);
+	
 		var testReset = flipAngle % 360;
 
-			if((testReset) < 90) {
-				// flipAngle = 0;
-				flipAngle = 360*numRotations + 0 ;
-			} 
-			else if ((testReset) >= 90 || (testReset) < 270 ) {
-				flipAngle = 360*numRotations + 180 ;
-			} else if ((testReset) >= 270) {
-				flipAngle = 360*numRotations + 360 ;
-			}
-		// }
-
-		console.log("flipAngle After Reset: "+ flipAngle);
+		if((testReset) < 90) {
+			// flipAngle = 0;
+			flipAngle = 360*numRotations + 0 ;
+		} 
+		else if ((testReset) >= 90 || (testReset) < 270 ) {
+			flipAngle = 360*numRotations + 180 ;
+		} else if ((testReset) >= 270) {
+			flipAngle = 360*numRotations + 360 ;
+		}
+		
+		//console.log("flipAngle After Reset: "+ flipAngle);
 
 		$("#pcard").css({ '-webkit-transform': 'rotate( ' + flipAngle + 'deg)', 'transform': 'rotate( ' + flipAngle + 'deg)' });
 
