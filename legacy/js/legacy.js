@@ -635,9 +635,11 @@
 	}
 
 	function resetLegacy() {
-		clearProgressPaths(); //not working yet
-		
+		clearProgressPaths(); 
+
 		$("#l_endscreen").fadeOut(); //make skype message disappear
+		$("#l_endscreen").css({'z-index': '1'});
+
 		endScreenBuilt = false;
 		
 		//make opacities turn back on
