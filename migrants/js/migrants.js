@@ -786,16 +786,25 @@
 		// internal function to fade in audio
 		console.log('In fadeInMigrantsAudio');
 
+		if(currentVolume < 0) {
+			currentVolume = 0;
+		} else if (currentVolume > 100) {
+			currentVolume = 100;
+		} else {
+			currentVolume += 3;
+		}
 		document.getElementById('migrants_video').volume = currentVolume / 100;
-		currentVolume += 3;
-		if(currentVolume > MAX_VOLUME){
+		
+		if(currentVolume > MAX_VOLUME) {
 			clearInterval(intervalID);
 		}
+
+	console.log("currentAmbientAudioVolume: "+ _currentaudiovolume);
 	}
 
 	function fadeOutMigrantsAudio() {
 		// internal function to fade outaudio
-		console.log('In fadeInMigrantsAudio');
+		console.log('In fadeOutMigrantsAudio');
 		migrantsVideo.volume = currentVolume / 100;
 		currentVolume -= 1;
 		if(_currentaudiovolume === 0){
