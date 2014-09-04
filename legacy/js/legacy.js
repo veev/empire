@@ -557,6 +557,7 @@
 						
 						//do volume upp for all
 						video.volume = 0.75;
+						console.log(video.volume);
 						//$('#legacy_container_' + selectedId).css({'cursor':'pointer'});
 
 

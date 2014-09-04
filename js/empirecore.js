@@ -143,13 +143,8 @@ $(document).ready(function () {
 		periphery.deactivate();
 		legacy.deactivate();
 		migrants.deactivate();
-		// var p_target = document.getElementById("target");
-		// var l_sriVid = document.getElementById("srilanka_leg");
-		// var l_saVid = document.getElementById("southafrica_leg");
-		// var l_indoVid = document.getElementById("indonesia_leg");
-		// var l_indiaVid = document.getElementById("india_leg");
 
-			//console.log("[document ready] home_button : p_pauseVids ? " + peripheryActive);
+		//console.log("[document ready] home_button : p_pauseVids ? " + peripheryActive);
 		if (!document.getElementById("migrants_video").paused) {
 			m_pauseVids();
 		}
@@ -165,7 +160,7 @@ $(document).ready(function () {
 		if (key == 32){
 
 	   		e.preventDefault();
-	   		console.log("here");
+	   		//console.log("here");
 			if(cradle.active()) {
 				if(cradle.isPlaying()){
 					cradle.pauseVideos();
@@ -226,8 +221,7 @@ $(document).ready(function () {
 
 	resizePaper();
 
-	$(window).resize( function() {
-
+	$(window).on("debouncedresize", function(event) {
 		resizePaper();
 
 		drawer();
@@ -241,12 +235,30 @@ $(document).ready(function () {
 		else if(migrants.active()) {
 			migrants.resize();
 		}
-		else{
+		else if(legacy.active()) {
 			legacy.sizer();
 		}
-
-
 	});
+	// $(window).resize( function() {
+
+	// 	resizePaper();
+
+	// 	drawer();
+
+	// 	if(cradle.active()){
+	// 		cradle.sizer();
+	// 	}
+	// 	else if (periphery.active()) {
+	// 		periphery.sizer();
+	// 	}
+	// 	else if(migrants.active()) {
+	// 		migrants.resize();
+	// 	}
+	// 	else if(legacy.active()) {
+	// 		legacy.sizer();
+	// 	}
+
+	// });
 
 	var path = window.location.hash;
 
