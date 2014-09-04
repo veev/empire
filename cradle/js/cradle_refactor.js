@@ -12,6 +12,7 @@
 	var lazywidth = 0;
 	
 	var active = false;
+	var isPlaying = false;
 	var firstTime = true;
 	var allVideosLoaded = false;
 	var introDismissed = false;
@@ -67,6 +68,14 @@
 	    return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
 	    
 	};
+	function togglePlayIcon(){
+		if(videoSchipol.paused || videoSpotters.paused){
+			$("#c_playElement").css({'background':'url(../art/cradle/playYellow.png)'})
+		} 
+		else {
+			$("#c_playElement").css({'background':'url(../art/cradle/pauseYellow.png)'})
+		}
+	}
 
 	function attachEvents() {
 		$("#c_playElement")
@@ -82,12 +91,13 @@
 				} else {
 					$("#c_playElement").css({'background':'url(../art/cradle/pauseWhite.png)'})
 				}})
-			.on('mouseout', function (){
-				if(videoSchipol.paused || videoSpotters.paused){
-					$("#c_playElement").css({'background':'url(../art/cradle/playYellow.png)'})
-				} else {
-					$("#c_playElement").css({'background':'url(../art/cradle/pauseYellow.png)'})
-				}});
+			.on('mouseout',togglePlayIcon);
+			// .on('mouseout', function (){
+			// 	if(videoSchipol.paused || videoSpotters.paused){
+			// 		$("#c_playElement").css({'background':'url(../art/cradle/playYellow.png)'})
+			// 	} else {
+			// 		$("#c_playElement").css({'background':'url(../art/cradle/pauseYellow.png)'})
+			// 	}});
 
 		$("#c_refresh")
 			.on('click', function() {restartVideos();})
@@ -335,6 +345,7 @@
 		videoSpotters.volume = 0;
 		videoSchipol.play();
 		videoSpotters.play();
+		isPlaying = true;
 	}
 	
 
@@ -387,6 +398,7 @@
 					videos[id].volume =0;	
 				}
 				videos[id].play();
+				isPlaying = true;
 			}
 		}
 	}
@@ -395,6 +407,7 @@
 		for (id in videos) {
 			if (videos.hasOwnProperty(id) && videos[id]) {
 				videos[id].pause();
+				isPlaying = false;
 			}
 		}
 	}
@@ -534,9 +547,14 @@
 		sizer:sizer,
 		init:init,
 		pauseVideos: pauseVideos,
+		playVideos: playVideos,
+		togglePlayIcon:togglePlayIcon,
 		toggleButtonDisplay: toggleButtonDisplay,
 		active:function(){
 			return active;
+		},
+		isPlaying: function(){
+			return isPlaying;
 		},
 		activate:function(){
 			if(!active){

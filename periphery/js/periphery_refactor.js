@@ -4,6 +4,7 @@
 	var openIvl = new Number();
 	
 	var active = false;
+	var isPlaying = false;
 	var firstTime = true;
 
 	var videoLoaded = false;
@@ -389,6 +390,7 @@
 					media[id].volume = 0;	
 				}
 				media[id].play();
+				isPlaying = true;
 			}
 		}
 	}
@@ -396,6 +398,7 @@
 		for (id in media) {
 			if (media.hasOwnProperty(id) && media[id]) {
 				media[id].pause();
+				isPlaying = false;
 			}
 		}
 	}
@@ -408,6 +411,7 @@
 		document.getElementById("target").play();
 		document.getElementById("audio_norm").play();
 		document.getElementById("audio_yeti").play();
+		isPlaying = true;
 	}
 	function scrubberUpdater (){
 
@@ -512,7 +516,15 @@
 
 	function endVideos(){
 		pauseVideos();
-		buildEndScreen();
+		buildEndScreen();		
+	}
+
+	function togglePlayIcon(){
+		if(document.getElementById("target").paused){
+			$("#p_playElement").css({'background':'url(../art/periphery/playRed.png)'})
+		} else {
+			$("#p_playElement").css({'background':'url(../art/periphery/pauseRed.png)'})
+		}
 	}
 
 	function attachEvents() {
@@ -532,11 +544,7 @@
 				$("#p_playElement").css({'background':'url(../art/periphery/pauseWhite.png)'})
 			}
 		}).on('mouseout', function (){
-			if(document.getElementById("target").paused){
-				$("#p_playElement").css({'background':'url(../art/periphery/playRed.png)'})
-			} else {
-				$("#p_playElement").css({'background':'url(../art/periphery/pauseRed.png)'})
-			}
+			togglePlayIcon();
 		});
 
 		$("#p_play_bg").on('click', function() {
@@ -594,9 +602,14 @@
 		sizer:sizer,
 		init:init,
 		pauseVideos: pauseVideos,
+		playVideos: playVideos,
+		togglePlayIcon: togglePlayIcon,
 		toggleButtonDisplay: toggleButtonDisplay,
 		active:function(){
 			return active;
+		},
+		isPlaying: function(){
+			return isPlaying;
 		},
 		activate:function(){
 			

@@ -163,13 +163,39 @@ $(document).ready(function () {
 	$(document).on('keydown',function (e) {
 		var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
 		if (key == 32){
+
 	   		e.preventDefault();
-			// if(cradle.active()) {
-			// 	cradle.playButton();
-			// }
-			// else if(periphery.active()) {
-			// 	// crad
-			// }
+	   		console.log("here");
+			if(cradle.active()) {
+				if(cradle.isPlaying()){
+					cradle.pauseVideos();
+				}
+				else{
+					cradle.playVideos();
+				}
+				cradle.togglePlayIcon();
+				cradle.toggleButtonDisplay();
+			}
+			else if(periphery.active()) {
+				if(periphery.isPlaying()){
+					periphery.pauseVideos();
+				}
+				else{
+					periphery.playVideos();
+				}
+				periphery.togglePlayIcon();
+				periphery.toggleButtonDisplay();
+			}
+			else if(legacy.active()) {
+				if(legacy.isPlaying()){
+					legacy.pauseVideos();
+				}
+				else{
+					legacy.playVideos();
+				}
+				// periphery.togglePlayIcon();
+				legacy.toggleButtonDisplay();
+			}
 		}
 
 		else if (key == 68 || key == 100) { //press 'D' or 'd'

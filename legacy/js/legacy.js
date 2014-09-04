@@ -18,6 +18,7 @@
 	var videoCurrentTime = 0;
 
 	var active = false;
+	var isPlaying = false;
 	var introDismissed = false;
 
 	var firstTime = true;
@@ -331,6 +332,7 @@
 					// set videos to start later for testing
 					//videos[id].currentTime = videos[id].duration - 20;
 					videos[id].play();
+					isPlaying = true;
 				}
 			}
 		}
@@ -1058,6 +1060,7 @@
 		for (id in videos) {
 			if (videos.hasOwnProperty(id) && videos[id]) {
 				videos[id].pause();
+				isPlaying = false;
 			}
 		}
 	}
@@ -1070,11 +1073,15 @@
 	var legacy = {
 		sizer: sizer,
 		init: init,
+		playVideos: playVideos,
 		pauseVideos: pauseVideos,
 		toggleButtonDisplay: toggleButtonDisplay,
 		zoomOut: zoomOut,
 		active: function () {
 			return active;
+		},
+		isPlaying: function(){
+			return isPlaying;
 		},
 		activate: function () {
 			if (firstTime) {
