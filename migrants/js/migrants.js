@@ -565,7 +565,7 @@
 			shouldShowVideo = true;
 		}
 
-		holder.fadeIn(1000, function() {
+		holder.fadeIn(200, function() {
 			holder.css({'cursor' : 'pointer', 'pointer-events' : 'none', 'opacity': 1.0, 'z-index': 100});
 			
 		});
