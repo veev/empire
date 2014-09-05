@@ -488,6 +488,7 @@ div#l_instructions p#two{
 	color: #666;
 	font-size: 24px;
 	transform-origin: center center;
+	cursor: pointer;
 }
 
 #indonesiaTitle {
