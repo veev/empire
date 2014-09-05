@@ -221,7 +221,7 @@ $(document).ready(function () {
 
 	resizePaper();
 
-	$(window).on("debouncedresize", function(event) {
+	$(window).on("throttledresize", function(event) {
 		resizePaper();
 
 		drawer();

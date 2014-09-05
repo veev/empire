@@ -74,20 +74,6 @@
 	//Raphael variables
 	var diamondCanvas;
 
-//*** OLD	
-//Tracker Object
-// Active
-// Complete
-// Total Duration
-// Duration Played
-
-//*** NEW
-
-//Tracker Object
-// StartPos
-// EndPost 
-// Active
-
 	var doOnce = true;
 	var count=0;
 
@@ -98,12 +84,6 @@
 			srilanka: {},
 			southafrica: {},
 		};
- // 1 Object for each video
- // 1 Object has 
-  // Active - in selectVideo when video was inactive and is now active
-  // StartPos - in selectVideo when video was inactive and is now active
-  // EndPos - in selectVideo when video was active and is now inactive
-
 
 //sessionHistory
 	// Has multiple object for each video
@@ -269,20 +249,7 @@
 		}
 			// console.log("Load");
 			// console.log(saved);
-			console.log("Load");
-			//console.log(saved);
 		if (saved ) {
-			// for (i = 0; i < saved.length; i++) {
-			// 	savedSession = saved[i];
-			// 	sessionHistory.push({
-			// 		// isActive: false,
-			// 		startPos: savedTracker.startPos,
-			// 		endPos: savedTracker.endPos,
-			// 		// isCrossOriginArc: true,
-			// 		// arcSegment: null
-			// 	});
-			// }
-
 			Object.keys(saved).forEach(function (id) {
 				if ( !sessionHistory.hasOwnProperty(id) ){
 					sessionHistory[id] =[];
@@ -339,12 +306,6 @@
 
 		//console.log("[videoTracker] :" + videoTracker);
 	}
-
-	//Way to get videos to play after loading
-	//has it been at least 7 seconds, if not return false
-	//has it been 7 seconds, are all videos ready? if not, return false
-	//for migrants, delete local storage and set array to empty
-
 
 	var fadeInAudio = function (video) {
 		//console.log("In fadeInAudio");
@@ -763,11 +724,12 @@
 				if(active && videos[id].paused && !allVideosReached90) {
 					console.log("Toggle periphery play button on");
 					$("#l_play_bg").fadeIn();
+					videos[id].volume = 0.75; //set volumes up for all since zooming out when user goes to other tab
 				} else {
 					console.log("Toggle periphery play button off");
 					$("#l_play_bg").fadeOut();
 				}
-			})
+			});
 			
 		}
 	}
@@ -1066,9 +1028,18 @@
 		}
 	}
 
+	function volumesUp() {
+		var id;
+	
+		for (id in videos) {
+			if (videos.hasOwnProperty(id) && videos[id]) {
+				videos[id].volume = 0.75;
+			}
+		}
+	}
+
 	function zoomOut() {
 		zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
-
 	}
 
 	var legacy = {
@@ -1106,6 +1077,8 @@
 			if (!active) {
 				legacyContent.fadeIn(2000);
 			}
+
+			volumesUp();
 
 			active = true;
 			sizer();
