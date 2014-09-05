@@ -224,12 +224,14 @@
 			var audioYeti = document.getElementById("audio_yeti");
 			
 			videoTrackCurrentPosition  = document.getElementById("target").currentTime;
-			if(audioNorm.volume === 0) {
+			if(audioNorm.volume <= 0.01) {
 				audioNorm.currentTime = videoTrackCurrentPosition;
+				//console.log("sync Norm: "+ audioNorm.currentTime);
 			}
 
-			if(audioYeti.volume === 0) {
+			if(audioYeti.volume <= 0.01) {
 				audioYeti.currentTime = videoTrackCurrentPosition;
+				//console.log("sync Yeti: "+ audioYeti.currentTime);
 			}
 
 			//console.log("videoCurrentPos: " + videoTrackCurrentPosition);
