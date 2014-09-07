@@ -25,7 +25,7 @@ h8 { margin-top: 4px; font-style: italic; text-align: left; font-size: 1.6em;}
 div#container div#titleblock { position: absolute; }
 div#container div#logos { position: absolute; bottom: 20; left: 20; z-index: 20;}
 div#container div#pinchelines { position: absolute; width: 4px; background: url(../art/placeholder_dots.png) repeat-y; }
-div#container div#bodytext { position: absolute; margin-right: 16px; text-align: left; width: 430px; z-index: 5}
+div#container div#bodytext { position: absolute; margin-right: 16px; text-align: left; width: 430px; /*z-index: 5*/}
 div#container div#bodytext p { margin: 1em 0; font-size: 1em;}
 /*div#container div#bodytext p.credits { margin-top: 3em; }*/
 div#container div#bodytext a {
@@ -37,7 +37,7 @@ div#container div#credits {
 	margin-right: 16px;
 	text-align: left;
 	width: 430px;
-	z-index: 5;
+	/*z-index: 5;*/
 }
 
 div#container div#credits_left {
