@@ -37,6 +37,7 @@
 	var watchedFullMigrants = false;
 	var shouldShowVideo = false;
 	var mTrackerArray = [];
+	var mTimeSegArray = [];
 	var downloadMigrants = false;
 	var returnMigrants = false;
 	var originCrossed = false;
@@ -276,6 +277,7 @@
 		});
 		totalArc.node.id = 'total-arc'; //debug
 
+		
 		timeArc = archtype.path();
 		timeArc.attr({
 			'stroke': '#888',
@@ -292,8 +294,10 @@
 			]
 		});
 		timeArc.node.id = 'time-arc'; //debug
-
+	
+		
 		timeProgressArc = archtype.path();
+		/*
 		timeProgressArc.attr({
 			'stroke': WHITE,
 			'stroke-width': 2,
@@ -309,6 +313,7 @@
 			]
 		});
 		timeProgressArc.node.id = 'time-progress'; //debug
+		*/
 
 		timeCircle = archtype.circle(center, 0, 0)
 			.attr(styles.solid)
@@ -338,27 +343,61 @@
 		archtype.circle(center, radius + 20, 1).attr(styles.timeDot);
 		archtype.circle(center - radius / 2, middle, 1).attr(styles.timeDot);
 
+ 		
 		//white time marks = amount of screenings per day
 		var r1 = radius / 2 - 14,
 			r2 = radius / 2 - 4,
 
 			circleSegment,
+			arcStart,
+			arcEnd,
 			angle,
+			angleStart,
+			angleEnd,
+			timeArc,
 			i;
 
-		for (i = 0; i < TICK_SPACING; i++) {
+		for (i = 1; i <= TICK_SPACING; i++) {
 			//so they match current time (make last one at a bit before origin)
-			circleSegment = map(i, 0, TICK_SPACING, 0, 359.6);
-			angle = Raphael.rad(circleSegment - 90);
+			// circleSegment = map(i, 0, TICK_SPACING, 0, 359.6);
+			// angle = Raphael.rad(circleSegment - 90);
 
-			cos = Math.cos(angle);
-			sin = Math.sin(angle);
-			archtype.path([
-					['M', center + r1 * cos, middle + r1 * sin],
-					['L', center + r2 * cos, middle + r2 * sin]
-				])
-				.attr(styles.tick);
+			// cos = Math.cos(angle);
+			// sin = Math.sin(angle);
+			
+			// archtype.path([
+			// 		['M', center + r1 * cos, middle + r1 * sin],
+			// 		['L', center + r2 * cos, middle + r2 * sin]
+			// 	])
+			// 	.attr(styles.tick);
+
+			//adding currentLoopArc
+			arcStart = map((i - 1), 0, TICK_SPACING, 0, 359.6);
+			arcEnd = map(i, 0, TICK_SPACING, 0, 359.6);
+			angleStart = Raphael.rad(arcStart - 90);
+			angleEnd = Raphael.rad(arcEnd - 90);
+			
+			timeArc = archtype.path();
+			timeArc.attr({
+				'stroke': WHITE,
+				'stroke-width': 2,
+				'opacity': 0,
+				'fill': 'none',
+				arcseg: [
+						center,
+						middle,
+						middle - 30,
+						angleStart,
+						angleEnd
+						]	
+			});
+			var timeSeg = {};
+			timeSeg.arcStart = arcStart;
+			timeSeg.arcEnd = arcEnd;
+			timeSeg.arcseg = timeArc;
+			mTimeSegArray.push(timeSeg);
 		}
+		//console.log(mTimeSegArray);
 
 		arrayActFills();
 
@@ -419,22 +458,25 @@
 
 		var timeProgress = map(currentTimeOfDay, 0, MAX_TIME_OF_DAY, 0, 100);
 
-		if(timeProgressArc !== null){
-			timeProgressArc.attr({
-				arc: [
-					center,
-					middle,
-					timeProgress,
-					100,
-					center - 30
-				]
-			});
+		if(timeProgressArc !== null){ //take out this check?
+			
+			//take this out if we change from ticks
+			// timeProgressArc.attr({
+			// 	arc: [
+			// 		center,
+			// 		middle,
+			// 		timeProgress,
+			// 		100,
+			// 		center - 30
+			// 	]
+			// });
 		}
 
 		var circleStartPos = 0;
 		var circleFinishPos = 0;
 		var totalArcLength = 0;
 		var activeArcs = false;
+		console.log(mTrackerArray);
 		checkArcLength();
 		saveTrackerArray();
 
@@ -462,17 +504,19 @@
 							loadArcSegs();
 						}
 					} else {
-						mTrackerArray[i].arcSegment.attr({
-							'stroke': ORANGE,
-							'stroke-width': 2,
-							'arcseg': [
-								center,
-								middle,
-								middle - 50,
-								Raphael.rad(mTrackerArray[i].startPos),
-								Raphael.rad(mTrackerArray[i].endPos)
-							]
-						});
+						if (mTrackerArray[i].startPos && mTrackerArray[i].endPos) {
+							mTrackerArray[i].arcSegment.attr({
+								'stroke': ORANGE,
+								'stroke-width': 2,
+								'arcseg': [
+									center,
+									middle,
+									middle - 50,
+									Raphael.rad(mTrackerArray[i].startPos),
+									Raphael.rad(mTrackerArray[i].endPos)
+								]
+							});
+						};
 					}
 					previousPos = mTrackerArray[i].endPos;
 				} else {
@@ -526,12 +570,25 @@
 		var a_ = (90 - alpha_) * Math.PI / 180;
 		var x_ = xloc_ + R_ * Math.cos(a_);
 		var y_ = yloc_ - R_ * Math.sin(a_);
+		
+		for(var j = 0; j < mTimeSegArray.length; j++) {
+			if(alpha_ > mTimeSegArray[j].arcStart && alpha_ < mTimeSegArray[j].arcEnd) {
+				mTimeSegArray[j].arcseg.animate({
+					'opacity': 1}, 800);
+			} else {
+				mTimeSegArray[j].arcseg.animate({
+					'opacity': 0}, 800);
+			}
+		}
 
 		circleFinishPos = getMigrantsVideoCurrentPos();
 
-		if(timeCircle !== null){
-			timeCircle.animate({cx: x_, cy: y_, r: 4}, 100);
+		if(showProgress) {
+			if(timeCircle !== null){
+				timeCircle.animate({cx: x_, cy: y_, r: 4}, 100);
+			}
 		}
+
 
 		var ration = getMigrantsVideoCurrentPos();
 
@@ -602,7 +659,7 @@
 	function getMigrantsVideoCurrentPos(){
 		var initPos;
 		var initDur = getCurrentTime();
-
+		console.log("DURATION : " + migrantsVideo.duration);
 		return (initDur / migrantsVideo.duration) * 360;
 	}
 
@@ -676,7 +733,7 @@
     	}, 500);
 	}
 
-/*
+/* Took this out and went back to simple rollover
 	function vennTracking() {
 		var timer;
 		container.on({
@@ -871,7 +928,7 @@
 		migrantsVideo.addEventListener('canplay', loadVideo, true);
 		migrantsVideo.addEventListener('ended', pauseVideos, true);
 		migrantsVideo.addEventListener('timeupdate', scrubberUpdater, true);
-		migrantsVideo.addEventListener('playing', videoPlaying, false);
+		//migrantsVideo.addEventListener('playing', videoPlaying, false);
 	}
 
 	function loadVideo() {
@@ -900,7 +957,18 @@
 
 	function playVideos() {
 		if(allVideosLoaded){
-			migrantsVideo.currentTime = getCurrentTime();
+			try{
+				migrantsVideo.currentTime = getCurrentTime();	
+				console.log(migrantsVideo.currentTime);
+				console.log(migrantsVideo.duration);
+				console.log(getCurrentTime());
+			}
+			catch(e){
+				console.log(e);
+				console.log(migrantsVideo.currentTime);
+				console.log(migrantsVideo.duration);
+			}
+			
 			migrantsVideo.play();
 			circleScrubber();
 		}
@@ -912,11 +980,15 @@
 			currentTimeForVideo;
 
 		if (remoteClock && remoteClock.accuracy() <= 500) {
+			console.log("RemoteClock time");
+			console.log(remoteClock.time());
 			d = new Date(remoteClock.time());
 		} else {
+		console.log("default time");	
 			d = new Date();
 		}
-
+		console.log("Current time");
+		console.log(d);
 		currentTimeOfDay = d.getHours() * 60 * 60 + (d.getMinutes()) * 60 + d.getSeconds();
 		currentTimeForVideo = currentTimeOfDay % migrantsVideo.duration;
 		return currentTimeForVideo;
@@ -1182,17 +1254,68 @@
 		vennMap.transform('s' + mapScalar + ','+ mapScalar +', 0, 0 t ' + centerW + ' ' + centerH);
 	}
 
+	function pageHidden() {
+		pauseVideos();
+
+		if(mTrackerArray.length <= 0){
+				console.log('Fading out migrants' + mTrackerArray);
+			} else if(mTrackerArray[mTrackerArray.length - 1].isActive){
+				mTrackerArray[mTrackerArray.length - 1].endPos = getMigrantsVideoCurrentPos();
+				mTrackerArray[mTrackerArray.length - 1].isActive = false;
+			}
+	}
+
+	function pageVisible() {
+		playVideos();
+		active = true;
+		var currentPos = getMigrantsVideoCurrentPos();
+		console.log("HERE");
+		console.log(currentPos);
+		//keeping track of tracking session
+		if(mTrackerArray.length > 0) {
+			if(mTrackerArray[mTrackerArray.length-1].isActive === true){
+			mTrackerArray[mTrackerArray.length-1].endPos = currentPos;
+			mTrackerArray[mTrackerArray.length-1].isActive = false;
+			} else {
+				var mTracker = {};
+				mTracker.isActive = true;
+				mTracker.startPos = currentPos;
+				mTracker.endPos = currentPos;
+				mTracker.isCrossOriginArc = false;
+				mTracker.arcSegment = null;
+				mTrackerArray.push(mTracker);
+
+			}
+		}
+		console.log("THERE");
+		
+		console.log("EVERYWHERE");
+	}
+
 	function checkArcLength(){
 		var fullRange = [];
 
+		
+		if(mTrackerArray.length <=0 ){
+			console.log("mTrackerArray is empty");
+			return 0;
+		}
 		//treating the movie like it consists of 360 steps.
 		for (var i = 0; i < mTrackerArray.length; i++) {
-
+			// if(mTrackerArray[i].startPos === mTrackerArray[i].endPos) {continue};
 			//find the range that has been watched in arc [i] and add it to the full range
 			//i.e is startPos is 10 and endPos is 20
 			// curRange [10,11,12,13,14,15,16,17,18,19,20]
-
+		
+		try {
 			var curRange = _.range(Math.ceil(mTrackerArray[i].startPos), Math.ceil(mTrackerArray[i].endPos), 1);
+		}
+		catch(e){
+			console.log(e);
+			console.log(mTrackerArray[i]);
+			var curRange = 0;
+		}
+	
 
 			//max value is 64620
 
@@ -1216,6 +1339,8 @@
 		sizer: sizer,
 		pauseVideos: pauseVideos,
 		playVideos: playVideos,
+		pageHidden: pageHidden,
+		pageVisible: pageVisible,
 		active: function(){
 			return active;
 		},
