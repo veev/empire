@@ -1,604 +1,657 @@
-var rotate = 0;
-var pcard = document.getElementById('pcard');
-var p_curtime = 0;
-var _seektime = 0;
-var p_flipside = false;
-var p_leftside = false;
-var p_flipangle = 0;
-var numRotations = 0;
-var p_prevflipangle = 0;
-var p_flipblock = false;
-var p_controls = false;
-var p_vidLoaded = false;
-var p_audio1Loaded = false;
-var p_audio2Loaded = false;
-//var vid2Loaded = false;
-var p_playState = 0;
-var mouseYTracking = false;
-var instructionsin = false;
-var p_enoughwithinstructions = false;
-var pbottom;
+(function (window) {
+	'use-strict';
+	var controlsActive = false;
+	var openIvl = new Number();
+	
+	var active = false;
+	var isPlaying = false;
+	var firstTime = true;
 
-//these were declared in empirecore.js, now cradle.js doesn't know about that
-var audioactive = false;
-var _ammobile = false;
-var dontannoysam = false;
+	var videoLoaded = false;
+	var audioNormLoaded = false;
+	var audioYetiLoaded = false;
+	var videoTrackCurrentPosition = 0;
+	var sideTracker = new Object(); // tracking element to get the visualisation later
+	var scrubberLength;
+	var currentVideoId;
+	var videoCurrentTime = 0;
+	var mouseYTracking = false;
+	var allVideosLoaded = false;
+	
+	var flipAngle = 0;
+	var numRotations = 0;
+	var previousFlipAngle = 0;
+	var flipBlock = false;
 
-var audioLevelNorm, audioLevelYeti;
+	var instructions,
+		outerOuter,
+		container,
+		peripheryContent,
+		controls;
+	var scrubberWidth = 588;
 
-var p_inseek = false;
-var p_trackingon = false;
-var p_currentvideoid;
-var p_lazywidth = 0;
-
-var openIvl = new Number();
-var p_sidetracker = new Object(); // tracking element to get the visualisation later
-var p_scrubberlength;
-
-var _transitiontimer = new Number();
-var _transitiontimerIvl = new Number();
-
-var audioTrackCurrentPosition = 0;
-var videoTrackCurrentPosition = 0;
-
-function map(i, sStart, sEnd, tStart, tEnd) {
+	var media = {
+		target:null,
+		audio_norm:null,
+		audio_yeti:null
+	}
+	
+	function map(i, sStart, sEnd, tStart, tEnd) {
 		var v = i-sStart;
 		if (v>=0) {
-				if (i < sStart) {
-						return tStart;
-				} else if (i > sEnd) {
-						return tEnd;
-				}
+				if (i < sStart) { return tStart;}
+				 else if (i > sEnd) { return tEnd;}
 		} else {
-				if (i < sStart) {
-						return tStart;
-				} else if (i < sEnd){
-						return tEnd;
-				}
+				if (i < sStart) { return tStart;} 
+				else if (i < sEnd){ return tEnd;}
 		}
+
 		var sRange = sEnd - sStart;
-		if (sRange == 0) {
-				return tStart;
-		}
+		if (sRange == 0) { return tStart; }
 
 		var tMax = tEnd - tStart;
 		return tStart + v / sRange * tMax;
-}
+	}
 
-function p_playhandler () {
-	// p_playState = 1;
-	// //console.log("p_playhandler p_playState: "+ p_playState);
-	// periphery_closescreen();
-	// document.getElementById("mobileisgreat").controls = false;
-	// if(!p_controls){
-	// 	p_enablecontrols();
-	// }
-}
+	function sizer () {
 
-function p_loadVideo () {
-	//console.log("[ Periphery : Canplaythrough Event ] Video ");
-	p_vidLoaded = true;
-}
+		var w = $("#periphery_top").width();
+		var h = $("#periphery_top").height();
+		scrubberWidth = 640;
+		//console.log(w + " : " +h);
+		var matop = 210;
+		var padtop = h * 0.11;  // top of the main title
+		var legbottom = 70; //offset of the bottom play button on the open screen
+		var buffer = h - legbottom;
+		var centering = (w/2) - 70;
+		var linetop = 610;
+		var body = $('html body');
+		console.log("periphery is active: " + active);
+		if($("#periphery_top").height() < 780 && active === true){ // if this a wee screen
+		  padtop = 20;
+		  matop = 120;
+		  legbottom = 20;
+		  linetop = 525;
 
-function p_loadAudio () {
-	//console.log("[ Periphery : Canplaythrough Event ] Audio1 ");
-	p_audio1Loaded = true;
-}
+		  //RESIZING VIDEO
+		  var newCardHeight = h-37;
+		  var newCardWidth = newCardHeight * 0.9525;
+		  console.log("newCardWidth: " + newCardWidth);
 
-function p_loadAudio2 () {
-	//console.log("[ Periphery : Canplaythrough Event ] Audio2 ");
-	p_audio2Loaded = true;
-}
-
-function p_playVidsCallback(){
-	mouseYTracking = true;
-	//console.log("[ Periphery : Play Event ] Video tracking ? " + mouseYTracking);
-}
-
-function p_pauseVidsCallback(){
-// console.log("[ Pause video ] Video paused ? " + document.getElementById("target").paused);
-// console.log("[ Pause video ] audio_norm paused ? " + document.getElementById("audio_norm").paused);
-// console.log("[ Pause video ] audio_yeti ? " + document.getElementById("audio_yeti").paused);
-// console.log("[ Pause video ] Video tracking ? " + mouseYTracking);
-	mouseYTracking = true; 
-	//console.log("[ Periphery : Pause video ] Video tracking ? " + mouseYTracking);
-}
-
-
-function p_enablecontrols () {
-
-	p_controls = true;
-
-	$("#p_outerouter").on('mouseenter', function () {
-		if(mouseYTracking) {
-			// console.log("[ Periphery : Tracking Mouse]");
-			trackMouseRotation();
-		} else {
-			// console.log("not tracking mouse Y");
+		  $("#pcard").css({ 'width': newCardWidth+'px', 'height': newCardHeight+'px'});
+		  container.css({ 'height': newCardHeight+'px'});
+		  $("#p_scrubber").css({ 'width' : (newCardWidth*0.8497) +'px'});
+		  $("#p_instructions").css({ 'height': newCardHeight+'px'});
+		  $("#periphery_arrows").css({ 'width': newCardHeight+'px', 'height': newCardWidth+'px', 'margin-left': '-'+newCardHeight/2});
 		}
-		// console.log('mouseenter');
-	});
 
-	$("#p_outerouter").on('mouseleave', function () {
-		if(p_flipangle < 90) {
-				//console.log("less than 90");
-			p_flipangle = 0;
-				//set yeti volume to 0, norm to 1
-			// document.getElementById("audio_norm").volume = 1;
-			// document.getElementById("audio_yeti").volume = 0;
+		outerOuter.css({ 'padding-top': (($("#periphery_top").height() / 2) - ($("#p_outerinner").height() / 2)) });
+		$(".periphery_intro").css({ 'top': -30});
+		// $("#periphery_bottom").css({"height": $("#periphery_top").height()});
+		$('#periphery_line').css({ 'top': matop, 'height': 100, 'left': (($("#periphery_top").width() / 2) - 7) });
+		$('#periphery_line2').css({ 'top': linetop, 'height': 300, 'left': (($("#periphery_top").width() / 2) - 7) });
+		$("#periphery_linewhite").css({ 'height': $("#periphery_main").height(), 'left': (($("#periphery_top").width() / 2) - 7) });
+		
+		$('#periphery_bottomline').css({ 'top': 0, 'height': 200, 'left': (($("#periphery_top").width() / 2) - 7) });
+		
+		$("#periphery_title").css({ 'padding-top': padtop });
+		$("#periphery_structure").css({ 'margin-top': matop, 'left': (($("#periphery_top").width() / 2) - 370) });
 
-		} else if (p_flipangle > 90 ) {
-			// console.log("greater than 90");
-			p_flipangle = 180;
-			//set yeti volume to 1, norm to 0
-			// document.getElementById("audio_norm").volume = 0;
-			// document.getElementById("audio_yeti").volume = 1;
+		$("#pbottom_structure").css({ 'margin-top': '-1%', 'left': ($("#periphery_top").width() / 2)-286 });
+		$("#p_legmore").css({ "margin-left": ($("#periphery_main").width() / 2) - 70 }).on('click', function() {
+			body.animate({scrollTop: ($("#periphery_bottom").offset().top)}, 1000);
+		});
+		$("#peripherymore").css({"top": buffer, "left": centering }).fadeIn(4000).click(function() {
+			body.animate({scrollTop: ($('#periphery_main').offset().top) }, 1000);
+			if(document.getElementById("target").currentTime == 0 ) {
+				openScreen();
 			}
-		// $("#pcard").css({ '-webkit-transform': 'rotate( ' + p_flipangle + 'deg)', 'transform': 'rotate( ' + p_flipangle + 'deg)' });
-		 p_trackoff();
-		//console.log('mouseleave');
-	}); 
+			else {
+				toggleButtonDisplay();
+			}
+		});
+
+		 $("#periphery_returnTop").css({'margin-top': ((($("#periphery_bottom").height() - 160) / 2) - 330), "margin-left": ($("#cradle_bottom").width() / 2) - 70 }).fadeIn(4000).click(function() {
+			body.animate({scrollTop: ($('#periphery_top').offset().top) }, 1000);
+		 });
+	}
+
+	function toggleButtonDisplay() {
+		if(document.getElementById("target") != null) {
+			if(document.getElementById("target").paused) {
+				//console.log("Toggle periphery play button on");
+				$("#p_play_bg").fadeIn();
+			} else {
+				$("#p_play_bg").fadeOut();
+				//console.log("Toggle periphery play button off");
+			}
+		}
+	}
+
+	$.fn.isOnScreen = function(){
+	    
+	    var win = $(window);
+	    
+	    var viewport = {
+	        top : win.scrollTop(),
+	        left : win.scrollLeft()
+	    };
+	    viewport.right = viewport.left + win.width();
+	    viewport.bottom = viewport.top + win.height();
+	    
+	    var bounds = this.offset();
+	    bounds.right = bounds.left + this.outerWidth();
+	    bounds.bottom = bounds.top + this.outerHeight();
+	    
+	    return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
+	    
+	};
+
+	function trackMouseRotation() {
+		p_trackingon = true;
+		$("#periphery_arrows").css({'z-index':'5'});
+		var target = document.getElementById("target");
+		var diag = Math.sqrt(target.width * target.width + target.height * target.height);
+		var halfSide = diag / 2;
+		var centroidX = $("#periphery_main").width() / 2;
+		var centroidY = $("#periphery_main").height() / 2 + $("#periphery_top").height();
+		var center = { x : centroidX, y : centroidY };
+
+		$(document).on('mousemove', function(e) {
+			if(!flipBlock) {
+				var vec = { x : e.pageX - center.x, y : e.pageY - center.y };
+				flipAngle = Math.PI -	Math.atan2(vec.x, vec.y);
+				flipAngle *= 180/ Math.PI;
+				// console.log(flipAngle);
+				//set audio according to angle
+				if(flipAngle >= 0 && flipAngle <= 180) {
+					audioLevelNorm = map(flipAngle, 0, 180, 1, 0);
+					audioLevelYeti = map(flipAngle, 0, 180, 0, 1);
+				} else if( flipAngle > 180 && flipAngle <= 360) {
+					audioLevelNorm = map(flipAngle, 180, 360, 0, 1);
+					audioLevelYeti = map(flipAngle, 180, 360, 1, 0);
+				}
+
+				document.getElementById("audio_norm").volume = audioLevelNorm;
+				document.getElementById("audio_yeti").volume = audioLevelYeti;
+
+				syncTime();
+
+				//8 positions
+				if(flipAngle > 0 && flipAngle < 35) {
+					flipAngle = 0;
+				} else if (flipAngle >= 35 && flipAngle <= 55) {
+					flipAngle = 45;
+				} else if (flipAngle > 55 && flipAngle < 125) {
+					flipAngle = 90;
+				} else if (flipAngle >= 125 && flipAngle <= 145) {
+					flipAngle = 135;
+				} else if (flipAngle > 145 && flipAngle < 215) {
+					flipAngle = 180;
+				} else if (flipAngle >= 215 && flipAngle <= 235) {
+					flipAngle = 225;
+				} else if (flipAngle > 235 && flipAngle < 305) {
+					flipAngle = 270;
+				} else if (flipAngle <= 305 && flipAngle >= 325) {
+					flipAngle = 315;
+				} else if (flipAngle > 325 && flipAngle < 360) {
+					flipAngle = 360;
+				}
+				if(flipAngle  > 300   && previousFlipAngle < 60  ){
+					numRotations--;
+				}
+				else if(flipAngle  < 60   && previousFlipAngle > 300   ){
+					numRotations++;
+				}
+
+				previousFlipAngle = flipAngle;
+				flipAngle = 360*numRotations + flipAngle ;
+				//console.log(flipAngle);
+				$("#pcard").css({ '-webkit-transform': 'rotate( ' + flipAngle + 'deg)', 'transform': 'rotate( ' + flipAngle + 'deg)',"transition": "all 600ms cubic-bezier(0.175, 0.885, 0.32, 1.275)" });
+			}
+		});
+	}
+	function trackoff () {
+
+		p_trackingon = false;
+		$(document).unbind("swipeleft");
+		$(document).unbind("swiperight");
+		$(document).unbind('mousemove');
+		$(document).unbind('mouseenter');
+		$(document).unbind('mouseleave');
+		$("#periphery_arrows").css({'z-index': '12'});
+	}
+	function syncTime() {
+		//console.log("in periphery sync time");
+		if(videoLoaded && audioNormLoaded && audioYetiLoaded) {
+			var audioNorm = document.getElementById("audio_norm");
+			var audioYeti = document.getElementById("audio_yeti");
+			
+			videoTrackCurrentPosition  = document.getElementById("target").currentTime;
+			if(audioNorm.volume <= 0.01) {
+				audioNorm.currentTime = videoTrackCurrentPosition;
+				//console.log("sync Norm: "+ audioNorm.currentTime);
+			}
+
+			if(audioYeti.volume <= 0.01) {
+				audioYeti.currentTime = videoTrackCurrentPosition;
+				//console.log("sync Yeti: "+ audioYeti.currentTime);
+			}
+
+			//console.log("videoCurrentPos: " + videoTrackCurrentPosition);
+		}
+	}
+	function enableControls () {
+
+		controlsActive = true;
+
+		outerOuter
+		.on('mouseenter', function () { 
+			console.log("[mouseenter] mouseYTracking: " + mouseYTracking);
+			if(mouseYTracking && $("#p_controls").isOnScreen()) { 
+				trackMouseRotation(); 
+				console.log("Periphery: mouseenter trackMouseRotation");
+			} 
+		})
+		.on('mouseleave', function () {
+			resetVideoRotation();
+			 trackoff();
+		}); 
+
+	}
+
+	function resetVideoRotation() {
+		//console.log("flipAngle Before Reset: "+ flipAngle);
 	
-	$("#leftbutton").on('click', function () {
-		if(p_flipside){
-			// flipper(true);
-		}
-	});
-	$("#rightbutton").on('click', function () {
-		if(!p_flipside){
-			// flipper(false);
-		}
-	});
-}
+		var testReset = flipAngle % 360;
 
-function p_disablecontrols () {
-	$("#p_outerouter").unbind("mouseenter");
-	$("#p_outerouter").unbind("mouseleave");
-	$("#leftbutton").unbind("click");
-	$("#rightbutton").unbind("click");
-	p_controls = false;
-}
+		if((testReset) < 90) {
+			// flipAngle = 0;
+			flipAngle = 360*numRotations + 0 ;
+		} 
+		else if ((testReset) >= 90 || (testReset) < 270 ) {
+			flipAngle = 360*numRotations + 180 ;
+		} else if ((testReset) >= 270) {
+			flipAngle = 360*numRotations + 360 ;
+		}
+		
+		//console.log("flipAngle After Reset: "+ flipAngle);
 
-function periphery_scrollsnaphandle () {
-	if($(this).attr('id') == "periphery_main"){
-		if(!p_enoughwithinstructions){
-			if(!_ammobile){
-				// p_playDecide();
+		$("#pcard").css({ '-webkit-transform': 'rotate( ' + flipAngle + 'deg)', 'transform': 'rotate( ' + flipAngle + 'deg)' });
+
+	}
+
+	// function disableControls () {
+	// 	outerOuter.unbind("mouseenter");
+	// 	outerOuter.unbind("mouseleave");
+	// 	$("#leftbutton").unbind("click");
+	// 	$("#rightbutton").unbind("click");
+		
+	// 	trackoff();
+	// 	resetVideoRotation();
+	// 	controlsActive = false;
+	// }
+
+	function openScreen () {
+		instructions.fadeIn(2000);
+		openIvl = setTimeout(closeScreen,10000);
+		instructions.on('click', function () { closeScreen(); });
+	}
+
+	function closeScreen () {
+		clearInterval(openIvl);
+		instructions.fadeOut(1000, function() {
+
+			if(active && document.getElementById("target").paused) {
+				playButton();
+			}
+			//trackMouseRotation();
+			//console.log("Periphery: closescreen trackMouseRotation");
+			if(audioactive) {
+				audiostop();
+			}
+		});
+	}
+
+	function initVideos() {
+
+		Object.keys(media).forEach(function (id) {
+			console.log("[periphery initVideos ID ] " + id);
+			if(id === 'target'){
+				var video = document.getElementById(id);
+				// console.log(video);
+
+				video.addEventListener("canplay", function(){
+					console.log('[ Periphery : Canplay Event ] ' + id + ' Video');
+					videoLoaded= true;
+				}, true);
+				video.addEventListener("ended", endVideos, true);
+				video.addEventListener("timeupdate", scrubberUpdater, true);
+				video.addEventListener("play", function(){
+					mouseYTracking = true;
+					console.log("[Periphery: play callback] mouseYTracking: " + mouseYTracking);
+				}, true);
+				video.addEventListener("pause", function(){
+					//mouseYTracking = true;
+					//console.log("[pause callback] mouseYTracking: " + mouseYTracking);
+				}, true);
+				video.load();
+				media[id] = video;
 			}
 			else{
-				console.log("MOBILE");
+				var audio = document.getElementById(id);
+				audio.addEventListener("canplay", function(){
+					console.log('[ Periphery : Canplay Event ] ' + id + ' Audio');
+					if(id === 'audio_norm') {
+						audioNormLoaded = true;
+					} else if(id === 'audio_yeti') {
+						audioYetiLoaded = true;
+					}
+				}, true);
+				audio.load();
+				media[id] = audio;
+				console.log("Media: " + media);
 			}
-			periphery_openscreen();
-		}
-	}
-}
 
-function periphery_openscreen () {
-	$("#p_instructions").fadeIn(2000);
-	 if(_ammobile){
-
-	 } else {
-	 	//console.log("[Periphery: openscreen ] periphery_closescreen on setTimeout 1");
-		openIvl = setTimeout("periphery_closescreen()",10000);
-		
-	}
-	$("#p_instructions").on('click', function () { 
-		//console.log("[ Periphery : periphery_openscreen ] + Calling playbutton in instructions event handler")
-		periphery_closescreen(); 
-		//console.log("[Periphery: openscreen] periphery_closescreen on instructions click");
-	});
-	p_enoughwithinstructions = true;
-}
-
-function periphery_closescreen () {
-	clearInterval(openIvl);
-	$("#p_instructions").fadeOut(1000, function() {
-		//console.log("[Periphery: periphery_closescreen ] p_playButton");
-		if(peripheryActive && document.getElementById("target").paused) {
-			p_playButton();
-		}
-		trackMouseRotation();
-	});
-}
-
-function periphery_sizer () {
-
-	// var matop = ($("#periphery_top").height() / 2) - 320; // top of the matrix
-	var w = $("#periphery_top").width();
-	var h = $("#periphery_top").height();
-	console.log("w: "+w+ ", h: " + h);
-	var matop = 210;
-	var padtop = h * 0.11;  // top of the main title
-	var legbottom = 70; //offset of the bottom play button on the open screen
-	var buffer = h - legbottom;
-	//console.log("buffer = "+ buffer);
-	var centering = (w/2) - 70;
-	var linetop = 610;
-	//console.log("centering = "+ centering);
-	var body = $('html body');
-	if($("#periphery_top").height() < 780){ // if this a wee screen
-	  padtop = 20;
-	  matop = 120;
-	  legbottom = 20;
-	  linetop = 525;
+		});
 	}
 
-	$("#p_outerouter").css({ 'padding-top': (($("#periphery_top").height() / 2) - ($("#p_outerinner").height() / 2)) });
-	$(".periphery_intro").css({ 'top': -30});
-	
-	$("#periphery_bottom").css("height",$("#periphery_top").height());
-
-	$('#periphery_line').css({ 'top': matop, 'height': 100, 'left': (($("#periphery_top").width() / 2) - 7) });
-	$('#periphery_line2').css({ 'top': linetop, 'height': 300, 'left': (($("#periphery_top").width() / 2) - 7) });
-
-	$("#periphery_linewhite").css({ 'height': $("#periphery_main").height(), 'left': (($("#periphery_top").width() / 2) - 7) });
-	$('#periphery_bottomline').css({ 'top': 0, 'height': 200, 'left': (($("#periphery_top").width() / 2) - 7) });
-	
-	$("#periphery_title").css({ 'padding-top': padtop });
-
-	$("#periphery_structure").css({ 'margin-top': matop, 'left': (($("#periphery_top").width() / 2) - 370) });
-	$("#pbottom_structure").css({ 'margin-top': ((($("#periphery_bottom").height() - 160) / 2) - 300), 'left': ($("#periphery_top").width() / 2)-286 });
-
-	$("#p_leg	").css({ "margin-left": ($("#periphery_main").width() / 2) - 70 }).on('click', function() {
-		body.animate({scrollTop: ($("#periphery_bottom").offset().top)}, 1000);
-	});
-
-	$("#peripherymore").css({"top": buffer, "left": centering }).fadeIn(4000).click(function() {
-
-		body.animate({scrollTop: ($('#periphery_main').offset().top) }, 1000);
-		//console.log("periphery video currentTime = " + document.getElementById("target").currentTime);
-		if(document.getElementById("target").currentTime == 0 ) {
-			periphery_openscreen();
-
-		}
-		else {
-			p_toggleButtonDisplay();
-		}
-	});
-
-	 $("#periphery_returnTop").css({'margin-top': ((($("#periphery_bottom").height() - 160) / 2) - 330), "margin-left": ($("#cradle_bottom").width() / 2) - 70 }).fadeIn(4000).click(function() {
-		body.animate({scrollTop: ($('#periphery_top').offset().top) }, 1000);
-	 });
-
-}
-
-function trackMouseRotation() {
-	p_trackingon = true;
-	$("#periphery_arrows").css({'z-index':'5'});
-	var target = document.getElementById("target");
-	var diag = Math.sqrt(target.width * target.width + target.height * target.height);
-	var halfSide = diag / 2;
-	var centroidX = $("#periphery_main").width() / 2;
-	var centroidY = $("#periphery_main").height() / 2 + $("#periphery_top").height();
-	var center = { x : centroidX, y : centroidY };
-	//console.log(center);
-
-	$(document).on('mousemove', function(e) {
-		if(!p_flipblock) {
-			//console.log("mouseX: " + e.pageX + ", mouseY: " + e.pageY);
-					
-			var vec = { x : e.pageX - center.x, y : e.pageY - center.y };
-			//console.log("vec: " + vec.x + " , " + vec.y);
-			p_flipangle = Math.PI -	Math.atan2(vec.x, vec.y);
-			//console.log("flipangle radians: " + p_flipangle);
-			p_flipangle *= 180/ Math.PI;
-			// console.log("flipangle degrees: " + p_flipangle);
-
-			//set audio according to angle
-			if(p_flipangle >= 0 && p_flipangle <= 180) {
-				audioLevelNorm = map(p_flipangle, 0, 180, 1, 0);
-				audioLevelYeti = map(p_flipangle, 0, 180, 0, 1);
-			} else if( p_flipangle > 180 && p_flipangle <= 360) {
-				audioLevelNorm = map(p_flipangle, 180, 360, 0, 1);
-				audioLevelYeti = map(p_flipangle, 180, 360, 1, 0);
-			}
-
-			// console.log('audioLevelNorm: ' + audioLevelNorm);
-			// console.log('audioLevelYeti: ' + audioLevelYeti);
-
-			//Is this the best place to set volume?
-			document.getElementById("audio_norm").volume = audioLevelNorm;
-			document.getElementById("audio_yeti").volume = audioLevelYeti;
-
-			syncTime();
-
-			//8 positions
-			if(p_flipangle > 0 && p_flipangle < 35) {
-				p_flipangle = 0;
-			} else if (p_flipangle >= 35 && p_flipangle <= 55) {
-				p_flipangle = 45;
-			} else if (p_flipangle > 55 && p_flipangle < 125) {
-				p_flipangle = 90;
-			} else if (p_flipangle >= 125 && p_flipangle <= 145) {
-				p_flipangle = 135;
-			} else if (p_flipangle > 145 && p_flipangle < 215) {
-				p_flipangle = 180;
-			} else if (p_flipangle >= 215 && p_flipangle <= 235) {
-				p_flipangle = 225;
-			} else if (p_flipangle > 235 && p_flipangle < 305) {
-				p_flipangle = 270;
-			} else if (p_flipangle <= 305 && p_flipangle >= 325) {
-				p_flipangle = 315;
-			} else if (p_flipangle > 325 && p_flipangle < 360) {
-				p_flipangle = 360;
-			}
-			//console.log("p_flipangle after sticky: " + p_flipangle);
-
-			if(p_flipangle  > 300   && p_prevflipangle < 60  ){
-				numRotations--;
-			}
-			else if(p_flipangle  < 60   && p_prevflipangle > 300   ){
-				numRotations++;
-			}
-				
-			p_prevflipangle = p_flipangle;
+	function playButton(){
+		if(active) {
 			
-			p_flipangle = 360*numRotations + p_flipangle ;
-
-			//console.log("after if stat flipangle degrees: " + numRotations);
-
-			$("#pcard").css({ '-webkit-transform': 'rotate( ' + p_flipangle + 'deg)', 'transform': 'rotate( ' + p_flipangle + 'deg)',"transition": "all 600ms cubic-bezier(0.175, 0.885, 0.32, 1.275)" });
-		}
-	});
-}
-
-function syncTime() {
-	if(p_vidLoaded && p_audio1Loaded && p_audio2Loaded) {
-		var audioNorm = document.getElementById("audio_norm");
-		var audioYeti = document.getElementById("audio_yeti");
-		videoTrackCurrentPosition  = document.getElementById("target").currentTime;
-
-		if(audioNorm.volume === 0) {
-			audioNorm.currentTime = videoTrackCurrentPosition;
-			//console.log("syncing audio Norm");
-		}
-
-		if(audioYeti.volume === 0) {
-			audioYeti.currentTime = videoTrackCurrentPosition;
-			//console.log("syncing audio Yeti");
+			mouseYTracking = true;
+			console.log("[Periphery: playButton] mouseYTracking: " + mouseYTracking);
+			if(document.getElementById("target").paused){
+				playVideos();
+				if(mouseYTracking) {
+			 		trackMouseRotation();
+				}
+			}
+			else{ pauseVideos();}
 		}
 	}
-}
-
-function p_trackoff () {
-	//console.log('p_trackoff');
-	p_trackingon = false;
-	// mouseYTracking = false;
-	$(document).unbind("swipeleft");
-	$(document).unbind("swiperight");
-	$(document).unbind('mousemove');
-	$(document).unbind('mouseenter');
-	$(document).unbind('mouseleave');
-
-	$("#periphery_arrows").css({'z-index': '12'});
-
-	// console.log("Remove Events for periphery");
-}
-
-function p_restartVids() {
-	p_playState = 1;
-	//console.log("p_restartVids p_playState: "+ p_playState);
-	document.getElementById("target").currentTime = 0;
-	document.getElementById("target").volume = 0;
-	document.getElementById("audio_norm").currentTime = 0;
-	document.getElementById("audio_yeti").currentTime = 0;
-	document.getElementById("target").play();
-	document.getElementById("audio_norm").play();
-	document.getElementById("audio_yeti").play();
-}
-
-function addPeripheryListeners(){
-	document.getElementById("target").addEventListener("canplay", p_loadVideo, true);
-	document.getElementById("target").addEventListener("ended", p_endVids, true);
-	document.getElementById("target").addEventListener("timeupdate", p_scrubberUpdater, true);
-	document.getElementById("target").addEventListener("play", p_playVidsCallback, true);
-	document.getElementById("target").addEventListener("pause", p_pauseVidsCallback, true);
-	document.getElementById("audio_norm").addEventListener("canplay", p_loadAudio, true);
-	document.getElementById("audio_yeti").addEventListener("canplay", p_loadAudio2, true);
-	//console.log("added Periphery Listeners");
-}
-
-function removePeripheryListeners(){
-
-	document.getElementById("target").removeEventListener("canplay", p_loadVideo, true);
-	document.getElementById("target").removeEventListener("ended", p_endVids, true);
-	document.getElementById("target").removeEventListener("timeupdate", p_scrubberUpdater, true);
-	document.getElementById("target").removeEventListener("play", p_playVidsCallback, true);
-	document.getElementById("target").removeEventListener("pause", p_pauseVidsCallback, true);
-	document.getElementById("audio_norm").removeEventListener("canplay", p_loadAudio, true);    
-	document.getElementById("audio_yeti").removeEventListener("canplay", p_loadAudio2, true);
-	//console.log("removed Periphery Listeners");
-
-}
-function p_playButton(){
-
-	if(peripheryActive) {
-		mouseYTracking = true;
-
-		// console.log("[ Play Button ] Is Video paused ? "+ document.getElementById("target").paused);
-		if(document.getElementById("target").paused){
-			p_playVids();  
+	function playVideos(){
+		if(audioactive){
+			audiostop();
 		}
-		else{
-			p_pauseVids();
+
+		var id;
+		if (!allVideosLoaded) {
+			for (id in media) {
+				if (media.hasOwnProperty(id)) {
+					console.log('Media Readystate: ' + media[id].readyState);
+					if (!media[id] || media[id].readyState < 2) {
+						console.log('[ Periphery play videos] Videos not loaded');
+						console.log('Media ID: ' + id);
+						return;
+					}
+				}
+			}
+			allVideosLoaded = true;
+		}
+
+		for (id in media) {
+			if (media.hasOwnProperty(id) && media[id]) {
+				if(id === 'target'){
+					media[id].volume = 0;	
+				}
+				media[id].play();
+				isPlaying = true;
+			}
 		}
 	}
-	else {
-		//console.log("[ Periphery: p_playButton ] peripheryActive ? : " + peripheryActive);
+	function pauseVideos(){
+		for (id in media) {
+			if (media.hasOwnProperty(id) && media[id]) {
+				media[id].pause();
+				isPlaying = false;
+			}
+		}
 	}
-}
+	function restartVideos() {
 
-
-function p_playVids(){
-	if(audioactive){
-		audiostop();
-		//console.log("[Periphery: p_playVids ] audiostop()");
-	}
-	 
-	 if(p_vidLoaded && p_audio1Loaded && p_audio2Loaded){
-		//console.log("[ Periphery : playVids ] videoTrackCurrentPosition = " + videoTrackCurrentPosition);
-		document.getElementById("target").currentTime = videoTrackCurrentPosition ;
+		document.getElementById("target").currentTime = 0;
 		document.getElementById("target").volume = 0;
+		document.getElementById("audio_norm").currentTime = 0;
+		document.getElementById("audio_yeti").currentTime = 0;
 		document.getElementById("target").play();
-		// mouseYTracking = true;
-		// console.log("playVids mouseYTracking = " + mouseYTracking);
-		p_playAudio();
-	 }
-	 else{
-		// console.log("[ Periphery ] Not playing media because? ");
-		// console.log("Video loaded ? " + p_vidLoaded);
-		// console.log("Audio1 loaded ? " + p_audio1Loaded);
-		// console.log("Audio2 loaded ? " + p_audio2Loaded);
-	 }  
-}
-
-function p_playAudio() {
-	// console.log("Norm Tack Pos : " + audioTrackNormCurrentPosition+" Yeti Track Pos : " + audioTrackYetiCurrentPosition);
-	document.getElementById("audio_norm").currentTime = videoTrackCurrentPosition ;
-	document.getElementById("audio_yeti").currentTime = videoTrackCurrentPosition ;
-	document.getElementById("audio_norm").play();
-	document.getElementById("audio_yeti").play();
-
-	//is this the best place to set yeti audio?
-	// document.getElementById("audio_yeti").volume = audioLevelYeti;
-	// document.getElementById("audio_norm").volume = audioLevelNorm;
-
-}
-
-function p_pauseVids(){
-
-	// document.getElementById("audio_yeti").pause();
-	currentTime =  document.getElementById("audio_yeti").currentTime ;
-	// audioTrackCurrentPosition = document.getElementById("target").currentTime;
-	// console.log("[ p_pauseVids ] audioTrackCurrentPosition = " + audioTrackCurrentPosition);
-
-	//audioTrackCurrentPosition = document.getElementById("audio_yeti").currentTime;
-	videoTrackCurrentPosition  = document.getElementById("target").currentTime;
-	//console.log("[ Periphery : pauseVids ] videoTrackCurrentPosition = " + videoTrackCurrentPosition);
-
-	// audiostop();
-	document.getElementById("audio_yeti").pause();
-	document.getElementById("audio_norm").pause();
-	document.getElementById("target").pause(); 
-
-	// console.log("p_pauseVids p_playState: " + p_playState);
-}
-
-function p_endVids(){
-	p_playState = 3;
-	p_pauseVids();
-	// console.log("p_endVids p_playState: " + p_playState);
-	p_buildendscreen();
-}
-
-function p_scrubberUpdater (){
-
-	var dur = Math.floor(document.getElementById("target").currentTime);
-	if(dur > 0){
-		var ratio = (document.getElementById("target").duration / dur);
+		document.getElementById("audio_norm").play();
+		document.getElementById("audio_yeti").play();
+		isPlaying = true;
 	}
-	
-	p_curtime = document.getElementById("target").currentTime;
+	function scrubberUpdater (){
 
-	$("#p_progress").css({ "width": (640 / ratio) + 'px' });
-	
-	if(document.getElementById("audio_yeti").volume > document.getElementById("audio_norm").volume ){
-		p_sidetracker[Math.floor(document.getElementById("target").currentTime)] = 1;
-		//console.log("yeti louder than norm");
-	}
-	else if (document.getElementById("audio_yeti").volume < document.getElementById("audio_norm").volume) {
-		p_sidetracker[Math.floor(document.getElementById("target").currentTime)] = 2;
-		//console.log("norm louder than yeti");
-	}
-	else {
-		p_sidetracker[Math.floor(document.getElementById("target").currentTime)] = 0;
-	}
+		var dur = Math.floor(document.getElementById("target").currentTime);
+		if(dur > 0){ var ratio = (document.getElementById("target").duration / dur); }
+		
+		videoCurrentTime = document.getElementById("target").currentTime;
 
-	p_scrubberlength = Object.keys(p_sidetracker).length;
-
-	//console.log("[ Periphery: p_scrubberUpdater ] scrubberlength: "+ scrubberlength);
-}
-
-function p_buildendscreen () {
-	console.log("[ Periphery ] p_buildendscreen");
-	$("#p_container").hide();
-	$("#p_controls").hide();
-	$("#p_endscreen").fadeIn();
-	
-	$("#p_legmore").fadeIn();
-	
-	if(_ammobile){
-		p_trackoff();
-	}
-	
-	// now the drawing
-	var outputstring = new String();
-	var nowtop = 0;
-	var multiplier = 1.756;
-	
-	var yetiFraction = 0;
-	var normFraction = 0;
-	var equalFraction = 0;
-	for(var i = 0; i < p_scrubberlength; i++){
-		if( p_sidetracker[i] === 1){
-			yetiFraction++;
+		$("#p_progress").css({ "width": (588 / ratio) + 'px' });
+		
+		if(document.getElementById("audio_yeti").volume > document.getElementById("audio_norm").volume ){
+			sideTracker[Math.floor(document.getElementById("target").currentTime)] = 1;
 		}
-		else if (p_sidetracker[i] === 2){
-			normFraction++;
+		else if (document.getElementById("audio_yeti").volume < document.getElementById("audio_norm").volume) {
+			sideTracker[Math.floor(document.getElementById("target").currentTime)] = 2;
 		}
 		else {
-			equalFraction++;
+			sideTracker[Math.floor(document.getElementById("target").currentTime)] = 0;
 		}
 
+		scrubberLength = Object.keys(sideTracker).length;
 	}
-
-	// console.log("[ Periphery: p_buildendscreen ] yetiFraction = " + yetiFraction);
-	// console.log("[ Periphery: p_buildendscreen ] normFraction = " + normFraction);
-	// console.log("[ Periphery: p_buildendscreen ] equalFraction = " + equalFraction);
-	// console.log("[ Periphery: p_buildendscreen ] p_scrubberlength = " + p_scrubberlength);
-	
-	//adjust for time spent listening equally
-	p_scrubberlength -= equalFraction;
-
-	yetiFraction = yetiFraction / p_scrubberlength;
-	// console.log("[ Periphery: p_buildendscreen ] yetiFraction yetiFraction / p_scrubberlength = " + yetiFraction);
-
-	var endAngle = 0;
-	if (yetiFraction > 0.5 ) {
-		$("#p_person_b").fadeIn();
-		endAngle = map(yetiFraction, 0.5, 1, 0, -90);
-		// console.log("[ Periphery: p_buildendscreen ] 1 endAngle: " + endAngle);
-	} else {
-		$("#p_person_a").fadeIn();
-		endAngle = map(yetiFraction, 0, 0.5, -90, 0);
-		// console.log("[ Periphery: p_buildendscreen ] 2 endAngle: " + endAngle);
+	function initScrollspy(){
+		instructions.scrollspy({
+			min: instructions.offset().top,
+			onEnter: function(element, position) {
+				if(document.getElementById("target").currentTime == 0) {
+					openScreen();
+				}
+				else {
+					toggleButtonDisplay();
+				}
+			},
+			onLeave: function(element, position) {
+				instructions.fadeOut();
+			}
+		});
 	}
-
-	$("#p_people_data").css({ '-webkit-transform': 'rotate( ' + endAngle + 'deg)', 'transform': 'rotate( ' + endAngle + 'deg)' });
-
-	$("#p_person_overlay").click(function () {
-		p_sidetracker = {};
-		$("#p_endscreen").fadeOut();
-		$("#p_legmore").fadeOut();
+	function buildEndScreen () {
+		console.log("[ Periphery ] p_buildendscreen");
+		container.hide();
+		controls.hide();
+		$("#p_endscreen").fadeIn();
+		$("#p_legmore").fadeIn();
 		
+		// now the drawing
+		var outputstring = new String();
+		var nowtop = 0;
+		var multiplier = 1.756;
+		
+		var yetiFraction = 0;
+		var normFraction = 0;
+		var equalFraction = 0;
+		for(var i = 0; i < scrubberLength; i++){
+			if( sideTracker[i] === 1){
+				yetiFraction++;
+			}
+			else if (sideTracker[i] === 2){
+				normFraction++;
+			}
+			else {
+				equalFraction++;
+			}
 
-		if(_ammobile){
-			document.getElementById("mobileisgreat").currentTime = 0;
+		}
+
+		//adjust for time spent listening equally
+		scrubberLength -= equalFraction;
+
+		yetiFraction = yetiFraction / scrubberLength;
+
+		var endAngle = 0;
+		if (yetiFraction > 0.5 ) {
+			$("#p_person_b").fadeIn();
+			endAngle = map(yetiFraction, 0.5, 1, 0, -90);
 		} else {
+			$("#p_person_a").fadeIn();
+			endAngle = map(yetiFraction, 0, 0.5, -90, 0);
+		}
+
+		$("#p_people_data").css({ '-webkit-transform': 'rotate( ' + endAngle + 'deg)', 'transform': 'rotate( ' + endAngle + 'deg)' });
+
+		$("#p_person_overlay").click(function () {
+
+			//RESTART PERIPHERY
+			sideTracker = {};
+			$("#p_endscreen").fadeOut();
+			$("#p_legmore").fadeOut();
+			
+
 			document.getElementById("target").currentTime = 0;
 			document.getElementById("audio_norm").currentTime = 0;
 			document.getElementById("audio_yeti").currentTime = 0;
-			// document.getElementById("video2").currentTime = 0;
+
+			container.fadeIn();
+			controls.fadeIn();
+			playVideos();
+
+			$("#p_playElement").css({'background':'url(/periphery/art/playWhite.png)'})
+		});
+	}
+
+	function endVideos(){
+		pauseVideos();
+		buildEndScreen();		
+	}
+
+	function togglePlayIcon(){
+		if(document.getElementById("target").paused){
+			$("#p_playElement").css({'background':'url(../art/periphery/playRed.png)'})
+		} else {
+			$("#p_playElement").css({'background':'url(../art/periphery/pauseRed.png)'})
 		}
+	}
 
-		$("#p_container").fadeIn();
-		$("#p_controls").fadeIn();
+	function attachEvents() {
+		//console.log("[ Periphery Events ] Attach Periphery Events");
 
-		p_playVids();
+		$("#p_playElement").on('click', function () {
+			//console.log("[Attach Periphery Events: p_playElement ] p_playButton");
+			playButton();
+			if( !document.getElementById("target").paused ){
+				toggleButtonDisplay();
+			}
 
-		$("#p_playElement").css({'background':'url(/periphery/art/playWhite.png)'})
-		// console.log("p_buildendscreen p_playState: " + p_playState);          
-	});
-}
+		}).on('mouseover', function (){
+			if(document.getElementById("target").paused){
+				$("#p_playElement").css({'background':'url(../art/periphery/playWhite.png)'})
+			} else {
+				$("#p_playElement").css({'background':'url(../art/periphery/pauseWhite.png)'})
+			}
+		}).on('mouseout', function (){
+			togglePlayIcon();
+		});
 
+		$("#p_play_bg").on('click', function() {
+			//console.log("[Attach Periphery Events: p_play_bg ] p_playButton");
+			playButton();
+			toggleButtonDisplay();
+		});
 
+		$("#p_refresh").on('click', function() {
+			restartVideos();
+		});
+
+	  	$("#cradle_pbutton").on('click', function() {
+	  		//console.log("[ attach Periphery Events ] cradle_pbutton - p_pauseVids");
+	  		pauseVideos();
+	  		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000,function() {
+	  			animateButton(0);
+	  		});
+	  	});
+
+	  	$("#legacy_pbutton").on('click', function() {
+	  		//console.log("[ attach Periphery Events ] legacy_pbutton - p_pauseVids");
+	  		pauseVideos();
+	  		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
+	  			animateButton(1);
+	  		});
+	  	});
+
+	  	$("#migrants_pbutton").on('click', function() {
+	  		//console.log("[ attach Periphery Events ] migrants_pbutton - p_pauseVids");
+	  		pauseVideos();
+	  		$('html body').animate({ scrollTop: ($('#periphery_top').offset().top) }, 1000, function() {
+	  			animateButton(2);
+	  		});
+	  	});
+	}
+	function init(){
+		instructions = $("#p_instructions");
+		outerOuter = $("#p_outerouter");
+		container = $("#p_container");
+		peripheryContent = $("#peripheryContent");
+		controls = $("#p_controls");
+		initScrollspy();
+		peripheryContent.css({'width': '100%', 'height': '100%'});
+		
+		attachEvents();
+		sizer();
+
+		lazywidth = outerOuter.width();
+		enableControls();
+		
+	}
+
+	var periphery ={
+		sizer:sizer,
+		init:init,
+		pauseVideos: pauseVideos,
+		playVideos: playVideos,
+		togglePlayIcon: togglePlayIcon,
+		toggleButtonDisplay: toggleButtonDisplay,
+		active:function(){
+			return active;
+		},
+		isPlaying: function(){
+			return isPlaying;
+		},
+		activate:function(){
+			
+			peripheryContent.fadeIn(2000);
+			active = true;
+		 	if(firstTime) {
+				peripheryContent.css({'width': '100%', 'height': '100%'});
+				$(".periphery_top").css({'background': 'none'});
+				sizer();
+				initVideos();
+				lazyHeight = $("#p_outerouter").height();
+				currentVideoId = 'target';
+				enableControls();
+		 		firstTime = false;
+		 	}
+
+		 	// active = true;
+		 	if( document.getElementById("target") ) {
+				if( document.getElementById("target").currentTime > 0 ) {
+				 	toggleButtonDisplay();
+				 	//$("#pcard").css({ '-webkit-transform': 'rotate(0deg)', 'transform': 'rotate(0deg)' });
+				 	//Is there a better way to make Periphery lie flat?
+				}
+			}
+		},
+		deactivate:function(){
+			peripheryContent.fadeOut("fast");
+		 	pauseVideos();
+		 	resetVideoRotation();
+		 	mouseYTracking = false;
+		 	console.log("[Periphery: deactivate] mouseYTracking: " + mouseYTracking);
+		 	active = false;
+
+		}
+	}
+
+	window.periphery = periphery;
+	
+}(this));
