@@ -1028,6 +1028,12 @@
 		}
 	}
 
+	function pageHidden() {
+		pauseVideos();
+
+		
+	}
+
 	function volumesUp() {
 		var id;
 	

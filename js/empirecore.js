@@ -722,7 +722,7 @@ function pauseSiteAudio() {
 		legacy.pauseVideos();
 		console.log("legacy pause site audio");
 	} else if(migrants.active()) {
-		migrants.pauseVideos();
+		migrants.pageHidden();
 		console.log("migrants pause site audio");
 	} else if(periphery.active()) {
 		periphery.pauseVideos();
@@ -746,7 +746,7 @@ function playSiteAudio() {
 		legacy.toggleButtonDisplay();
 		console.log("legacy play site audio");
 	} else if(migrants.active()) {
-		migrants.playVideos();
+		migrants.pageVisible();
 		console.log("migrants play site audio");
 	} else if(periphery.active()) {
 		periphery.toggleButtonDisplay();
