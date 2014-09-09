@@ -57,7 +57,6 @@
 
 		var w = $("#periphery_top").width();
 		var h = $("#periphery_top").height();
-		scrubberWidth = 640;
 		//console.log(w + " : " +h);
 		var matop = 210;
 		var padtop = h * 0.11;  // top of the main title
@@ -76,11 +75,14 @@
 		  //RESIZING VIDEO
 		  var newCardHeight = h-37;
 		  var newCardWidth = newCardHeight * 0.9525;
+		  var newControlMargin = newCardWidth * 0.2962;
+		  scrubberWidth = newCardWidth * 0.84;
 		  console.log("newCardWidth: " + newCardWidth);
 
 		  $("#pcard").css({ 'width': newCardWidth+'px', 'height': newCardHeight+'px'});
 		  container.css({ 'height': newCardHeight+'px'});
-		  $("#p_scrubber").css({ 'width' : (newCardWidth*0.8497) +'px'});
+		  controls.css({ 'margin-left' : newControlMargin +'px'});
+		  $("#p_scrubber").css({'width': scrubberWidth+'px'});
 		  $("#p_instructions").css({ 'height': newCardHeight+'px'});
 		  $("#periphery_arrows").css({ 'width': newCardHeight+'px', 'height': newCardWidth+'px', 'margin-left': '-'+newCardHeight/2});
 		}
@@ -426,7 +428,7 @@
 		
 		videoCurrentTime = document.getElementById("target").currentTime;
 
-		$("#p_progress").css({ "width": (588 / ratio) + 'px' });
+		$("#p_progress").css({ "width": (scrubberWidth / ratio) + 'px' });
 		
 		if(document.getElementById("audio_yeti").volume > document.getElementById("audio_norm").volume ){
 			sideTracker[Math.floor(document.getElementById("target").currentTime)] = 1;
