@@ -235,6 +235,73 @@ div#l_instructions p#two{
 	-o-transform: rotate(405deg);
 }
 
+#l_arrows {
+	width: 100%;
+	height: 100%;
+}
+
+.country_arrows_negSlope {
+	width: 40px;
+	height: 30px;
+	position: absolute;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+	background-color: #fff;
+	cursor: pointer;
+}
+
+.country_arrows_posSlope {
+	width: 40px;
+	height: 30px;
+	position: absolute;
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+	background-color: #fff;
+	cursor: pointer;
+}
+
+#indonesia_left {
+	left: 56;
+	top: 288;
+}
+
+#indonesia_right {
+	left: 543;
+	top: -197;
+}
+
+#srilanka_left {
+	left: 653;
+	top: -163;
+}
+
+#srilanka_right {
+	left: 1140;
+	top: 325;
+}
+
+#southafrica_left {
+	left: 1162;
+	top: 421;
+}
+
+#southafrica_right {
+	left: 674;
+	top: 906;
+}
+
+#india_left {
+	left: 525;
+	top: 939;
+}
+
+#india_right {
+	left: 41;
+	top: 450;
+}
+
 .scrubberBar {
 	width:650px;
 	height: 1px;

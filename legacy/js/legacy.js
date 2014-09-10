@@ -687,6 +687,39 @@
 			evt.stopPropagation();
 		});
 
+		$("#india_right").click(function(evt) {
+			selectVideo('indonesia');
+			evt.stopPropagation();
+		});
+		$("#india_left").click(function(evt) {
+			selectVideo('southafrica');
+			evt.stopPropagation();
+		});
+		$("#indonesia_right").click(function(evt) {
+			selectVideo('srilanka');
+			evt.stopPropagation();
+		});
+		$("#indonesia_left").click(function(evt) {
+			selectVideo('india');
+			evt.stopPropagation();
+		});
+		$("#srilanka_right").click(function(evt) {
+			selectVideo('southafrica');
+			evt.stopPropagation();
+		});
+		$("#srilanka_left").click(function(evt) {
+			selectVideo('indonesia');
+			evt.stopPropagation();
+		});
+		$("#southafrica_right").click(function(evt) {
+			selectVideo('india');
+			evt.stopPropagation();
+		});
+		$("#southafrica_left").click(function(evt) {
+			selectVideo('srilanka');
+			evt.stopPropagation();
+		});
+
 
 		Object.keys(videos).forEach(function (id) {
 			function selectMe(evt){
