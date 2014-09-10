@@ -696,6 +696,7 @@
 
 			var corner = '#corner' + cornerOrder[id];
 			$(corner).click(selectMe);
+			$('#'+id+'Title').click(selectMe);
 			$('#legacy_container_' + id).click(selectMe);
 		});
 
