@@ -65,7 +65,7 @@
 		var centering = (w/2) - 70;
 		var linetop = 610;
 		var body = $('html body');
-		console.log("periphery is active: " + active);
+		//console.log("periphery is active: " + active);
 		if($("#periphery_top").height() < 780 && active === true){ // if this a wee screen
 		  padtop = 20;
 		  matop = 120;
@@ -75,9 +75,9 @@
 		  //RESIZING VIDEO
 		  var newCardHeight = h-37;
 		  var newCardWidth = newCardHeight * 0.9525;
-		  var newControlMargin = newCardWidth * 0.2962;
+		  var newControlMargin = ((980 - newCardWidth) / 2)-5;
 		  scrubberWidth = newCardWidth * 0.84;
-		  console.log("newCardWidth: " + newCardWidth);
+		  //console.log("newCardWidth: " + newCardWidth);
 
 		  $("#pcard").css({ 'width': newCardWidth+'px', 'height': newCardHeight+'px'});
 		  container.css({ 'height': newCardHeight+'px'});
@@ -85,6 +85,11 @@
 		  $("#p_scrubber").css({'width': scrubberWidth+'px'});
 		  $("#p_instructions").css({ 'height': newCardHeight+'px'});
 		  $("#periphery_arrows").css({ 'width': newCardHeight+'px', 'height': newCardWidth+'px', 'margin-left': '-'+newCardHeight/2});
+		  $("#pbottom_structure").css({ 'margin-top': '-3%', 'left': ($("#periphery_top").width() / 2)-286 });
+		  $("#periphery_bottomtitle").css({'bottom': '10px'});
+		} else {
+			$("#pbottom_structure").css({ 'margin-top': '-1%', 'left': ($("#periphery_top").width() / 2)-286 });
+
 		}
 
 		outerOuter.css({ 'padding-top': (($("#periphery_top").height() / 2) - ($("#p_outerinner").height() / 2)) });
@@ -99,7 +104,6 @@
 		$("#periphery_title").css({ 'padding-top': padtop });
 		$("#periphery_structure").css({ 'margin-top': matop, 'left': (($("#periphery_top").width() / 2) - 370) });
 
-		$("#pbottom_structure").css({ 'margin-top': '-1%', 'left': ($("#periphery_top").width() / 2)-286 });
 		$("#p_legmore").css({ "margin-left": ($("#periphery_main").width() / 2) - 70 }).on('click', function() {
 			body.animate({scrollTop: ($("#periphery_bottom").offset().top)}, 1000);
 		});
@@ -249,10 +253,10 @@
 
 		outerOuter
 		.on('mouseenter', function () { 
-			console.log("[mouseenter] mouseYTracking: " + mouseYTracking);
+			//console.log("[mouseenter] mouseYTracking: " + mouseYTracking);
 			if(mouseYTracking && $("#p_controls").isOnScreen()) { 
 				trackMouseRotation(); 
-				console.log("Periphery: mouseenter trackMouseRotation");
+				//console.log("Periphery: mouseenter trackMouseRotation");
 			} 
 		})
 		.on('mouseleave', function () {
@@ -318,20 +322,20 @@
 	function initVideos() {
 
 		Object.keys(media).forEach(function (id) {
-			console.log("[periphery initVideos ID ] " + id);
+			//console.log("[periphery initVideos ID ] " + id);
 			if(id === 'target'){
 				var video = document.getElementById(id);
 				// console.log(video);
 
 				video.addEventListener("canplay", function(){
-					console.log('[ Periphery : Canplay Event ] ' + id + ' Video');
+					//console.log('[ Periphery : Canplay Event ] ' + id + ' Video');
 					videoLoaded= true;
 				}, true);
 				video.addEventListener("ended", endVideos, true);
 				video.addEventListener("timeupdate", scrubberUpdater, true);
 				video.addEventListener("play", function(){
 					mouseYTracking = true;
-					console.log("[Periphery: play callback] mouseYTracking: " + mouseYTracking);
+					//console.log("[Periphery: play callback] mouseYTracking: " + mouseYTracking);
 				}, true);
 				video.addEventListener("pause", function(){
 					//mouseYTracking = true;
@@ -343,7 +347,7 @@
 			else{
 				var audio = document.getElementById(id);
 				audio.addEventListener("canplay", function(){
-					console.log('[ Periphery : Canplay Event ] ' + id + ' Audio');
+					//console.log('[ Periphery : Canplay Event ] ' + id + ' Audio');
 					if(id === 'audio_norm') {
 						audioNormLoaded = true;
 					} else if(id === 'audio_yeti') {
@@ -352,7 +356,7 @@
 				}, true);
 				audio.load();
 				media[id] = audio;
-				console.log("Media: " + media);
+				//console.log("Media: " + media);
 			}
 
 		});
@@ -362,7 +366,7 @@
 		if(active) {
 			
 			mouseYTracking = true;
-			console.log("[Periphery: playButton] mouseYTracking: " + mouseYTracking);
+			//console.log("[Periphery: playButton] mouseYTracking: " + mouseYTracking);
 			if(document.getElementById("target").paused){
 				playVideos();
 				if(mouseYTracking) {
@@ -381,10 +385,10 @@
 		if (!allVideosLoaded) {
 			for (id in media) {
 				if (media.hasOwnProperty(id)) {
-					console.log('Media Readystate: ' + media[id].readyState);
+					//console.log('Media Readystate: ' + media[id].readyState);
 					if (!media[id] || media[id].readyState < 2) {
-						console.log('[ Periphery play videos] Videos not loaded');
-						console.log('Media ID: ' + id);
+						//console.log('[ Periphery play videos] Videos not loaded');
+						//console.log('Media ID: ' + id);
 						return;
 					}
 				}
@@ -459,7 +463,7 @@
 		});
 	}
 	function buildEndScreen () {
-		console.log("[ Periphery ] p_buildendscreen");
+		//console.log("[ Periphery ] p_buildendscreen");
 		container.hide();
 		controls.hide();
 		$("#p_endscreen").fadeIn();
@@ -648,7 +652,7 @@
 		 	pauseVideos();
 		 	resetVideoRotation();
 		 	mouseYTracking = false;
-		 	console.log("[Periphery: deactivate] mouseYTracking: " + mouseYTracking);
+		 	//console.log("[Periphery: deactivate] mouseYTracking: " + mouseYTracking);
 		 	active = false;
 
 		}
