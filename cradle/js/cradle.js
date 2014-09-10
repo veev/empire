@@ -351,7 +351,7 @@
 			//video.addEventListener('pause',function(){mouseXTracking=true;},true);
 			video.addEventListener("ended", endVideos, true);
 			video.addEventListener('canplay', function () {
-				console.log('[ Cradle : Canplay Event ] ' + id + ' Video');
+				//console.log('[ Cradle : Canplay Event ] ' + id + ' Video');
 				if(id === '1') {
 					vid1Loaded = true;
 					//console.log("vid1Loaded is " + vid1Loaded);
