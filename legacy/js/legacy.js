@@ -155,6 +155,9 @@
 			padtop = 20;
 			matop = 20;
 			legbottom = 20;
+
+			$("#legacy_bottomtitle").css({ 'bottom': '10px'});
+			$("#lbottom_structure").css({ 'margin': '0px auto'});
 		}
 
 		var canvasShift = map(h, 600, 1200, -160, -1);
