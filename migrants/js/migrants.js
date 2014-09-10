@@ -297,23 +297,6 @@
 	
 		
 		timeProgressArc = archtype.path();
-		/*
-		timeProgressArc.attr({
-			'stroke': WHITE,
-			'stroke-width': 2,
-			'fill': 'none',
-			'stroke-miterlimit': 10,
-			'stroke-dasharray': '.',
-			'arc': [
-				center,
-				middle,
-				0,
-				100,
-				middle - 30
-			]
-		});
-		timeProgressArc.node.id = 'time-progress'; //debug
-		*/
 
 		timeCircle = archtype.circle(center, 0, 0)
 			.attr(styles.solid)
@@ -409,12 +392,12 @@
 			min: instructions.offset().top,
 			onEnter: function(element, position) {
 				if(active) {
-					console.log('entering m_instructions');
+					//console.log('entering m_instructions');
 					openScreen();
 				}
 			},
 			onLeave: function(element, position) {
-				console.log('leaving m_instructions');
+				//console.log('leaving m_instructions');
 				instructions.fadeOut();
 			}
 		});
@@ -476,7 +459,7 @@
 		var circleFinishPos = 0;
 		var totalArcLength = 0;
 		var activeArcs = false;
-		console.log(mTrackerArray);
+		//console.log(mTrackerArray);
 		checkArcLength();
 		saveTrackerArray();
 
@@ -490,7 +473,7 @@
 					mTrackerArray[i].endPos = getMigrantsVideoCurrentPos();
 
 					if (previousPos >359.7 && mTrackerArray[i].endPos < 0.5) {
-						console.log(mTrackerArray.length);
+						//console.log(mTrackerArray.length);
 						if(mTrackerArray[i].isCrossOriginArc === false){
 							mTrackerArray[i].endPos = 359.9;
 							mTrackerArray[i].isActive = false;
@@ -540,7 +523,7 @@
 			var currentPos = getMigrantsVideoCurrentPos();
 			for (i = 0; i < mTrackerArray.length; i++) {
 				if(currentPos > mTrackerArray[i].startPos && currentPos < mTrackerArray[i].endPos) {
-					console.log('Drawing over another inactive arc');
+					//console.log('Drawing over another inactive arc');
 				} else {
 					//create an arc to "fill in the gap in the session"
 					mTrackerArray.push({
@@ -559,7 +542,7 @@
 
 		if (checkArcLength()) {
 			downloadMigrants = true;
-			console.log('You Can Now Download Migrants');
+			//console.log('You Can Now Download Migrants');
 		}
 
 		var xloc_ = center;
@@ -570,7 +553,7 @@
 		var a_ = (90 - alpha_) * Math.PI / 180;
 		var x_ = xloc_ + R_ * Math.cos(a_);
 		var y_ = yloc_ - R_ * Math.sin(a_);
-		
+
 		for(var j = 0; j < mTimeSegArray.length; j++) {
 			if(alpha_ > mTimeSegArray[j].arcStart && alpha_ < mTimeSegArray[j].arcEnd) {
 				mTimeSegArray[j].arcseg.animate({
@@ -609,7 +592,7 @@
 	}
 	function openScreen () {
 		var d = new Date();
-		console.log('in migrants openscreen ' + d.getSeconds());
+		//console.log('in migrants openscreen ' + d.getSeconds());
 		instructionsOff = false;
 
 		if (!audioactive) {
@@ -651,7 +634,7 @@
 			intervalID = setInterval(fadeInMigrantsAudio, 100);
 			showProgress = true;
 			instructionsOff = true;
-			console.log('Migrants In Holder FadeOut');
+			//console.log('Migrants In Holder FadeOut');
 		});
 
 	}
@@ -659,12 +642,12 @@
 	function getMigrantsVideoCurrentPos(){
 		var initPos;
 		var initDur = getCurrentTime();
-		console.log("DURATION : " + migrantsVideo.duration);
+		//console.log("DURATION : " + migrantsVideo.duration);
 		return (initDur / migrantsVideo.duration) * 360;
 	}
 
 	function sizer() {
-		console.log("In Migrants Sizer");
+		//console.log("In Migrants Sizer");
 		var w = $('#migrants_top').width();
 		var h = $('#migrants_top').height();
 		var padtop = h * 0.1; // top of the main title
@@ -677,13 +660,15 @@
 			padtop = 20;
 			matop = h * 0.15;
 			legbottom = 20;
+
+			$("#mbottom_structure").css({'top': '-'+(matop * 0.3)+'px'});
 		} 
 
 		if(w > 1440) {
 			//RESIZING VIDEO
 			var newContainerWidth = w - 160;
 			var newContainerHeight = newContainerWidth * 0.20625;
-			console.log("newContainerWidth: " + newContainerWidth + ", newContainerHeight "+newContainerHeight);
+			//console.log("newContainerWidth: " + newContainerWidth + ", newContainerHeight "+newContainerHeight);
 
 			$("#m_container").css({
 				'width': newContainerWidth+'px', 
@@ -733,37 +718,9 @@
     	}, 500);
 	}
 
-/* Took this out and went back to simple rollover
-	function vennTracking() {
-		var timer;
-		container.on({
-			'mousemove': function () {
-				if(instructionsOff && !downloadMigrants) {
-					vennMapOn();
-					vennMapIsOn = true;
-				}
-				clearTimeout(timer);
-				timer = setTimeout(function () {
-					if(instructionsOff && !downloadMigrants) {
-						vennMapOff();
-						vennMapIsOn = false;
-					}
-				}, 5000);
-			},
-			'mouseout' : function () {
-				if(instructionsOff && !downloadMigrants) {
-					vennMapOff();
-					vennMapIsOn = false;
-				}
-				clearTimeout(timer);
-			}
-		});
-	}
-	*/
-
 	function vennTracking() {
 		container.on({
-			'mousemove': function() {
+			'mouseenter': function() {
 				if(instructionsOff && !downloadMigrants) {
 					vennMapOn();
 					vennMapIsOn = true;
@@ -801,7 +758,7 @@
 	function audioToggle() {
 		if(active) {
 			var showProgress = false;
-			console.log('[ AudioToggle ] Audio Volume is: ' + migrantsVideo.volume);
+			//console.log('[ AudioToggle ] Audio Volume is: ' + migrantsVideo.volume);
 			if(migrantsVideo.volume > 0){
 				migrantsVideo.volume = 0;
 			} else {
@@ -829,7 +786,7 @@
 	}
 
 	function jsonCall() {
-		console.log(m_url);
+		//console.log(m_url);
 		m_url = '/timecode.json';
 		var data = $.parseJSON($.ajax({
 			url: m_url,
@@ -841,7 +798,7 @@
 
 	function fadeInMigrantsAudio() {
 		// internal function to fade in audio
-		console.log('In fadeInMigrantsAudio');
+		//console.log('In fadeInMigrantsAudio');
 
 		if(currentVolume < 0) {
 			currentVolume = 0;
@@ -856,12 +813,12 @@
 			clearInterval(intervalID);
 		}
 
-	console.log("currentAmbientAudioVolume: "+ _currentaudiovolume);
+	//console.log("currentAmbientAudioVolume: "+ _currentaudiovolume);
 	}
 
 	function fadeOutMigrantsAudio() {
 		// internal function to fade outaudio
-		console.log('In fadeOutMigrantsAudio');
+		//console.log('In fadeOutMigrantsAudio');
 		if(migrantsVideo.playing) {
 			if(currentVolume < 0 ) {
 				currentVolume = 0;
@@ -915,7 +872,7 @@
 
 		instructions.on('click', function() {
 			closeScreen();
-			console.log('Migrants on Instruction click');
+			//console.log('Migrants on Instruction click');
 		})
 
 		/* block video context menu */
@@ -932,7 +889,7 @@
 	}
 
 	function loadVideo() {
-		console.log('[ Migrants : Canplay Event ] Video Loaded');
+		//console.log('[ Migrants : Canplay Event ] Video Loaded');
 		allVideosLoaded = true;
 		progressArcInitPos();
 
@@ -959,14 +916,14 @@
 		if(allVideosLoaded){
 			try{
 				migrantsVideo.currentTime = getCurrentTime();	
-				console.log(migrantsVideo.currentTime);
-				console.log(migrantsVideo.duration);
-				console.log(getCurrentTime());
+				// console.log(migrantsVideo.currentTime);
+				// console.log(migrantsVideo.duration);
+				// console.log(getCurrentTime());
 			}
 			catch(e){
-				console.log(e);
-				console.log(migrantsVideo.currentTime);
-				console.log(migrantsVideo.duration);
+				// console.log(e);
+				// console.log(migrantsVideo.currentTime);
+				// console.log(migrantsVideo.duration);
 			}
 			
 			migrantsVideo.play();
@@ -980,15 +937,15 @@
 			currentTimeForVideo;
 
 		if (remoteClock && remoteClock.accuracy() <= 500) {
-			console.log("RemoteClock time");
-			console.log(remoteClock.time());
+			// console.log("RemoteClock time");
+			// console.log(remoteClock.time());
 			d = new Date(remoteClock.time());
 		} else {
-		console.log("default time");	
+		//console.log("default time");	
 			d = new Date();
 		}
-		console.log("Current time");
-		console.log(d);
+		// console.log("Current time");
+		// console.log(d);
 		currentTimeOfDay = d.getHours() * 60 * 60 + (d.getMinutes()) * 60 + d.getSeconds();
 		currentTimeForVideo = currentTimeOfDay % migrantsVideo.duration;
 		return currentTimeForVideo;
@@ -1044,7 +1001,7 @@
 
 		localStorage.clear();
 
-		console.log("Reset Migrants");
+		//console.log("Reset Migrants");
 	}
 
 	//Called every frame
@@ -1232,24 +1189,18 @@
 
 		vennMap.push(countryLabels.ghana, countryLabels.brazil, countryLabels.suriname);
 
-
-		// var centerW = width / 4;
-		// var centerH = height / 4;
-		// var holderRatio = height / width;
-
 		var mapCenter;
 		var mapScalar = map(height, 560, 1200, 1, 2.0); //how much to scale up venn diagram circles
-		//var mapScalar = 1;
-		console.log("Migrants mapScalar = "+mapScalar);
+		//console.log("Migrants mapScalar = "+mapScalar);
 
 		var bbox = vennMap.getBBox(),
 			bboxW = Math.ceil(bbox.width),
 			bboxH = Math.ceil(bbox.height);
 
-		console.log("VennMap bbox: "+ bboxW+ ', '+bboxH);
+		//console.log("VennMap bbox: "+ bboxW+ ', '+bboxH);
 		centerW = (bboxH/2) * 0.95;
 		centerH = (bboxH/2);
-		console.log("Migrants holder center: " + centerW + ' height: '+centerH);
+		//console.log("Migrants holder center: " + centerW + ' height: '+centerH);
 		//scale at origin and then translate by half of bounding box size
 		vennMap.transform('s' + mapScalar + ','+ mapScalar +', 0, 0 t ' + centerW + ' ' + centerH);
 	}
@@ -1258,7 +1209,7 @@
 		pauseVideos();
 
 		if(mTrackerArray.length <= 0){
-				console.log('Fading out migrants' + mTrackerArray);
+				//console.log('Fading out migrants' + mTrackerArray);
 			} else if(mTrackerArray[mTrackerArray.length - 1].isActive){
 				mTrackerArray[mTrackerArray.length - 1].endPos = getMigrantsVideoCurrentPos();
 				mTrackerArray[mTrackerArray.length - 1].isActive = false;
@@ -1269,8 +1220,7 @@
 		playVideos();
 		active = true;
 		var currentPos = getMigrantsVideoCurrentPos();
-		console.log("HERE");
-		console.log(currentPos);
+		//console.log(currentPos);
 		//keeping track of tracking session
 		if(mTrackerArray.length > 0) {
 			if(mTrackerArray[mTrackerArray.length-1].isActive === true){
@@ -1287,9 +1237,6 @@
 
 			}
 		}
-		console.log("THERE");
-		
-		console.log("EVERYWHERE");
 	}
 
 	function checkArcLength(){
@@ -1297,7 +1244,7 @@
 
 		
 		if(mTrackerArray.length <=0 ){
-			console.log("mTrackerArray is empty");
+			//console.log("mTrackerArray is empty");
 			return 0;
 		}
 		//treating the movie like it consists of 360 steps.
@@ -1311,8 +1258,8 @@
 			var curRange = _.range(Math.ceil(mTrackerArray[i].startPos), Math.ceil(mTrackerArray[i].endPos), 1);
 		}
 		catch(e){
-			console.log(e);
-			console.log(mTrackerArray[i]);
+			// console.log(e);
+			// console.log(mTrackerArray[i]);
 			var curRange = 0;
 		}
 	
@@ -1397,7 +1344,7 @@
 			}
 			active = false;
 			if(mTrackerArray.length <= 0){
-				console.log('Fading out migrants' + mTrackerArray);
+				//console.log('Fading out migrants' + mTrackerArray);
 			} else if(mTrackerArray[mTrackerArray.length - 1].isActive){
 				mTrackerArray[mTrackerArray.length - 1].endPos = getMigrantsVideoCurrentPos();
 				mTrackerArray[mTrackerArray.length - 1].isActive = false;

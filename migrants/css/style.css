@@ -87,7 +87,7 @@ div.migrants_intro {
 	background: url(../../art/migrants/migrants_circles.png); 
 	background-repeat: no-repeat;
 	background-position-x: center;
-	background-position-y: 24;}
+	background-position-y: 22;}
 div.migrants_intro p { position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
 div.migrants_intro p#m_a { 
 	text-align: center; 
@@ -104,7 +104,7 @@ div.migrants_intro p#m_a2 {
 div.migrants_intro p#m_b { top: 190px; left: 260px; width: 220px; z-index: 2; }
 div.migrants_intro p#m_c { top: 310px; left: 302px; width: 180px; text-align: right;}
 div.migrants_intro p#m_d { top: 190px; left: 410px; width: 220px;}
-div.migrants_intro p#m_e { top: 480px; left: 170px; width: 551px;}
+div.migrants_intro p#m_e { top: 468px; left: 170px; width: 551px;}
 div.migrants_intro p#m_f { top: 0px; left: 200px; width: 500px; opacity:0.5;}
 div.migrants_intro p#m_g { top: 33px; left: 200px; width: 500px; opacity:1.0;}
 div.migrants_intro p#m_h { top: 228px; left: 426px; width: 500px; opacity:0.5;}
@@ -168,7 +168,7 @@ div.migrants_bottom div.inner { overflow: hidden; height: 100%;}
 div#migrants_bottom h2 { color: #000; padding-bottom: 8px; font-size: 1.6em; text-align: center; }
 div.migrants_bottom div#migrants_bottomtitle { z-index: 1; position: absolute; bottom: 25; width: 100%; text-align: center; }
 div.migrants_bottom div#mbottom_structure { z-index: 2; position: relative; margin:0 auto; width: 838px; height: 751px; background: url(../../art/migrants/migrants_bottomstructure.png) no-repeat }
-div.migrants_bottom div#mbottom_structure div { text-align: left;  padding: 60px 0 0 175px; width: 506px;  color: #000; }
+div.migrants_bottom div#mbottom_structure div { text-align: left;  padding: 55px 0 0 175px; width: 506px;  color: #000; }
 div.migrants_bottom div#mbottom_structure div p { margin: 1.1em 0; }
 div.migrants_bottom div#mbottom_structure div a { color: 000; }
 #migrants_bottom .home_button {
