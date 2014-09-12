@@ -92,6 +92,12 @@
 
 		}
 
+		if($("#periphery_top").height() < 700) {
+			$("#periphery_bottom").css({'height': '700px'});
+		 	$("#pbottom_structure").css({ 'margin-top': '-1%', 'left': ($("#periphery_top").width() / 2)-286 });
+
+		}
+
 		outerOuter.css({ 'padding-top': (($("#periphery_top").height() / 2) - ($("#p_outerinner").height() / 2)) });
 		$(".periphery_intro").css({ 'top': -30});
 		// $("#periphery_bottom").css({"height": $("#periphery_top").height()});
@@ -313,9 +319,7 @@
 			}
 			//trackMouseRotation();
 			//console.log("Periphery: closescreen trackMouseRotation");
-			if(audioactive) {
-				audiostop();
-			}
+
 		});
 	}
 
@@ -377,10 +381,6 @@
 		}
 	}
 	function playVideos(){
-		if(audioactive){
-			audiostop();
-		}
-
 		var id;
 		if (!allVideosLoaded) {
 			for (id in media) {

@@ -65,10 +65,13 @@ div#container div#credits div#book {
 	text-align: center;
 	padding: 5px;
 	font-size: 1.1em;
+	z-index: 20;
 }
 
 div#container div#credits p#credits_ke {
 	font-size: 1.2em;
+	position:absolute;
+	z-index: 20;
 }
 
 div#container div#credits p#credits_gh {

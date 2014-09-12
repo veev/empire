@@ -1,10 +1,5 @@
 // core routines for empire
-//var ripplemode = true;
-//var current_ripple = 0;
-var audioactive = false;
-var audiovolume = 20;
 var _currentaudiovolume = 0;
-var ambientAudio;
 var vIvl;
 var dontannoysam = false;
 var _ammobile = false;
@@ -71,22 +66,11 @@ $(document).ready(function () {
     	// console.log("BROWSER NOT CHROME");
     }
 
-	//load ambient audio
-	if(window.location.href.indexOf("noaudio") != -1) {  //what does this do?
-		dontannoysam = true;
-	}
-
-	if(!dontannoysam) {
-		document.getElementById('ambientaudio').addEventListener('canplaythrough', audioready);
-	}
-
 	$("#loading_content").delay(4000).fadeOut(1000, function() {
 		$("#loading_screen").fadeOut(1000);
 
 	});
-	// setTimeout(10000,fadeLoading);
-	//console.log("Im in ready ");
-	ambientAudio = document.getElementById('ambientaudio');
+
 	container = $("#container");
 	canvasContainer = $("canvas_container");
 	containerInner = $("#containerinner");
@@ -192,31 +176,6 @@ $(document).ready(function () {
 				legacy.toggleButtonDisplay();
 			}
 		}
-
-		else if (key == 68 || key == 100) { //press 'D' or 'd'
-			e.preventDefault();
-			legacy.buildEndScreen();
-			console.log("legacy endscreen");
-		}
-
-		else if (key == 67 || key == 99) { //press 'C' or 'c'
-			// cradle.endVideos();
-		}
-
-		else if (key == 69 || key == 101) { // press 'E' or 'e'
-			m_audioToggle();
-		}
-
-		else if (key == 70 || key == 102 ) { // press 'F' or 'f'
-			downloadMigrants = true;
-			console.log("You Can Now Download Migrants");
-		}
-
-		else if (key == 71 || key == 103 ) { // press 'G' or 'g'
-			downloadMigrants = false;
-			returnMigrants = true;
-			console.log("Returning to Migrants Cycle");
-		}
 	});
 
 	resizePaper();
@@ -275,10 +234,6 @@ $(document).ready(function () {
 	}
 
 });
-
-function scrollsnaphandle() {
-	console.log("in scrollsnaphandle");
-}
 
 function buildRippleNode(index){
 	var ripple, pattern, title, bottomLetter, topLetter;
@@ -409,7 +364,6 @@ function animateButton(index){
 			//console.log("[ animateButton ] cradle was loaded  ?" + cradleLoaded);
 			location.hash = "cradle";
 			cradle.activate();
-			audioready();
 		 }
 		 else {
 		 	cradle.deactivate();
@@ -418,7 +372,6 @@ function animateButton(index){
 		 if(index === 1) {
 			location.hash = "legacy";
 		 	legacy.activate();
-		 	audioready();
 		 } else {
 			legacy.deactivate();
 		}
@@ -426,7 +379,6 @@ function animateButton(index){
 		if(index === 2) {
 			location.hash = "migrants";
 			migrants.activate();
-		 	audioready();
 		 }
 		 else{
 			migrants.deactivate();
@@ -435,7 +387,6 @@ function animateButton(index){
 	 	if(index === 3) {
 	 		location.hash = "periphery";
 	 		periphery.activate();
-		 	audioready();
  		} else {
  			periphery.deactivate();
 		}
@@ -519,7 +470,6 @@ function animateHome() {
 	for( var i = 0; i < menu.length; i++) {
 		animateHomeNode(i);
 	}
-	audioready();
 	legacy.deactivate();
 	cradle.deactivate();
 	migrants.deactivate();
@@ -625,80 +575,6 @@ function drawer () {
 	$("#credits").css( { 'right': rMargin_alt, 'top': '60%' });
 }
 
-function audioready() {
-	// audio has loaded, let's do this
-	//console.log("ambient audio has loaded and playing");
-	//console.log("ambientAudio: " + ambientAudio);
-
-	//TAKE OUT AUDIO BUT SAVE FUNCTIONALITY
-	// if(!audioactive){
-	// 	ambientAudio.volume = 0;
-	// 	ambientAudio.play();
-	// 	vIvl = setInterval(fadeInAmbientAudio,100);
-
-	// 	audioactive = true;
-	// }
-}
-
-function audiostop() {
-	//TAKE OUT AUDIO BUT SAVE FUNCTIONALITY
-
-	// console.log("ambient audio is stopping");
-
-	// clearInterval(vIvl);
-	// vIvl = setInterval(fadeOutAmbientAudio,100);
-
-	// audioactive = false;
-}
-
-var fadeInAmbientAudio = function () {
-
-	// internal function to fade in
-	
-	
-	if(_currentaudiovolume < 0 ){
-		_currentaudiovolume = 0;
-	}
-	else if(_currentaudiovolume > 100){
-		_currentaudiovolume = 100;
-	}
-	else{
-		_currentaudiovolume += 3;	
-	}
-	ambientAudio.volume = _currentaudiovolume / 100;
-	
-	// console.log("Fade Vol up " + _currentaudiovolume);
-	if(_currentaudiovolume > audiovolume){
-		clearInterval(vIvl);
-	}
-
-	console.log("currentAmbientAudioVolume: "+ _currentaudiovolume);
-};
-
-var fadeOutAmbientAudio = function () {
-
-	// internal function to fade outaudio
-
-	if(_currentaudiovolume < 0 ){
-		_currentaudiovolume = 0;
-	}
-	else if(_currentaudiovolume > 100){
-		_currentaudiovolume = 100;
-	}
-	else{
-		_currentaudiovolume -= 1;	
-	}
-	ambientAudio.volume = _currentaudiovolume / 100;
-
-	// console.log("Fade Vol down " + _currentaudiovolume);
-	if(_currentaudiovolume == 0){
-		clearInterval(vIvl);
-		//ambientAudio.pause();
-	}
-
-	console.log("currentAmbientAudioVolume: "+ _currentaudiovolume);
-}
-
 var	handleVisibilityChange = function() {
 	if (document.hidden) {
 		pauseSiteAudio();	
@@ -709,54 +585,35 @@ var	handleVisibilityChange = function() {
 
 function pauseSiteAudio() {
 
-	// cradle.pauseVideos();
-	// legacy.pauseVideos();
-	// migrants.pauseVideos();
-	// periphery.pauseVideos();
-
 	if(cradle.active()) {
 		cradle.pauseVideos();
-		console.log(" cradle pause site audio");
+		//console.log(" cradle pause site audio");
 	} else if(legacy.active()) {
 		legacy.zoomOut();
 		legacy.pauseVideos();
-		console.log("legacy pause site audio");
+		//console.log("legacy pause site audio");
 	} else if(migrants.active()) {
 		migrants.pageHidden();
-		console.log("migrants pause site audio");
+		//console.log("migrants pause site audio");
 	} else if(periphery.active()) {
 		periphery.pauseVideos();
-		console.log("periphery pause site audio");
+		//console.log("periphery pause site audio");
 	} 
-
-	if(audioready) {
-		//audiostop();
-		ambientAudio.volume = 0;
-		console.log("ambient pause site audio");
-	}
-	console.log("pause site audio");
 }
 
 function playSiteAudio() {
-	console.log("page is visible - playing site audio");
+	//console.log("page is visible - playing site audio");
 	if(cradle.active()) {
 		cradle.toggleButtonDisplay();
-		console.log(" cradle play site audio");
+		//console.log(" cradle play site audio");
 	} else if(legacy.active()) {
 		legacy.toggleButtonDisplay();
-		console.log("legacy play site audio");
+		//console.log("legacy play site audio");
 	} else if(migrants.active()) {
 		migrants.pageVisible();
-		console.log("migrants play site audio");
+		//console.log("migrants play site audio");
 	} else if(periphery.active()) {
 		periphery.toggleButtonDisplay();
-		console.log("periphery play site audio");
+		//console.log("periphery play site audio");
 	} 
-
-	if(audiostop) {
-		//audioready();
-		ambientAudio.volume = 0.25;
-		console.log("ambient play site audio");
-	}
-
 }

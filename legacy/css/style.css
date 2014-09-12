@@ -136,7 +136,7 @@ div#legacy_main div#l_instructions {
 
 div#l_instructions p#one {
 	position: relative;
-	top:-50;
+	top:-62;
 	left: 503;
 	width: 105;
 	text-align: right;
@@ -144,9 +144,9 @@ div#l_instructions p#one {
 
 div#l_instructions p#two{
 	position: relative;
-	top: 85;
+	top: 52;
 	left: 615;
-	width: 105;
+	width: 75;
 }
 
 .zoomContainer {
@@ -241,65 +241,107 @@ div#l_instructions p#two{
 }
 
 .country_arrows_negSlope {
-	width: 40px;
-	height: 30px;
+	width: 34px;
+	height: 40px;
 	position: absolute;
 	-webkit-transform: rotate(45deg);
 	-moz-transform: rotate(45deg);
 	-o-transform: rotate(45deg);
 	background-color: #fff;
 	cursor: pointer;
+	opacity: 0.75;
 }
 
 .country_arrows_posSlope {
-	width: 40px;
-	height: 30px;
+	width: 34px;
+	height: 40px;
 	position: absolute;
 	-webkit-transform: rotate(-45deg);
 	-moz-transform: rotate(-45deg);
 	-o-transform: rotate(-45deg);
-	background-color: #fff;
 	cursor: pointer;
+	opacity: 0.75;
 }
 
 #indonesia_left {
-	left: 56;
-	top: 288;
+	left: 49;
+	top: 326;
+	background: url(../../art/legacy/zoomArrowsLeft.png) no-repeat;);
+	background-size: 100% 100%;
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
 }
 
 #indonesia_right {
-	left: 543;
-	top: -197;
+	left: 540;
+	top: -156;
+	background: url(../../art/legacy/zoomArrowsRight.png) no-repeat;);
+	background-size: 100% 100%;
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+
 }
 
 #srilanka_left {
-	left: 653;
-	top: -163;
+	left: 671;
+	top: -183;
+	background: url(../../art/legacy/zoomArrowsLeft.png) no-repeat;);
+	background-size: 100% 100%;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
 }
 
 #srilanka_right {
-	left: 1140;
-	top: 325;
+	left: 1157;
+	top: 305;
+	background: url(../../art/legacy/zoomArrowsRight.png) no-repeat;);
+	background-size: 100% 100%;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
 }
 
 #southafrica_left {
-	left: 1162;
-	top: 421;
+	left: 1180;
+	top: 436;
+	background: url(../../art/legacy/zoomArrowsLeft.png) no-repeat;);
+	background-size: 100% 100%;
+	-webkit-transform: rotate(135deg);
+	-moz-transform: rotate(135deg);
+	-o-transform: rotate(135deg);
 }
 
 #southafrica_right {
-	left: 674;
-	top: 906;
+	left: 694;
+	top: 924;
+	background: url(../../art/legacy/zoomArrowsRight.png) no-repeat;);
+	background-size: 100% 100%;
+	-webkit-transform: rotate(135deg);
+	-moz-transform: rotate(135deg);
+	-o-transform: rotate(135deg);
 }
 
 #india_left {
-	left: 525;
-	top: 939;
+	left: 562;
+	top: 948;
+	background: url(../../art/legacy/zoomArrowsLeft.png) no-repeat;);
+	background-size: 100% 100%;
+	-webkit-transform: rotate(-135deg);
+	-moz-transform: rotate(-135deg);
+	-o-transform: rotate(-135deg);
 }
 
 #india_right {
-	left: 41;
-	top: 450;
+	left: 76;
+	top: 460;
+	background: url(../../art/legacy/zoomArrowsRight.png) no-repeat;);
+	background-size: 100% 100%;
+	-webkit-transform: rotate(-135deg);
+	-moz-transform: rotate(-135deg);
+	-o-transform: rotate(-135deg);
 }
 
 .scrubberBar {
@@ -560,8 +602,8 @@ div#l_instructions p#two{
 
 #indonesiaTitle {
 	position: absolute;
-	top: -22;
-	left: 55;
+	top: -16;
+	left: 57;
 	-webkit-transform: rotate(-45deg);
 	-moz-transform: rotate(-45deg);
 	-o-transform: rotate(-45deg);

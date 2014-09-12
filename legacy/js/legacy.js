@@ -50,7 +50,6 @@
 		southafrica: 742.304031
 	};
 
-
 	/*
 	important elements that we may need to refer to again
 	*/
@@ -130,8 +129,6 @@
 
 	function sizer() {
 
-		console.log("In Legacy Sizer");
-
 		var h, w;
 
 		if (!active) {
@@ -145,7 +142,7 @@
 		//console.log("padtop: " + padtop);
 		var matop = 40; // top of the matrix
 		//var padtop = 84; // top of the main title
-		var legbottom = 70; //offset of the bottom play button on the open screen
+		var legbottom = 50; //offset of the bottom play button on the open screen
 		var body = $('html body');
 		var buffer = h - legbottom;
 		//console.log("buffer = "+ buffer);
@@ -155,7 +152,13 @@
 			padtop = 20;
 			matop = 20;
 			legbottom = 20;
+		}
 
+		if($(".legacy_top:first").height() < 700) {
+			//$(".legacy_top").css({'height': '679px'});
+			//$("#legacyContent").css({'height': '700px'});
+			$(".mystical").css({'top': '-4%'});
+			$(".legacy_bottom").css({'height': '700px'});
 			$("#legacy_bottomtitle").css({ 'bottom': '10px'});
 			$("#lbottom_structure").css({ 'margin': '0px auto'});
 		}
@@ -185,8 +188,8 @@
 
 		$("#legacymore").css({ "top" : buffer, "left": centering }).fadeIn(4000).on('click', function() {
 			body.animate({scrollTop: ($('#legacy_main').offset().top) }, 1000);
-			console.log("openScreen() in legacymore");
-			console.log("[Legacy: legacymore listener] if not legacyLoaded, legacy openscreen");
+			//console.log("openScreen() in legacymore");
+			//console.log("[Legacy: legacymore listener] if not legacyLoaded, legacy openscreen");
 			if(active && !introDismissed) {
 				openScreen();
 			} else {
@@ -212,8 +215,8 @@
 		var saved = {},
 			session,
 			i;
-		console.log("Save");
-		console.log(saved);
+		//console.log("Save");
+		//console.log(saved);
 		Object.keys(sessionHistory).forEach(function (id) {
 			saved[id] =[];
 			for (i = 0; i < sessionHistory[id].length; i++) {
@@ -225,7 +228,7 @@
 			}
 
 		});
-		console.log("Save");
+		//console.log("Save");
 		//console.log(saved);
 		try {
 			localStorage.setItem('lsessionHistory', JSON.stringify(saved));
@@ -278,10 +281,6 @@
 	}
 
 	function playVideos() {
-
-		if(audioactive) {
-			audiostop();
-		}
 
 		var id;
 
@@ -358,11 +357,11 @@
 	}
 
 	function clearProgressPaths() {
-		console.log("path history before: " + pathHistory);
+		//console.log("path history before: " + pathHistory);
 		for(var i = 0; i < pathHistory.length; i++) {
 			pathHistory[i].remove();
 		}
-		console.log("path history after: " + pathHistory);
+		//console.log("path history after: " + pathHistory);
 
 		pathHistory = []
 	}
@@ -417,7 +416,7 @@
 			}
 		});
 
-		console.log("numWatched: " + numWatched); 
+		//console.log("numWatched: " + numWatched); 
 
 		debugCount++;
 		if(numWatched >= 4){
@@ -540,12 +539,12 @@
 							addProgressPath(id,start,end);
 
 						}
-						console.log("!selectedId");
-						console.log(selectedId + " is " + videoTracker[id].active);
+						//console.log("!selectedId");
+						//console.log(selectedId + " is " + videoTracker[id].active);
 					}
 					else if(videoTracker[id].active && selectedId !== id){
 						video.volume = 0;
-						console.log(id +" was clicked");
+						//console.log(id +" was clicked");
 						$('#legacy_container_' + id).css({'cursor':'pointer'});
 						$('#legacy_container_' + selectedId).css({'cursor':'default'});
 						// console.log("videoTracker[id].active && selectedId !== id");
@@ -571,19 +570,18 @@
 							videoTracker[id].startPos = video.currentTime;
 							videoTracker[id].endPos = -1;
 							currentActiveVideoTracker[id].active = true;
-							console.log(id +" was inactive and is now active");
+							//console.log(id +" was inactive and is now active");
 							continue;
 						}
 						else{
-							console.log(id +" was active and is now active");
+							//console.log(id +" was active and is now active");
 							$('#legacy_container_' + selectedId).css({'cursor':'default'});
 							$('.directionTitle').css({'opacity':'0'});
 						}
 					} 
 					else {
 						video.volume = 0;
-						console.log(id +" was inactive and is now inactive");
-						//$('#legacy_container_' + selectedId).css({'cursor':'pointer'});
+						//console.log(id +" was inactive and is now inactive");
 					}
 				} 
 			}
@@ -598,7 +596,7 @@
 
 	function buildEndScreen() {
 		$("#l_endscreen").fadeIn();
-		console.log("fade in legacy endscreen");
+		//console.log("fade in legacy endscreen");
 	}
 
 	function resetLegacy() {
@@ -626,15 +624,15 @@
 
 					videoTracker[id].watched90 = false;
 
-					console.log(id + " videoTracker = " + videoTracker[id]);
-					console.log(id + " sessionHistory = " + sessionHistory[id]);
+					//console.log(id + " videoTracker = " + videoTracker[id]);
+					//console.log(id + " sessionHistory = " + sessionHistory[id]);
 				}
 			}
 		}
 
 		localStorage.clear(); //clear local storage of session History
 
-		console.log("resetting Legacy once all videos have reached 90");
+		//console.log("resetting Legacy once all videos have reached 90");
 
 		legacyHasBeenReset = true;
 
@@ -676,7 +674,7 @@
 		};
 
 		wideZoom.click(function(evt){
-			console.log("in zoom container");
+			//console.log("in zoom container");
 			selectVideo(null);
 			zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
 
@@ -686,6 +684,7 @@
 			$('#legacy_container_srilanka').css({'cursor':'pointer'});
 			$('.directionTitle').css({'opacity':'1'});
 
+			$("#l_arrows").fadeOut();
 
 			evt.stopPropagation();
 		});
@@ -728,6 +727,7 @@
 			function selectMe(evt){
 				selectVideo(id);
 				evt.stopPropagation();
+				$("#l_arrows").fadeIn();
 			}
 
 			var corner = '#corner' + cornerOrder[id];
@@ -759,11 +759,11 @@
 		if(videos != null) {
 			Object.keys(videos).forEach(function(id) {
 				if(active && videos[id].paused && !allVideosReached90) {
-					console.log("Toggle periphery play button on");
+					//console.log("Toggle periphery play button on");
 					$("#l_play_bg").fadeIn();
 					videos[id].volume = 0.75; //set volumes up for all since zooming out when user goes to other tab
 				} else {
-					console.log("Toggle periphery play button off");
+					//console.log("Toggle periphery play button off");
 					$("#l_play_bg").fadeOut();
 				}
 			});
@@ -808,7 +808,7 @@
 		Object.keys(videos).forEach(function (id) {
 			var video = document.getElementById(id + '_leg');
 			video.addEventListener('canplay', function () {
-				console.log('[ Legacy : Canplay Event ] ' + id + ' Video');
+				//console.log('[ Legacy : Canplay Event ] ' + id + ' Video');
 
 				// load metadata into VideoTracker object
 				videoTracker[id] = {};
@@ -833,10 +833,10 @@
 				var index = string.split('_');
 				var id = index[0];
 				//index[0] is country name
-				console.log('[ Legacy : ] ' + id + ' has ended');
+				//console.log('[ Legacy : ] ' + id + ' has ended');
 				if(videoTracker[id].active) {
 					zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
-					console.log(id +" Complete updating history");
+					//console.log(id +" Complete updating history");
 					//for volume
 					selectVideo(null);
 
@@ -869,7 +869,7 @@
 				}
 				allVideosReached90 = checkProgressLength();
 				if (allVideosReached90) {
-					console.log('Legacy Endscreen');
+					//console.log('Legacy Endscreen');
 					$("#l_endscreen").css({ 'z-index': '1000'});
 					//Insert Skype button functionality here
 				}
@@ -1032,10 +1032,10 @@
 			instructions.fadeIn(2000);
 			instructions.on('click', closeScreen);
 			insructIvl = setTimeout(closeScreen, 7000);	
-			console.log("videos loaded");
+			//console.log("videos loaded");
 		}
 		else{
-			console.log("videos not loaded in openScreen legacy looping");
+			//console.log("videos not loaded in openScreen legacy looping");
 			setTimeout(openScreen, 1000);
 		}
 		// instructions.fadeIn(2000);
@@ -1045,9 +1045,6 @@
 
 	function closeScreen() {
 		clearInterval(insructIvl);
-		if(audioactive) {
-			audiostop();
-		}
 		instructions.fadeOut(1000, function() {
 			introDismissed = true;
 			playVideos();
@@ -1083,6 +1080,7 @@
 
 	function zoomOut() {
 		zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
+		$("#l_arrows").fadeOut();
 	}
 
 	var legacy = {

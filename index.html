@@ -7,8 +7,6 @@
 <script type='text/javascript' src="js/jquery.easing.min.js"></script>
 <script type='text/javascript' src="js/jquery.event.special.js"></script>
 <script type='text/javascript' src="js/jquery-scrollspy.js"></script>
-<!-- <script type='text/javascript' src="js/jquery.scrollsnap.js"></script>
-<script type='text/javascript' src="js/jquery.panelSnap.js"></script> -->
 <script type='text/javascript' src="js/jquery.zoomooz.min.js"></script>
 <script src="js/scaleraphael.js" type="text/javascript" ></script>
 <script src="js/underscore-min.js" type="text/javascript" ></script>
@@ -267,8 +265,8 @@
 										<div id="wideZoom"></div>
 										<div id="l_instructions" style="display:none">
 											<div id="playTitle"></div>
-											<p id="one">Click on a screen to select a video</p>
-											<p id="two">Click on another to switch</p>
+											<p id="one">Click on a country to choose a video</p>
+											<p id="two">the click on the arrows to switch</p>
 										</div>
 										<div id="diamond" >
 											<canvas id="canvas" width="372" height="372"></canvas>
@@ -300,7 +298,7 @@
 											<p class="empiredoc"><a href="skype:empiredoc?call">empiredoc</p></a>
 											<p class="endscreen">to discuss the connections you've seen here</p>
 										</div>
-										<div id = "l_arrows">
+										<div id = "l_arrows" style="display: none">
 											<div id = "indonesia_left" class="country_arrows_negSlope"></div>
 											<div id = "indonesia_right" class="country_arrows_negSlope"></div>
 											<div id = "srilanka_left" class="country_arrows_posSlope"></div>
@@ -311,25 +309,25 @@
 											<div id = "southafrica_right" class="country_arrows_negSlope"></div>
 										</div>
 										<div id="legacy_container_india" class="legacy-item" data-targetsize = "0.9">
-											<video id="india_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/LEGACY_INDIA_TITLES_960_304.mp4" width="640" height="202" preload ="none"></video>
+											<video id="india_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/India960.mp4" width="640" height="202" preload ="none"></video>
 										</div>	
 										<div id="india_scrubber" class="scrubberBar">
 											<div id="india_progressDiamond" class="progressDiamond"></div>
 										</div>
 										<div id="legacy_container_southafrica" class="legacy-item" data-targetsize = "0.9" >
-											<video id="southafrica_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/LEGACY_SOUTHAFRICA_TITLES_960_304.mp4" width="640" height="202" preload="none"></video>
+											<video id="southafrica_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/SouthAfrica960.mp4" width="640" height="202" preload="none"></video>
 										</div>	
 										<div id="southafrica_scrubber" class="scrubberBar">
 											<div id="southafrica_progressDiamond" class="progressDiamond"></div>
 										</div>							
 										<div id="legacy_container_indonesia" class="legacy-item" data-targetsize="0.9">
-											<video id="indonesia_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/LEGACY_INDONESIA_TITLES_960_304_23fps.mp4" width="640" height="202" preload ="none" ></video>
+											<video id="indonesia_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/Indonesia960.mp4" width="640" height="202" preload ="none" ></video>
 										</div>
 										<div id="indonesia_scrubber" class="scrubberBar">
 											<div id="indonesia_progressDiamond" class="progressDiamond"></div>
 										</div>
 										<div id="legacy_container_srilanka" class="legacy-item" data-targetsize = "0.9">
-											<video id="srilanka_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/LEGACY_SRILANKA_TITLES_906_304.mp4" width="640" height="202" preload ="none"></video>
+											<video id="srilanka_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/SriLanka960.mp4" width="640" height="202" preload ="none"></video>
 										</div>	
 										<div id="srilanka_scrubber" class="scrubberBar">
 											<div id="srilanka_progressDiamond" class="progressDiamond"></div>
@@ -407,8 +405,8 @@
 						<div id="m_instructions" style="display:none">
 							<span id="mtitle" style="display:none"></span>
 							<!-- <span id="m_play_instructions"></span> -->
-							<p id="minst_2">Welcome to the global screening of <i>Empire: Migrants</i></p>
-							<p id="minst_3">already in progress</p>
+							<p id="minst_2">The global screening of <i>Empire: Migrants</i> is already in progress</p>
+							<p id="minst_3">Keep coming back to complete the loop</p>
 						</div>
 						<div id="m_container">
 							<video loop id="migrants_video" src="https://s3-us-west-2.amazonaws.com/empire-project/migrants/MIGRANTS_1440p_629video_48audio_3gain.mp4" width = "1280" height="264" preload= "none" style="opacity: 0">
@@ -549,8 +547,7 @@
 			</div>
 		</div>
 	</div>
-	<div id="audiodiv" style="display: none"><audio src="http://dalcr8izwrdz8.cloudfront.net/ambiance.mp3" type="audio/mpeg" loop id="ambientaudio"></audio>
-	<!-- <div id="audiodiv" style="display: none"><audio src="audio/ambiance.mp3" type="audio/mpeg" loop id="ambientaudio"></audio> -->
+
 	</div>
 </div>
 </body>

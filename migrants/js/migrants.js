@@ -595,10 +595,6 @@
 		//console.log('in migrants openscreen ' + d.getSeconds());
 		instructionsOff = false;
 
-		if (!audioactive) {
-			audioready();
-		}
-
 		if(allVideosLoaded){
 			fadeInMigrantsVideo();
 		} else {
@@ -621,9 +617,6 @@
 
 		clearInterval(insructIvl);
 
-		if (audioactive) {
-			audiostop();
-		}
 		migrantsVideo.volume = 0;
 		instructions.fadeOut(1000);
 		holder.css({'cursor': 'default'}).fadeOut(1000, function() {
@@ -688,7 +681,7 @@
 		$('#migrants_wline3').css({ 'height': h });
 		$('#m_legmore').css({ 'margin-left': ($('#migrants_main').width() / 2) - 90 });
 		$('#minst_2').css({'top': h * 0.15});
-		$('#minst_3').css({'top': h * 0.84});
+		$('#minst_3').css({'top': h * 0.815});
 
 		if (h < 710) {
 			$('#m_a').css({'padding-left': 42, 'top': -8});
@@ -813,7 +806,6 @@
 			clearInterval(intervalID);
 		}
 
-	//console.log("currentAmbientAudioVolume: "+ _currentaudiovolume);
 	}
 
 	function fadeOutMigrantsAudio() {
@@ -832,7 +824,6 @@
 		
 			if(_currentaudiovolume === 0){
 				clearInterval(intervalID);
-				//ambientAudio.pause();
 			}
 		}
 	}
@@ -956,7 +947,6 @@
 			fadeOutMigrantsAudio();
 			migrantsVideo.pause();
 		}
-		
 	}
 
 	function downloadScreen() {

@@ -2,7 +2,6 @@
 	'use-strict';
 	var _trackingon = false;
 	var controlsActive = false;
-	// var audioactive = false;
 	var vid1Loaded = false;
 	var vid2Loaded = false;
 	var mouseXTracking = false;
@@ -159,7 +158,12 @@
 			legbottom = 20;
 		}
 
-		outerOuter.css({ 'padding-top': (($("#cradle_top").height() / 2) - ($("#c_outerinner").height() / 2)) });
+		if($("#cradle_top").height() <= 700) {
+			outerOuter.css({ 'padding-top': (($("#cradle_top").height() / 2) - ($("#c_outerinner").height() * 0.55 )) });
+			matop = 65;
+		} else {
+			outerOuter.css({ 'padding-top': (($("#cradle_top").height() / 2) - ($("#c_outerinner").height() / 2)) });
+		}
 		$("#cradle_bottom").css("height",$("#cradle_top").height());
 		$('#cradle_line').css({ 'top': matop, 'height': ($("#cradle_top").height() ), 'left': (($("#cradle_top").width() / 2) - 7) });
 		$("#cradle_linewhite").css({ 'height': $("#cradle_main").height(), 'left': (($("#cradle_top").width() / 2) - 7) });
@@ -367,16 +371,13 @@
 	}
 
 	function playVideos(){
-		if(audioactive){
-			audiostop();
-		}
 
 		var id;
 		if (!allVideosLoaded) {
 			for (id in videos) {
 				if (videos.hasOwnProperty(id)) {
 					if (!videos[id] || videos[id].readyState < 2) {
-						console.log('[Cradle play videos] Videos not loaded');
+						//console.log('[Cradle play videos] Videos not loaded');
 						return;
 					}
 				}
