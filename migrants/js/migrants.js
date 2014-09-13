@@ -145,14 +145,14 @@
 	}
 
 	function loadArcSegs(){
-		console.log("in LoadArcSegs");
+		//console.log("in LoadArcSegs");
 		for (var i = 0; i < mTrackerArray.length; i++) {
 			if(mTrackerArray[i].arcSegment === null){
 				mTrackerArray[i].arcSegment = archtype.path();
 				var transformArc = 'r-90,' + center + ',' + middle;
 				mTrackerArray[i].arcSegment.transform(transformArc);
 				mTrackerArray[i].arcSegment.attr({'opacity': 1});
-				console.log("added new arc");
+				//console.log("added new arc");
 			}
 		}
 	}
@@ -477,7 +477,7 @@
 
 					if (previousPos >359.7 && mTrackerArray[i].endPos < 0.5) {
 						if(mTrackerArray[i].isCrossOriginArc === false){
-							console.log(mTrackerArray.length);
+							//console.log(mTrackerArray.length);
 
 							mTrackerArray[i].endPos = 359.9;
 							mTrackerArray[i].isActive = false;
@@ -1036,7 +1036,7 @@
 
 							actFill = actFillArray[j];
 							if(actFill.vennId === timeCode.Venn){
-								console.log("act Fill venn ID: " + actFill.vennId);
+								//console.log("act Fill venn ID: " + actFill.vennId);
 
 								//Turn on act Fill
 								actFill.actFill.animate({opacity: '1.0'}, 800);
@@ -1168,7 +1168,7 @@
 		// Orange fill segments
 		fills.forEach(function (pathSrc, id) {
 			var path, fill;
-			console.log("venn id: " + id);
+			//console.log("venn id: " + id);
 
 			path = archtype.path(pathSrc);
 			path.attr(styles.vennSection);
