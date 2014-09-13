@@ -65,36 +65,44 @@
 		var centering = (w/2) - 70;
 		var linetop = 610;
 		var body = $('html body');
+
+		//RESIZING VIDEO
+		var newCardHeight = h-37;
+		var newCardWidth = newCardHeight * 0.9525;
+		var newControlMargin = ((980 - newCardWidth) / 2)-5;
+		scrubberWidth = newCardWidth * 0.84;
+		//console.log("newCardWidth: " + newCardWidth);
 		//console.log("periphery is active: " + active);
 		if($("#periphery_top").height() < 780 && active === true){ // if this a wee screen
-		  padtop = 20;
-		  matop = 120;
-		  legbottom = 20;
-		  linetop = 525;
+			padtop = 20;
+			matop = 120;
+			legbottom = 20;
+			linetop = 525;
 
-		  //RESIZING VIDEO
-		  var newCardHeight = h-37;
-		  var newCardWidth = newCardHeight * 0.9525;
-		  var newControlMargin = ((980 - newCardWidth) / 2)-5;
-		  scrubberWidth = newCardWidth * 0.84;
-		  //console.log("newCardWidth: " + newCardWidth);
-
-		  $("#pcard").css({ 'width': newCardWidth+'px', 'height': newCardHeight+'px'});
-		  container.css({ 'height': newCardHeight+'px'});
-		  controls.css({ 'margin-left' : newControlMargin +'px'});
-		  $("#p_scrubber").css({'width': scrubberWidth+'px'});
-		  $("#p_instructions").css({ 'height': newCardHeight+'px'});
-		  $("#periphery_arrows").css({ 'width': newCardHeight+'px', 'height': newCardWidth+'px', 'margin-left': '-'+newCardHeight/2});
-		  $("#pbottom_structure").css({ 'margin-top': '-3%', 'left': ($("#periphery_top").width() / 2)-286 });
-		  $("#periphery_bottomtitle").css({'bottom': '10px'});
+			$("#pcard").css({ 'width': newCardWidth+'px', 'height': newCardHeight+'px'});
+			container.css({ 'height': newCardHeight+'px'});
+			controls.css({ 'margin-left' : newControlMargin +'px'});
+			$("#p_scrubber").css({'width': scrubberWidth+'px'});
+			$("#p_instructions").css({ 'height': newCardHeight+'px'});
+			$("#periphery_arrows").css({ 'width': newCardHeight+'px', 'height': newCardWidth+'px', 'margin-left': '-'+newCardHeight/2});
+			$("#periphery_bottomtitle").css({'bottom': '10px'});
 		} else {
-			$("#pbottom_structure").css({ 'margin-top': '-1%', 'left': ($("#periphery_top").width() / 2)-286 });
-
+			$("#pcard").css({ 'width': '640px', 'height': '720px'});
+			container.css({ 'height': '720px'});
+			controls.css({ 'margin-left' : '125px'});
+			$("#p_scrubber").css({'width': '588px'});
+			$("#p_instructions").css({ 'height': '640px'});
+			//$("#periphery_arrows").css({ 'width': newCardHeight+'px', 'height': newCardWidth+'px', 'margin-left': '-'+newCardHeight/2});
+			$("#periphery_bottomtitle").css({'bottom': '10px'});
 		}
 
 		if($("#periphery_top").height() < 700) {
 			$("#periphery_bottom").css({'height': '700px'});
-		 	$("#pbottom_structure").css({ 'margin-top': '-1%', 'left': ($("#periphery_top").width() / 2)-286 });
+		 	$("#pbottom_structure").css({ 'margin-top': '-3%', 'left': ($("#periphery_top").width() / 2)-286 });
+
+		} else {
+			$("#periphery_bottom").css({'height': '100%'});
+			$("#pbottom_structure").css({ 'margin-top': '-1%', 'left': ($("#periphery_top").width() / 2)-286 });
 
 		}
 

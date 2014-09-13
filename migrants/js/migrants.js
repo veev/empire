@@ -486,6 +486,7 @@
 							});
 							loadArcSegs();
 						}
+
 					} else {
 						if (mTrackerArray[i].startPos && mTrackerArray[i].endPos) {
 							mTrackerArray[i].arcSegment.attr({
@@ -1034,6 +1035,10 @@
 							if(actFill.vennId === timeCode.Venn){
 								//Turn on act Fill
 								actFill.actFill.animate({opacity: '1.0'}, 800);
+
+								if(actFill.vennId === 7) {
+									actFill.actFill.animate({opacity: '0.0'}, 400);
+								}
 
 								countryLabels.ghana.attr({'opacity': '1'});
 								countryLabels.brazil.attr({'opacity': '1'});

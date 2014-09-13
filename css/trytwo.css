@@ -70,7 +70,7 @@ div#container div#credits div#book {
 
 div#container div#credits p#credits_ke {
 	font-size: 1.2em;
-	position:absolute;
+	position: relative;
 	z-index: 20;
 }
 

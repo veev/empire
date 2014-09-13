@@ -441,7 +441,7 @@
 
 		videoCurrentTime = document.getElementById(currentVideoId).currentTime;
 
-		$("#c_progress").css({ "width": (930 / ratio) + 'px' });
+		$("#c_progress").css({ "width": (885 / ratio) + 'px' });
 		//console.log("im on flipside  " + flipside);
 
 		sideTracker[Math.floor(document.getElementById(currentVideoId).currentTime)] = flipside;

@@ -164,13 +164,13 @@
 								<div class="front" id="cradle0" data-clipname="schipol">
 									<video id="video1" width="960" height="540" poster="art/thumbs/cradle_poster.png" preload="none">
 									<source src="https://s3-us-west-2.amazonaws.com/empire-project/cradle/CRADLE_MORGUE_REEXPORTED.mp4" type="video/mp4">
-									 <!-- <source src="http://dalcr8izwrdz8.cloudfront.net/cradle/schipol.webm"> -->
+									 <source src="https://s3-us-west-2.amazonaws.com/empire-project/cradle/CRADLE_MORGUE_REEXPORTED.webm">
 									</video>
 								</div>
 								<div class="back" id="cradle1" data-clipname="spotters">
 									<video id="video2" width="960" height="540" poster="art/thumbs/full-spotters-1.jpg" preload="none">
 									 <source src="https://s3-us-west-2.amazonaws.com/empire-project/CRADLESPOTTERSv2.mp4" type="video/mp4">
-								 	<!-- <source src="http://dalcr8izwrdz8.cloudfront.net/cradle/spotters.webm"> -->
+								 	<source src="https://s3-us-west-2.amazonaws.com/empire-project/cradle/CRADLE_SPOTTERS_REEXPORTED.webm">
 									</video>
 								</div>
 							</div>
@@ -266,7 +266,7 @@
 										<div id="l_instructions" style="display:none">
 											<div id="playTitle"></div>
 											<p id="one">Click on a country to choose a video</p>
-											<p id="two">the click on the arrows to switch</p>
+											<p id="two">Click the arrows to switch</p>
 										</div>
 										<div id="diamond" >
 											<canvas id="canvas" width="372" height="372"></canvas>
@@ -309,25 +309,37 @@
 											<div id = "southafrica_right" class="country_arrows_negSlope"></div>
 										</div>
 										<div id="legacy_container_india" class="legacy-item" data-targetsize = "0.9">
-											<video id="india_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/India960.mp4" width="640" height="202" preload ="none"></video>
+											<video id="india_leg" class="legacy-video" crossorigin="anonymous" width="640" height="202" preload ="none">
+											<source src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/India960.mp4">
+											<source src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/India960_750kbps.webm"> 
+											</video>
 										</div>	
 										<div id="india_scrubber" class="scrubberBar">
 											<div id="india_progressDiamond" class="progressDiamond"></div>
 										</div>
 										<div id="legacy_container_southafrica" class="legacy-item" data-targetsize = "0.9" >
-											<video id="southafrica_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/SouthAfrica960.mp4" width="640" height="202" preload="none"></video>
+											<video id="southafrica_leg" class="legacy-video" crossorigin="anonymous" width="640" height="202" preload="none">
+											<source src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/SouthAfrica960.mp4" >
+											<source src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/SouthAfrica960_750kbps.webm">
+											</video>
 										</div>	
 										<div id="southafrica_scrubber" class="scrubberBar">
 											<div id="southafrica_progressDiamond" class="progressDiamond"></div>
 										</div>							
 										<div id="legacy_container_indonesia" class="legacy-item" data-targetsize="0.9">
-											<video id="indonesia_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/Indonesia960.mp4" width="640" height="202" preload ="none" ></video>
+											<video id="indonesia_leg" class="legacy-video" crossorigin="anonymous" width="640" height="202" preload ="none">
+												<source src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/Indonesia960.mp4">
+												<source src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/Indonesia960_750kbps.webm">
+											</video>
 										</div>
 										<div id="indonesia_scrubber" class="scrubberBar">
 											<div id="indonesia_progressDiamond" class="progressDiamond"></div>
 										</div>
 										<div id="legacy_container_srilanka" class="legacy-item" data-targetsize = "0.9">
-											<video id="srilanka_leg" class="legacy-video" crossorigin="anonymous" src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/SriLanka960.mp4" width="640" height="202" preload ="none"></video>
+											<video id="srilanka_leg" class="legacy-video" crossorigin="anonymous" width="640" height="202" preload ="none">
+												<source src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/SriLanka960.mp4">
+												<source src="https://s3-us-west-2.amazonaws.com/empire-project/legacy/SriLanka960_750kbps.webm">
+											</video>
 										</div>	
 										<div id="srilanka_scrubber" class="scrubberBar">
 											<div id="srilanka_progressDiamond" class="progressDiamond"></div>
@@ -405,11 +417,14 @@
 						<div id="m_instructions" style="display:none">
 							<span id="mtitle" style="display:none"></span>
 							<!-- <span id="m_play_instructions"></span> -->
-							<p id="minst_2">The global screening of <i>Empire: Migrants</i> is already in progress</p>
-							<p id="minst_3">Keep coming back to complete the loop</p>
+							<p id="minst_2">Welcome to the global screening of <i>Empire: Migrants</i></p>
+							<p id="minst_3">Leave or return,<br>the loop will continue</p>
 						</div>
 						<div id="m_container">
-							<video loop id="migrants_video" src="https://s3-us-west-2.amazonaws.com/empire-project/migrants/MIGRANTS_1440p_629video_48audio_3gain.mp4" width = "1280" height="264" preload= "none" style="opacity: 0">
+							<video loop id="migrants_video" width = "1280" height="264" preload= "none" style="opacity: 0">
+								<source src="https://s3-us-west-2.amazonaws.com/empire-project/migrants/MIGRANTS_1440p_629video_48audio_3gain.mp4">
+								<source src="https://s3-us-west-2.amazonaws.com/empire-project/migrants/MIGRANTS_1440.webm"> 
+							</video>
 						</div>
 						<div id="m_controls"></div>
 						<div id="m_endscreen" style="display: none;">
@@ -487,7 +502,9 @@
 							<div id="periphery_arrows"></div>
 							<div id="pcard">
 								<div class="norm">
-									<video id="target" src="https://s3-us-west-2.amazonaws.com/empire-project/PERIPHERY_NORM_noMASK_1_1.mp4" height="720" width="640" type="video/mp4" poster="/art/periphery/periphery_poster2.jpg" preload="none">
+									<video id="target" height="720" width="640" type="video/mp4" poster="/art/periphery/periphery_poster2.jpg" preload="none">
+										<source src="https://s3-us-west-2.amazonaws.com/empire-project/PERIPHERY_NORM_noMASK_1_1.mp4"> 
+										<source src="https://s3-us-west-2.amazonaws.com/empire-project/PERIPHERY_NORM_noMASK.webm">
 									</video>
 									<div id="audio1" style="display:none">
 										<audio src="http://dalcr8izwrdz8.cloudfront.net/PERIPHERY+NORM_WEB_1-2_AIFF.mp3" type="audio/mpeg" id="audio_norm" preload="none"></audio>
