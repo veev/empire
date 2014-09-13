@@ -123,6 +123,21 @@ div#legacy_main #l_outerouter #l_outerinner {
 	 z-index: 1;
 }
 
+div#legacy_main div#legLoading {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: 365px;
+	left: 581px;
+	width: 100px;
+	height: 30px;
+	z-index: 2000;
+}
+div#legacy_main div#legLoading p {
+	color: #fbb03b;
+	font-size: 1.3em;
+}
+
 div#legacy_main div#l_instructions { 
 	position: absolute; 
 	z-index: 1001; 

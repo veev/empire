@@ -145,11 +145,14 @@
 	}
 
 	function loadArcSegs(){
+		console.log("in LoadArcSegs");
 		for (var i = 0; i < mTrackerArray.length; i++) {
 			if(mTrackerArray[i].arcSegment === null){
 				mTrackerArray[i].arcSegment = archtype.path();
 				var transformArc = 'r-90,' + center + ',' + middle;
 				mTrackerArray[i].arcSegment.transform(transformArc);
+				mTrackerArray[i].arcSegment.attr({'opacity': 1});
+				console.log("added new arc");
 			}
 		}
 	}
@@ -473,8 +476,9 @@
 					mTrackerArray[i].endPos = getMigrantsVideoCurrentPos();
 
 					if (previousPos >359.7 && mTrackerArray[i].endPos < 0.5) {
-						//console.log(mTrackerArray.length);
 						if(mTrackerArray[i].isCrossOriginArc === false){
+							console.log(mTrackerArray.length);
+
 							mTrackerArray[i].endPos = 359.9;
 							mTrackerArray[i].isActive = false;
 							mTrackerArray.push({
@@ -997,8 +1001,8 @@
 
 	//Called every frame
 	function scrubberUpdater() {
-		var currentTime = migrantsVideo.currentTime,
-			timeCode,
+		var currentTime = migrantsVideo.currentTime;
+		var timeCode,
 			actFill,
 			i, j;
 
@@ -1031,8 +1035,9 @@
 						for(j = 0; j < actFillArray.length; j++){
 
 							actFill = actFillArray[j];
-
 							if(actFill.vennId === timeCode.Venn){
+								console.log("act Fill venn ID: " + actFill.vennId);
+
 								//Turn on act Fill
 								actFill.actFill.animate({opacity: '1.0'}, 800);
 
@@ -1147,7 +1152,7 @@
 				'M102.974,103.196c53.163-30.742,99.005-1.572,99.005-1.572c-2.126,62.971-49.312,86.066-49.312,86.066C102.952,158.226,102.974,103.196,102.974,103.196z',
 
 				// ghan_braz_suri_off
-				'M102.974,103.196c53.163-30.742,99.005-1.572,99.005-1.572c-2.126,62.971-49.312,86.066-49.312,86.066C102.952,158.226,102.974,103.196,102.974,103.196z'
+				'M102.974, 103.196'
 			];
 
 		vennMap = archtype.set();
@@ -1163,6 +1168,7 @@
 		// Orange fill segments
 		fills.forEach(function (pathSrc, id) {
 			var path, fill;
+			console.log("venn id: " + id);
 
 			path = archtype.path(pathSrc);
 			path.attr(styles.vennSection);

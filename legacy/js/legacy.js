@@ -520,7 +520,7 @@
 						
 						//do volume upp for all
 						video.volume = 0.75;
-						console.log(video.volume);
+						//console.log(video.volume);
 						//$('#legacy_container_' + selectedId).css({'cursor':'pointer'});
 
 
@@ -1029,6 +1029,7 @@
 			}
 		}
 		if(videosCanPlay){
+			$("#legLoading").fadeOut();
 			instructions.fadeIn(2000);
 			instructions.on('click', closeScreen);
 			insructIvl = setTimeout(closeScreen, 7000);	

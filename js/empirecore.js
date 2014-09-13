@@ -565,14 +565,16 @@ function drawer () {
 	var rMargin = 300;
 	var rMargin_alt = '10%';
 
-	$("#titleblock").css({ 'right': rMargin_alt, 'top': '8%'});
-	$("#pinchelines").css({ 'height': (_h-(86+80)), 'right': rMargin_alt, 'top': 150 });
+	$("#pinchelines").css({ 'height': (_h-(86+80)), 'right': 0, 'top': '66px' });
 	$("#preaching").css({ 'right': rMargin_alt, 'top': ( _h - 70) });
 	$("#legacy").css({ 'top': ((_h/2) - 280), right: rMargin_alt });
 	$("#cradle").css({ 'top': ((_h/2) + 20), right: rMargin_alt });
 
-	$("#bodytext").css( { 'right': rMargin_alt, 'top': '25%' });
-	$("#credits").css( { 'right': rMargin_alt, 'top': '60%' });
+	if(_h <= 700) {
+		$("#marquee").css({'top': '2%'});
+	} else {
+		$("#marquee").css({'top': '6%'});
+	}
 }
 
 var	handleVisibilityChange = function() {

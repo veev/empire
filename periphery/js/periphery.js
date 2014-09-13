@@ -98,7 +98,7 @@
 
 		if($("#periphery_top").height() < 700) {
 			$("#periphery_bottom").css({'height': '700px'});
-		 	$("#pbottom_structure").css({ 'margin-top': '-3%', 'left': ($("#periphery_top").width() / 2)-286 });
+		 	$("#pbottom_structure").css({ 'margin-top': '-1%', 'left': ($("#periphery_top").width() / 2)-286 });
 
 		} else {
 			$("#periphery_bottom").css({'height': '100%'});

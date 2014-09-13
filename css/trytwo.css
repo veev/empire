@@ -21,11 +21,23 @@ div#container {
 	}
 h7 { font-size: 2em;}
 h8 { margin-top: 4px; font-style: italic; text-align: left; font-size: 1.6em;}
+
+div#container #marquee {
+	width:457;
+	height:600;
+	position: absolute;
+	right: 10%;
+	top: 6%;
+}
+
 /*div#container div#containerinner {position: absolute; margin-left: 860;}*/
-div#container div#titleblock { position: absolute; }
-div#container div#logos { position: absolute; bottom: 20; left: 20; z-index: 20;}
+div#container div#titleblock { position: relative; margin-bottom: 10px}
+div#container div#logos { position: absolute; bottom: 20; left: 20; z-index: 20;float:left;}
+div#container div#preaching { position: absolute; text-align: left; float:right; }
+div#container div#preaching ul { margin-top: 4px; position: relative; z-index: 10; }
+div#container div#preaching ul li { float: left; margin-right: 12px; }
 div#container div#pinchelines { position: absolute; width: 4px; background: url(../art/placeholder_dots.png) repeat-y; }
-div#container div#bodytext { position: absolute; margin-right: 16px; text-align: left; width: 430px; /*z-index: 5*/}
+div#container div#bodytext { position: relative; margin-right: 16px; margin-bottom: 10%; text-align: left; width: 430px; /*z-index: 5*/}
 div#container div#bodytext p { margin: 1em 0; font-size: 1em;}
 /*div#container div#bodytext p.credits { margin-top: 3em; }*/
 div#container div#bodytext a {
@@ -33,8 +45,9 @@ div#container div#bodytext a {
 	text-decoration: none;
 }
 div#container div#credits {
-	position: absolute;
+	position: relative;
 	margin-right: 16px;
+	margin-bottom: 16px;
 	text-align: left;
 	width: 430px;
 	/*z-index: 5;*/
@@ -98,9 +111,7 @@ div#logo {
 	margin-top: 200px;
 }
 div#audiodiv { display: none; }
-div#container div#preaching { position: absolute; text-align: left; }
-div#container div#preaching ul { margin-top: 4px; position: relative; z-index: 10; }
-div#container div#preaching ul li { float: left; margin-right: 12px; }
+
 div#container div#legacy { left: 20; width: 300px; padding: 2px; position: absolute; height: 220px; font-size: 1.3em; }
 div#container div#legacy:hover { color: #fbb03b; }
 div#container div#cradle { left: 20; padding: 2px; width: 300px; position: absolute; font-size: 1.3em; }
