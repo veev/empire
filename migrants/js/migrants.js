@@ -785,7 +785,7 @@
 
 	function jsonCall() {
 		//console.log(m_url);
-		m_url = '/timecode.json';
+		m_url = 'timecode.json';
 		var data = $.parseJSON($.ajax({
 			url: m_url,
 			dataType: 'json',

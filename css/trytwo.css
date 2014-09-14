@@ -127,7 +127,7 @@ div#container #navigation {position: relative; z-index: 5; cursor: pointer;}
 	width: 127px; height: 45px;
 	cursor: pointer;
 	z-index: 5;
-	background: url(../../art/f_playbutton.png);
+	background: url(../art/f_playbutton.png);
     pointer-events: all; 
 }
 

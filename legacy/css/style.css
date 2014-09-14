@@ -57,7 +57,7 @@ div.mystical p#b { top: 367px; left: 95px; width: 220px; z-index: 2; }
 div.mystical p#c { top: 367px; left: 604px; }
 div.mystical p#d { top: 64px; left: 607px; z-index: 3; }
 div.mystical p#f { top: 184px; width: 200px; left: 348px; text-align: center; }
-div.legacy_top div.play { position: absolute; width: 127px; height: 45px; cursor: pointer; background: url(/art/f_playbutton.png); }
+div.legacy_top div.play { position: absolute; width: 127px; height: 45px; cursor: pointer; background: url(../../art/f_playbutton.png); }
 div#legacy_main div.more { position: absolute; bottom: 60; width: 127px; height: 45px; cursor: pointer; background: url(/legacy/art/leg_more.png) no-repeat; }
 
 #legacy_main .home_button {
