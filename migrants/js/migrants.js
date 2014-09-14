@@ -152,6 +152,13 @@
 				var transformArc = 'r-90,' + center + ',' + middle;
 				mTrackerArray[i].arcSegment.transform(transformArc);
 				mTrackerArray[i].arcSegment.attr({'opacity': 1});
+				// mTrackerArray[i]
+				// .arcSegment
+				// .attr({
+				// 	'stroke': ORANGE,
+				// 	'stroke-width': '1',
+				// 	'stroke-opacity': '1'});
+
 				//console.log("added new arc");
 			}
 		}
@@ -483,12 +490,15 @@
 							mTrackerArray[i].isActive = false;
 							mTrackerArray.push({
 								isActive: true,
-								startPos: 0,
+								startPos: 0.1,
 								endPos: 0,
 								isCrossOriginArc: true,
 								arcSegment: null
 							});
 							loadArcSegs();
+							//StartPos shouldnt start at 0 as it short circuits line 505
+							//console.log("New migrants arc started with startPos 0.1");
+							//console.log(mTrackerArray);
 						}
 
 					} else {
