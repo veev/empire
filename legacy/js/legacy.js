@@ -521,19 +521,13 @@
 						//do volume upp for all
 						video.volume = 0.75;
 						//console.log(video.volume);
-						//$('#legacy_container_' + selectedId).css({'cursor':'pointer'});
-
 
 						if(videoTracker[id].active){
-							console.log(id +" was active and is now inactive");
-							//$('#legacy_container_' + selectedId).css({'cursor':'pointer'});
+							//console.log(id +" was active and is now inactive");
 
 							updateSessionTracker(id);
-
 							videoTracker[id].active = false;	
-							// videoTracker[id].startPos = 0;
-							// videoTracker[id].endPos = 0;
-
+	
 							var start = map(videoTracker[id].startPos,0,video.duration, 0, 262,true);
 							var end = map(videoTracker[id].endPos,0,video.duration, 0, 262,true);
 							addProgressPath(id,start,end);
