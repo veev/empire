@@ -69,10 +69,10 @@
 	};
 	function togglePlayIcon(){
 		if(videoSchipol.paused || videoSpotters.paused){
-			$("#c_playElement").css({'background':'url(../art/cradle/playYellow.png)'})
+			$("#c_playElement").addClass('playYellow').removeClass('playWhite').removeClass('pauseWhite').removeClass('pauseYellow');
 		} 
 		else {
-			$("#c_playElement").css({'background':'url(../art/cradle/pauseYellow.png)'})
+			$("#c_playElement").addClass('pauseYellow').removeClass('pauseWhite').removeClass('playWhite').removeClass('playYellow');
 		}
 	}
 
@@ -83,20 +83,26 @@
 				//console.log("Cradle playButton #c_playElement");
 				if( !videoSchipol.paused ){
 					toggleButtonDisplay();
-				}})
+				}
+			})
 			.on('mouseover', function (){
 				if(videoSchipol.paused || videoSpotters.paused){
-					$("#c_playElement").css({'background':'url(../art/cradle/playWhite.png)'})
+					$("#c_playElement").addClass('playWhite').removeClass('playYellow').removeClass('pauseWhite').removeClass('pauseYellow');
 				} else {
-					$("#c_playElement").css({'background':'url(../art/cradle/pauseWhite.png)'})
-				}})
+					$("#c_playElement").addClass('pauseWhite').removeClass('pauseYellow').removeClass('playWhite').removeClass('pauseYellow');
+				}
+			})
 			.on('mouseout',togglePlayIcon);
 
 		$("#c_refresh")
-			.on('click', function() {restartVideos();})
-			.on('mouseover', function() {$("#c_refresh").css({'background':'url(../art/cradle/refresh_white.png'});})
-			.on('mouseout', function() {$("#c_refresh").css({'background':'url(../art/cradle/refresh_yellow.png'});
-		});
+			.on('click', function() {restartVideos();
+			})
+			.on('mouseover', function() {
+				$("#c_refresh").css({'background-image':'url(../../art/cradle/refresh_white.png'});
+			})
+			.on('mouseout', function() {
+				$("#c_refresh").css({'background-image':'url(../../art/cradle/refresh_yellow.png'});
+			});
 
 		instructions.on('click', function () { 
 			closeScreen(); 

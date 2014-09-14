@@ -541,9 +541,9 @@
 
 	function togglePlayIcon(){
 		if(document.getElementById("target").paused){
-			$("#p_playElement").css({'background':'url(../art/periphery/playRed.png)'})
+			$("#p_playElement").addClass('playRed').removeClass('playWhite').removeClass('pauseWhite').removeClass('pauseRed');
 		} else {
-			$("#p_playElement").css({'background':'url(../art/periphery/pauseRed.png)'})
+			$("#p_playElement").addClass('pauseRed').removeClass('pauseWhite').removeClass('playWhite').removeClass('playRed');
 		}
 	}
 
@@ -559,9 +559,9 @@
 
 		}).on('mouseover', function (){
 			if(document.getElementById("target").paused){
-				$("#p_playElement").css({'background':'url(../art/periphery/playWhite.png)'})
+				$("#p_playElement").addClass('playWhite').removeClass('playRed').removeClass('pauseWhite').removeClass('pauseRed');
 			} else {
-				$("#p_playElement").css({'background':'url(../art/periphery/pauseWhite.png)'})
+				$("#p_playElement").addClass('pauseWhite').removeClass('pauseRed').removeClass('playWhite').removeClass('playRed');
 			}
 		}).on('mouseout', function (){
 			togglePlayIcon();

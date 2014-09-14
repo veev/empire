@@ -254,12 +254,34 @@ div#cradle_main #c_outerouter #c_outerinner {
 	cursor: pointer;
 	width: 27px;
 	height: 38px;
+/*	background-image: url(../../art/cradle/playYellow.png);
+*/}
+
+.playYellow {
 	background-image: url(../../art/cradle/playYellow.png);
 }
-#c_outerinner #c_controls #c_playElement:hover {
+
+.pauseYellow {
 	background-image: url(../../art/cradle/pauseYellow.png);
 }
-#c_pauseElement{
+
+.playWhite {
+	background-image: url(../../art/cradle/playWhite.png);
+}
+
+.pauseWhite {
+	background-image: url(../../art/cradle/pauseWhite.png);
+}
+
+/*#c_outerinner #c_controls #c_playElement:hover {
+	background-image: url(../../art/cradle/pauseYellow.png);
+}*/
+
+/*#c_playElement:hover {
+	background-image: url(../../art/cradle/playYellow.png);
+}*/
+
+/*#c_pauseElement{
 	display: block;
 	float: left;
 	cursor: pointer;
@@ -273,7 +295,7 @@ div#cradle_main #c_outerouter #c_outerinner {
 	width: 27px;
 	height: 38px;
 	background-image: url(images/playGray.png);
-}
+}*/
 
 #c_outerinner #c_controls #c_refresh{
 	display: block;
