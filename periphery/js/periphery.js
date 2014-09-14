@@ -78,6 +78,7 @@
 			matop = 120;
 			legbottom = 20;
 			linetop = 525;
+			buffer = h - 60;
 
 			$("#pcard").css({ 'width': newCardWidth+'px', 'height': newCardHeight+'px'});
 			container.css({ 'height': newCardHeight+'px'});
@@ -97,17 +98,18 @@
 		}
 
 		if($("#periphery_top").height() < 700) {
+			buffer = h - 50;
 			$("#periphery_bottom").css({'height': '700px'});
 		 	$("#pbottom_structure").css({ 'margin-top': '-1%', 'left': ($("#periphery_top").width() / 2)-286 });
-
+		 	$(".periphery_intro").css({ 'top': -55});
 		} else {
 			$("#periphery_bottom").css({'height': '100%'});
 			$("#pbottom_structure").css({ 'margin-top': '-1%', 'left': ($("#periphery_top").width() / 2)-286 });
-
+			$(".periphery_intro").css({ 'top': -30});
 		}
 
 		outerOuter.css({ 'padding-top': (($("#periphery_top").height() / 2) - ($("#p_outerinner").height() / 2)) });
-		$(".periphery_intro").css({ 'top': -30});
+
 		// $("#periphery_bottom").css({"height": $("#periphery_top").height()});
 		$('#periphery_line').css({ 'top': matop, 'height': 100, 'left': (($("#periphery_top").width() / 2) - 7) });
 		$('#periphery_line2').css({ 'top': linetop, 'height': 300, 'left': (($("#periphery_top").width() / 2) - 7) });

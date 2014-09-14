@@ -231,8 +231,7 @@ div#periphery_main #p_outerouter #p_outerinner {
 	cursor: pointer;
 	width: 26px;
 	height: 38px;
-/*	background-image: url(../../art/periphery/playRed.png);
-*/	position: relative;
+	position: relative;
 	z-index: 2;
 }
 
@@ -251,19 +250,6 @@ div#periphery_main #p_outerouter #p_outerinner {
 .pauseWhite {
 	background-image: url(../../art/periphery/pauseWhite.png);
 }
-
-/*#p_outerinner #p_controls #p_playElement:hover {
-	background-image: url(../../art/periphery/pauseWhite.png);
-}
-#p_pauseElement{
-	display: block;
-	float: left;
-	cursor: pointer;
-	width: 27px;
-	height: 38px;
-	background-image: url(images/pauseGray.png);
-	z-index: 2;
-}*/
 
 #cradleContent .more_button{
 	color:blue;
