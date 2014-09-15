@@ -572,8 +572,12 @@ function drawer () {
 
 	if(_h <= 700) {
 		$("#marquee").css({'top': '2%'});
+		$("#bodytext").css({'margin-bottom': '-1%'});
+		$("#titleblock").css({'margin-bottom': '-10px'});
 	} else {
 		$("#marquee").css({'top': '6%'});
+		$("#bodytext").css({'margin-bottom': '10%'});
+		$("#titleblock").css({'margin-bottom': '10px'});
 	}
 }
 
