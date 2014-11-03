@@ -152,6 +152,9 @@
 			padtop = 20;
 			matop = 20;
 			legbottom = 20;
+			$("#lbottom_structure").css({ 'margin': '0px auto'});
+		} else {
+			$("#lbottom_structure").css({ 'margin': '4% auto'});
 		}
 
 		if($(".legacy_top:first").height() < 700) {
@@ -160,7 +163,9 @@
 			$(".mystical").css({'top': '-4%'});
 			$(".legacy_bottom").css({'height': '700px'});
 			$("#legacy_bottomtitle").css({ 'bottom': '10px'});
-			$("#lbottom_structure").css({ 'margin': '0px auto'});
+			
+		} else {
+			$(".legacy_bottom").css({'height': h });
 		}
 
 		var canvasShift = map(h, 600, 1200, -160, -1);

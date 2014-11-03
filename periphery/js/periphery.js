@@ -90,29 +90,29 @@
 		} else {
 			$("#pcard").css({ 'width': '640px', 'height': '720px'});
 			container.css({ 'height': '720px'});
-			controls.css({ 'margin-left' : '125px'});
+			controls.css({ 'margin-left' : '140px'});
 			$("#p_scrubber").css({'width': '588px'});
 			$("#p_instructions").css({ 'height': '640px'});
 			//$("#periphery_arrows").css({ 'width': newCardHeight+'px', 'height': newCardWidth+'px', 'margin-left': '-'+newCardHeight/2});
 			$("#periphery_bottomtitle").css({'bottom': '10px'});
 		}
 
-		if($("#periphery_top").height() < 700) {
+		if($("#periphery_top").height() < 760) {
 			buffer = h - 50;
 			$("#periphery_bottom").css({'height': '700px'});
 		 	$("#pbottom_structure").css({ 'margin-top': '-1%', 'left': ($("#periphery_top").width() / 2)-286 });
 		 	$(".periphery_intro").css({ 'top': -55});
 		} else {
 			$("#periphery_bottom").css({'height': '100%'});
-			$("#pbottom_structure").css({ 'margin-top': '-1%', 'left': ($("#periphery_top").width() / 2)-286 });
-			$(".periphery_intro").css({ 'top': -30});
+			$("#pbottom_structure").css({ 'margin-top': '5%', 'left': ($("#periphery_top").width() / 2)-286 });
+			$(".periphery_intro").css({ 'top': 0});
 		}
 
 		outerOuter.css({ 'padding-top': (($("#periphery_top").height() / 2) - ($("#p_outerinner").height() / 2)) });
 
 		// $("#periphery_bottom").css({"height": $("#periphery_top").height()});
-		$('#periphery_line').css({ 'top': matop, 'height': 100, 'left': (($("#periphery_top").width() / 2) - 7) });
-		$('#periphery_line2').css({ 'top': linetop, 'height': 300, 'left': (($("#periphery_top").width() / 2) - 7) });
+		$('#periphery_line').css({ 'top': '40px', 'height': 100, 'left': '391px' });
+		$('#periphery_line2').css({ 'top': '430px', 'height': 270, 'left': '391px' });
 		$("#periphery_linewhite").css({ 'height': $("#periphery_main").height(), 'left': (($("#periphery_top").width() / 2) - 7) });
 		
 		$('#periphery_bottomline').css({ 'top': 0, 'height': 200, 'left': (($("#periphery_top").width() / 2) - 7) });

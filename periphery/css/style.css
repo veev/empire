@@ -39,7 +39,7 @@ div.periphery_top div#periphery_structure {
 	position: relative; 
 	margin: auto; 
 	width: 790px; height: 560px; 
-	overflow: auto; 
+	/*overflow: auto; */
 	background: url(../../art/periphery/topstructure.png) no-repeat;
 	background-position: center; }
 div.periphery_intro p { position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }

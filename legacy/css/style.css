@@ -44,7 +44,7 @@ div.legacy_bottom a { color: #000; }
 div.legacy_bottom div#legacy_bottomtitle { z-index: 1; position: absolute; bottom: 25; width: 100%; text-align: center; }
 div.legacy_bottom h2 { color: #000; padding-bottom: 8px; font-size: 1.6em; text-align: center; }
 div.legacy_bottom div.inner { padding: 1px 0 30px 0; }
-div.legacy_bottom div#lbottom_structure { z-index: 2; position: relative; margin:30px auto; width: 612px; height: 612px; background: url(../../art/legacy/legacy_bottomstructure.png) no-repeat; }
+div.legacy_bottom div#lbottom_structure { z-index: 2; position: relative; margin:4% auto; width: 612px; height: 612px; background: url(../../art/legacy/legacy_bottomstructure.png) no-repeat; }
 div.legacy_bottom div#lbottom_structure div { text-align: left;  padding: 4px 0 0 29px; width: 555px;  color: #000; }
 div.legacy_bottom div#lbottom_structure div p { text-align: left; font-size: 1.1em; margin: 1em auto; color: #000}
 
@@ -54,7 +54,7 @@ div.mystical { text-align: left; background: url(../../art/legacy/legacy_topstru
 div.mystical p { position: absolute; color: #000; font-size: 18px; margin: 0; padding: 0; }
 div.mystical p#a { top: 64px; left: 20px; z-index: 1; }
 div.mystical p#b { top: 367px; left: 95px; width: 220px; z-index: 2; }
-div.mystical p#c { top: 367px; left: 604px; }
+div.mystical p#c { top: 368px; left: 604px; }
 div.mystical p#d { top: 64px; left: 607px; z-index: 3; }
 div.mystical p#f { top: 184px; width: 200px; left: 348px; text-align: center; }
 div.legacy_top div.play { position: absolute; width: 127px; height: 45px; cursor: pointer; background: url(../../art/f_playbutton.png); }
