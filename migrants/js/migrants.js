@@ -44,6 +44,7 @@
 	var previousPos = 0;
 	var remoteClock;
 	var migrantsVideo;
+	var migrantsSource;
 	var countryLabels;
 
 	var migrantsContent,
@@ -401,9 +402,11 @@
 		instructions.scrollspy({
 			min: instructions.offset().top,
 			onEnter: function(element, position) {
+				
 				if(active) {
 					//console.log('entering m_instructions');
 					openScreen();
+
 				}
 			},
 			onLeave: function(element, position) {
@@ -888,10 +891,16 @@
 	}
 
 	function addVideoListeners() {
-		migrantsVideo.addEventListener('canplay', loadVideo, true);
-		migrantsVideo.addEventListener('ended', pauseVideos, true);
-		migrantsVideo.addEventListener('timeupdate', scrubberUpdater, true);
-		//migrantsVideo.addEventListener('playing', videoPlaying, false);
+
+			migrantsVideo.addEventListener('canplay', loadVideo, true);
+			migrantsVideo.addEventListener('ended', pauseVideos, true);
+			migrantsVideo.addEventListener('timeupdate', scrubberUpdater, true);
+	}
+
+	function removeVideoListeners() {
+			migrantsVideo.removeEventListener('canplay', loadVideo, true);
+			migrantsVideo.removeEventListener('ended', pauseVideos, true);
+			migrantsVideo.removeEventListener('timeupdate', scrubberUpdater, true);
 	}
 
 	function loadVideo() {
@@ -903,11 +912,26 @@
 			var showProgress = false;
 			playButton();
 			migrantsVideo.volume = 0;
+			console.log("if active and video paused, then play");
 		}
 
 		if($('#migrants_video').css('display') === 'none' && shouldShowVideo){
 			fadeInMigrantsVideo();
+			console.log("fade in migrants video");
 		}
+	}
+
+	function emptyVideoSrc() {
+		migrantsVideo.src = "";
+		migrantsVideo.load();
+		console.log("emptying video source");
+	}
+
+	function loadVideoSrc() {
+		migrantsSource = document.getElementById('migrants_source');
+		migrantsSource.setAttribute('src', 'http://dalcr8izwrdz8.cloudfront.net/migrants/MIGRANTS_1440p_629video_48audio_3gain.mp4');
+		migrantsVideo.load();
+		console.log("loading video source");
 	}
 
 	function playButton() {
@@ -1319,9 +1343,13 @@
 				migrantsVideo.load();
 				circleScrubber();
 				firstTime = false;
+			} else {
+				//loadVideoSrc();
 			}
 
 			active = true;
+			//addVideoListeners();
+
 
 			//keeping track of tracking session
 			if(mTrackerArray.length > 0) {
@@ -1347,6 +1375,8 @@
 			migrantsContent.fadeOut('fast');
 			migrantsVideoJqry.css({opacity: '0.0'});
 			pauseVideos();
+			//emptyVideoSrc();
+			//removeVideoListeners();
 		
 			
 			if(downloadMigrants) {

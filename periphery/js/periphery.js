@@ -111,8 +111,8 @@
 		outerOuter.css({ 'padding-top': (($("#periphery_top").height() / 2) - ($("#p_outerinner").height() / 2)) });
 
 		// $("#periphery_bottom").css({"height": $("#periphery_top").height()});
-		$('#periphery_line').css({ 'top': '40px', 'height': 100, 'left': '391px' });
-		$('#periphery_line2').css({ 'top': '430px', 'height': 270, 'left': '391px' });
+		$('#periphery_line').css({ 'top': '0px', 'height': 140, 'left': '387px' });
+		$('#periphery_line2').css({ 'top': '430px', 'height': 420, 'left': '388px' });
 		$("#periphery_linewhite").css({ 'height': $("#periphery_main").height(), 'left': (($("#periphery_top").width() / 2) - 7) });
 		
 		$('#periphery_bottomline').css({ 'top': 0, 'height': 200, 'left': (($("#periphery_top").width() / 2) - 7) });
