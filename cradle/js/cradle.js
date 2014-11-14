@@ -362,7 +362,7 @@
 		videoSchipol.load();
 		videoSpotters.src = "";
 		videoSpotters.load();
-		console.log("emptying video source");
+		//console.log("emptying video source");
 	}
 
 	function loadVideoSrc() {
@@ -372,7 +372,7 @@
 		videoSchipol.load();
 		sourceSpotters.setAttribute('src', 'http://dalcr8izwrdz8.cloudfront.net/cradle/CradleSpottersLow.mp4');
 		videoSpotters.load();
-		console.log("loading video source");
+		//console.log("loading video source");
 	}
 	
 

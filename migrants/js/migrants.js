@@ -912,26 +912,26 @@
 			var showProgress = false;
 			playButton();
 			migrantsVideo.volume = 0;
-			console.log("if active and video paused, then play");
+			//console.log("if active and video paused, then play");
 		}
 
 		if($('#migrants_video').css('display') === 'none' && shouldShowVideo){
 			fadeInMigrantsVideo();
-			console.log("fade in migrants video");
+			//console.log("fade in migrants video");
 		}
 	}
 
 	function emptyVideoSrc() {
 		migrantsVideo.src = "";
 		migrantsVideo.load();
-		console.log("emptying video source");
+		//console.log("emptying video source");
 	}
 
 	function loadVideoSrc() {
 		migrantsSource = document.getElementById('migrants_source');
 		migrantsSource.setAttribute('src', 'http://dalcr8izwrdz8.cloudfront.net/migrants/MIGRANTS_1440p_629video_48audio_3gain.mp4');
 		migrantsVideo.load();
-		console.log("loading video source");
+		//console.log("loading video source");
 	}
 
 	function playButton() {
