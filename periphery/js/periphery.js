@@ -92,7 +92,7 @@
 			container.css({ 'height': '720px'});
 			controls.css({ 'margin-left' : '140px'});
 			$("#p_scrubber").css({'width': '588px'});
-			$("#p_instructions").css({ 'height': '640px'});
+			$("#p_instructions").css({ 'height': '720px'});
 			//$("#periphery_arrows").css({ 'width': newCardHeight+'px', 'height': newCardWidth+'px', 'margin-left': '-'+newCardHeight/2});
 			$("#periphery_bottomtitle").css({'bottom': '10px'});
 		}

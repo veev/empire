@@ -602,7 +602,7 @@
 
 			enableControls();
 			active = true;
-			loadVideoSrc();
+			//loadVideoSrc();
 
 			if( videoSchipol.currentTime > 0 ) {
 
@@ -613,7 +613,7 @@
 		},
 		deactivate:function(){
 			cradleContent.fadeOut("fast");
-			emptyVideoSrc();
+			//emptyVideoSrc();
 		 	pauseVideos();
 		 	disableControls();
 		 	active = false;
