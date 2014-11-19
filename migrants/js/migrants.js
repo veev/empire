@@ -658,7 +658,7 @@
 	}
 
 	function sizer() {
-		//console.log("In Migrants Sizer");
+		console.log("In Migrants Sizer");
 		var w = $('#migrants_top').width();
 		var h = $('#migrants_top').height();
 		var padtop = h * 0.1; // top of the main title
@@ -688,6 +688,14 @@
 				'margin-top': '-'+newContainerHeight/2+'px'});
 			$("#m_outerinner").css({'width': newContainerWidth+'px'});
 
+		} 
+
+		if (w > 1700) {
+			$("#minst_2").css({'left': '42%'});
+			$("#minst_3").css({'left': '43%'});
+		} else {
+			$("#minst_2").css({'left': '40%'});
+			$("#minst_3").css({'left': '42%'});
 		}
 
 		$('#migrants_title').css({ 'padding-top': padtop, 'height' : matop });
