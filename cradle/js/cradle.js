@@ -2,8 +2,6 @@
 	'use-strict';
 	var _trackingon = false;
 	var controlsActive = false;
-	var vid1Loaded = false;
-	var vid2Loaded = false;
 	var mouseXTracking = false;
 	var flipside = false;
 	var flipangle = 0;
@@ -17,10 +15,6 @@
 	var introDismissed = false;
 
 	var videoCurrentTime = 0;
-	var videoSchipol;
-	var videoSpotters;
-	var sourceSchipol;
-	var sourceSpotters;
 
 	var sideTracker = {};
 	var _transitiontimerIvl = new Number();
@@ -28,7 +22,18 @@
 	var openIvl = new Number();
 	var currentVideoId = 1;
 	var currentVidesPos = 0;
-	var instructions, outerOuter, container, controls, cradleContent ;
+	var instructions, outerOuter, container, controls, cradleContent;
+
+	var topUrl = 'http://dalcr8izwrdz8.cloudfront.net/cradle/',
+		sources = {
+			schiphol: 'CradleMorgueLow.mp4',
+			spotters: 'CradleSpottersLow.mp4'
+		},
+		videos = {
+			schiphol: null,
+			spotters: null
+		};
+
 	function map(i, sStart, sEnd, tStart, tEnd) {
 			var v = i-sStart;
 			if (v>=0) {
@@ -46,11 +51,6 @@
 			return parseInt(val);
 	}
 
-	var videos = {
-		1: null,
-		2: null
-	};
-	
 	$.fn.isOnScreen = function(){
 	    
 	    var win = $(window);
@@ -70,7 +70,7 @@
 	    
 	};
 	function togglePlayIcon(){
-		if(videoSchipol.paused || videoSpotters.paused){
+		if(videos.schiphol.paused || videos.spotters.paused){
 			$("#c_playElement").addClass('playYellow').removeClass('playWhite').removeClass('pauseWhite').removeClass('pauseYellow');
 		} 
 		else {
@@ -83,12 +83,12 @@
 			.on('click', function () {
 				playButton();
 				console.log("Cradle playButton #c_playElement");
-				if( !videoSchipol.paused ){
+				if( !videos.schiphol.paused ){
 					toggleButtonDisplay();
 				}
 			})
 			.on('mouseover', function (){
-				if(videoSchipol.paused || videoSpotters.paused){
+				if(videos.schiphol.paused || videos.spotters.paused){
 					$("#c_playElement").addClass('playWhite').removeClass('playYellow').removeClass('pauseWhite').removeClass('pauseYellow');
 				} else {
 					$("#c_playElement").addClass('pauseWhite').removeClass('pauseYellow').removeClass('playWhite').removeClass('pauseYellow');
@@ -97,8 +97,7 @@
 			.on('mouseout',togglePlayIcon);
 
 		$("#c_refresh")
-			.on('click', function() {restartVideos();
-			})
+			.on('click', restartVideos)
 			.on('mouseover', function() {
 				$("#c_refresh").css({'background-image':'url(../../art/cradle/refresh_white.png'});
 			})
@@ -189,7 +188,7 @@
 		});
 		$("#cradlemore").css({"top": buffer, "left": centering }).fadeIn(4000).on('click', function() {
 			body.animate({scrollTop: ($('#cradle_main').offset().top) }, 1000);
-				if(videoSchipol.currentTime == 0) {
+				if(videos.schiphol.currentTime == 0) {
 					openScreen();
 					//console.log("[Cradle] cradlemore openScreen");
 				} 
@@ -228,7 +227,7 @@
 		// console.log("controls are: " + controlsActive);
 	}
 	function openScreen () {
-		if(active && videoSchipol.paused) {
+		if(active && videos.schiphol.paused) {
 			instructions.fadeIn(2000);
 			//console.log("[Cradle] instructions openScreen");
 			openIvl = setTimeout(function() {
@@ -244,7 +243,7 @@
 		clearInterval(openIvl);
 		instructions.fadeOut(1000, function() {
 			introDismissed = true;
-			if(active && videoSchipol.paused) {
+			if(active && videos.schiphol.paused) {
 			 	playButton();	
 			 	trackon();
 			 	console.log("Cradle playButton closeScreen");	
@@ -254,9 +253,9 @@
 	function playButton(){
 		if(active) {
 			mouseXTracking = true;
-			if(videoSchipol.paused || videoSpotters.paused){
+			if(videos.schiphol.paused || videos.spotters.paused){
 				playVideos();
-				console.log('schipol or spotters is paused');
+				console.log('schiphol or spotters is paused');
 			}
 			else{
 				pauseVideos();
@@ -267,11 +266,10 @@
 		instructions.scrollspy({
 		min: instructions.offset().top,
 		onEnter: function(element, position) {
-			if(videoSchipol.currentTime == 0) {
+			if(videos.schiphol.currentTime == 0) {
 				openScreen();
 				//console.log("[Cradle] initScrollspy openScreen");
-			}
-			else {
+			} else {
 				toggleButtonDisplay();
 			}
 		},
@@ -312,7 +310,7 @@
 
 	function flipper (isright){
 		var translatePos;
-		//syncTime();
+		syncTime();
 		
 		if(flipside){		
 			flipside = false;
@@ -334,105 +332,56 @@
 	}
 
 	function syncTime() {
-		if(vid1Loaded && vid2Loaded) {
+		if(videos.spotters.readyState > 1 && videos.schiphol.readyState > 1) {
 			
-			var videoTrackCurrentPosition  = videoSchipol.currentTime;
+			var videoTrackCurrentPosition  = videos.schiphol.currentTime;
 			
 			if(!flipside) {
-				//console.log("videoSpotters.currentTime: " + videoSpotters.currentTime);
-				//console.log("videoSchipol.currentTime: " + videoSchipol.currentTime);
-				videoSpotters.currentTime = videoTrackCurrentPosition;
-				//console.log("videoSpotters.currentTime: " + videoSpotters.currentTime);
-				//console.log("videoSchipol.currentTime: " + videoSchipol.currentTime);
+				//console.log("videos.spotters.currentTime: " + videos.spotters.currentTime);
+				//console.log("videos.schiphol.currentTime: " + videos.schiphol.currentTime);
+				videos.spotters.currentTime = videoTrackCurrentPosition;
+				//console.log("videos.spotters.currentTime: " + videos.spotters.currentTime);
+				//console.log("videos.schiphol.currentTime: " + videos.schiphol.currentTime);
 			}
 		}
 	}
 
 	function restartVideos() {	
 		//console.log("Restarting cradle videos");
-		videoSchipol.currentTime = 0;
-		videoSpotters.currentTime = 0;
-		videoSpotters.volume = 0;
-		videoSchipol.play();
-		videoSpotters.play();
+		videos.schiphol.currentTime = 0;
+		videos.spotters.currentTime = 0;
+		videos.spotters.volume = 0;
+		videos.schiphol.play();
+		videos.spotters.play();
 		isPlaying = true;
 	}
-
-
-	function emptyVideoSrc() {
-		sourceSchipol = document.getElementById('source1');
-		sourceSpotters = document.getElementById('source2');
-		sourceSchipol.setAttribute('src', '');
-		sourceSpotters.setAttribute('src', '');		
-		videoSchipol.appendChild(sourceSchipol);
-		videoSpotters.appendChild(sourceSpotters);
-		// videoSchipol.src = "";
-		videoSchipol.load();
-		// videoSpotters.src = "";
-		videoSpotters.load();
-		//console.log("emptying video source");
-	}
-
-	function loadVideoSrc() {
-		sourceSchipol = document.getElementById('source1');
-		sourceSpotters = document.getElementById('source2');
-		sourceSchipol.setAttribute('src', 'http://dalcr8izwrdz8.cloudfront.net/cradle/CradleMorgueLow.mp4');
-		sourceSpotters.setAttribute('src', 'http://dalcr8izwrdz8.cloudfront.net/cradle/CradleSpottersLow.mp4');
-
-		videoSchipol.appendChild(sourceSchipol);
-		videoSpotters.appendChild(sourceSpotters);
-		
-
-		videoSchipol.addEventListener('loadedmetadata', function() {
-			sourceSchipol.currentTime = videoCurrentTime;
-			console.log("schipol loadedmetadata, videoCurrentTime: " + videoCurrentTime);
-		}, false);
-
-		videoSpotters.addEventListener('loadedmetadata', function() {
-			sourceSpotters.currentTime = videoCurrentTime;
-			console.log("spotters loadedmetadata");
-		}, false);
-
-		videoSpotters.load();
-		videoSchipol.load();
-
-		//console.log("loading video source");
-	}
-	
 
 	function initVideos() {
 
 		Object.keys(videos).forEach(function (id) {
-			var video = document.getElementById('video'+id);
-			//console.log(video);
+			var video = videos[id];
 			video.addEventListener('timeupdate',scrubberUpdater,true);
-			//video.addEventListener('play',function(){mouseXTracking=true;},true);
 			video.addEventListener('emptied',function(){console.log("videos are empty");},true);
 			video.addEventListener("ended", endVideos, true);
 			video.addEventListener('canplay', function () {
-				//console.log('[ Cradle : Canplay Event ] ' + id + ' Video');
-				if(id === '1') {
-					vid1Loaded = true;
-					console.log("vid1Loaded is " + vid1Loaded);
-				} else if (id === '2') {
-					vid2Loaded = true;
-					console.log("vid2Loaded is " + vid2Loaded);
+				console.log('video ' + id + ' loaded');
+			});
+			video.addEventListener('loadedmetadata', function () {
+				if (videoCurrentTime) {
+					video.currentTime = videoCurrentTime;
 				}
 			});
-			video.load();
-			videos[id] = video;
-
 		});
 	}
 
 	function removeListeners() {
 		Object.keys(videos).forEach(function (id) {
-			var video = document.getElementById('video'+id);
-
-			video.removeEventListener('timeupdate');
-			video.removeEventListener('ended');
-			video.removeEventListener('canplay');
-			console.log("removing listeners");
+			var video = videos[id];
+			if (video) {
+				video.removeEventListener('timeupdate', scrubberUpdater, true);
+				video.removeEventListener('ended'), endVideos, true;
+				console.log("removing listeners");
+			}
 		});
 	}
 
@@ -456,7 +405,7 @@
 				if(id ==2){
 					videos[id].volume =0;	
 				}
-				videos[id].currentTime = videoCurrentTime;
+				//videos[id].currentTime = videoCurrentTime;
 				videos[id].play();
 				isPlaying = true;
 			}
@@ -511,7 +460,6 @@
 			}
 
 			videoCurrentTime = document.getElementById(currentVideoId).currentTime;
-			console.log("videoCurrentTime: " + videoCurrentTime);
 
 			$("#c_progress").css({ "width": (885 / ratio) + 'px' });
 			//console.log("im on flipside  " + flipside);
@@ -525,8 +473,8 @@
 
 	function toggleButtonDisplay(){
 
-		if(videoSchipol){
-			if(videoSchipol.paused ){
+		if(videos.schiphol){
+			if(videos.schiphol.paused ){
 				$("#c_play_bg").fadeIn();
 				$("#c_play_bg_back").fadeIn();
 			}
@@ -578,8 +526,8 @@
 			sideTracker = {};
 			$("#c_endscreen").fadeOut();
 			$("#c_legmore").fadeOut();
-			videoSchipol.currentTime = 0;
-			videoSpotters.currentTime = 0;
+			videos.schiphol.currentTime = 0;
+			videos.spotters.currentTime = 0;
 			container.fadeIn();
 			controls.fadeIn();
 			playVideos();
@@ -589,11 +537,32 @@
 		});
 	}
 
+	function setVideoSources() {
+		Object.keys(sources).forEach(function (key) {
+			var video = videos[key],
+				src = sources[key];
+
+			video.src = topUrl + src;
+			video.load();
+		});
+	}
+
+	function clearVideoSources() {
+		Object.keys(videos).forEach(function (key) {
+			var video = videos[key];
+			if (video) {
+				video.removeAttribute('src');
+				video.load();
+			}
+		});
+	}
+
 	function init(){
-		videoSchipol = document.getElementById('video1');
-		videoSpotters = document.getElementById('video2');
-		sourceSchipol = document.getElementById('source1');
-		sourceSpotters = document.getElementById('source2');
+		Object.keys(videos).forEach(function (id) {
+			var video = document.getElementById(id);
+			videos[id] = video;
+		});
+
 		instructions = $("#c_instructions");
 		outerOuter = $("#c_outerouter");
 		container = $("#c_container");
@@ -608,7 +577,7 @@
 		sizer();
 		
 		lazywidth = outerOuter.width();
-		currentVideoId = 'video1';
+		currentVideoId = 'schiphol';
 	}
 
 	var cradle = {
@@ -618,7 +587,6 @@
 		playVideos: playVideos,
 		togglePlayIcon: togglePlayIcon,
 		toggleButtonDisplay: toggleButtonDisplay,
-		videoSchipol: videoSchipol,
 
 		active:function(){
 			return active;
@@ -631,27 +599,24 @@
 				cradleContent.fadeIn(2000);	
 			}
 
-			
-
 			if(firstTime ) {
 				cradleContent.css({'width': '100%', 'height': '100%'});
 				$(".cradle_top").css({'background': 'none'});
 				sizer();
-				initVideos();
 				lazywidth = outerOuter.width();
-				currentVideoId = 'video1';
+				currentVideoId = 'schiphol';
 			 	firstTime = false;
 			} else {
-				loadVideoSrc();
-				initVideos();
 				toggleButtonDisplay();
-
 			}
+
+			initVideos();
+			setVideoSources();
 
 			enableControls();
 			active = true;
 			
-			if( videoSchipol.currentTime > 0 ) {
+			if( videos.schiphol.currentTime > 0 ) {
 				console.log("current time is greater than zero");
 				toggleButtonDisplay();
 			}
@@ -662,7 +627,7 @@
 			
 		 	pauseVideos();
 		 	removeListeners();
-		 	emptyVideoSrc();
+			clearVideoSources();
 		 	disableControls();
 		 	active = false;
 
