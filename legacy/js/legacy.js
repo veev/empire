@@ -28,7 +28,6 @@
 	var legacyHasBeenReset = false;
 	var opacitiesOff = false;
 
-	//http://dalcr8izwrdz8.cloudfront.net/legacy/India960.mp4
 	var topUrl = 'http://dalcr8izwrdz8.cloudfront.net/legacy/',
 		sources = {
 			india: 'India960.mp4',
