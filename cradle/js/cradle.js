@@ -82,7 +82,7 @@
 		$("#c_playElement")
 			.on('click', function () {
 				playButton();
-				console.log("Cradle playButton #c_playElement");
+				//console.log("Cradle playButton #c_playElement");
 				if( !videos.schiphol.paused ){
 					toggleButtonDisplay();
 				}
@@ -113,14 +113,14 @@
 		$("#c_play_bg")
 			.on('click', function() {
 				playButton();
-				console.log("Cradle playButton #c_play_bg");
+				//console.log("Cradle playButton #c_play_bg");
 				toggleButtonDisplay();
 			});
 
 		$("#c_play_bg_back")
 			.on('click', function() {
 				playButton();
-				console.log("Cradle playButton #c_play_bg_back");
+				//console.log("Cradle playButton #c_play_bg_back");
 				toggleButtonDisplay();
 			});
 		
@@ -246,7 +246,7 @@
 			if(active && videos.schiphol.paused) {
 			 	playButton();	
 			 	trackon();
-			 	console.log("Cradle playButton closeScreen");	
+			 	//console.log("Cradle playButton closeScreen");	
 			}
 		});
 	}
@@ -255,7 +255,7 @@
 			mouseXTracking = true;
 			if(videos.schiphol.paused || videos.spotters.paused){
 				playVideos();
-				console.log('schiphol or spotters is paused');
+				//console.log('schiphol or spotters is paused');
 			}
 			else{
 				pauseVideos();
@@ -361,10 +361,12 @@
 		Object.keys(videos).forEach(function (id) {
 			var video = videos[id];
 			video.addEventListener('timeupdate',scrubberUpdater,true);
-			video.addEventListener('emptied',function(){console.log("videos are empty");},true);
+			video.addEventListener('emptied',function(){
+				//console.log("videos are empty");
+			},true);
 			video.addEventListener("ended", endVideos, true);
 			video.addEventListener('canplay', function () {
-				console.log('video ' + id + ' loaded');
+				//console.log('video ' + id + ' loaded');
 			});
 			video.addEventListener('loadedmetadata', function () {
 				if (videoCurrentTime) {
@@ -380,7 +382,7 @@
 			if (video) {
 				video.removeEventListener('timeupdate', scrubberUpdater, true);
 				video.removeEventListener('ended'), endVideos, true;
-				console.log("removing listeners");
+				//console.log("removing listeners");
 			}
 		});
 	}
@@ -411,7 +413,7 @@
 			}
 		}
 
-		console.log("playVideos");
+		//console.log("playVideos");
 	}
 
 	function pauseVideos(){
@@ -617,7 +619,7 @@
 			active = true;
 			
 			if( videos.schiphol.currentTime > 0 ) {
-				console.log("current time is greater than zero");
+				//console.log("current time is greater than zero");
 				toggleButtonDisplay();
 			}
 

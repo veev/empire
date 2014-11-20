@@ -658,7 +658,7 @@
 	}
 
 	function sizer() {
-		console.log("In Migrants Sizer");
+		//console.log("In Migrants Sizer");
 		var w = $('#migrants_top').width();
 		var h = $('#migrants_top').height();
 		var padtop = h * 0.1; // top of the main title
