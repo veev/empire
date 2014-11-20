@@ -77,7 +77,8 @@
 		var newCardHeight = h-37;
 		var newCardWidth = newCardHeight * 0.9525;
 		var newControlMargin = ((980 - newCardWidth) / 2)-5;
-		scrubberWidth = newCardWidth * 0.84;
+		// scrubberWidth = newCardWidth * 0.84;
+		// console.log("scrubberWidth in sizer: " + scrubberWidth);
 		//console.log("newCardWidth: " + newCardWidth);
 		//console.log("periphery is active: " + active);
 		if($("#periphery_top").height() < 780 && active === true){ // if this a wee screen
@@ -86,6 +87,9 @@
 			legbottom = 20;
 			linetop = 525;
 			buffer = h - 60;
+
+			scrubberWidth = newCardWidth * 0.84;
+			//console.log("scrubberWidth in sizer: " + scrubberWidth);
 
 			$("#pcard").css({ 'width': newCardWidth+'px', 'height': newCardHeight+'px'});
 			container.css({ 'height': newCardHeight+'px'});
