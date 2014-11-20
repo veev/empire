@@ -30,17 +30,24 @@
 		controls;
 	var scrubberWidth = 588;
 
+	var topUrl = 'http://dalcr8izwrdz8.cloudfront.net/',
+		sources = {
+			audio_norm: 'PERIPHERY+NORM_WEB_1-2_AIFF.mp3',
+			audio_yeti: 'PERIPHERY+YETI_WEB_1-2_AIFF.mp3',
+			target: 'PeripheryLow.mp4'
+		};
+
 	var media = {
 		target:null,
 		audio_norm:null,
 		audio_yeti:null
-	}
+	};
 	
 	function map(i, sStart, sEnd, tStart, tEnd) {
 		var v = i-sStart;
 		if (v>=0) {
 				if (i < sStart) { return tStart;}
-				 else if (i > sEnd) { return tEnd;}
+				else if (i > sEnd) { return tEnd;}
 		} else {
 				if (i < sStart) { return tStart;} 
 				else if (i < sEnd){ return tEnd;}
@@ -100,8 +107,8 @@
 		if($("#periphery_top").height() < 760) {
 			buffer = h - 50;
 			$("#periphery_bottom").css({'height': '700px'});
-		 	$("#pbottom_structure").css({ 'margin-top': '-1%', 'left': ($("#periphery_top").width() / 2)-286 });
-		 	$(".periphery_intro").css({ 'top': -55});
+			$("#pbottom_structure").css({ 'margin-top': '-1%', 'left': ($("#periphery_top").width() / 2)-286 });
+			$(".periphery_intro").css({ 'top': -55});
 		} else {
 			$("#periphery_bottom").css({'height': '100%'});
 			$("#pbottom_structure").css({ 'margin-top': '5%', 'left': ($("#periphery_top").width() / 2)-286 });
@@ -133,9 +140,9 @@
 			}
 		});
 
-		 $("#periphery_returnTop").css({'margin-top': ((($("#periphery_bottom").height() - 160) / 2) - 330), "margin-left": ($("#cradle_bottom").width() / 2) - 70 }).fadeIn(4000).click(function() {
+		$("#periphery_returnTop").css({'margin-top': ((($("#periphery_bottom").height() - 160) / 2) - 330), "margin-left": ($("#cradle_bottom").width() / 2) - 70 }).fadeIn(4000).click(function() {
 			body.animate({scrollTop: ($('#periphery_top').offset().top) }, 1000);
-		 });
+		});
 	}
 
 	function toggleButtonDisplay() {
@@ -151,10 +158,10 @@
 	}
 
 	$.fn.isOnScreen = function(){
-	    
+
 	    var win = $(window);
-	    
-	    var viewport = {
+
+		var viewport = {
 	        top : win.scrollTop(),
 	        left : win.scrollLeft()
 	    };
@@ -233,8 +240,8 @@
 			}
 		});
 	}
-	function trackoff () {
 
+	function trackoff () {
 		p_trackingon = false;
 		$(document).unbind("swipeleft");
 		$(document).unbind("swiperight");
@@ -243,28 +250,22 @@
 		$(document).unbind('mouseleave');
 		$("#periphery_arrows").css({'z-index': '12'});
 	}
+
 	function syncTime() {
 		//console.log("in periphery sync time");
 		if(videoLoaded && audioNormLoaded && audioYetiLoaded) {
-			var audioNorm = document.getElementById("audio_norm");
-			var audioYeti = document.getElementById("audio_yeti");
-			
-			videoTrackCurrentPosition  = document.getElementById("target").currentTime;
-			if(audioNorm.volume <= 0.01) {
-				audioNorm.currentTime = videoTrackCurrentPosition;
-				//console.log("sync Norm: "+ audioNorm.currentTime);
+			videoTrackCurrentPosition  = media.target.currentTime;
+			if(media.audio_norm.volume <= 0.01) {
+				media.audio_norm.currentTime = videoTrackCurrentPosition;
 			}
 
-			if(audioYeti.volume <= 0.01) {
-				audioYeti.currentTime = videoTrackCurrentPosition;
-				//console.log("sync Yeti: "+ audioYeti.currentTime);
+			if(media.audio_yeti.volume <= 0.01) {
+				media.audio_yeti.currentTime = videoTrackCurrentPosition;
 			}
-
-			//console.log("videoCurrentPos: " + videoTrackCurrentPosition);
 		}
 	}
-	function enableControls () {
 
+	function enableControls () {
 		controlsActive = true;
 
 		outerOuter
@@ -336,31 +337,26 @@
 	function initVideos() {
 
 		Object.keys(media).forEach(function (id) {
+			var element;
 			//console.log("[periphery initVideos ID ] " + id);
 			if(id === 'target'){
-				var video = document.getElementById(id);
+				element = document.getElementById(id);
 				// console.log(video);
 
-				video.addEventListener("canplay", function(){
+				element.addEventListener("canplay", function(){
 					//console.log('[ Periphery : Canplay Event ] ' + id + ' Video');
 					videoLoaded= true;
 				}, true);
-				video.addEventListener("ended", endVideos, true);
-				video.addEventListener("timeupdate", scrubberUpdater, true);
-				video.addEventListener("play", function(){
+				element.addEventListener("ended", endVideos, true);
+				element.addEventListener("timeupdate", scrubberUpdater, true);
+				element.addEventListener("play", function(){
 					mouseYTracking = true;
 					//console.log("[Periphery: play callback] mouseYTracking: " + mouseYTracking);
 				}, true);
-				video.addEventListener("pause", function(){
-					//mouseYTracking = true;
-					//console.log("[pause callback] mouseYTracking: " + mouseYTracking);
-				}, true);
-				video.load();
-				media[id] = video;
-			}
-			else{
-				var audio = document.getElementById(id);
-				audio.addEventListener("canplay", function(){
+				element.addEventListener('timeupdate', syncTime);
+			} else{
+				element = document.getElementById(id);
+				element.addEventListener("canplay", function(){
 					//console.log('[ Periphery : Canplay Event ] ' + id + ' Audio');
 					if(id === 'audio_norm') {
 						audioNormLoaded = true;
@@ -368,11 +364,17 @@
 						audioYetiLoaded = true;
 					}
 				}, true);
-				audio.load();
-				media[id] = audio;
-				//console.log("Media: " + media);
+				//console.log("Media: " + element);
 			}
 
+			element.addEventListener('loadedmetadata', function () {
+				if (videoTrackCurrentPosition) {
+					element.currentTime = videoTrackCurrentPosition;
+				}
+			});
+
+			element.load();
+			media[id] = element;
 		});
 	}
 
@@ -603,6 +605,31 @@
 	  		});
 	  	});
 	}
+
+	function setMediaSources() {
+		Object.keys(sources).forEach(function (key) {
+			var element = media[key],
+				src = sources[key];
+
+			element.src = topUrl + src;
+			element.load();
+		});
+	}
+
+	function clearMediaSources() {
+		videoLoaded = false;
+		audioYetiLoaded = false;
+		audioNormLoaded = false;
+		Object.keys(media).forEach(function (key) {
+			var element = media[key];
+			if (element) {
+				element.removeAttribute('src');
+				//element.removeAttribute('poster');
+				element.load();
+			}
+		});
+	}
+
 	function init(){
 		instructions = $("#p_instructions");
 		outerOuter = $("#p_outerouter");
@@ -648,9 +675,11 @@
 		 		firstTime = false;
 		 	}
 
-		 	// active = true;
-		 	if( document.getElementById("target") ) {
-				if( document.getElementById("target").currentTime > 0 ) {
+			setMediaSources();
+
+			// active = true;
+			if( media.target ) {
+				if( media.target.currentTime > 0 ) {
 				 	toggleButtonDisplay();
 				 	//$("#pcard").css({ '-webkit-transform': 'rotate(0deg)', 'transform': 'rotate(0deg)' });
 				 	//Is there a better way to make Periphery lie flat?
@@ -659,12 +688,12 @@
 		},
 		deactivate:function(){
 			peripheryContent.fadeOut("fast");
-		 	pauseVideos();
-		 	resetVideoRotation();
-		 	mouseYTracking = false;
-		 	//console.log("[Periphery: deactivate] mouseYTracking: " + mouseYTracking);
-		 	active = false;
-
+			pauseVideos();
+			resetVideoRotation();
+			clearMediaSources();
+			mouseYTracking = false;
+			//console.log("[Periphery: deactivate] mouseYTracking: " + mouseYTracking);
+			active = false;
 		}
 	}
 
