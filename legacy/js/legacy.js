@@ -28,6 +28,15 @@
 	var legacyHasBeenReset = false;
 	var opacitiesOff = false;
 
+	//http://dalcr8izwrdz8.cloudfront.net/legacy/India960.mp4
+	var topUrl = 'http://dalcr8izwrdz8.cloudfront.net/legacy/',
+		sources = {
+			india: 'India960.mp4',
+			indonesia: 'Indonesia960.mp4',
+			southafrica: 'SouthAfrica960.mp4',
+			srilanka: 'SriLanka960.mp4'
+		};
+
 	var videos = {
 		indonesia: null,
 		india: null,
@@ -806,6 +815,8 @@
 	function initVideos() {
 		Object.keys(videos).forEach(function (id) {
 			var video = document.getElementById(id + '_leg');
+			var progressDiamond = $("#" + id + "_progressDiamond");
+
 			video.addEventListener('canplay', function () {
 				//console.log('[ Legacy : Canplay Event ] ' + id + ' Video');
 
@@ -822,50 +833,38 @@
 				currentActiveVideoTracker[id].active = false;
 				currentActiveVideoTracker[id].totalDuration = video.duration;
 				//console.log(id + " is " + video.duration + " seconds");
-								
 			});
 
 			video.addEventListener('ended', function (evt) {
-
-				//console.log(evt.srcElement.id);
-				var string = evt.srcElement.id;
-				var index = string.split('_');
-				var id = index[0];
-				//index[0] is country name
-				//console.log('[ Legacy : ] ' + id + ' has ended');
 				if(videoTracker[id].active) {
 					zContainer.zoomTo({ targetsize:0.5, duration:600, root: zContainer });
-					//console.log(id +" Complete updating history");
+
 					//for volume
 					selectVideo(null);
 
-					var start = map(videoTracker[id].startPos,0,video.duration, 0, 262,true);
-					var end = map(videoTracker[id].endPos,0,video.duration, 0, 262,true);
-					addProgressPath(id,start,end);
+					var start = map(videoTracker[id].startPos, 0, video.duration, 0, 262, true);
+					var end = map(videoTracker[id].endPos, 0, video.duration, 0, 262, true);
+					addProgressPath(id, start, end);
 				}
 				video.play();
-				var count = 0;
-				
 			});
 			
 
 			video.addEventListener('timeupdate', function (evt) {
-				var videoID = evt.srcElement.id;
-				var index = videoID.split('_')[0];
-				var vid = document.getElementById(videoID);
-				
+				var ratio = 1;
+
 				// Update progress bar for each film - TODO: change from a bar to a circle
-				var currTime = Math.floor(vid.currentTime);
-				//console.log("id: " + index + " currentDur : " + dur);
+				currTime = Math.floor(video.currentTime);
 				if(currTime > 0) {
-					var ratio = (document.getElementById(videoID).duration / currTime);
+					ratio = (video.duration / currTime);
 				}
 
-				$("#" + id + "_progressDiamond").css({ "left": (640 / ratio) + 'px'});
+				progressDiamond.css({ "left": (640 / ratio) + 'px'});
 
 				if(videoTracker[id].active){
 					videoTracker[id].endPos = currTime;
 				}
+
 				allVideosReached90 = checkProgressLength();
 				if (allVideosReached90) {
 					//console.log('Legacy Endscreen');
@@ -875,7 +874,10 @@
 
 			});
 
-			video.load();
+			video.addEventListener('loadedmetadata', function () {
+				video.currentTime = currTime;
+			});
+
 			videos[id] = video;
 		});
 	}
@@ -925,14 +927,14 @@
 
 			layers['source' + index] = move;
 
-			video.onloadedmetadata = function () {
+			video.addEventListener('loadedmetadata', function () {
 				// we don't know how much to move the videos until we know their dimensions
 				var x = (index % 2 ? 1 : -1),
 					y = (index < 2 ? -1 : 1);
 
 				move.translateX = x * crop.width / 2 * move.scaleX;
 				move.translateY = y * crop.height / 2 * move.scaleY;
-			};
+			});
 		});
 
 		seriously.go(function() {
@@ -1064,8 +1066,26 @@
 
 	function pageHidden() {
 		pauseVideos();
+	}
 
-		
+	function setVideoSources() {
+		Object.keys(sources).forEach(function (key) {
+			var video = document.getElementById(key + '_leg'),
+				src = sources[key];
+
+			video.src = topUrl + src;
+			video.load();
+		});
+	}
+
+	function clearVideoSources() {
+		Object.keys(videos).forEach(function (key) {
+			var video = videos[key];
+			if (video) {
+				video.removeAttribute('src');
+				video.load();
+			}
+		});
 	}
 
 	function volumesUp() {
@@ -1107,6 +1127,8 @@
 				loadSessionHistory();
 			}
 
+			setVideoSources();
+
 			firstTime = false;
 
 			if(legacyHasBeenReset) {
@@ -1126,7 +1148,12 @@
 		},
 		deactivate: function () {
 
+			if (!active) {
+				return;
+			}
+
 			pauseVideos();
+			currTime = videos.india.currentTime;
 
 			if(allVideosReached90) {
 				resetLegacy();
@@ -1139,6 +1166,8 @@
 			}
 
 			active = false;
+
+			clearVideoSources();
 		}
 	};
 
