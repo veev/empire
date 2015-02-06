@@ -144,10 +144,10 @@ div#cradle_main #c_outerouter #c_outerinner {
 	pointer-events: none;
 	transform-style: preserve-3d;
 	transition: all .5s linear;
-	transform-origin: 50% 0 inherit;
+	transform-origin: 50% 0 ;
 	-webkit-transform-style: preserve-3d;
 	-webkit-transition: all .5s linear;
-	-webkit-transform-origin: 50% 0 0 inherit;
+	-webkit-transform-origin: 50% 0 0 ;
 }
 
 /*

@@ -315,19 +315,19 @@
 		if(flipside){		
 			flipside = false;
 			flipangle = 0;
-			translatePos = 0;
+			translatePos = '0%';
 			$("#leftbutton").removeClass('buttonon').addClass('buttonoff');
 			$("#rightbutton").removeClass('buttonoff').addClass('buttonon');
 		} 
 		else {
 			flipside = true;
 			flipangle = 180;
-			translatePos = 960;
+			translatePos = '50%';
 			$("#rightbutton").removeClass('buttonon').addClass('buttonoff');
 			$("#leftbutton").removeClass('buttonoff').addClass('buttonon');
 		}
 		// $("#card").css({ '-webkit-transform': 'rotateY( ' + flipangle + 'deg) translateX('+ translatePos + 'px)', 'transform': 'rotateY( ' + flipangle + 'deg) translateX('+ translatePos + 'px)' });
-			$("#card").css({ '-webkit-transform': 'rotateY( ' + flipangle + 'deg)', 'transform': 'rotateY( ' + flipangle + 'deg)' });
+			$("#card").css({ '-webkit-transform': 'rotateY( ' + flipangle + 'deg)', 'transform': 'rotateY( ' + flipangle + 'deg)' , '-webkit-transform-origin':  translatePos , 'transform-origin': translatePos });
 
 	}
 
