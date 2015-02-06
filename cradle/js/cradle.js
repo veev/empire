@@ -315,7 +315,7 @@
 		if(flipside){		
 			flipside = false;
 			flipangle = 0;
-			translatePos = '0%';
+			translatePos = '50%';
 			$("#leftbutton").removeClass('buttonon').addClass('buttonoff');
 			$("#rightbutton").removeClass('buttonoff').addClass('buttonon');
 		} 
@@ -327,7 +327,7 @@
 			$("#leftbutton").removeClass('buttonoff').addClass('buttonon');
 		}
 		// $("#card").css({ '-webkit-transform': 'rotateY( ' + flipangle + 'deg) translateX('+ translatePos + 'px)', 'transform': 'rotateY( ' + flipangle + 'deg) translateX('+ translatePos + 'px)' });
-			$("#card").css({ '-webkit-transform': 'rotateY( ' + flipangle + 'deg)', 'transform': 'rotateY( ' + flipangle + 'deg)' , '-webkit-transform-origin':  translatePos , 'transform-origin': translatePos });
+			$("#card").css({'-webkit-transform-origin':  translatePos , 'transform-origin': translatePos, '-webkit-transform': 'rotateY( ' + flipangle + 'deg)', 'transform': 'rotateY( ' + flipangle + 'deg)' });
 
 	}
 
