@@ -381,7 +381,7 @@
 			var video = videos[id];
 			if (video) {
 				video.removeEventListener('timeupdate', scrubberUpdater, true);
-				video.removeEventListener('ended'), endVideos, true;
+				video.removeEventListener('ended', endVideos, true);
 				//console.log("removing listeners");
 			}
 		});
